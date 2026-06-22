@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
 const pretendard = localFont({
-  src: "./fonts/PretendardVariable.woff2",
+  src: "../assets/fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
   weight: "45 920",
   display: "swap",
