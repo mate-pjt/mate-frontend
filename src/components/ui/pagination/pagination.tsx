@@ -5,6 +5,10 @@ import { useState } from "react";
 import { LeftArrowIcon, RightArrowIcon } from "@/components/icons";
 
 type PaginationPageItem = number | "start-ellipsis" | "end-ellipsis";
+type PaginationState = {
+    page: number;
+    pageCount: number;
+};
 
 export type PaginationProps = Omit<React.HTMLAttributes<HTMLElement>, "onChange"> & {
     page?: number;
@@ -24,7 +28,17 @@ export function Pagination({
     ...props
 }: PaginationProps) {
     const pageCount = Math.max(1, Math.floor(totalPages));
-    const [internalPage, setInternalPage] = useState(clampPage(defaultPage, pageCount));
+    const [paginationState, setPaginationState] = useState<PaginationState>({
+        page: clampPage(defaultPage, pageCount),
+        pageCount,
+    });
+    let internalPage = paginationState.page;
+
+    if (page === undefined && paginationState.pageCount !== pageCount) {
+        internalPage = clampPage(paginationState.page, pageCount);
+        setPaginationState({ page: internalPage, pageCount });
+    }
+
     const currentPage = clampPage(page ?? internalPage, pageCount);
     const items = getPaginationItems(currentPage, pageCount);
 
@@ -36,7 +50,7 @@ export function Pagination({
         }
 
         if (page === undefined) {
-            setInternalPage(clampedPage);
+            setPaginationState({ page: clampedPage, pageCount });
         }
 
         onPageChange?.(clampedPage);
