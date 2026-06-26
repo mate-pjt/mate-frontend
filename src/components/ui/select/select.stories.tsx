@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { Select } from "./select";
+import { SelectMenu } from "./select-menu";
 
 const options = [
     { value: "all", label: "전체" },
@@ -8,6 +9,11 @@ const options = [
     { value: "closed", label: "마감" },
     { value: "disabled", label: "비활성 옵션", disabled: true },
 ];
+
+const searchOptions = [
+    { value: "new", label: "신축", icon: "limit" },
+    { value: "construction", label: "공사", icon: "limit" },
+] as const;
 
 const meta = {
     title: "UI/Select",
@@ -26,6 +32,10 @@ const meta = {
             control: "inline-radio",
             options: ["left", "right"],
         },
+        menuVariant: {
+            control: "inline-radio",
+            options: ["default", "search"],
+        },
     },
     args: {
         align: "left",
@@ -34,6 +44,7 @@ const meta = {
         placeholder: "상태",
         size: "s",
         variant: "white",
+        menuVariant: "default",
     },
     decorators: [
         (Story) => (
@@ -75,4 +86,12 @@ export const Disabled: Story = {
         disabled: true,
         defaultValue: "open",
     },
+};
+
+export const SearchMenu: Story = {
+    render: () => (
+        <div className="bg-white p-4">
+            <SelectMenu options={[...searchOptions]} variant="search" />
+        </div>
+    ),
 };

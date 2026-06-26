@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 import { SelectBox, type SelectBoxSize, type SelectBoxVariant } from "./select-box";
-import { SelectMenu, type SelectMenuOption } from "./select-menu";
+import { SelectMenu, type SelectMenuOption, type SelectMenuVariant } from "./select-menu";
 
 const menuAlignClasses = {
     left: "left-0",
@@ -22,6 +22,7 @@ export type SelectProps = Omit<React.HTMLAttributes<HTMLDivElement>, "defaultVal
     align?: keyof typeof menuAlignClasses;
     boxClassName?: string;
     menuClassName?: string;
+    menuVariant?: SelectMenuVariant;
     ariaLabel?: string;
 };
 
@@ -35,6 +36,7 @@ export function Select({
     defaultValue,
     disabled = false,
     menuClassName,
+    menuVariant = "default",
     onValueChange,
     options,
     placeholder = "옵션",
@@ -113,6 +115,7 @@ export function Select({
                     }}
                     options={options}
                     selectedValue={selectedValue}
+                    variant={menuVariant}
                 />
             )}
         </div>
