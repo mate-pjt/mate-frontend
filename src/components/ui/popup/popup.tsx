@@ -1,6 +1,7 @@
 'use client';
 
 import Image from "next/image";
+import { useState } from "react";
 
 import { CheckIcon, CloseIcon } from "@/components/icons";
 import { CheckboxCircle, CheckboxSquare } from "@/components/ui/checkbox";
@@ -25,6 +26,7 @@ function PopupShell({
     className,
     footer,
     width = "sm",
+    ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     footer?: React.ReactNode;
     width?: PopupWidth;
@@ -38,6 +40,7 @@ function PopupShell({
                 width === "md" && "w-[640px]",
                 className,
             )}
+            {...props}
         >
             <div className="w-full rounded-t-[20px] border-x border-t border-grayscale-200 bg-white p-6">
                 {children}
@@ -238,26 +241,50 @@ export function BasicPopup({
 }
 
 export type AlarmPopupProps = React.HTMLAttributes<HTMLDivElement> & {
+    defaultEnabled?: boolean;
     enabled?: boolean;
     onClose?: () => void;
+    onEnabledChange?: (enabled: boolean) => void;
+    onIgnore?: () => void;
+    onSetAlarm?: () => void;
     primaryDisabled?: boolean;
 };
 
 export function AlarmPopup({
     className,
-    enabled = false,
+    defaultEnabled = false,
+    enabled,
+    onEnabledChange,
     onClose,
-    primaryDisabled = !enabled,
+    onIgnore,
+    onSetAlarm,
+    primaryDisabled,
     ...props
 }: AlarmPopupProps) {
+    const [internalEnabled, setInternalEnabled] = useState(defaultEnabled);
+    const checked = enabled ?? internalEnabled;
+    const disabled = primaryDisabled ?? false;
+
+    function handleCheckedChange(nextEnabled: boolean) {
+        if (enabled === undefined) {
+            setInternalEnabled(nextEnabled);
+        }
+
+        onEnabledChange?.(nextEnabled);
+    }
+
     return (
         <PopupShell
             className={className}
             footer={
                 <PopupActions
                     actions={[
-                        { label: "다음에 하기", tone: "secondary" },
-                        { label: "알림 설정", disabled: primaryDisabled },
+                        { label: "다음에 하기", onClick: onIgnore, tone: "secondary" },
+                        {
+                            label: "알림 설정",
+                            disabled,
+                            onClick: onSetAlarm,
+                        },
                     ]}
                 />
             }
@@ -271,7 +298,11 @@ export function AlarmPopup({
                     <div className="flex w-full flex-col gap-4">
                         <div className="flex w-full items-start justify-between">
                             <span className="text-grayscale-700 type-body-1">공고 알림받기</span>
-                            <Toggle ariaLabel="공고 알림받기" checked={enabled} />
+                            <Toggle
+                                ariaLabel="공고 알림받기"
+                                checked={checked}
+                                onCheckedChange={handleCheckedChange}
+                            />
                         </div>
                         <div className="flex w-full flex-col gap-2">
                             <div className="rounded-[12px] bg-grayscale-50 p-4">
@@ -304,8 +335,12 @@ function AlarmFeature({ icon, label }: { icon: string; label: string }) {
 
 export type CorrectionPopupProps = React.HTMLAttributes<HTMLDivElement> & {
     items?: Array<{ id: string; title: string; date: string }>;
+    defaultSelectedId?: string;
     onClose?: () => void;
     selectedId?: string;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    onSelectItem?: (id: string) => void;
 };
 
 const defaultCorrectionItems = [
@@ -318,11 +353,25 @@ const defaultCorrectionItems = [
 export function CorrectionPopup({
     className,
     items = defaultCorrectionItems,
+    defaultSelectedId = "third",
     onClose,
-    selectedId = "third",
+    onCancel,
+    onConfirm,
+    onSelectItem,
+    selectedId,
     ...props
 }: CorrectionPopupProps) {
-    const hasSelection = Boolean(selectedId);
+    const [internalSelectedId, setInternalSelectedId] = useState(defaultSelectedId);
+    const activeSelectedId = selectedId ?? internalSelectedId;
+    const hasSelection = Boolean(activeSelectedId);
+
+    function handleSelect(itemId: string) {
+        if (selectedId === undefined) {
+            setInternalSelectedId(itemId);
+        }
+
+        onSelectItem?.(itemId);
+    }
 
     return (
         <PopupShell
@@ -330,8 +379,12 @@ export function CorrectionPopup({
             footer={
                 <PopupActions
                     actions={[
-                        { label: "닫기", tone: "secondary" },
-                        { label: "공고 확인하기", disabled: !hasSelection },
+                        { label: "닫기", onClick: onCancel, tone: "secondary" },
+                        {
+                            label: "공고 확인하기",
+                            disabled: !hasSelection,
+                            onClick: onConfirm,
+                        },
                     ]}
                 />
             }
@@ -348,11 +401,21 @@ export function CorrectionPopup({
                                 <div
                                     className="flex h-14 w-full items-center justify-between rounded-[8px] bg-white p-4 shadow-[0_0_12px_#f1f3f5]"
                                     key={item.id}
+                                    onClick={() => handleSelect(item.id)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter" || event.key === " ") {
+                                            event.preventDefault();
+                                            handleSelect(item.id);
+                                        }
+                                    }}
                                 >
                                     <div className="flex items-center gap-2">
                                         <CheckboxCircle
-                                            active={item.id === selectedId}
+                                            active={item.id === activeSelectedId}
                                             ariaLabel={`${item.title} 선택`}
+                                            onClick={() => handleSelect(item.id)}
                                         />
                                         <span className="text-grayscale-800 type-body-2">{item.title}</span>
                                     </div>
@@ -373,12 +436,18 @@ export type UploadPopupProps = React.HTMLAttributes<HTMLDivElement> & {
         size: string;
     };
     onClose?: () => void;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    onSelectFile?: () => void;
 };
 
 export function UploadPopup({
     className,
     file,
     onClose,
+    onCancel,
+    onConfirm,
+    onSelectFile,
     ...props
 }: UploadPopupProps) {
     const ready = Boolean(file);
@@ -389,8 +458,8 @@ export function UploadPopup({
             footer={
                 <PopupActions
                     actions={[
-                        { label: "닫기", tone: "secondary" },
-                        { label: "업로드 하기", disabled: !ready },
+                        { label: "닫기", onClick: onCancel, tone: "secondary" },
+                        { label: "업로드 하기", disabled: !ready, onClick: onConfirm },
                     ]}
                 />
             }
@@ -404,7 +473,7 @@ export function UploadPopup({
                         조회된 정보와 일치하는지, 직인이 잘 보이는지 마지막으로 확인해 주세요!
                     </div>
                     <div className="flex w-full flex-col gap-2">
-                        <UploadDropzone file={file} />
+                        <UploadDropzone file={file} onSelectFile={onSelectFile} />
                     </div>
                     <NoticeCard title="확인해주세요!">
                         <div className="flex flex-col gap-4">
@@ -432,7 +501,10 @@ export function UploadPopup({
     );
 }
 
-function UploadDropzone({ file }: Pick<UploadPopupProps, "file">) {
+function UploadDropzone({
+    file,
+    onSelectFile,
+}: Pick<UploadPopupProps, "file"> & { onSelectFile?: () => void }) {
     if (!file) {
         return (
             <div className="flex w-full flex-col items-center rounded-[16px] border border-dashed border-grayscale-200 bg-grayscale-50 px-6 py-20 text-center">
@@ -442,6 +514,7 @@ function UploadDropzone({ file }: Pick<UploadPopupProps, "file">) {
                         <p className="text-grayscale-600 type-body-7">PDF, JPG, PNG 파일만 업로드 가능 (최대 10MB)</p>
                     </div>
                     <button
+                        onClick={onSelectFile}
                         className="rounded-[8px] bg-primary-400 px-4 py-2 text-white type-body-2"
                         type="button"
                     >
@@ -497,23 +570,34 @@ export type PasswordPopupState = "empty" | "filled" | "visible" | "error";
 export type PasswordPopupProps = React.HTMLAttributes<HTMLDivElement> & {
     onClose?: () => void;
     state?: PasswordPopupState;
+    currentPasswordValue?: string;
+    newPasswordValue?: string;
+    confirmPasswordValue?: string;
+    onSubmit?: () => void;
 };
 
 export function PasswordPopup({
     className,
     onClose,
+    currentPasswordValue,
+    newPasswordValue,
+    confirmPasswordValue,
     state = "empty",
+    onSubmit,
     ...props
 }: PasswordPopupProps) {
     const filled = state !== "empty";
     const visible = state === "visible" || state === "error";
     const error = state === "error";
     const disabled = state === "empty" || error;
+    const currentPassword = filled ? currentPasswordValue : undefined;
+    const nextPassword = filled ? newPasswordValue : undefined;
+    const confirmPassword = filled ? confirmPasswordValue : undefined;
 
     return (
         <PopupShell
             className={className}
-            footer={<PopupActions actions={[{ label: "변경하기", disabled }]} />}
+            footer={<PopupActions actions={[{ label: "변경하기", disabled, onClick: onSubmit }]} />}
             width="md"
             {...props}
         >
@@ -526,13 +610,13 @@ export function PasswordPopup({
                             error={error ? "비밀번호를 확인해 주세요!" : undefined}
                             label="현재 비밀번호"
                             placeholder="지금 쓰고 있는 비밀번호를 입력해주세요."
-                            value={filled ? "********" : undefined}
+                            value={currentPassword}
                         />
                         <FieldDisplay
                             error={error ? "8 ~ 16자리 이내, 영문, 숫자 포함 새로 사용할 비밀번호를 입력해주세요!" : undefined}
                             label="새 비밀번호"
                             placeholder="비밀번호를 입력해 주세요. (8 ~ 16자리 이내, 영문, 숫자 포함)"
-                            value={filled ? "********" : undefined}
+                            value={nextPassword}
                         />
                         <FieldDisplay
                             error={error ? "비밀번호를 다시 확인해 주세요!" : undefined}
@@ -543,7 +627,7 @@ export function PasswordPopup({
                                     <span className="text-grayscale-600 type-body-7">보기</span>
                                 ) : undefined
                             }
-                            value={visible ? "kig9289" : filled ? "********" : undefined}
+                            value={confirmPassword}
                         />
                     </div>
                 </div>
@@ -553,24 +637,43 @@ export function PasswordPopup({
 }
 
 export type WithdrawalConfirmPopupProps = React.HTMLAttributes<HTMLDivElement> & {
+    defaultChecked?: boolean;
     checked?: boolean;
     onClose?: () => void;
+    onCheckedChange?: (checked: boolean) => void;
+    onCancel?: () => void;
+    onConfirm?: () => void;
 };
 
 export function WithdrawalConfirmPopup({
-    checked = false,
+    checked,
+    defaultChecked = false,
     className,
     onClose,
+    onCheckedChange,
+    onCancel,
+    onConfirm,
     ...props
 }: WithdrawalConfirmPopupProps) {
+    const [internalChecked, setInternalChecked] = useState(defaultChecked);
+    const agreed = checked ?? internalChecked;
+
+    function handleCheckedChange(nextChecked: boolean) {
+        if (checked === undefined) {
+            setInternalChecked(nextChecked);
+        }
+
+        onCheckedChange?.(nextChecked);
+    }
+
     return (
         <PopupShell
             className={className}
             footer={
                 <PopupActions
                     actions={[
-                        { label: "탈퇴하기", tone: "danger" },
-                        { label: "계속 이용하기", disabled: !checked },
+                        { label: "탈퇴하기", tone: "danger", disabled: !agreed, onClick: onConfirm },
+                        { label: "계속 이용하기", onClick: onCancel },
                     ]}
                 />
             }
@@ -588,7 +691,11 @@ export function WithdrawalConfirmPopup({
                         </ul>
                     </NoticeCard>
                     <label className="flex items-center gap-2 text-grayscale-700 type-body-3">
-                        <CheckboxSquare ariaLabel="상기 내용 확인" checked={checked} />
+                        <CheckboxSquare
+                            ariaLabel="상기 내용 확인"
+                            checked={agreed}
+                            onCheckedChange={handleCheckedChange}
+                        />
                         상기 내용을 확인했습니다.
                     </label>
                 </div>
@@ -610,22 +717,29 @@ export type WithdrawalEmailPopupProps = React.HTMLAttributes<HTMLDivElement> & {
     code?: string;
     email?: string;
     onClose?: () => void;
+    onAction?: () => void;
+    onResend?: () => void;
     remainingTime?: string;
     step?: WithdrawalEmailPopupStep;
 };
 
 export function WithdrawalEmailPopup({
     className,
-    code = "4878",
+    code = "",
     email,
     onClose,
+    onAction,
+    onResend,
     remainingTime = "02 :59",
     step = "email",
     ...props
 }: WithdrawalEmailPopupProps) {
     const codeStep = step.startsWith("code");
     const verified = step === "codeVerified";
-    const primaryEnabled = step === "emailSent" || verified;
+    const normalizedCode = code.replace(/\D/g, "").slice(0, 4);
+    const codeInputStep = step === "codeInput" || step === "codeError";
+    const hasCompleteCode = normalizedCode.length === 4;
+    const primaryEnabled = step === "emailSent" || verified || (codeInputStep && hasCompleteCode);
 
     return (
         <PopupShell
@@ -636,6 +750,7 @@ export function WithdrawalEmailPopup({
                         {
                             label: codeStep ? "인증하기" : "인증번호 보내기",
                             disabled: !primaryEnabled,
+                            onClick: onAction,
                         },
                     ]}
                 />
@@ -656,7 +771,7 @@ export function WithdrawalEmailPopup({
                             code={step === "codeReady" ? "" : code}
                             error={step === "codeError"}
                             remainingTime={remainingTime}
-                            verified={verified}
+                            onResend={onResend}
                         />
                     ) : (
                         <FieldDisplay
@@ -677,14 +792,15 @@ function VerificationCodePanel({
     code,
     error,
     remainingTime,
-    verified,
+    onResend,
 }: {
     code: string;
     error?: boolean;
     remainingTime: string;
-    verified?: boolean;
+    onResend?: () => void;
 }) {
-    const digits = code.padEnd(4, "0").slice(0, 4).split("");
+    const normalizedCode = code.replace(/\D/g, "").slice(0, 4);
+    const digits = Array.from({ length: 4 }, (_, index) => normalizedCode[index] || "");
 
     return (
         <div className="flex w-full flex-col gap-2">
@@ -698,7 +814,7 @@ function VerificationCodePanel({
                             className="flex h-24 flex-1 items-center justify-center rounded-[16px] border border-grayscale-200 bg-white text-center text-grayscale-700 type-heading-3"
                             key={`${digit}-${index}`}
                         >
-                            <span className={code || verified ? "" : "opacity-0"}>{digit}</span>
+                            <span className={digit ? "" : "text-transparent"}>{digit}</span>
                         </div>
                     ))}
                 </div>
@@ -711,7 +827,7 @@ function VerificationCodePanel({
             </div>
             <div className="flex w-full justify-center pt-4 text-center text-grayscale-600 type-body-7">
                 인증번호가 안 오나요?&nbsp;
-                <button className="underline" type="button">
+                <button className="underline" onClick={onResend} type="button">
                     재전송
                 </button>
             </div>

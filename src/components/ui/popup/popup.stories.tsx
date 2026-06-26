@@ -89,8 +89,8 @@ export const WithdrawalEmail: Story = {
     render: () => (
         <div className="flex flex-col gap-5">
             <WithdrawalEmailPopup />
-            <WithdrawalEmailPopup email="kig982@naver.com" step="emailSent" />
-            <WithdrawalEmailPopup email="kig982@naver.com" step="emailError" />
+            <WithdrawalEmailPopup email="example@example.com" step="emailSent" />
+            <WithdrawalEmailPopup email="example@example.com" step="emailError" />
             <WithdrawalEmailPopup step="codeReady" />
             <WithdrawalEmailPopup code="0000" step="codeInput" />
             <WithdrawalEmailPopup code="0000" step="codeError" />
