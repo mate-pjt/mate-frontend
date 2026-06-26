@@ -28,12 +28,18 @@ src/
     ui/
       button/
         button.stories.tsx
+      checkbox/
+        checkbox.stories.tsx
+      pagination/
+        pagination.stories.tsx
       side-menu/
         side-menu.stories.tsx
       select/
         select.stories.tsx
       tab-menu/
         tab-menu.stories.tsx
+      toggle/
+        toggle.stories.tsx
   features/
     .gitkeep
   lib/
@@ -71,7 +77,7 @@ public/
 - `src/app`: route pages and global app shell.
 - `src/components`: shared UI and layout components.
 - `src/components/icons`: reusable TSX icon components exported from `index.ts`. These replace source-level SVG imports and avoid bundler-specific SVG loaders.
-- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `side-menu/`, `select/`, and `tab-menu/`; each folder exposes its public imports through `index.ts`.
+- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `checkbox/`, `pagination/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
 - `src/lib`: site metadata helpers.
 - `src/mocks`: mock data for current UI flows.
 - `src/types`: shared TypeScript types.
