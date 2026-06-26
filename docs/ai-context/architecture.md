@@ -30,6 +30,10 @@ src/
         button.stories.tsx
       checkbox/
         checkbox.stories.tsx
+      chip/
+        chip.stories.tsx
+      input/
+        input.stories.tsx
       pagination/
         pagination.stories.tsx
       side-menu/
@@ -54,7 +58,10 @@ public/
   icon/
     24dp/
       alarm.svg
+      check_circle.svg
+      close_circle.svg
       mate.svg
+      ...
 .storybook/
   main.ts
   preview.css
@@ -77,13 +84,13 @@ public/
 - `src/app`: route pages and global app shell.
 - `src/components`: shared UI and layout components.
 - `src/components/icons`: reusable TSX icon components exported from `index.ts`. These replace source-level SVG imports and avoid bundler-specific SVG loaders.
-- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `checkbox/`, `pagination/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
+- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `checkbox/`, `chip/`, `input/`, `pagination/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
 - `src/lib`: site metadata helpers.
 - `src/mocks`: mock data for current UI flows.
 - `src/types`: shared TypeScript types.
 - `src/features`: currently only `.gitkeep`; feature-level organization may be planned but is not yet established.
 - `src/assets`: local font assets. UI icons should not be imported from raw SVG files.
-- `public`: static browser-served assets. Current static header icons live under `public/icon/24dp`.
+- `public`: static browser-served assets. Static 24dp SVG icons live under `public/icon/24dp`.
 - `.storybook`: Storybook Vite configuration for the local UI component catalog.
 
 ## Asset Placement Notes
@@ -94,7 +101,8 @@ Confirmed:
 - Reusable UI icons that need source imports or `className`/`currentColor` styling should live as TSX components under `src/components/icons`.
 - Raw UI SVG files exported from design tools are not retained in the repo when a TSX icon component exists; the design source is expected to remain in Figma.
 - `src/components/icons/README.md` documents the reusable icon placement policy.
-- `SiteHeader` currently references static icons from `public/icon/24dp`.
+- `SiteHeader` and fixed-color input icons reference static icons from `public/icon/24dp`.
+- Static 24dp SVG filenames should not use a trailing underscore; obvious filename typos should be normalized before use.
 
 ## Styling Notes
 

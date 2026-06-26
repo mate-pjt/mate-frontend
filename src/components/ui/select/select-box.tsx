@@ -20,7 +20,7 @@ const sizeClasses = {
 export type SelectBoxVariant = keyof typeof variantClasses;
 export type SelectBoxSize = keyof typeof sizeClasses;
 
-type SelectBoxProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> & {
+export type SelectBoxProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled"> & {
     variant?: SelectBoxVariant;
     size?: SelectBoxSize;
     open?: boolean;

@@ -5,18 +5,44 @@
  * (각 항목 좌측에 '아이콘' 옵션 추가, 모든 항목 아래 '안내문구' 옵션, 안내문구 아래 버튼('초기화', '저장') 옵션) 
  * */
 
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon, LimitIcon } from "@/components/icons";
+
+const selectMenuIcons = {
+    limit: LimitIcon,
+} as const;
+
+const variantClasses = {
+    default: {
+        root: "w-[212px] rounded-[16px]",
+        item: "justify-between",
+        selected: "bg-primary-100 text-primary",
+        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        showSelectedIcon: true,
+    },
+    search: {
+        root: "w-[300px] rounded-[8px]",
+        item: "gap-2",
+        selected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        showSelectedIcon: false,
+    },
+} as const;
 
 export type SelectMenuOption = {
     value: string;
     label: string;
+    icon?: SelectMenuIconName;
     disabled?: boolean;
 };
 
-type SelectMenuProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> & {
+export type SelectMenuIconName = keyof typeof selectMenuIcons;
+export type SelectMenuVariant = keyof typeof variantClasses;
+
+export type SelectMenuProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> & {
     options: SelectMenuOption[];
     selectedValue?: string;
     onSelect?: (option: SelectMenuOption) => void;
+    variant?: SelectMenuVariant;
 };
 
 export function SelectMenu({
@@ -24,12 +50,16 @@ export function SelectMenu({
     onSelect,
     options,
     selectedValue,
+    variant = "default",
     ...props
 }: SelectMenuProps) {
+    const classes = variantClasses[variant];
+
     return (
         <div
             className={[
-                "w-[212px] rounded-[16px] border border-grayscale-200 bg-white p-2",
+                "border border-grayscale-200 bg-white p-2",
+                classes.root,
                 className,
             ]
                 .filter(Boolean)
@@ -44,10 +74,9 @@ export function SelectMenu({
                     <button
                         aria-selected={selected}
                         className={[
-                            "flex min-h-9 w-full items-center justify-between gap-2 rounded-[8px] p-2 text-left type-body-7 transition-colors",
-                            selected
-                                ? "bg-primary-100 text-primary"
-                                : "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+                            "flex min-h-9 w-full items-center rounded-[8px] p-2 text-left type-body-7 transition-colors",
+                            classes.item,
+                            selected ? classes.selected : classes.unselected,
                             option.disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer",
                         ]
                             .filter(Boolean)
@@ -58,17 +87,30 @@ export function SelectMenu({
                         role="option"
                         type="button"
                     >
+                        {option.icon && (
+                            <span className="flex size-4 shrink-0 items-center justify-center text-grayscale-500">
+                                <SelectMenuIcon icon={option.icon} />
+                            </span>
+                        )}
                         <span className="truncate">{option.label}</span>
-                        <CheckIcon
-                            aria-hidden
-                            className={["size-4 shrink-0", selected ? "opacity-100" : "opacity-0"].join(" ")}
-                            focusable="false"
-                            height={16}
-                            width={16}
-                        />
+                        {classes.showSelectedIcon && (
+                            <CheckIcon
+                                aria-hidden
+                                className={["size-4 shrink-0", selected ? "opacity-100" : "opacity-0"].join(" ")}
+                                focusable="false"
+                                height={16}
+                                width={16}
+                            />
+                        )}
                     </button>
                 );
             })}
         </div>
     );
+}
+
+function SelectMenuIcon({ icon }: { icon: SelectMenuIconName }) {
+    const Icon = selectMenuIcons[icon];
+
+    return <Icon aria-hidden className="size-4" focusable="false" />;
 }
