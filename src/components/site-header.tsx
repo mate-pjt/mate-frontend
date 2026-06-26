@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { ButtonLink } from "./ui/button";
 
 const navigationItems = [
   { href: "/", label: "홈" },
@@ -10,11 +10,12 @@ const navigationItems = [
   { href: "/my", label: "마이" },
 ];
 
+
 export function SiteHeader() {
   return (
     <header className="">
       <div className="mx-auto flex w-full min-h-[56px] flex-wrap items-center justify-between gap-4 px-15 py-[9px]">
-        {/* #region 헤더 왼쪽 */}
+        {/* 헤더 왼쪽 */}
         <div className="flex items-center gap-10">
           <Link className="flex items-center gap-1" href="/">
             <Image src="/icon/24dp/mate.svg" alt="Mate" width={30} height={30} />
@@ -39,22 +40,9 @@ export function SiteHeader() {
             <Image src="/icon/24dp/alarm.svg" alt="알람" width={32} height={32} />
           </Link>
           <div className="w-[1px] h-[12px] bg-border" />
-          <Link
-            className="rounded-md h-[38px] bg-primary px-3 py-2 text-sm font-semibold text-white"
-            href="/auth?mode=login"
-          >
+          <ButtonLink href="/auth?mode=login" variant="primary" size="sm">
             로그인
-          </Link>
-          <Button
-            variant="primary"
-            size="sm"
-            icon="/icon/24dp/rightarrow.svg"
-            iconPosition="left"
-            disabled={true}
-          // onClick={() => { }}
-          >
-            로그인
-          </Button>
+          </ButtonLink>
         </div>
       </div>
     </header>
