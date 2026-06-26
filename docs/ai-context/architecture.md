@@ -28,6 +28,8 @@ src/
     ui/
       button/
         button.stories.tsx
+      card/
+        card.stories.tsx
       checkbox/
         checkbox.stories.tsx
       chip/
@@ -84,7 +86,7 @@ public/
 - `src/app`: route pages and global app shell.
 - `src/components`: shared UI and layout components.
 - `src/components/icons`: reusable TSX icon components exported from `index.ts`. These replace source-level SVG imports and avoid bundler-specific SVG loaders.
-- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `checkbox/`, `chip/`, `input/`, `pagination/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
+- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `card/`, `checkbox/`, `chip/`, `input/`, `pagination/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
 - `src/lib`: site metadata helpers.
 - `src/mocks`: mock data for current UI flows.
 - `src/types`: shared TypeScript types.
