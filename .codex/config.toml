@@ -1,0 +1,23 @@
+# Mate Codex harness configuration placeholder.
+#
+# Active project-level Codex App settings are intentionally not enabled in v0.1.
+# Keep this file as a placeholder until the current Codex App project config
+# schema is confirmed. Do not add active Skill registration, agent registration,
+# hooks, or workflow enforcement settings before then.
+#
+# Harness entry points:
+# - AGENTS.md
+# - docs/ai-context/base.md
+# - docs/ai-context/plan.md
+# - docs/ai-context/architecture.md
+# - docs/ai-context/ai-failures.md
+# - docs/ai-context/harness.md
+# - .codex/skills/feature-workflow/SKILL.md
+# - .codex/skills/ai-review/SKILL.md
+# - .codex/skills/context-audit/SKILL.md
+# - .codex/agents/verifier.toml
+#
+# Confirmed package.json scripts for verification as of 2026-06-26:
+# - pnpm lint
+# - pnpm build
+# - pnpm build-storybook for Storybook or shared UI catalog changes
