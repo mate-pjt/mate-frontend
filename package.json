@@ -2,11 +2,14 @@
   "name": "mate-frontend",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.3.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "next": "16.2.9",
@@ -22,6 +25,11 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "storybook": "^10.4.6",
+    "@storybook/nextjs-vite": "^10.4.6",
+    "@storybook/addon-docs": "^10.4.6",
+    "vite": "^8.1.0",
+    "eslint-plugin-storybook": "^10.4.6"
   }
 }
