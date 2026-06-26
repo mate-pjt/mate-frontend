@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useState } from "react";
 
 import { SearchInput } from "./search-input";
 import { TextInput } from "./text-input";
@@ -99,3 +100,28 @@ export const AllTextInputStates: Story = {
         </div>
     ),
 };
+
+export const Controlled: Story = {
+    render: () => <ControlledInputExamples />,
+};
+
+function ControlledInputExamples() {
+    const [textValue, setTextValue] = useState("텍스트");
+    const [searchValue, setSearchValue] = useState("텍스트");
+
+    return (
+        <div className="flex flex-col gap-4 bg-white p-4">
+            <TextInput
+                onChange={(event) => setTextValue(event.target.value)}
+                onValueChange={setTextValue}
+                value={textValue}
+            />
+            <SearchInput
+                onChange={(event) => setSearchValue(event.target.value)}
+                onValueChange={setSearchValue}
+                value={searchValue}
+                variant="default"
+            />
+        </div>
+    );
+}

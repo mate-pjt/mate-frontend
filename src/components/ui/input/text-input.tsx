@@ -13,6 +13,7 @@ export type TextInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "
     suffix?: React.ReactNode;
     clearable?: boolean;
     onClear?: () => void;
+    onValueChange?: (value: string) => void;
     fieldClassName?: string;
 };
 
@@ -41,6 +42,7 @@ export function TextInput({
     onChange,
     onClear,
     onFocus,
+    onValueChange,
     placeholder = "텍스트",
     readOnly,
     status = "default",
@@ -54,13 +56,15 @@ export function TextInput({
     const [internalValue, setInternalValue] = useState(() => defaultValue?.toString() ?? "");
     const inputValue = value === undefined ? internalValue : value?.toString() ?? "";
     const hasValue = inputValue.length > 0;
-    const showClearButton = clearable && !disabled && !readOnly && hasValue && status !== "check";
+    const canClearValue = value === undefined || Boolean(onClear || onValueChange);
+    const showClearButton = clearable && !disabled && !readOnly && hasValue && status !== "check" && canClearValue;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         if (value === undefined) {
             setInternalValue(event.target.value);
         }
 
+        onValueChange?.(event.target.value);
         onChange?.(event);
     }
 
@@ -69,6 +73,7 @@ export function TextInput({
             setInternalValue("");
         }
 
+        onValueChange?.("");
         onClear?.();
         inputRef.current?.focus();
     }

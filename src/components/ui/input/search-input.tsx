@@ -11,6 +11,7 @@ export type SearchInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>,
     variant?: SearchInputVariant;
     clearable?: boolean;
     onClear?: () => void;
+    onValueChange?: (value: string) => void;
 };
 
 const variantClasses = {
@@ -34,6 +35,7 @@ export function SearchInput({
     onChange,
     onClear,
     onFocus,
+    onValueChange,
     placeholder = "텍스트",
     readOnly,
     value,
@@ -47,13 +49,15 @@ export function SearchInput({
     const hasValue = inputValue.length > 0;
     const classes = variantClasses[variant];
     const showSearchIcon = !focused && !hasValue;
-    const showClearButton = clearable && !disabled && !readOnly && hasValue;
+    const canClearValue = value === undefined || Boolean(onClear || onValueChange);
+    const showClearButton = clearable && !disabled && !readOnly && hasValue && canClearValue;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         if (value === undefined) {
             setInternalValue(event.target.value);
         }
 
+        onValueChange?.(event.target.value);
         onChange?.(event);
     }
 
@@ -62,6 +66,7 @@ export function SearchInput({
             setInternalValue("");
         }
 
+        onValueChange?.("");
         onClear?.();
         inputRef.current?.focus();
     }
