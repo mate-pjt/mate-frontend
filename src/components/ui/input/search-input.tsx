@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 
 import { SearchIcon } from "@/components/icons";
 
+import { dispatchInputValueChange } from "./input-value-event";
+
 export type SearchInputVariant = "default" | "popup";
 
 export type SearchInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> & {
@@ -49,7 +51,7 @@ export function SearchInput({
     const hasValue = inputValue.length > 0;
     const classes = variantClasses[variant];
     const showSearchIcon = !focused && !hasValue;
-    const canClearValue = value === undefined || Boolean(onClear || onValueChange);
+    const canClearValue = value === undefined || Boolean(onChange || onClear || onValueChange);
     const showClearButton = clearable && !disabled && !readOnly && hasValue && canClearValue;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -62,11 +64,9 @@ export function SearchInput({
     }
 
     function handleClear() {
-        if (value === undefined) {
-            setInternalValue("");
+        if (inputRef.current) {
+            dispatchInputValueChange(inputRef.current, "");
         }
-
-        onValueChange?.("");
         onClear?.();
         inputRef.current?.focus();
     }

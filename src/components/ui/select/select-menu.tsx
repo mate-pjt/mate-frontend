@@ -14,14 +14,16 @@ const selectMenuIcons = {
 const variantClasses = {
     default: {
         root: "w-[212px] rounded-[16px]",
-        item: "justify-between text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        item: "justify-between",
         selected: "bg-primary-100 text-primary",
+        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
         showSelectedIcon: true,
     },
     search: {
         root: "w-[300px] rounded-[8px]",
-        item: "gap-2 text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
-        selected: "",
+        item: "gap-2",
+        selected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
         showSelectedIcon: false,
     },
 } as const;
@@ -74,7 +76,7 @@ export function SelectMenu({
                         className={[
                             "flex min-h-9 w-full items-center rounded-[8px] p-2 text-left type-body-7 transition-colors",
                             classes.item,
-                            selected ? classes.selected : "",
+                            selected ? classes.selected : classes.unselected,
                             option.disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer",
                         ]
                             .filter(Boolean)

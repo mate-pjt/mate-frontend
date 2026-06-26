@@ -4,9 +4,9 @@ export type IndustryChipProps = Omit<ChipProps, "children" | "removable" | "text
     children?: React.ReactNode;
 };
 
-export function IndustryChip({ children = "일반경쟁", ...props }: IndustryChipProps) {
+export function IndustryChip({ children = "일반경쟁", onRemove, ...props }: IndustryChipProps) {
     return (
-        <Chip removable textWeight="medium" {...props}>
+        <Chip onRemove={onRemove} removable={Boolean(onRemove)} textWeight="medium" {...props}>
             {children}
         </Chip>
     );

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useId, useRef, useState } from "react";
 
+import { dispatchInputValueChange } from "./input-value-event";
+
 export type TextInputStatus = "default" | "check" | "error" | "success";
 export type TextInputHelperAlign = "left" | "right";
 
@@ -56,7 +58,7 @@ export function TextInput({
     const [internalValue, setInternalValue] = useState(() => defaultValue?.toString() ?? "");
     const inputValue = value === undefined ? internalValue : value?.toString() ?? "";
     const hasValue = inputValue.length > 0;
-    const canClearValue = value === undefined || Boolean(onClear || onValueChange);
+    const canClearValue = value === undefined || Boolean(onChange || onClear || onValueChange);
     const showClearButton = clearable && !disabled && !readOnly && hasValue && status !== "check" && canClearValue;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,11 +71,9 @@ export function TextInput({
     }
 
     function handleClear() {
-        if (value === undefined) {
-            setInternalValue("");
+        if (inputRef.current) {
+            dispatchInputValueChange(inputRef.current, "");
         }
-
-        onValueChange?.("");
         onClear?.();
         inputRef.current?.focus();
     }

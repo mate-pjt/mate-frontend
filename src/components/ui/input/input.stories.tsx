@@ -113,12 +113,10 @@ function ControlledInputExamples() {
         <div className="flex flex-col gap-4 bg-white p-4">
             <TextInput
                 onChange={(event) => setTextValue(event.target.value)}
-                onValueChange={setTextValue}
                 value={textValue}
             />
             <SearchInput
                 onChange={(event) => setSearchValue(event.target.value)}
-                onValueChange={setSearchValue}
                 value={searchValue}
                 variant="default"
             />

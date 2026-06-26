@@ -47,13 +47,6 @@ export function Chip({
                     <CloseIcon aria-hidden className="size-4" focusable="false" />
                 </button>
             )}
-            {removable && !onRemove && (
-                <CloseIcon
-                    aria-hidden
-                    className="size-4 shrink-0"
-                    focusable="false"
-                />
-            )}
         </span>
     );
 }
