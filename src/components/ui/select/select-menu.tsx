@@ -1,9 +1,6 @@
 'use client';
 
-/**
- * TODO: 일반 select menu 뿐만 아니라, "04. 0.0v"의 "01_all_bidlist_defualt"의 "public_category" 같은 유형의 select menu도 이 컴포넌트를 사용하게 할 수 있도록 해야 함
- * (각 항목 좌측에 '아이콘' 옵션 추가, 모든 항목 아래 '안내문구' 옵션, 안내문구 아래 버튼('초기화', '저장') 옵션) 
- * */
+import Image from "next/image";
 
 import { CheckIcon, LimitIcon } from "@/components/icons";
 
@@ -11,95 +8,123 @@ const selectMenuIcons = {
     limit: LimitIcon,
 } as const;
 
+type SelectMenuIconName = keyof typeof selectMenuIcons;
+type SelectMenuIconValue = SelectMenuIconName | string;
+
 const variantClasses = {
     default: {
-        root: "w-[212px] rounded-[16px]",
-        item: "justify-between",
-        selected: "bg-primary-100 text-primary",
-        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        root: "w-[212px] rounded-[16px] border border-grayscale-200 bg-white p-2",
+        item: "flex min-h-9 w-full items-center justify-between rounded-[8px] px-2 py-2 type-body-5",
+        selected: "bg-primary-100 text-primary-400",
+        highlighted: "text-grayscale-700 hover:bg-grayscale-50",
+        normal: "text-grayscale-700 hover:bg-grayscale-50",
+        showLeadingIcon: false,
         showSelectedIcon: true,
     },
     search: {
-        root: "w-[300px] rounded-[8px]",
-        item: "gap-2",
+        root: "w-[300px] rounded-[8px] bg-white p-2",
+        item: "flex min-h-9 w-full items-center gap-2 rounded-[8px] px-2 py-2 type-body-7",
         selected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
-        unselected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        highlighted: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        normal: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        showLeadingIcon: false,
         showSelectedIcon: false,
+    },
+    publicFilter: {
+        root: "rounded-[16px] bg-transparent p-0",
+        item: "flex min-h-9 w-full items-center justify-between rounded-[8px] px-2 py-2 type-body-5",
+        selected: "bg-primary-100 text-primary-400",
+        highlighted: "bg-grayscale-50 text-grayscale-700",
+        normal: "text-grayscale-700 hover:bg-grayscale-50",
+        showLeadingIcon: true,
+        showSelectedIcon: true,
     },
 } as const;
 
 export type SelectMenuOption = {
     value: string;
     label: string;
-    icon?: SelectMenuIconName;
+    icon?: SelectMenuIconValue;
     disabled?: boolean;
 };
 
-export type SelectMenuIconName = keyof typeof selectMenuIcons;
 export type SelectMenuVariant = keyof typeof variantClasses;
 
-export type SelectMenuProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> & {
+type SelectMenuRootProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> & {
     options: SelectMenuOption[];
     selectedValue?: string;
+    highlightedValue?: string;
     onSelect?: (option: SelectMenuOption) => void;
     variant?: SelectMenuVariant;
 };
+
+export type SelectMenuProps = SelectMenuRootProps;
+
+function mergeClasses(...classes: Array<string | false | null | undefined>) {
+    return classes.filter(Boolean).join(" ");
+}
+
+function isNamedIcon(icon: SelectMenuIconValue): icon is SelectMenuIconName {
+    return icon in selectMenuIcons;
+}
 
 export function SelectMenu({
     className,
     onSelect,
     options,
+    highlightedValue,
     selectedValue,
     variant = "default",
     ...props
 }: SelectMenuProps) {
     const classes = variantClasses[variant];
 
+    function getItemClassName(selected: boolean, highlighted: boolean) {
+        return mergeClasses(
+            classes.item,
+            selected
+                ? classes.selected
+                : highlighted
+                  ? classes.highlighted
+                  : classes.normal,
+        );
+    }
+
     return (
         <div
-            className={[
+            className={mergeClasses(
                 "border border-grayscale-200 bg-white p-2",
                 classes.root,
                 className,
-            ]
-                .filter(Boolean)
-                .join(" ")}
+            )}
             role="listbox"
             {...props}
         >
             {options.map((option) => {
                 const selected = option.value === selectedValue;
+                const highlighted = option.value === highlightedValue;
 
                 return (
                     <button
                         aria-selected={selected}
-                        className={[
-                            "flex min-h-9 w-full items-center rounded-[8px] p-2 text-left type-body-7 transition-colors",
-                            classes.item,
-                            selected ? classes.selected : classes.unselected,
-                            option.disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer",
-                        ]
-                            .filter(Boolean)
-                            .join(" ")}
+                        className={getItemClassName(selected, highlighted)}
                         disabled={option.disabled}
                         key={option.value}
                         onClick={() => onSelect?.(option)}
                         role="option"
                         type="button"
                     >
-                        {option.icon && (
-                            <span className="flex size-4 shrink-0 items-center justify-center text-grayscale-500">
-                                <SelectMenuIcon icon={option.icon} />
-                            </span>
-                        )}
-                        <span className="truncate">{option.label}</span>
+                        <span className="flex items-center gap-[7px]">
+                            {classes.showLeadingIcon && option.icon && <SelectMenuIcon icon={option.icon} />}
+                            <span className="truncate">{option.label}</span>
+                        </span>
                         {classes.showSelectedIcon && (
                             <CheckIcon
                                 aria-hidden
-                                className={["size-4 shrink-0", selected ? "opacity-100" : "opacity-0"].join(" ")}
+                                className={mergeClasses("size-5", selected ? "opacity-100" : "opacity-0")}
                                 focusable="false"
-                                height={16}
-                                width={16}
+                                height={20}
+                                width={20}
                             />
                         )}
                     </button>
@@ -109,8 +134,11 @@ export function SelectMenu({
     );
 }
 
-function SelectMenuIcon({ icon }: { icon: SelectMenuIconName }) {
-    const Icon = selectMenuIcons[icon];
+function SelectMenuIcon({ icon }: { icon: SelectMenuIconValue }) {
+    if (isNamedIcon(icon)) {
+        const Icon = selectMenuIcons[icon];
+        return <Icon aria-hidden className="size-6 shrink-0" focusable="false" />;
+    }
 
-    return <Icon aria-hidden className="size-4" focusable="false" />;
+    return <Image alt="" aria-hidden className="size-6 shrink-0" height={24} src={icon} width={24} />;
 }

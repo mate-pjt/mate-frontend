@@ -10,10 +10,12 @@ import { dispatchInputValueChange } from "./input-value-event";
 export type SearchInputVariant = "default" | "popup";
 
 export type SearchInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> & {
+    leftAdornment?: React.ReactNode;
     variant?: SearchInputVariant;
     clearable?: boolean;
     onClear?: () => void;
     onValueChange?: (value: string) => void;
+    showSearchIcon?: boolean;
 };
 
 const variantClasses = {
@@ -30,6 +32,7 @@ const variantClasses = {
 export function SearchInput({
     "aria-label": ariaLabel = "검색",
     className,
+    leftAdornment,
     clearable = true,
     defaultValue,
     disabled = false,
@@ -40,6 +43,7 @@ export function SearchInput({
     onValueChange,
     placeholder = "텍스트",
     readOnly,
+    showSearchIcon = true,
     value,
     variant = "popup",
     ...props
@@ -50,7 +54,7 @@ export function SearchInput({
     const inputValue = value === undefined ? internalValue : value?.toString() ?? "";
     const hasValue = inputValue.length > 0;
     const classes = variantClasses[variant];
-    const showSearchIcon = !focused && !hasValue;
+    const shouldShowSearchIcon = showSearchIcon && !focused && !hasValue;
     const canClearValue = value === undefined || Boolean(onChange || onClear || onValueChange);
     const showClearButton = clearable && !disabled && !readOnly && hasValue && canClearValue;
 
@@ -67,6 +71,7 @@ export function SearchInput({
         if (inputRef.current) {
             dispatchInputValueChange(inputRef.current, "");
         }
+        onValueChange?.("");
         onClear?.();
         inputRef.current?.focus();
     }
@@ -82,13 +87,13 @@ export function SearchInput({
                 .filter(Boolean)
                 .join(" ")}
         >
-            {showSearchIcon && (
+            {leftAdornment ?? (shouldShowSearchIcon && (
                 <SearchIcon
                     aria-hidden
                     className="mr-1 size-4 shrink-0 text-grayscale-500"
                     focusable="false"
                 />
-            )}
+            ))}
             <input
                 aria-label={ariaLabel}
                 className={[

@@ -1,16 +1,15 @@
 'use client';
 
-import Image from "next/image";
-
 import {
     CalendarIcon,
-    CheckIcon,
-    CloseIcon,
     DownArrowIcon,
+    CloseIcon,
     InfoIcon,
-    SearchIcon,
 } from "@/components/icons";
 import { CheckboxSquare } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { SearchInput } from "@/components/ui/input";
+import { SelectMenu } from "@/components/ui/select";
 
 type FilterActionLabels = {
     reset?: string;
@@ -68,6 +67,9 @@ const pricePresetLabels = [
     "100억 원+",
 ] as const;
 
+const DEFAULT_MIN_PRICE_LABEL = "0 만 원" as const;
+const DEFAULT_MAX_PRICE_LABEL = "0 만 원" as const;
+
 function mergeClasses(...classes: Array<string | false | null | undefined>) {
     return classes.filter(Boolean).join(" ");
 }
@@ -77,6 +79,7 @@ function FilterPanel({
     className,
     height,
     width = "w-[380px]",
+    ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     height?: string;
     width?: string;
@@ -89,6 +92,7 @@ function FilterPanel({
                 height,
                 className,
             )}
+            {...props}
         >
             {children}
         </section>
@@ -108,57 +112,32 @@ export function FilterActions({
 }: FilterActionsProps) {
     return (
         <div className="flex h-8 w-[160px] shrink-0 items-center gap-2">
-            <button
-                className={mergeClasses(
-                    "flex flex-1 items-center justify-center rounded-[8px] bg-grayscale-50 px-3 py-1.5 text-grayscale-700 type-body-7",
-                    resetDisabled ? "cursor-not-allowed opacity-40" : "cursor-pointer hover:bg-grayscale-100",
-                )}
+            <Button
+                className={mergeClasses("flex-1", resetDisabled && "cursor-not-allowed opacity-40")}
                 disabled={resetDisabled}
                 onClick={onReset}
+                size="xs"
                 type="button"
+                variant="gray"
             >
                 {labels?.reset ?? "초기화"}
-            </button>
-            <button
-                className={mergeClasses(
-                    "flex flex-1 items-center justify-center rounded-[8px] bg-primary-400 px-3 py-1.5 text-white type-body-7",
-                    saveDisabled ? "cursor-not-allowed opacity-40" : "cursor-pointer hover:bg-primary-500",
-                )}
+            </Button>
+            <Button
+                className={mergeClasses("flex-1", saveDisabled && "cursor-not-allowed opacity-40")}
                 disabled={saveDisabled}
                 onClick={onSave}
+                size="xs"
                 type="button"
+                variant="primary"
             >
                 {labels?.save ?? "저장"}
-            </button>
+            </Button>
         </div>
     );
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return <h3 className="text-grayscale-700 type-body-1">{children}</h3>;
-}
-
-function StaticIcon({
-    alt = "",
-    className,
-    size = 24,
-    src,
-}: {
-    alt?: string;
-    className?: string;
-    size?: number;
-    src: string;
-}) {
-    return (
-        <Image
-            alt={alt}
-            aria-hidden={alt ? undefined : true}
-            className={mergeClasses("shrink-0", className)}
-            height={size}
-            src={src}
-            width={size}
-        />
-    );
 }
 
 function SelectLikeField({
@@ -276,50 +255,35 @@ function PopupSearchField({
     placeholder = "업종검색...",
     showCaret = false,
     value,
+    onClear,
+    onValueChange,
 }: {
     placeholder?: string;
     showCaret?: boolean;
     value?: string;
+    onClear?: () => void;
+    onValueChange?: (value: string) => void;
 }) {
-    const hasValue = Boolean(value);
-
     return (
-        <div className="flex h-9 w-full items-center rounded-[8px] border border-grayscale-200 bg-grayscale-50 px-3 text-grayscale-700">
-            {!hasValue && !showCaret && (
-                <SearchIcon
-                    aria-hidden
-                    className="mr-1 size-4 shrink-0 text-grayscale-500"
-                    focusable="false"
-                />
-            )}
-            {showCaret && !hasValue && (
-                <span aria-hidden className="mr-1 h-3 w-px rounded-full bg-grayscale-700" />
-            )}
-            <span
-                className={mergeClasses(
-                    "min-w-0 flex-1 truncate type-body-7",
-                    hasValue ? "text-grayscale-700" : "text-grayscale-500",
-                    showCaret && !hasValue ? "opacity-0" : "",
-                )}
-            >
-                {value || placeholder}
-            </span>
-            {hasValue && (
-                <button
-                    aria-label="검색어 삭제"
-                    className="ml-2 inline-flex size-5 items-center justify-center text-grayscale-500"
-                    type="button"
-                >
-                    <CloseIcon aria-hidden className="size-4" focusable="false" />
-                </button>
-            )}
-        </div>
+        <SearchInput
+            className="w-full"
+            leftAdornment={
+                showCaret ? <span aria-hidden className="mr-1 h-3 w-px rounded-full bg-grayscale-700" /> : undefined
+            }
+            onClear={onClear}
+            onValueChange={onValueChange}
+            placeholder={placeholder}
+            showSearchIcon={!showCaret}
+            value={value}
+            variant="popup"
+        />
     );
 }
 
 export type PublicCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
         actionsDisabled?: boolean;
+        onCategorySelect?: (value: PublicCategoryValue) => void;
         highlightedValue?: PublicCategoryValue;
         selectedValue?: PublicCategoryValue;
     };
@@ -329,6 +293,7 @@ export function PublicCategoryPopover({
     className,
     highlightedValue,
     onReset,
+    onCategorySelect,
     onSave,
     selectedValue,
     ...props
@@ -340,36 +305,13 @@ export function PublicCategoryPopover({
             <div className="flex w-full flex-col items-end gap-6">
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col">
-                        {publicCategoryOptions.map((option) => {
-                            const selected = option.value === currentSelectedValue;
-                            const highlighted = option.value === highlightedValue;
-
-                            return (
-                                <button
-                                    aria-pressed={selected}
-                                    className={mergeClasses(
-                                        "flex w-full items-center justify-between rounded-[8px] p-2 type-body-5",
-                                        selected
-                                            ? "bg-primary-100 text-primary-400"
-                                            : highlighted
-                                              ? "bg-grayscale-50 text-grayscale-700"
-                                              : "text-grayscale-700 hover:bg-grayscale-50",
-                                    )}
-                                    key={option.value}
-                                    type="button"
-                                >
-                                    <span className="flex items-center gap-[7px]">
-                                        <StaticIcon size={24} src={option.icon} />
-                                        {option.label}
-                                    </span>
-                                    <CheckIcon
-                                        aria-hidden
-                                        className={mergeClasses("size-5", selected ? "opacity-100" : "opacity-0")}
-                                        focusable="false"
-                                    />
-                                </button>
-                            );
-                        })}
+                        <SelectMenu
+                            highlightedValue={highlightedValue}
+                            options={publicCategoryOptions}
+                            onSelect={(option) => onCategorySelect?.(option.value as PublicCategoryValue)}
+                            selectedValue={currentSelectedValue}
+                            variant="publicFilter"
+                        />
                     </div>
                     <div className="flex w-full items-center gap-1 text-grayscale-500 type-body-7">
                         <InfoIcon aria-hidden className="size-4 shrink-0" focusable="false" />
@@ -389,6 +331,9 @@ export function PublicCategoryPopover({
 
 export type IndustryCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
+        onTagRemove?: (tag: string) => void;
+        onSearchClear?: () => void;
+        onSearchValueChange?: (value: string) => void;
         inputValue?: string;
         searchPlaceholder?: string;
         showCaret?: boolean;
@@ -400,9 +345,12 @@ export function IndustryCategoryPopover({
     inputValue,
     onReset,
     onSave,
+    onSearchClear,
+    onSearchValueChange,
     searchPlaceholder,
     showCaret = false,
     tags = [],
+    onTagRemove,
     ...props
 }: IndustryCategoryPopoverProps) {
     const hasTags = tags.length > 0;
@@ -414,7 +362,9 @@ export function IndustryCategoryPopover({
                     <SectionTitle>업종</SectionTitle>
                     <div className="flex w-full flex-col gap-4">
                         <PopupSearchField
+                            onClear={onSearchClear}
                             placeholder={searchPlaceholder}
+                            onValueChange={onSearchValueChange}
                             showCaret={showCaret}
                             value={inputValue}
                         />
@@ -424,7 +374,7 @@ export function IndustryCategoryPopover({
                                     <FilterTag
                                         className={tag.length > 28 ? "w-full justify-between" : undefined}
                                         key={tag}
-                                        onRemove={() => undefined}
+                                        onRemove={() => onTagRemove?.(tag)}
                                     >
                                         {tag}
                                     </FilterTag>
@@ -446,6 +396,7 @@ export function IndustryCategoryPopover({
 
 export type PlaceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
+        onTagRemove?: () => void;
         city?: string;
         district?: string;
         localOnly?: boolean;
@@ -460,6 +411,7 @@ export function PlaceCategoryPopover({
     localOnly = false,
     onReset,
     onSave,
+    onTagRemove,
     selectedCooperative,
     tag,
     ...props
@@ -506,7 +458,7 @@ export function PlaceCategoryPopover({
                         </div>
                     </div>
                     {tag && (
-                        <FilterTag className="max-w-full" onRemove={() => undefined}>
+                        <FilterTag className="max-w-full" onRemove={onTagRemove}>
                             {tag}
                         </FilterTag>
                     )}
@@ -533,14 +485,14 @@ export type CalendarCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> 
 export function CalendarCategoryPopover({
     activeType = "open",
     className,
-    endDate = "2026.05.01",
+    endDate,
     onReset,
     onSave,
     selectedQuickRange,
-    startDate = "2026.05.01",
+    startDate,
     ...props
 }: CalendarCategoryPopoverProps) {
-    const hasSelection = Boolean(selectedQuickRange);
+    const hasSelection = Boolean(selectedQuickRange) || (Boolean(startDate) && Boolean(endDate));
     const quickRanges = ["1개월", "3개월", "6개월", "1년"];
 
     return (
@@ -577,13 +529,15 @@ export function CalendarCategoryPopover({
     );
 }
 
-function DateField({ value }: { value: string }) {
+function DateField({ value }: { value?: string }) {
     return (
         <button
             className="flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5 text-grayscale-700 type-body-7"
             type="button"
         >
-            {value}
+            <span className={mergeClasses("truncate", value ? "text-grayscale-700" : "text-grayscale-500")}>
+                {value || "날짜 선택"}
+            </span>
             <CalendarIcon aria-hidden className="size-4 shrink-0 text-grayscale-600" focusable="false" />
         </button>
     );
@@ -600,14 +554,15 @@ export type PriceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
 export function PriceCategoryPopover({
     activeType = "base",
     className,
-    maxLabel = "0 만 원",
-    minLabel = "0 만 원",
+    maxLabel = DEFAULT_MAX_PRICE_LABEL,
+    minLabel = DEFAULT_MIN_PRICE_LABEL,
     onReset,
     onSave,
     selectedPreset,
     ...props
 }: PriceCategoryPopoverProps) {
-    const hasSelection = Boolean(selectedPreset);
+    const hasSelection =
+        Boolean(selectedPreset) || minLabel !== DEFAULT_MIN_PRICE_LABEL || maxLabel !== DEFAULT_MAX_PRICE_LABEL;
 
     return (
         <FilterPanel className={className} height="h-[460px]" {...props}>
@@ -627,7 +582,7 @@ export function PriceCategoryPopover({
                     </div>
                     <div className="rounded-[16px] bg-grayscale-50 p-4">
                         <div className="flex w-full items-center gap-1 text-grayscale-700 type-body-7">
-                            <PriceInputField label="최대금액" />
+                            <PriceInputField label="최소금액" />
                             <span className="text-grayscale-500">~</span>
                             <PriceInputField label="최대금액" />
                         </div>
@@ -749,6 +704,7 @@ export function AgencyCategoryPopover({
 function SelectCategoryPopover({
     className,
     label,
+    onTagRemove,
     onReset,
     onSave,
     placeholder,
@@ -759,6 +715,7 @@ function SelectCategoryPopover({
         label: string;
         placeholder: string;
         selectedLabel?: string;
+        onTagRemove?: () => void;
     }) {
     const hasSelection = Boolean(selectedLabel);
 
@@ -769,7 +726,7 @@ function SelectCategoryPopover({
                     <SectionTitle>{label}</SectionTitle>
                     <SelectLikeField label={label}>{placeholder}</SelectLikeField>
                     {selectedLabel && (
-                        <FilterTag onRemove={() => undefined}>{selectedLabel}</FilterTag>
+                        <FilterTag onRemove={onTagRemove}>{selectedLabel}</FilterTag>
                     )}
                 </div>
                 <FilterActions
