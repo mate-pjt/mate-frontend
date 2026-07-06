@@ -4,7 +4,6 @@ export { SelectMenu } from "./select-menu";
 export type { SelectOption, SelectProps } from "./select";
 export type { SelectBoxProps, SelectBoxSize, SelectBoxVariant } from "./select-box";
 export type {
-    SelectMenuIconName,
     SelectMenuOption,
     SelectMenuProps,
     SelectMenuVariant,
