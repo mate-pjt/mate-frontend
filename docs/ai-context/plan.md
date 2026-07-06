@@ -24,6 +24,7 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - 2026-06-26: Clarified that Review Gate may run the read-only verifier subagent without separate user confirmation when verifier is required.
 - 2026-06-26: Treated the successful Figma shared UI task as the initial proof that the v0.1 workflow is usable, while keeping iterative refinement open.
 - 2026-06-26: Implemented another Figma-driven shared UI task (`BidCard`) through `$feature-workflow`; `pnpm lint`, `pnpm build`, and `pnpm build-storybook` passed.
+- 2026-06-26: Implemented Figma-driven reusable filter popover and popup component sets through `$feature-workflow`; `pnpm lint`, `pnpm build`, and `pnpm build-storybook` passed.
 
 ### In Progress
 
