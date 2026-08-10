@@ -25,6 +25,9 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - 2026-06-26: Treated the successful Figma shared UI task as the initial proof that the v0.1 workflow is usable, while keeping iterative refinement open.
 - 2026-06-26: Implemented another Figma-driven shared UI task (`BidCard`) through `$feature-workflow`; `pnpm lint`, `pnpm build`, and `pnpm build-storybook` passed.
 - 2026-06-26: Implemented Figma-driven reusable filter popover and popup component sets through `$feature-workflow`; `pnpm lint`, `pnpm build`, and `pnpm build-storybook` passed.
+- 2026-07-14: Implemented the Figma-driven home page with local Figma illustration assets, existing `BidCard`/button primitives, and an approved frontend-only mock auth redirect contract for the future recommended bids view; static verification passed.
+- 2026-07-15: Implemented the Figma-driven `/bids` list with four URL-backed views, reusable controlled filter popovers, mock search/filter/pagination, result-specific table columns, empty state, and the approved recommended-view auth redirect; static verification passed.
+- 2026-08-10: Completed PR-readiness fixes for the home/auth/bid-list flow: representative home cards, non-empty default result fixtures, `bidStartedAt` period semantics, URL preset normalization, Escape dismissal, and same-origin mock auth return-path validation. `pnpm lint`, `pnpm build`, `pnpm build-storybook`, and desktop/mobile browser flow checks passed.
 
 ### In Progress
 
