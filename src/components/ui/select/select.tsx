@@ -11,7 +11,7 @@ const menuAlignClasses = {
 } as const;
 
 export type SelectProps = Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" | "onChange"> & {
-    options: SelectMenuOption[];
+    options: readonly SelectMenuOption[];
     value?: string;
     defaultValue?: string;
     onValueChange?: (value: string, option: SelectMenuOption) => void;
@@ -101,7 +101,7 @@ export function Select({
             {open && !disabled && (
                 <SelectMenu
                     className={[
-                        "absolute top-[calc(100%+8px)] z-20 shadow-[0_8px_24px_rgba(0,0,0,0.08)]",
+                        "absolute top-[calc(100%+8px)] z-20 shadow-[var(--shadow-floating)]",
                         menuAlignClasses[align],
                         menuClassName,
                     ]

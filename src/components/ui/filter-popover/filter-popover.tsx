@@ -9,7 +9,7 @@ import {
 import { CheckboxSquare } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/input";
-import { SelectMenu } from "@/components/ui/select";
+import { Select, SelectMenu } from "@/components/ui/select";
 
 type FilterActionLabels = {
     reset?: string;
@@ -78,16 +78,19 @@ function FilterPanel({
     children,
     className,
     height,
-    width = "w-[380px]",
+    scrollable = true,
+    width = "w-[min(380px,calc(100vw-32px))]",
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     height?: string;
+    scrollable?: boolean;
     width?: string;
 }) {
     return (
         <section
             className={mergeClasses(
-                "flex flex-col items-start rounded-[16px] border border-grayscale-200 bg-white p-6 shadow-[0_0_12px_#f1f3f5]",
+                "flex flex-col items-start rounded-[16px] border border-grayscale-200 bg-white p-6 shadow-[var(--shadow-popover)]",
+                scrollable && "max-h-[calc(100dvh-112px)] overflow-y-auto",
                 width,
                 height,
                 className,
@@ -187,7 +190,7 @@ function FilterTag({
             {onRemove && (
                 <button
                     aria-label="선택값 삭제"
-                    className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center hover:text-[#7C7F83]"
+                    className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center hover:text-grayscale-dark-hover"
                     onClick={onRemove}
                     type="button"
                 >
@@ -200,9 +203,13 @@ function FilterTag({
 
 function ChoiceButton({
     children,
+    disabled = false,
+    onClick,
     selected,
 }: {
     children: React.ReactNode;
+    disabled?: boolean;
+    onClick?: () => void;
     selected?: boolean;
 }) {
     return (
@@ -212,7 +219,10 @@ function ChoiceButton({
                 selected
                     ? "bg-primary-100 text-primary-400"
                     : "border border-grayscale-200 bg-white text-grayscale-700 hover:bg-grayscale-50",
+                disabled && "cursor-not-allowed opacity-40",
             )}
+            disabled={disabled}
+            onClick={onClick}
             type="button"
         >
             {children}
@@ -221,10 +231,14 @@ function ChoiceButton({
 }
 
 function SegmentedControl<TValue extends string>({
+    disabled = false,
+    onValueChange,
     options,
     value,
 }: {
-    options: Array<{ value: TValue; label: string }>;
+    disabled?: boolean;
+    onValueChange?: (value: TValue) => void;
+    options: readonly { readonly value: TValue; readonly label: string }[];
     value: TValue;
 }) {
     return (
@@ -237,10 +251,13 @@ function SegmentedControl<TValue extends string>({
                         className={mergeClasses(
                             "flex flex-1 items-center justify-center rounded-[8px] px-3 py-1 text-center type-body-7",
                             selected
-                                ? "bg-white text-grayscale-700 shadow-[0_0_10px_rgba(0,0,0,0.08)]"
+                                ? "bg-white text-grayscale-700 shadow-[var(--shadow-control)]"
                                 : "text-grayscale-600",
+                            disabled && "cursor-not-allowed opacity-40",
                         )}
+                        disabled={disabled}
                         key={option.value}
+                        onClick={() => onValueChange?.(option.value)}
                         type="button"
                     >
                         {option.label}
@@ -282,38 +299,42 @@ function PopupSearchField({
 
 export type PublicCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
-        actionsDisabled?: boolean;
+        resetDisabled?: boolean;
+        saveDisabled?: boolean;
         onCategorySelect?: (value: PublicCategoryValue) => void;
         highlightedValue?: PublicCategoryValue;
         selectedValue?: PublicCategoryValue;
     };
 
 export function PublicCategoryPopover({
-    actionsDisabled = true,
     className,
     highlightedValue,
     onReset,
     onCategorySelect,
     onSave,
+    resetDisabled = true,
+    saveDisabled = true,
     selectedValue,
     ...props
 }: PublicCategoryPopoverProps) {
     const currentSelectedValue = selectedValue ?? (highlightedValue ? undefined : "construction");
 
     return (
-        <FilterPanel className={className} width="w-[307px]" {...props}>
+        <FilterPanel className={className} height="h-[260px]" scrollable={false} width="w-[min(307px,calc(100vw-32px))]" {...props}>
             <div className="flex w-full flex-col items-end gap-6">
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col">
                         <SelectMenu
                             highlightedValue={highlightedValue}
                             options={publicCategoryOptions}
-                            onSelect={(option) => onCategorySelect?.(option.value as PublicCategoryValue)}
+                            onSelect={(option) => {
+                                if (isPublicCategoryValue(option.value)) onCategorySelect?.(option.value);
+                            }}
                             selectedValue={currentSelectedValue}
                             variant="publicFilter"
                         />
                     </div>
-                    <div className="flex w-full items-center gap-1 text-grayscale-500 type-body-7">
+                    <div className="flex w-full items-center gap-1 whitespace-nowrap text-grayscale-500 type-body-7">
                         <InfoIcon aria-hidden className="size-4 shrink-0" focusable="false" />
                         <span>유형을 변경하면 필터가 초기화될 수 있어요!</span>
                     </div>
@@ -321,12 +342,16 @@ export function PublicCategoryPopover({
                 <FilterActions
                     onReset={onReset}
                     onSave={onSave}
-                    resetDisabled={actionsDisabled}
-                    saveDisabled={actionsDisabled}
+                    resetDisabled={resetDisabled}
+                    saveDisabled={saveDisabled}
                 />
             </div>
         </FilterPanel>
     );
+}
+
+function isPublicCategoryValue(value: string): value is PublicCategoryValue {
+    return value === "construction" || value === "service" || value === "purchase";
 }
 
 export type IndustryCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
@@ -337,7 +362,9 @@ export type IndustryCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> 
         inputValue?: string;
         searchPlaceholder?: string;
         showCaret?: boolean;
-        tags?: string[];
+        suggestions?: readonly string[];
+        tags?: readonly string[];
+        onSuggestionSelect?: (suggestion: string) => void;
     };
 
 export function IndustryCategoryPopover({
@@ -349,8 +376,10 @@ export function IndustryCategoryPopover({
     onSearchValueChange,
     searchPlaceholder,
     showCaret = false,
+    suggestions = [],
     tags = [],
     onTagRemove,
+    onSuggestionSelect,
     ...props
 }: IndustryCategoryPopoverProps) {
     const hasTags = tags.length > 0;
@@ -381,6 +410,17 @@ export function IndustryCategoryPopover({
                                 ))}
                             </div>
                         )}
+                        {suggestions.length > 0 && (
+                            <SelectMenu
+                                className="max-h-28 w-full overflow-y-auto rounded-[8px]"
+                                onSelect={(option) => onSuggestionSelect?.(option.value)}
+                                options={suggestions.map((suggestion) => ({
+                                    label: suggestion,
+                                    value: suggestion,
+                                }))}
+                                variant="search"
+                            />
+                        )}
                     </div>
                 </div>
                 <FilterActions
@@ -400,15 +440,29 @@ export type PlaceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
         city?: string;
         district?: string;
         localOnly?: boolean;
+        advancedDisabled?: boolean;
         selectedCooperative?: CooperativeValue;
         tag?: string;
+        cityOptions?: readonly string[];
+        districtOptions?: readonly string[];
+        onCityChange?: (city: string) => void;
+        onCooperativeChange?: (value: CooperativeValue) => void;
+        onDistrictChange?: (district: string) => void;
+        onLocalOnlyChange?: (checked: boolean) => void;
     };
 
 export function PlaceCategoryPopover({
+    advancedDisabled = false,
     city,
+    cityOptions = [],
     className,
     district,
+    districtOptions = [],
     localOnly = false,
+    onCityChange,
+    onCooperativeChange,
+    onDistrictChange,
+    onLocalOnlyChange,
     onReset,
     onSave,
     onTagRemove,
@@ -431,17 +485,35 @@ export function PlaceCategoryPopover({
                                     ariaLabel="지역 업체만"
                                     checked={localOnly}
                                     className="size-6"
-                                    disabled={!city}
+                                    disabled={!city || advancedDisabled}
+                                    onCheckedChange={onLocalOnlyChange}
                                 />
                             </label>
                         </div>
                         <div className="flex w-full flex-col gap-2">
-                            <SelectLikeField label="시도 선택">
-                                {city ?? "시 · 도 · 전체 선택"}
-                            </SelectLikeField>
-                            <SelectLikeField disabled={!city} label="시군구 선택">
-                                {district ?? "시 · 군 · 구 선택"}
-                            </SelectLikeField>
+                            <Select
+                                ariaLabel="시도 선택"
+                                boxClassName="w-full justify-between"
+                                className="w-full"
+                                menuClassName="w-full"
+                                onValueChange={onCityChange}
+                                options={cityOptions.map((option) => ({ label: option, value: option }))}
+                                placeholder="시 · 도 · 전체 선택"
+                                size="xs"
+                                value={city}
+                            />
+                            <Select
+                                ariaLabel="시군구 선택"
+                                boxClassName="w-full justify-between"
+                                className="w-full"
+                                disabled={!city || advancedDisabled}
+                                menuClassName="w-full"
+                                onValueChange={onDistrictChange}
+                                options={districtOptions.map((option) => ({ label: option, value: option }))}
+                                placeholder="시 · 군 · 구 선택"
+                                size="xs"
+                                value={district}
+                            />
                         </div>
                     </div>
                     <div className="flex w-full flex-col gap-4">
@@ -449,7 +521,9 @@ export function PlaceCategoryPopover({
                         <div className="flex w-full gap-2">
                             {cooperativeOptions.map((option) => (
                                 <ChoiceButton
+                                    disabled={advancedDisabled}
                                     key={option.value}
+                                    onClick={() => onCooperativeChange?.(option.value)}
                                     selected={option.value === selectedCooperative}
                                 >
                                     {option.label}
@@ -480,14 +554,20 @@ export type CalendarCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> 
         endDate?: string;
         selectedQuickRange?: string;
         startDate?: string;
+        advancedDisabled?: boolean;
+        onQuickRangeSelect?: (range: string) => void;
+        onTypeSelect?: (type: DateFilterType) => void;
     };
 
 export function CalendarCategoryPopover({
     activeType = "open",
+    advancedDisabled = false,
     className,
     endDate,
     onReset,
     onSave,
+    onQuickRangeSelect,
+    onTypeSelect,
     selectedQuickRange,
     startDate,
     ...props
@@ -501,17 +581,21 @@ export function CalendarCategoryPopover({
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-4">
                         <SectionTitle>기간</SectionTitle>
-                        <SegmentedControl options={dateTypeOptions} value={activeType} />
+                        <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={dateTypeOptions} value={activeType} />
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="flex w-full items-center gap-1">
-                            <DateField value={startDate} />
+                            <DateField disabled={advancedDisabled} value={startDate} />
                             <span className="text-grayscale-600 type-body-7">~</span>
-                            <DateField value={endDate} />
+                            <DateField disabled={advancedDisabled} value={endDate} />
                         </div>
                         <div className="flex w-full gap-2">
                             {quickRanges.map((range) => (
-                                <ChoiceButton key={range} selected={range === selectedQuickRange}>
+                                <ChoiceButton
+                                    key={range}
+                                    onClick={() => onQuickRangeSelect?.(range)}
+                                    selected={range === selectedQuickRange}
+                                >
                                     {range}
                                 </ChoiceButton>
                             ))}
@@ -529,10 +613,11 @@ export function CalendarCategoryPopover({
     );
 }
 
-function DateField({ value }: { value?: string }) {
+function DateField({ disabled = false, value }: { disabled?: boolean; value?: string }) {
     return (
         <button
-            className="flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5 text-grayscale-700 type-body-7"
+            className={mergeClasses("flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5 text-grayscale-700 type-body-7", disabled && "cursor-not-allowed opacity-40")}
+            disabled={disabled}
             type="button"
         >
             <span className={mergeClasses("truncate", value ? "text-grayscale-700" : "text-grayscale-500")}>
@@ -549,15 +634,21 @@ export type PriceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
         maxLabel?: string;
         minLabel?: string;
         selectedPreset?: (typeof pricePresetLabels)[number];
+        advancedDisabled?: boolean;
+        onPresetSelect?: (preset: (typeof pricePresetLabels)[number]) => void;
+        onTypeSelect?: (type: AmountFilterType) => void;
     };
 
 export function PriceCategoryPopover({
     activeType = "base",
+    advancedDisabled = false,
     className,
     maxLabel = DEFAULT_MAX_PRICE_LABEL,
     minLabel = DEFAULT_MIN_PRICE_LABEL,
     onReset,
     onSave,
+    onPresetSelect,
+    onTypeSelect,
     selectedPreset,
     ...props
 }: PriceCategoryPopoverProps) {
@@ -569,7 +660,7 @@ export function PriceCategoryPopover({
             <div className="flex w-full flex-col gap-6">
                 <div className="flex w-full flex-col gap-4">
                     <SectionTitle>금액</SectionTitle>
-                    <SegmentedControl options={amountTypeOptions} value={activeType} />
+                    <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={amountTypeOptions} value={activeType} />
                 </div>
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col items-center gap-5">
@@ -582,27 +673,38 @@ export function PriceCategoryPopover({
                     </div>
                     <div className="rounded-[16px] bg-grayscale-50 p-4">
                         <div className="flex w-full items-center gap-1 text-grayscale-700 type-body-7">
-                            <PriceInputField label="최소금액" />
+                            <PriceInputField disabled={advancedDisabled} label="최소금액" />
                             <span className="text-grayscale-500">~</span>
-                            <PriceInputField label="최대금액" />
+                            <PriceInputField disabled={advancedDisabled} label="최대금액" />
                         </div>
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="flex gap-2">
                             {pricePresetLabels.slice(0, 2).map((label) => (
-                                <ChoiceButton key={label} selected={label === selectedPreset}>
+                                <ChoiceButton
+                                    key={label}
+                                    onClick={() => onPresetSelect?.(label)}
+                                    selected={label === selectedPreset}
+                                >
                                     {label}
                                 </ChoiceButton>
                             ))}
                         </div>
                         <div className="flex gap-2">
                             {pricePresetLabels.slice(2, 4).map((label) => (
-                                <ChoiceButton key={label} selected={label === selectedPreset}>
+                                <ChoiceButton
+                                    key={label}
+                                    onClick={() => onPresetSelect?.(label)}
+                                    selected={label === selectedPreset}
+                                >
                                     {label}
                                 </ChoiceButton>
                             ))}
                         </div>
-                        <ChoiceButton selected={pricePresetLabels[4] === selectedPreset}>
+                        <ChoiceButton
+                            onClick={() => onPresetSelect?.(pricePresetLabels[4])}
+                            selected={pricePresetLabels[4] === selectedPreset}
+                        >
                             {pricePresetLabels[4]}
                         </ChoiceButton>
                     </div>
@@ -639,10 +741,11 @@ function RangePreview({ selected }: { selected?: boolean }) {
     );
 }
 
-function PriceInputField({ label }: { label: string }) {
+function PriceInputField({ disabled = false, label }: { disabled?: boolean; label: string }) {
     return (
         <button
-            className="flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5"
+            className={mergeClasses("flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5", disabled && "cursor-not-allowed opacity-40")}
+            disabled={disabled}
             type="button"
         >
             <span>{label}</span>
@@ -654,10 +757,14 @@ function PriceInputField({ label }: { label: string }) {
 export type ContractCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
         selectedMethod?: string;
+        methods?: readonly string[];
+        onMethodSelect?: (method: string) => void;
     };
 
 export function ContractCategoryPopover({
     className,
+    methods,
+    onMethodSelect,
     onReset,
     onSave,
     selectedMethod,
@@ -667,10 +774,12 @@ export function ContractCategoryPopover({
         <SelectCategoryPopover
             className={className}
             label="계약방법"
+            onOptionSelect={onMethodSelect}
             onReset={onReset}
             onSave={onSave}
             placeholder="계약방법 선택"
             selectedLabel={selectedMethod}
+            options={methods}
             {...props}
         />
     );
@@ -679,10 +788,14 @@ export function ContractCategoryPopover({
 export type AgencyCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
         selectedAgency?: string;
+        agencies?: readonly string[];
+        onAgencySelect?: (agency: string) => void;
     };
 
 export function AgencyCategoryPopover({
+    agencies,
     className,
+    onAgencySelect,
     onReset,
     onSave,
     selectedAgency,
@@ -692,10 +805,12 @@ export function AgencyCategoryPopover({
         <SelectCategoryPopover
             className={className}
             label="발주기관"
+            onOptionSelect={onAgencySelect}
             onReset={onReset}
             onSave={onSave}
             placeholder="발주기관 선택"
             selectedLabel={selectedAgency}
+            options={agencies}
             {...props}
         />
     );
@@ -704,15 +819,19 @@ export function AgencyCategoryPopover({
 function SelectCategoryPopover({
     className,
     label,
+    onOptionSelect,
     onTagRemove,
     onReset,
     onSave,
     placeholder,
+    options = [],
     selectedLabel,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> &
     FilterActionHandlers & {
         label: string;
+        onOptionSelect?: (value: string) => void;
+        options?: readonly string[];
         placeholder: string;
         selectedLabel?: string;
         onTagRemove?: () => void;
@@ -724,7 +843,21 @@ function SelectCategoryPopover({
             <FilterBody>
                 <div className="flex w-full flex-col gap-4">
                     <SectionTitle>{label}</SectionTitle>
-                    <SelectLikeField label={label}>{placeholder}</SelectLikeField>
+                    {options.length > 0 ? (
+                        <Select
+                            ariaLabel={label}
+                            boxClassName="w-full justify-between"
+                            className="w-full"
+                            menuClassName="w-full"
+                            onValueChange={onOptionSelect}
+                            options={options.map((option) => ({ label: option, value: option }))}
+                            placeholder={placeholder}
+                            size="xs"
+                            value={selectedLabel}
+                        />
+                    ) : (
+                        <SelectLikeField label={label}>{placeholder}</SelectLikeField>
+                    )}
                     {selectedLabel && (
                         <FilterTag onRemove={onTagRemove}>{selectedLabel}</FilterTag>
                     )}

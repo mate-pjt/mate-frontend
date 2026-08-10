@@ -24,9 +24,9 @@ const variantClasses = {
     search: {
         root: "w-[300px] rounded-[8px] bg-white p-2",
         item: "flex min-h-9 w-full items-center gap-2 rounded-[8px] px-2 py-2 type-body-7",
-        selected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
-        highlighted: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
-        normal: "text-grayscale-700 hover:bg-grayscale-50 hover:text-[#7C7F83]",
+        selected: "text-grayscale-700 hover:bg-grayscale-50 hover:text-grayscale-dark-hover",
+        highlighted: "text-grayscale-700 hover:bg-grayscale-50 hover:text-grayscale-dark-hover",
+        normal: "text-grayscale-700 hover:bg-grayscale-50 hover:text-grayscale-dark-hover",
         showLeadingIcon: false,
         showSelectedIcon: false,
     },
@@ -51,7 +51,7 @@ export type SelectMenuOption = {
 export type SelectMenuVariant = keyof typeof variantClasses;
 
 type SelectMenuRootProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> & {
-    options: SelectMenuOption[];
+    options: readonly SelectMenuOption[];
     selectedValue?: string;
     highlightedValue?: string;
     onSelect?: (option: SelectMenuOption) => void;
@@ -92,11 +92,7 @@ export function SelectMenu({
 
     return (
         <div
-            className={mergeClasses(
-                "border border-grayscale-200 bg-white p-2",
-                classes.root,
-                className,
-            )}
+            className={mergeClasses(classes.root, className)}
             role="listbox"
             {...props}
         >

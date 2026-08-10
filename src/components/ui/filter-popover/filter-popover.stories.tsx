@@ -32,7 +32,7 @@ export const PublicCategory: Story = {
         <div className="flex flex-wrap gap-5">
             <PublicCategoryPopover />
             <PublicCategoryPopover highlightedValue="service" />
-            <PublicCategoryPopover actionsDisabled={false} selectedValue="service" />
+            <PublicCategoryPopover resetDisabled={false} saveDisabled={false} selectedValue="service" />
         </div>
     ),
 };
@@ -57,7 +57,7 @@ export const PlaceCategory: Story = {
     render: () => (
         <div className="flex flex-wrap gap-5">
             <PlaceCategoryPopover />
-            <PlaceCategoryPopover city="서울특별시" />
+            <PlaceCategoryPopover city="서울특별시" cityOptions={["서울특별시", "경기도"]} />
             <PlaceCategoryPopover
                 city="서울특별시"
                 district="전체"
@@ -104,9 +104,9 @@ export const ContractAndAgencyCategory: Story = {
     render: () => (
         <div className="flex flex-wrap gap-5">
             <ContractCategoryPopover />
-            <ContractCategoryPopover selectedMethod="일반경쟁" />
+            <ContractCategoryPopover methods={["일반경쟁", "제한경쟁", "수의계약"]} selectedMethod="일반경쟁" />
             <AgencyCategoryPopover />
-            <AgencyCategoryPopover selectedAgency="전체" />
+            <AgencyCategoryPopover agencies={["전체", "대전보건대학교", "서울디지털재단"]} selectedAgency="전체" />
         </div>
     ),
 };
