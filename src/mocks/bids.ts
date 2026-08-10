@@ -1,49 +1,256 @@
-import type { Bid } from "@/types/bid";
+import type { Bid, BidKind, BidStatus } from "@/types/bid";
 
-export const mockBids: Bid[] = [
+type BidSeed = {
+  readonly title: string;
+  readonly organization: string;
+  readonly category: string;
+  readonly kind: BidKind;
+  readonly industry: string;
+  readonly contractMethod: string;
+  readonly region: string;
+  readonly baseAmount: number;
+  readonly estimatedPrice: number;
+  readonly winningCompany: string;
+  readonly bidRate: number;
+  readonly status: BidStatus;
+  readonly recommended: boolean;
+  readonly summary: string;
+  readonly tags: readonly string[];
+};
+
+const bidSeeds = [
   {
-    id: "mate-2026-001",
+    title: "혁신지원사업 학과 환경개선공사(시스템에어컨 설치공사)",
+    organization: "대전보건대학교",
+    category: "공사",
+    kind: "construction",
+    industry: "금속창호·지붕건축물조립공사업",
+    contractMethod: "수의계약",
+    region: "대전광역시",
+    baseAmount: 1_010_072_092_000,
+    estimatedPrice: 918_247_356_000,
+    winningCompany: "(주)파인엠이에스",
+    bidRate: 87.745,
+    status: "open",
+    recommended: true,
+    summary: "대학 교육환경 개선을 위한 시스템에어컨 설치와 관련 설비 공사를 수행합니다.",
+    tags: ["시스템에어컨", "환경개선", "설비공사"],
+  },
+  {
     title: "공공기관 통합 알림 시스템 구축 용역",
     organization: "서울디지털재단",
-    category: "IT 서비스",
-    region: "서울",
-    budget: 180_000_000,
-    publishedAt: "2026-06-10",
-    closesAt: "2026-06-24",
-    status: "open",
-    summary:
-      "기관별 알림 채널을 통합하고 사용자 맞춤형 메시지 발송 기능을 구축합니다.",
+    category: "용역",
+    kind: "service",
+    industry: "소프트웨어사업자",
+    contractMethod: "일반경쟁",
+    region: "서울특별시",
+    baseAmount: 180_000_000,
+    estimatedPrice: 163_636_364,
+    winningCompany: "메이트테크 주식회사",
+    bidRate: 89.214,
+    status: "closing-soon",
+    recommended: true,
+    summary: "기관별 알림 채널을 통합하고 사용자 맞춤형 메시지 발송 기능을 구축합니다.",
     tags: ["시스템 구축", "알림", "공공"],
   },
   {
-    id: "mate-2026-002",
     title: "중소기업 판로 지원 플랫폼 유지보수",
     organization: "중소벤처기업진흥공단",
-    category: "운영/유지보수",
-    region: "대전",
-    budget: 95_000_000,
-    publishedAt: "2026-06-12",
-    closesAt: "2026-06-21",
+    category: "용역",
+    kind: "service",
+    industry: "정보통신공사업",
+    contractMethod: "제한경쟁",
+    region: "경상남도 진주시",
+    baseAmount: 95_000_000,
+    estimatedPrice: 86_363_636,
+    winningCompany: "주식회사 위트코",
+    bidRate: 88.031,
     status: "closing-soon",
-    summary:
-      "기존 판로 지원 플랫폼의 안정화, 접근성 개선, 관리자 기능 보강을 수행합니다.",
+    recommended: false,
+    summary: "기존 판로 지원 플랫폼의 안정화, 접근성 개선, 관리자 기능 보강을 수행합니다.",
     tags: ["유지보수", "접근성", "플랫폼"],
   },
   {
-    id: "mate-2026-003",
     title: "지역 관광 데이터 시각화 대시보드 개발",
     organization: "부산관광공사",
-    category: "데이터/분석",
-    region: "부산",
-    budget: 140_000_000,
-    publishedAt: "2026-06-14",
-    closesAt: "2026-06-28",
-    status: "open",
-    summary:
-      "관광 유입 데이터와 소비 데이터를 분석해 지자체 담당자가 활용할 수 있는 대시보드를 개발합니다.",
+    category: "용역",
+    kind: "service",
+    industry: "데이터산업",
+    contractMethod: "일반경쟁",
+    region: "부산광역시",
+    baseAmount: 140_000_000,
+    estimatedPrice: 127_272_727,
+    winningCompany: "데이터브릿지",
+    bidRate: 90.125,
+    status: "closed",
+    recommended: true,
+    summary: "관광 유입과 소비 데이터를 분석해 지자체 담당자가 활용할 수 있는 대시보드를 개발합니다.",
     tags: ["데이터", "대시보드", "관광"],
   },
-];
+  {
+    title: "청사 실내건축 환경 개선공사",
+    organization: "인천광역시 미추홀구",
+    category: "공사",
+    kind: "construction",
+    industry: "실내건축공사업",
+    contractMethod: "제한경쟁",
+    region: "인천광역시 미추홀구",
+    baseAmount: 870_000_000,
+    estimatedPrice: 790_909_091,
+    winningCompany: "한빛건설",
+    bidRate: 87.992,
+    status: "open",
+    recommended: true,
+    summary: "노후 청사 업무공간의 실내 마감과 편의시설을 개선합니다.",
+    tags: ["실내공사", "청사", "환경개선"],
+  },
+  {
+    title: "스마트 안전관리 장비 구매",
+    organization: "한국산업안전보건공단",
+    category: "물품",
+    kind: "purchase",
+    industry: "산업안전장비",
+    contractMethod: "일반경쟁",
+    region: "울산광역시",
+    baseAmount: 320_000_000,
+    estimatedPrice: 290_909_091,
+    winningCompany: "세이프온",
+    bidRate: 91.073,
+    status: "closed",
+    recommended: false,
+    summary: "현장 사고 예방을 위한 스마트 센서와 안전관리 장비를 구매합니다.",
+    tags: ["안전", "스마트센서", "물품"],
+  },
+  {
+    title: "공공도서관 냉난방기 교체공사",
+    organization: "세종특별자치시",
+    category: "공사",
+    kind: "construction",
+    industry: "기계가스설비공사업",
+    contractMethod: "수의계약",
+    region: "세종특별자치시",
+    baseAmount: 610_000_000,
+    estimatedPrice: 554_545_455,
+    winningCompany: "에코설비",
+    bidRate: 88.746,
+    status: "closing-soon",
+    recommended: true,
+    summary: "도서관 이용환경 개선을 위해 노후 냉난방 설비를 고효율 장비로 교체합니다.",
+    tags: ["냉난방", "기계설비", "도서관"],
+  },
+  {
+    title: "학교 급식실 조리기구 구매",
+    organization: "충청북도교육청",
+    category: "물품",
+    kind: "purchase",
+    industry: "주방기기",
+    contractMethod: "제한경쟁",
+    region: "충청북도 청주시",
+    baseAmount: 72_000_000,
+    estimatedPrice: 65_454_545,
+    winningCompany: "키친프로",
+    bidRate: 92.184,
+    status: "open",
+    recommended: false,
+    summary: "학교 급식 안전과 조리 효율을 높이기 위한 조리기구를 구매합니다.",
+    tags: ["급식", "조리기구", "학교"],
+  },
+  {
+    title: "노후 공공청사 내진보강공사",
+    organization: "경기도 수원시",
+    category: "공사",
+    kind: "construction",
+    industry: "철근콘크리트공사업",
+    contractMethod: "제한경쟁",
+    region: "경기도 수원시",
+    baseAmount: 2_450_000_000,
+    estimatedPrice: 2_227_272_727,
+    winningCompany: "동우건설 주식회사",
+    bidRate: 88.312,
+    status: "closed",
+    recommended: false,
+    summary: "노후 공공청사의 구조 안전성을 높이기 위한 내진보강과 부대공사를 수행합니다.",
+    tags: ["내진보강", "공공청사", "구조보강"],
+  },
+] as const satisfies readonly BidSeed[];
+
+const publishedDates = [
+  "2025.06.02",
+  "2025.08.14",
+  "2025.10.02",
+  "2025.12.11",
+  "2026.01.08",
+  "2026.02.12",
+  "2026.03.05",
+  "2026.04.02",
+  "2026.04.30",
+  "2026.05.21",
+  "2026.06.04",
+  "2026.06.18",
+] as const;
+const bidStartedDates = [
+  "2025.06.05",
+  "2025.08.18",
+  "2025.10.06",
+  "2025.12.15",
+  "2026.01.12",
+  "2026.02.16",
+  "2026.03.09",
+  "2026.04.06",
+  "2026.05.04",
+  "2026.05.25",
+  "2026.06.08",
+  "2026.06.22",
+] as const;
+const closingDates = [
+  "2025.06.20 11:00",
+  "2025.08.29 14:00",
+  "2025.10.17 10:00",
+  "2025.12.29 11:00",
+  "2026.01.23 14:00",
+  "2026.02.27 10:00",
+  "2026.03.20 11:00",
+  "2026.04.17 14:00",
+  "2026.05.15 10:00",
+  "2026.06.05 11:00",
+  "2026.06.19 14:00",
+  "2026.06.30 10:00",
+] as const;
+const openedDates = [
+  "2025.06.20 15:00",
+  "2025.08.29 15:00",
+  "2025.10.17 15:00",
+  "2025.12.29 15:00",
+  "2026.01.23 15:00",
+  "2026.02.27 15:00",
+  "2026.03.20 15:00",
+  "2026.04.17 15:00",
+  "2026.05.15 15:00",
+  "2026.06.05 15:00",
+  "2026.06.19 15:00",
+  "2026.06.30 15:00",
+] as const;
+const editions = Array.from({ length: 12 }, (_, index) => index);
+
+export const mockBids: readonly Bid[] = bidSeeds.flatMap((seed, seedIndex) =>
+  editions.map((editionIndex) => ({
+    ...seed,
+    id: `mate-2026-${String(seedIndex + 1).padStart(2, "0")}-${editionIndex + 1}`,
+    noticeNumber: `R26BK015329${String(seedIndex * editions.length + editionIndex).padStart(3, "0")}-000`,
+    title: editionIndex === 0 ? seed.title : `${seed.title} ${editionIndex + 1}차`,
+    budget: seed.baseAmount,
+    baseAmount: seed.baseAmount + editionIndex * 10_000_000,
+    estimatedPrice: seed.estimatedPrice + editionIndex * 9_000_000,
+    publishedAt: publishedDates[editionIndex % publishedDates.length],
+    bidStartedAt: bidStartedDates[editionIndex % bidStartedDates.length],
+    closesAt: closingDates[editionIndex % closingDates.length],
+    openedAt: openedDates[editionIndex % openedDates.length],
+  })),
+);
+
+export const homeBids = mockBids.filter(
+  (_, index) => index % editions.length === 0,
+);
 
 export function getBidById(bidId: string) {
   return mockBids.find((bid) => bid.id === bidId);
