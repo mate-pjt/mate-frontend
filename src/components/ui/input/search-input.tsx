@@ -79,7 +79,7 @@ export function SearchInput({
     return (
         <div
             className={[
-                "inline-flex w-[300px] items-center rounded-[8px] border border-grayscale-200 bg-grayscale-50 px-3 text-grayscale-700",
+                "inline-flex w-[300px] items-center rounded-[8px] border border-grayscale-200 bg-grayscale-50 px-3 text-grayscale-700 focus-within:border-primary-400",
                 classes.root,
                 disabled ? "cursor-not-allowed opacity-40" : "",
                 className,

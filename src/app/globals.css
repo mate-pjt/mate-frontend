@@ -14,6 +14,7 @@
   --grayscale-700: #495057;
   --grayscale-800: #343a40;
   --grayscale-900: #212529;
+  --grayscale-dark-hover: #7c7f83;
 
   --primary-100: #f6faff;
   --primary-200: #e0ecfe;
@@ -42,6 +43,10 @@
   --success: #17803d;
   --warning: #b85c00;
   --danger: #c73636;
+
+  --shadow-control: 0 0 10px rgb(0 0 0 / 8%);
+  --shadow-floating: 0 8px 24px rgb(0 0 0 / 8%);
+  --shadow-popover: 0 0 12px var(--grayscale-100);
 
   --font-size-heading-0: 40px;
   --font-size-heading-1: 32px;
@@ -82,6 +87,7 @@
   --color-grayscale-700: var(--grayscale-700);
   --color-grayscale-800: var(--grayscale-800);
   --color-grayscale-900: var(--grayscale-900);
+  --color-grayscale-dark-hover: var(--grayscale-dark-hover);
   --color-primary-100: var(--primary-100);
   --color-primary-200: var(--primary-200);
   --color-primary-300: var(--primary-300);

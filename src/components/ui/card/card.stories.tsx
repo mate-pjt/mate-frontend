@@ -52,6 +52,16 @@ export const Stroke: Story = {
     },
 };
 
+export const CategoryTones: Story = {
+    render: () => (
+        <div className="flex w-[420px] flex-col gap-4 bg-grayscale-900 p-4">
+            <BidCard {...sampleBid} categoryTone="primary" />
+            <BidCard {...sampleBid} category="용역" categoryTone="success" />
+            <BidCard {...sampleBid} category="물품" categoryTone="warning" />
+        </div>
+    ),
+};
+
 export const Selected: Story = {
     args: {
         selected: true,

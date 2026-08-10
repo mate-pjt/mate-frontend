@@ -1,10 +1,12 @@
 import { CheckIcon } from "@/components/icons";
 
 export type BidCardVariant = "fill" | "stroke";
+export type BidCardCategoryTone = "primary" | "success" | "warning";
 
 export type BidCardProps = Omit<React.HTMLAttributes<HTMLElement>, "title"> & {
     variant?: BidCardVariant;
     selected?: boolean;
+    categoryTone?: BidCardCategoryTone;
     category: React.ReactNode;
     publishedAt: React.ReactNode;
     title: React.ReactNode;
@@ -28,8 +30,15 @@ const variantClasses: Record<BidCardVariant, string> = {
     stroke: "border border-grayscale-200",
 };
 
+const categoryToneClasses: Record<BidCardCategoryTone, string> = {
+    primary: "bg-primary-100 text-primary-400",
+    success: "bg-success/10 text-success",
+    warning: "bg-warning/10 text-warning",
+};
+
 export function BidCard({
     category,
+    categoryTone = "primary",
     children,
     className,
     closesAt,
@@ -59,7 +68,7 @@ export function BidCard({
             <div className={["flex flex-col gap-5", selected ? "opacity-10" : ""].filter(Boolean).join(" ")}>
                 <div className="flex flex-col gap-2.5">
                     <div className="flex items-center justify-between gap-4">
-                        <span className="type-caption-2 inline-flex min-h-6 shrink-0 items-center justify-center rounded-[6px] bg-primary-100 px-2 py-[3.5px] text-primary-400">
+                        <span className={`type-caption-2 inline-flex min-h-6 shrink-0 items-center justify-center rounded-[6px] px-2 py-[3.5px] ${categoryToneClasses[categoryTone]}`}>
                             <span className="whitespace-nowrap">{category}</span>
                         </span>
                         <span className="type-body-7 shrink-0 whitespace-nowrap text-grayscale-500">
