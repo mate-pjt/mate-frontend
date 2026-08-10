@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { sanitizeLocalNextPath } from "@/lib/auth-redirect";
 import { noIndexRobots } from "@/lib/metadata";
+import { MockAuthForm } from "./mock-auth-form";
 
 type AuthPageProps = {
   searchParams?: Promise<{
     mode?: string | string[];
+    next?: string | string[];
   }>;
 };
 
@@ -18,6 +21,10 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
   const params = searchParams ? await searchParams : {};
   const rawMode = Array.isArray(params.mode) ? params.mode[0] : params.mode;
   const mode = rawMode === "signup" ? "signup" : "login";
+  const rawNext = Array.isArray(params.next) ? params.next[0] : params.next;
+  const nextPath = sanitizeLocalNextPath(rawNext);
+  const loginHref = `/auth?mode=login&next=${encodeURIComponent(nextPath)}`;
+  const signupHref = `/auth?mode=signup&next=${encodeURIComponent(nextPath)}`;
 
   return (
     <div className="mx-auto grid w-full max-w-4xl gap-8 px-6 py-10 lg:grid-cols-[0.9fr_1.1fr]">
@@ -36,7 +43,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
             className={`rounded-md px-3 py-2 text-center text-sm font-semibold ${
               mode === "login" ? "bg-surface" : "text-muted"
             }`}
-            href="/auth?mode=login"
+            href={loginHref}
           >
             로그인
           </Link>
@@ -44,49 +51,13 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
             className={`rounded-md px-3 py-2 text-center text-sm font-semibold ${
               mode === "signup" ? "bg-surface" : "text-muted"
             }`}
-            href="/auth?mode=signup"
+            href={signupHref}
           >
             회원가입
           </Link>
         </div>
 
-        <form className="space-y-4">
-          <label className="block text-sm font-medium">
-            이메일
-            <input
-              className="mt-2 h-11 w-full rounded-md border border-border bg-background px-3 text-sm outline-none"
-              name="email"
-              placeholder="name@example.com"
-              type="email"
-            />
-          </label>
-          <label className="block text-sm font-medium">
-            비밀번호
-            <input
-              className="mt-2 h-11 w-full rounded-md border border-border bg-background px-3 text-sm outline-none"
-              name="password"
-              placeholder="비밀번호"
-              type="password"
-            />
-          </label>
-          {mode === "signup" ? (
-            <label className="block text-sm font-medium">
-              회사명
-              <input
-                className="mt-2 h-11 w-full rounded-md border border-border bg-background px-3 text-sm outline-none"
-                name="company"
-                placeholder="회사명"
-                type="text"
-              />
-            </label>
-          ) : null}
-          <button
-            className="h-11 w-full rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground"
-            type="button"
-          >
-            {mode === "signup" ? "회원가입" : "로그인"}
-          </button>
-        </form>
+        <MockAuthForm mode={mode} nextPath={nextPath} />
       </section>
     </div>
   );
