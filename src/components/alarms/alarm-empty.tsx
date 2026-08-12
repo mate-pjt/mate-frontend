@@ -8,7 +8,7 @@ export function AlarmEmpty({ focusRef }: AlarmEmptyProps) {
   return (
     <section
       aria-labelledby="alarm-empty-title"
-      className="grid min-h-[calc(100dvh-56px)] place-items-center px-4 pb-14 focus:outline-none sm:px-6"
+      className="grid flex-1 place-items-center px-4 pb-14 focus:outline-none sm:px-6"
       ref={focusRef}
       tabIndex={-1}
     >
