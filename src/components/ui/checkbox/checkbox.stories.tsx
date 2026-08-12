@@ -45,6 +45,10 @@ export const CircleDefault: Story = {
     render: () => <CheckboxCircle ariaLabel="원형 체크박스" defaultActive={false} />,
 };
 
+export const CircleLarge: Story = {
+    render: () => <CheckboxCircle ariaLabel="큰 원형 체크박스" defaultActive={false} size="lg" />,
+};
+
 export const States: Story = {
     render: () => (
         <div className="flex items-center gap-4">
@@ -53,6 +57,7 @@ export const States: Story = {
             <CheckboxSquare ariaLabel="선택된 체크박스" defaultChecked />
             <CheckboxCircle ariaLabel="활성 원형 체크박스" />
             <CheckboxCircle ariaLabel="기본 원형 체크박스" defaultActive={false} />
+            <CheckboxCircle ariaLabel="큰 원형 체크박스" defaultActive={false} size="lg" />
         </div>
     ),
 };

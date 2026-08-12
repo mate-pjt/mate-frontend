@@ -9,6 +9,7 @@ const variants = [
     "tertiary",
     "gray",
     "outline",
+    "danger",
     "text_lightblue",
     "text_darkblue",
     "text_gray",
