@@ -28,6 +28,8 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - 2026-07-14: Implemented the Figma-driven home page with local Figma illustration assets, existing `BidCard`/button primitives, and an approved frontend-only mock auth redirect contract for the future recommended bids view; static verification passed.
 - 2026-07-15: Implemented the Figma-driven `/bids` list with four URL-backed views, reusable controlled filter popovers, mock search/filter/pagination, result-specific table columns, empty state, and the approved recommended-view auth redirect; static verification passed.
 - 2026-08-10: Completed PR-readiness fixes for the home/auth/bid-list flow: representative home cards, non-empty default result fixtures, `bidStartedAt` period semantics, URL preset normalization, Escape dismissal, and same-origin mock auth return-path validation. `pnpm lint`, `pnpm build`, `pnpm build-storybook`, and desktop/mobile browser flow checks passed.
+- 2026-08-11: Implemented the Figma-driven `/alarms` page with alternating list surfaces independent of read state, per-item read handling, edit/select/delete flows, empty state, 3-second deletion toast, and shared danger button/large circle-checkbox variants. Static, Storybook, and desktop/mobile browser verification passed.
+- 2026-08-12: Extracted the alarm deletion toast into a reusable Sonner-backed `ToastViewport` / `showToast` UI primitive with single-toast replacement, configurable duration, built-in enter/exit motion, reduced-motion support, and Storybook coverage.
 
 ### In Progress
 

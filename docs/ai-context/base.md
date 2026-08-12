@@ -1,6 +1,6 @@
 # Mate Base AI Context
 
-Last updated: 2026-06-26
+Last updated: 2026-08-12
 
 이 문서는 Mate 프론트엔드에서 AI 에이전트가 작업 전 공통으로 확인할 최소 컨텍스트다. secret, token, password, 개인정보, `.env` 실제 값은 읽거나 기록하지 않는다.
 
@@ -13,6 +13,7 @@ Last updated: 2026-06-26
   - `next`: `16.2.9`
   - `react`: `19.2.4`
   - `react-dom`: `19.2.4`
+  - `sonner`: `^2.0.8`
 - Development dependencies:
   - TypeScript `^5`
   - ESLint `^9`
