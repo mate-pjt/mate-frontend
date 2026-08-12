@@ -26,6 +26,11 @@ const variantClasses = {
         button: "enabled:hover:bg-grayscale-100 enabled:active:bg-grayscale-200",
         link: "hover:bg-grayscale-100 active:bg-grayscale-200",
     },
+    danger: {
+        base: "bg-danger-surface text-danger-emphasis",
+        button: "enabled:hover:brightness-[0.98] enabled:active:brightness-95",
+        link: "hover:brightness-[0.98] active:brightness-95",
+    },
     text_lightblue: {
         base: "text-primary-300",
         button: "enabled:hover:text-primary-300 enabled:active:text-primary-300",

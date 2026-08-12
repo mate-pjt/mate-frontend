@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SiteHeader } from "@/components/site-header";
+import { ToastViewport } from "@/components/ui/toast";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -48,7 +49,8 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh flex-col bg-background text-foreground antialiased">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+        <ToastViewport />
       </body>
     </html>
   );

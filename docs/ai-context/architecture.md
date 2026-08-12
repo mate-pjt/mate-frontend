@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-08-10
+Last updated: 2026-08-12
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -25,6 +25,10 @@ src/
   assets/
     fonts/PretendardVariable.woff2
   components/
+    alarms/
+      alarm-empty.tsx
+      alarm-list-item.tsx
+      alarm-page-client.tsx
     bids/
       bid-filter-toolbar.tsx
       bid-list-client.tsx
@@ -63,6 +67,10 @@ src/
         tab-menu.stories.tsx
       toggle/
         toggle.stories.tsx
+      toast/
+        index.ts
+        toast.stories.tsx
+        toast.tsx
   features/
     .gitkeep
   lib/
@@ -71,12 +79,15 @@ src/
     mock-auth.ts
     site.ts
   mocks/
+    alarms.ts
     bids.ts
     qna.ts
   types/
+    alarm.ts
     bid.ts
 public/
   images/
+    alarms/no-result.png
     bids/no-result.svg
     home/
       alarm-illustration.svg
@@ -115,11 +126,14 @@ public/
 - `src/components`: shared UI and layout components.
 - `src/components/icons`: reusable TSX icon components exported from `index.ts`. These replace source-level SVG imports and avoid bundler-specific SVG loaders.
 - `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `card/`, `checkbox/`, `chip/`, `filter-popover/`, `input/`, `pagination/`, `popup/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
+- `src/components/ui/toast`: Sonner를 Mate 디자인으로 감싼 전역 성공 toast primitive다. 루트 `ToastViewport`는 하나만 마운트하고, 화면에서는 `showToast(message, { duration? })`만 호출한다. 새 호출은 기존 toast를 교체하며 기본 표시 시간은 3초다.
 - `src/lib`: site metadata helpers.
 - `src/mocks`: mock data for current UI flows.
 - `src/types`: shared TypeScript types.
 - `src/features`: currently only `.gitkeep`; feature-level organization may be planned but is not yet established.
 - `src/components/home`: home-only interactive leaf components. `HomeAuthCta` keeps mock auth branching out of the server-rendered home page.
+- `src/components/alarms`: `/alarms` 전용 목록 항목, 빈 상태, client 상태 orchestration을 분리한다. 현재 알림의 읽음·선택·삭제 상태는 페이지 메모리에서만 유지되며 새로고침 시 mock 초기값으로 돌아간다. 삭제 완료 피드백은 공용 `showToast`에 위임한다.
+- `/alarms` 목록의 회색·흰색 표면은 현재 표시 순번에 따라 교차하고, 읽음 상태와는 독립적이다. 미확인 항목만 우측 파란 점을 표시하며 편집 중에는 읽음 점을 숨긴다.
 - `src/components/bids`: 입찰공고 목록 전용 client orchestration, URL state model, filter/search controls, table, empty state를 분리한다. `/bids`의 공고 보기·검색·필터·페이지·표시 개수는 query string을 단일 공유 상태로 사용한다.
 - `src/components/bids/bid-list-model.ts`는 URL의 기간·금액 preset을 허용 목록으로 정규화하고, 기간 조건은 mock `Bid.bidStartedAt`을 기준으로 계산한다.
 - `src/assets`: local font assets. UI icons should not be imported from raw SVG files.
@@ -132,6 +146,7 @@ Confirmed:
 
 - Static assets that can be referenced by URL should live under `public`.
 - Page-specific illustration assets exported from Figma live under `public/images/<page>`; the home page uses SVG where the export is truly vector-based and keeps PNG only for raster artwork.
+- `/alarms`의 빈 상태 PNG는 Figma 원본 export를 `public/images/alarms/no-result.png`에 보관한다.
 - Reusable UI icons that need source imports or `className`/`currentColor` styling should live as TSX components under `src/components/icons`.
 - Raw UI SVG files exported from design tools are not retained in the repo when a TSX icon component exists; the design source is expected to remain in Figma.
 - `src/components/icons/README.md` documents the reusable icon placement policy.
@@ -144,7 +159,7 @@ Confirmed:
 
 - Tailwind CSS v4 is configured through `@tailwindcss/postcss`.
 - `globals.css` owns core CSS variables, Tailwind theme token mappings, and type utility classes.
-- Color tokens use grayscale plus primary blue scales.
+- Color tokens use grayscale plus primary blue scales, semantic status colors, and danger action emphasis/surface tokens.
 - Letter spacing token is `0`.
 
 Inference:
