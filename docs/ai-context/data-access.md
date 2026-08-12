@@ -144,6 +144,8 @@ interface QnaReader {
 ```
 
 - Q&A Page는 `src/data/qna/server.ts`를 사용한다.
+- 현재 `QnaItem` 답변은 문단과 텍스트 segment, 선택적인 목록으로 구성한 프론트 내부 모델이다. Figma의 강조·밑줄·목록을 표현하기 위한 구조이며 실제 API DTO 형식으로 간주하지 않는다.
+- 실제 API가 HTML, Markdown, rich text JSON, plain text 중 무엇을 반환하는지는 명세 확인 후 mapper와 렌더링·보안 정책을 별도로 정한다.
 - pagination, 카테고리, 노출 상태, 정렬은 API 명세가 없으므로 추측하지 않았다.
 - 관리자 생성·수정·삭제는 조회 Reader에 미리 추가하지 않는다.
 
