@@ -32,8 +32,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
         <p className="text-sm font-semibold text-primary">Auth</p>
         <h1 className="text-3xl font-semibold">회원가입 및 로그인</h1>
         <p className="text-sm leading-6 text-muted">
-          Figma 설계처럼 한 화면 안에서 로그인과 회원가입 모드를 전환하는
-          구조입니다.
+          아직 구현되지 않은 signup 페이지
         </p>
       </section>
 
