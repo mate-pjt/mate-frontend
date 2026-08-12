@@ -1,4 +1,6 @@
-export const qnaItems = [
+import type { QnaItem } from "@/types/qna";
+
+export const mockQnaItems = [
   {
     question: "Mate는 어떤 사용자를 위한 서비스인가요?",
     answer:
@@ -14,4 +16,4 @@ export const qnaItems = [
     answer:
       "Figma 설계상 한 화면 안에서 전환되는 구조라 `/auth?mode=login`, `/auth?mode=signup` 쿼리로 구분합니다.",
   },
-];
+] satisfies readonly QnaItem[];
