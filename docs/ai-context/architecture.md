@@ -29,6 +29,8 @@ src/
       alarm-empty.tsx
       alarm-list-item.tsx
       alarm-page-client.tsx
+    qna/
+      qna-accordion.tsx
     bids/
       bid-filter-toolbar.tsx
       bid-list-client.tsx
@@ -144,11 +146,12 @@ public/
 - `src/features`: currently only `.gitkeep`; feature-level organization may be planned but is not yet established.
 - `src/components/home`: home-only interactive leaf components. `HomeAuthCta` keeps mock auth branching out of the server-rendered home page.
 - `src/components/alarms`: `/alarms` 전용 목록 항목, 빈 상태, client 상태 orchestration을 분리한다. 현재 알림의 읽음·선택·삭제 상태는 페이지 메모리에서만 유지되며 새로고침 시 mock 초기값으로 돌아간다. 삭제 완료 피드백은 공용 `showToast`에 위임한다.
+- `src/components/qna`: `/qna` 전용 네이티브 `details`/`summary` 아코디언을 제공한다. 각 질문은 독립적으로 여러 개를 펼칠 수 있고, 서버에서 받은 구조화된 답변의 강조·밑줄·목록을 렌더링한다.
 - `/alarms` 목록의 회색·흰색 표면은 현재 표시 순번에 따라 교차하고, 읽음 상태와는 독립적이다. 미확인 항목만 우측 파란 점을 표시하며 편집 중에는 읽음 점을 숨긴다.
 - `src/components/bids`: 입찰공고 목록 전용 client orchestration, URL state model, filter/search controls, table, empty state를 분리한다. `/bids`의 공고 보기·검색·필터·페이지·표시 개수는 query string을 단일 공유 상태로 사용하며, 조회된 페이지 결과와 필터 선택지를 props로 받는다.
 - `src/components/bids/bid-list-model.ts`는 URL의 기간·금액 preset을 허용 목록으로 정규화한다. Mock 배열 검색·필터·pagination과 표시형 날짜 파싱은 `src/data/bids/mock-reader.ts`가 담당한다.
 - 홈·입찰 목록·입찰 상세는 `src/data/bids/server.ts`를 통해 조회하며 Page와 Component에서 `src/mocks/bids.ts`를 직접 import하지 않는다.
-- Q&A는 `src/data/qna/server.ts`를 통해 조회하며 실제 API의 pagination·카테고리·관리자 CRUD는 명세가 올 때 별도로 설계한다.
+- Q&A는 `src/data/qna/server.ts`를 통해 조회한다. 현재 내부 `QnaItem`은 Figma 답변의 문단·강조·밑줄·목록을 직렬화 가능한 구조로 표현하며, 실제 API의 rich text 형식·pagination·카테고리·관리자 CRUD는 명세가 올 때 별도로 설계한다.
 - `src/assets`: local font assets. UI icons should not be imported from raw SVG files.
 - `public`: static browser-served assets. Static 24dp SVG icons live under `public/icon/24dp`.
 - `.storybook`: Storybook Vite configuration for the local UI component catalog.

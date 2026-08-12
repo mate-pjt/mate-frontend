@@ -79,6 +79,15 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 - Feedback: 삭제 완료 피드백은 공용 `showToast`를 사용한다.
 - Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공하며, 편집 중에는 읽음 점을 숨기고 checkbox label로 선택 대상을 설명한다.
 
+### QnaAccordion
+
+- Structure: 32px 질문 아이콘, 질문 trigger, 상·하 화살표, 선택적인 회색 답변 surface
+- States: 최초 진입 시 전체 닫힘, 각 질문의 독립적인 열림·닫힘, 여러 질문 동시 열림
+- Answer content: 18px medium 본문을 기본으로 강조·밑줄·문단·목록을 지원하며, `grayscale-50` 배경과 20px radius를 사용한다.
+- Interaction: 네이티브 `details`/`summary`를 사용하고 새로고침 시 열림 상태를 초기화한다. 별도 진입·펼침 애니메이션은 사용하지 않는다.
+- Responsive: 데스크톱 최대 너비는 1180px이며, 좁은 화면에서는 질문과 답변을 줄바꿈하고 답변 높이를 콘텐츠에 맞춰 확장한다.
+- Accessibility: 질문 전체 행을 마우스와 키보드로 조작할 수 있고, 장식 아이콘은 접근성 트리에서 제외한다.
+
 ### Toast
 
 - Structure: 체크 아이콘과 한 줄 메시지를 담는 짙은 회색 success feedback surface

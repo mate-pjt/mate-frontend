@@ -31,6 +31,7 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - 2026-08-11: Implemented the Figma-driven `/alarms` page with alternating list surfaces independent of read state, per-item read handling, edit/select/delete flows, empty state, 3-second deletion toast, and shared danger button/large circle-checkbox variants. Static, Storybook, and desktop/mobile browser verification passed.
 - 2026-08-12: Extracted the alarm deletion toast into a reusable Sonner-backed `ToastViewport` / `showToast` UI primitive with single-toast replacement, configurable duration, built-in enter/exit motion, reduced-motion support, and Storybook coverage.
 - 2026-08-12: Introduced mock-backed read data layers for home/bid list/bid detail and Q&A, removed direct bid/Q&A mock imports from Pages and Components, moved mock filtering/pagination behind Reader contracts, and documented the future DTO/mapper/HTTP Reader and Mutation integration rules.
+- 2026-08-12: Implemented the Figma-driven `/qna` page with five structured mock answers, independently multi-open native accordions, responsive answer layout, and an anchor-based page-top control. Static checks plus desktop/mobile browser scenarios passed.
 
 ### In Progress
 
