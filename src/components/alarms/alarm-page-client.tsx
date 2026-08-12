@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { InfoIcon, UpArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,38 @@ import type { AlarmNotification } from "@/types/alarm";
 import { AlarmEmpty } from "./alarm-empty";
 import { AlarmListItem } from "./alarm-list-item";
 
+type PendingFocusTarget = "edit" | "empty-state" | "select-all";
+
 export function AlarmPageClient() {
   const [alarms, setAlarms] = useState<AlarmNotification[]>(() =>
     mockAlarms.map((alarm) => ({ ...alarm })),
   );
   const [editing, setEditing] = useState(false);
   const [selectedAlarmIds, setSelectedAlarmIds] = useState<string[]>([]);
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+  const emptyStateRef = useRef<HTMLElement>(null);
+  const pendingFocusTargetRef = useRef<PendingFocusTarget | null>(null);
+  const selectAllButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const pendingTarget = pendingFocusTargetRef.current;
+
+    if (!pendingTarget) {
+      return;
+    }
+
+    const targetElement =
+      pendingTarget === "select-all"
+        ? selectAllButtonRef.current
+        : pendingTarget === "edit"
+          ? editButtonRef.current
+          : emptyStateRef.current;
+
+    if (targetElement) {
+      targetElement.focus();
+      pendingFocusTargetRef.current = null;
+    }
+  }, [alarms.length, editing]);
 
   function markAsRead(alarmId: string) {
     setAlarms((currentAlarms) =>
@@ -31,11 +57,13 @@ export function AlarmPageClient() {
   }
 
   function enterEditMode() {
+    pendingFocusTargetRef.current = "select-all";
     setSelectedAlarmIds([]);
     setEditing(true);
   }
 
   function finishEditing() {
+    pendingFocusTargetRef.current = "edit";
     setSelectedAlarmIds([]);
     setEditing(false);
   }
@@ -49,6 +77,8 @@ export function AlarmPageClient() {
       return;
     }
 
+    pendingFocusTargetRef.current =
+      selectedAlarmIds.length === alarms.length ? "empty-state" : "edit";
     setAlarms((currentAlarms) => currentAlarms.filter((alarm) => !selectedAlarmIds.includes(alarm.id)));
     setSelectedAlarmIds([]);
     setEditing(false);
@@ -58,7 +88,7 @@ export function AlarmPageClient() {
   return (
     <>
       {alarms.length === 0 ? (
-        <AlarmEmpty />
+        <AlarmEmpty focusRef={emptyStateRef} />
       ) : (
         <section
           aria-labelledby="alarm-page-title"
@@ -79,7 +109,7 @@ export function AlarmPageClient() {
           <div className="flex flex-col gap-6">
             {editing ? (
               <div className="flex min-h-[38px] flex-wrap items-center justify-between gap-3">
-                <Button onClick={selectAll} variant="outline">
+                <Button onClick={selectAll} ref={selectAllButtonRef} variant="outline">
                   전체선택
                 </Button>
                 <div className="flex items-center gap-2">
@@ -99,7 +129,7 @@ export function AlarmPageClient() {
                   <InfoIcon className="size-5 shrink-0" aria-hidden />
                   받은 소식은 7일이 지나면 자동으로 사라져요.
                 </p>
-                <Button onClick={enterEditMode} variant="tertiary">
+                <Button onClick={enterEditMode} ref={editButtonRef} variant="tertiary">
                   편집
                 </Button>
               </div>

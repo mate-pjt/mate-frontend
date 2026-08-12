@@ -3,7 +3,7 @@
 import { ButtonIcon } from "./button-icon";
 import { getButtonClassName, type ButtonStyleProps } from "./button-styles";
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonStyleProps;
+type ButtonProps = React.ComponentPropsWithRef<"button"> & ButtonStyleProps;
 
 export function Button({
     children,
@@ -14,10 +14,12 @@ export function Button({
     icon,
     iconPosition = "left",
     disabled,
+    ref,
     ...props
 }: ButtonProps) {
     return (
         <button
+            ref={ref}
             type={type}
             className={getButtonClassName({
                 variant,

@@ -27,6 +27,7 @@ export function AlarmListItem({
   selected,
 }: AlarmListItemProps) {
   const alternatingSurface = index % 2 === 0 ? "bg-grayscale-50" : "bg-basic-white";
+  const selectionSummary = alarm.messageLines[alarm.messageLines.length - 1] ?? "알림";
 
   const content = (
     <div className="flex min-h-24 min-w-0 flex-1 items-stretch gap-2">
@@ -74,7 +75,7 @@ export function AlarmListItem({
       <div className={`flex w-full items-center gap-4 rounded-2xl p-4 ${alternatingSurface}`}>
         <CheckboxCircle
           active={selected}
-          ariaLabel={`${alarm.label} 선택`}
+          ariaLabel={`${index + 1}번째 ${alarm.label}, ${selectionSummary} 선택`}
           onActiveChange={(active) => onSelectedChange(alarm.id, active)}
           size="lg"
         />

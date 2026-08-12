@@ -1,10 +1,16 @@
 import Image from "next/image";
 
-export function AlarmEmpty() {
+type AlarmEmptyProps = {
+  focusRef?: React.Ref<HTMLElement>;
+};
+
+export function AlarmEmpty({ focusRef }: AlarmEmptyProps) {
   return (
     <section
       aria-labelledby="alarm-empty-title"
-      className="grid min-h-[calc(100dvh-56px)] place-items-center px-4 pb-14 sm:px-6"
+      className="grid min-h-[calc(100dvh-56px)] place-items-center px-4 pb-14 focus:outline-none sm:px-6"
+      ref={focusRef}
+      tabIndex={-1}
     >
       <div className="flex w-full max-w-[369px] flex-col items-center gap-4 text-center">
         <Image
