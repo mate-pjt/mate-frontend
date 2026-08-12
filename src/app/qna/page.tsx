@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { getQnaItems } from "@/data/qna/server";
 import { createPublicPageMetadata } from "@/lib/metadata";
-import { qnaItems } from "@/mocks/qna";
 
 export const metadata: Metadata = createPublicPageMetadata({
   title: "자주 묻는 질문",
@@ -9,7 +9,9 @@ export const metadata: Metadata = createPublicPageMetadata({
   path: "/qna",
 });
 
-export default function QnaPage() {
+export default async function QnaPage() {
+  const qnaItems = await getQnaItems();
+
   return (
     <div className="mx-auto w-full max-w-4xl px-6 py-10">
       <div className="mb-8">
