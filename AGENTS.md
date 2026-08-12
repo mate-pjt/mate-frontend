@@ -13,6 +13,7 @@ Mate 프로젝트에서 AI 에이전트는 기능을 바로 구현하지 않는�
 - 기존 프로젝트 소스와 현재 브랜치의 다른 작업을 임의로 되돌리거나 정리하지 않는다.
 - 검증이 PASS되기 전에는 다음 기능으로 넘어가지 않는다.
 - 기능 구현 후 문서 갱신 필요 여부를 확인한다. package/scripts는 `base.md`, 구조/API/mock/component 규칙은 `architecture.md`, 계획/상태는 `plan.md`, 반복 실수나 하네스 변화는 `ai-failures.md` 또는 `harness.md` 갱신을 검토한다.
+- API, mock, DTO, 조회·변경 데이터 흐름을 설계하거나 수정하기 전에는 `docs/ai-context/data-access.md`를 확인한다.
 - 코드베이스와 문서 정합성이 의심되거나 큰 작업 전후에는 `$context-audit`을 실행해 `docs/ai-context` 드리프트를 진단한다.
 - 최종 PASS 전 Review Gate를 수행한다. verifier와 `$ai-review`가 필요하면 실행하고, 생략 가능하다고 판단되면 개발자 확인을 받는다.
 - Review Gate에서 verifier가 필요하다고 판단되면 Codex는 별도 사용자 확인 없이 read-only verifier subagent를 실행할 수 있다. verifier는 검증 보고서만 작성하고 코드를 수정하지 않는다.
@@ -31,5 +32,6 @@ PR 또는 commit 전에는 `$ai-review` Skill로 현재 변경사항을 검토�
 - [Base Context](docs/ai-context/base.md): 프로젝트 스택, scripts, 확인된 사실과 추정
 - [Workflow Plan](docs/ai-context/plan.md): AI 기능 구현 하네스 흐름
 - [Architecture Notes](docs/ai-context/architecture.md): 현재 소스 구조와 스타일 관찰
+- [Data Access Guide](docs/ai-context/data-access.md): 조회 데이터 계층, mock 관리, 실제 API/DTO/Mutation 연결 규칙
 - [AI Failure Log](docs/ai-context/ai-failures.md): 실패 기록 템플릿과 재발 방지 규칙
 - [Harness Usage](docs/ai-context/harness.md): 하네스 실행 순서
