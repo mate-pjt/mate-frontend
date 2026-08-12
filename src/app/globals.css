@@ -43,6 +43,8 @@
   --success: #17803d;
   --warning: #b85c00;
   --danger: #c73636;
+  --danger-emphasis: #ee2f3f;
+  --danger-surface: #ffebee;
 
   --shadow-control: 0 0 10px rgb(0 0 0 / 8%);
   --shadow-floating: 0 8px 24px rgb(0 0 0 / 8%);
@@ -112,6 +114,8 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-danger-emphasis: var(--danger-emphasis);
+  --color-danger-surface: var(--danger-surface);
   --text-heading-0: var(--font-size-heading-0);
   --text-heading-0--line-height: var(--line-height-140);
   --text-heading-1: var(--font-size-heading-1);
