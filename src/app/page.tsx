@@ -4,8 +4,8 @@ import Link from "next/link";
 import { HomeAuthCta } from "@/components/home/home-auth-cta";
 import { RightArrowIcon, UpArrowIcon } from "@/components/icons";
 import { BidCard, type BidCardCategoryTone } from "@/components/ui/card";
+import { getHomeBids } from "@/data/bids/server";
 import { createPublicPageMetadata } from "@/lib/metadata";
-import { homeBids } from "@/mocks/bids";
 import type { BidKind } from "@/types/bid";
 
 export const metadata: Metadata = createPublicPageMetadata({
@@ -21,7 +21,9 @@ const categoryTones: Record<BidKind, BidCardCategoryTone> = {
   purchase: "warning",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const homeBids = await getHomeBids();
+
   return (
     <div id="home-top">
       <section className="relative flex min-h-[1024px] flex-col items-center overflow-hidden px-4 pt-24 text-center sm:px-6">

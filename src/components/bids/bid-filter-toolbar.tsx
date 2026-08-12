@@ -11,27 +11,23 @@ import {
   PriceCategoryPopover,
   PublicCategoryPopover,
 } from "@/components/ui/filter-popover";
-import type { Bid } from "@/types/bid";
+import type { BidFilterOptions } from "@/data/bids/contracts";
 
-import { categoryLabels, type BidFilters, uniqueBidValues } from "./bid-list-model";
+import { categoryLabels, type BidFilters } from "./bid-list-model";
 
 type FilterKey = "category" | "region" | "industry" | "contract" | "period" | "amount";
 
 type BidFilterToolbarProps = {
-  readonly bids: readonly Bid[];
+  readonly filterOptions: BidFilterOptions;
   readonly filters: BidFilters;
   readonly onFilterChange: (key: keyof BidFilters, value?: string) => void;
 };
 
-const regionOptions = ["서울특별시", "대전광역시", "부산광역시", "인천광역시", "울산광역시", "세종특별자치시", "충청북도", "경상남도"] as const;
-
-export function BidFilterToolbar({ bids, filters, onFilterChange }: BidFilterToolbarProps) {
+export function BidFilterToolbar({ filterOptions, filters, onFilterChange }: BidFilterToolbarProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [openFilter, setOpenFilter] = useState<FilterKey>();
   const [draftFilters, setDraftFilters] = useState<BidFilters>(filters);
   const [industryQuery, setIndustryQuery] = useState("");
-  const industries = uniqueBidValues(bids, "industry");
-  const contracts = uniqueBidValues(bids, "contractMethod");
 
   useEffect(() => {
     if (!openFilter) return;
@@ -86,7 +82,7 @@ export function BidFilterToolbar({ bids, filters, onFilterChange }: BidFilterToo
         <PlaceCategoryPopover
           advancedDisabled
           city={draftFilters.region}
-          cityOptions={regionOptions}
+          cityOptions={filterOptions.regions}
           onCityChange={(value) => changeDraft("region", value)}
           onReset={() => reset("region")}
           onSave={() => save("region")}
@@ -103,13 +99,13 @@ export function BidFilterToolbar({ bids, filters, onFilterChange }: BidFilterToo
           onSave={() => save("industry")}
           onSuggestionSelect={(value) => changeDraft("industry", value)}
           onTagRemove={() => reset("industry")}
-          suggestions={industries.filter((industry) => industry.includes(industryQuery))}
+          suggestions={filterOptions.industries.filter((industry) => industry.includes(industryQuery))}
           tags={draftFilters.industry ? [draftFilters.industry] : []}
         />
       </FilterSlot>
       <FilterSlot active={Boolean(filters.contract)} label={filters.contract ?? "계약방법"} name="contract" onOpen={open} open={openFilter}>
         <ContractCategoryPopover
-          methods={contracts}
+          methods={filterOptions.contractMethods}
           onMethodSelect={(value) => changeDraft("contract", value)}
           onReset={() => reset("contract")}
           onSave={() => save("contract")}
