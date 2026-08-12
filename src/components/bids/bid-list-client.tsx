@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Select } from "@/components/ui/select";
+import type { BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
 import { isMockAuthenticated } from "@/lib/mock-auth";
-import { mockBids } from "@/mocks/bids";
 
 import { BidFilterToolbar } from "./bid-filter-toolbar";
 import { BidListEmpty } from "./bid-list-empty";
 import { BidListSearch } from "./bid-list-search";
-import { filterBids, readBidListState, type BidFilters, type BidView } from "./bid-list-model";
+import { type BidFilters, type BidView } from "./bid-list-model";
 import { BidListTable } from "./bid-list-table";
 import { BidViewSelector } from "./bid-view-selector";
 
@@ -20,15 +20,17 @@ const pageSizeOptions = [
   { label: "30개씩 표시", value: "30" },
 ] as const;
 
-export function BidListClient() {
+type BidListClientProps = {
+  readonly filterOptions: BidFilterOptions;
+  readonly result: BidListResult;
+  readonly state: BidListQuery;
+};
+
+export function BidListClient({ filterOptions, result, state }: BidListClientProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const state = readBidListState(new URLSearchParams(searchParams.toString()));
-  const filteredBids = filterBids(mockBids, state);
-  const totalPages = Math.max(1, Math.ceil(filteredBids.length / state.size));
-  const currentPage = Math.min(state.page, totalPages);
-  const visibleBids = filteredBids.slice((currentPage - 1) * state.size, currentPage * state.size);
+  const totalPages = Math.max(1, Math.ceil(result.totalCount / result.size));
 
   useEffect(() => {
     if (state.view !== "recommended" || isMockAuthenticated()) return;
@@ -88,7 +90,7 @@ export function BidListClient() {
         </div>
 
         <div className="mt-[18px]">
-          <BidFilterToolbar bids={mockBids} filters={filters} onFilterChange={changeFilter} />
+          <BidFilterToolbar filterOptions={filterOptions} filters={filters} onFilterChange={changeFilter} />
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-end gap-2">
@@ -97,7 +99,7 @@ export function BidListClient() {
             align="right"
             ariaLabel="페이지당 공고 수"
             boxClassName="w-[107px] justify-between"
-            disabled={filteredBids.length <= 10}
+            disabled={result.totalCount <= 10}
             menuClassName="w-[132px]"
             onValueChange={(value) => updateParams({ size: value === "10" ? undefined : value, page: undefined })}
             options={pageSizeOptions}
@@ -107,13 +109,13 @@ export function BidListClient() {
         </div>
 
         <div className="mt-6">
-          {visibleBids.length > 0 ? (
+          {result.items.length > 0 ? (
             <BidListTable
-              bids={visibleBids}
+              bids={result.items}
               onReset={resetSearchAndFilters}
-              page={currentPage}
+              page={result.page}
               totalPages={totalPages}
-              totalResults={filteredBids.length}
+              totalResults={result.totalCount}
               view={state.view}
               onPageChange={(page) => updateParams({ page: page === 1 ? undefined : String(page) })}
             />

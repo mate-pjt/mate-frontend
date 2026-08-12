@@ -248,10 +248,6 @@ export const mockBids: readonly Bid[] = bidSeeds.flatMap((seed, seedIndex) =>
   })),
 );
 
-export const homeBids = mockBids.filter(
+export const mockHomeBids = mockBids.filter(
   (_, index) => index % editions.length === 0,
 );
-
-export function getBidById(bidId: string) {
-  return mockBids.find((bid) => bid.id === bidId);
-}

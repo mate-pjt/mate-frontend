@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getBidDetail } from "@/data/bids/server";
 import { createPublicPageMetadata } from "@/lib/metadata";
-import { getBidById, mockBids } from "@/mocks/bids";
 import type { BidStatus } from "@/types/bid";
 
 type BidDetailPageProps = {
@@ -13,17 +13,11 @@ type BidDetailPageProps = {
 
 export const revalidate = 3600;
 
-export function generateStaticParams() {
-  return mockBids.map((bid) => ({
-    bidId: bid.id,
-  }));
-}
-
 export async function generateMetadata({
   params,
 }: BidDetailPageProps): Promise<Metadata> {
   const { bidId } = await params;
-  const bid = getBidById(bidId);
+  const bid = await getBidDetail(bidId);
 
   if (!bid) {
     return createPublicPageMetadata({
@@ -50,7 +44,7 @@ const currencyFormatter = new Intl.NumberFormat("ko-KR");
 
 export default async function BidDetailPage({ params }: BidDetailPageProps) {
   const { bidId } = await params;
-  const bid = getBidById(bidId);
+  const bid = await getBidDetail(bidId);
 
   if (!bid) {
     notFound();
