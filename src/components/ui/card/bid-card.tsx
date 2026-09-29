@@ -80,7 +80,7 @@ export function BidCard({
 
                 <dl className="flex flex-col gap-3 rounded-2xl bg-grayscale-50 p-5">
                     <BidCardDetailRow label="공고번호" underlined value={noticeNumber} />
-                    <BidCardDetailRow label="발주기관" value={organization} />
+                    <BidCardDetailRow label="기관" value={organization} />
                     <BidCardDetailRow label="계약방법" value={contractMethod} />
                     <BidCardDetailRow label="투찰마감" value={closesAt} />
                     <BidCardDetailRow
