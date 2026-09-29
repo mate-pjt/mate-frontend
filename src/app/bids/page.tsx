@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { BidListClient } from "@/components/bids/bid-list-client";
@@ -9,8 +10,6 @@ import { createPublicPageMetadata } from "@/lib/metadata";
 type BidListPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
-
-export const revalidate = 3600;
 
 export const metadata: Metadata = createPublicPageMetadata({
   title: "입찰공고 리스트",
@@ -28,7 +27,24 @@ export default function BidListPage({ searchParams }: BidListPageProps) {
 }
 
 async function BidListContent({ searchParams }: BidListPageProps) {
-  const state = readBidListState(toUrlSearchParams(await searchParams));
+  const urlSearchParams = toUrlSearchParams(await searchParams);
+  if (urlSearchParams.has("agency")) {
+    urlSearchParams.delete("agency");
+    const query = urlSearchParams.toString();
+    redirect(`/bids${query ? `?${query}` : ""}`);
+  }
+
+  const state = readBidListState(urlSearchParams);
+  if (state.view === "recommended") {
+    return (
+      <BidListClient
+        filterOptions={{ regions: [], industries: [], contractMethods: [], regionOptions: [], industryOptions: [] }}
+        result={{ items: [], totalCount: 0, page: 1, size: state.size }}
+        state={state}
+      />
+    );
+  }
+
   const [result, filterOptions] = await Promise.all([
     getBidList(state),
     getBidFilterOptions(),
@@ -49,11 +65,8 @@ function toUrlSearchParams(
   const searchParams = new URLSearchParams();
 
   Object.entries(values).forEach(([key, value]) => {
-    const firstValue = Array.isArray(value) ? value[0] : value;
-
-    if (firstValue !== undefined) {
-      searchParams.set(key, firstValue);
-    }
+    if (Array.isArray(value)) value.forEach((item) => searchParams.append(key, item));
+    else if (value !== undefined) searchParams.set(key, value);
   });
 
   return searchParams;

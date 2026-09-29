@@ -1,5 +1,6 @@
 import type { BidListQuery, BidView } from "@/data/bids/contracts";
 import type { BidKind } from "@/types/bid";
+import { readPersonalFilterParams } from "@/features/bid-notice-filters/model";
 
 export type { BidFilters, BidView } from "@/data/bids/contracts";
 
@@ -32,19 +33,21 @@ export function readBidListState(searchParams: URLSearchParams): BidListState {
   const rawView = searchParams.get("view");
   const view = readView(rawView);
   const rawSize = Number(searchParams.get("size"));
+  const personalFilter = view === "all" ? readPersonalFilterParams(searchParams) : undefined;
 
   return {
     view,
-    query: searchParams.get("query")?.trim() ?? "",
+    query: searchParams.get("query")?.trim().slice(0, 100) ?? "",
     page: readPositiveInteger(searchParams.get("page")),
     size: supportedPageSizes.has(rawSize) ? rawSize : 10,
-    category: readKind(searchParams.get("category")) ?? "construction",
-    region: readOptional(searchParams.get("region")),
-    industry: readOptional(searchParams.get("industry")),
-    contract: readOptional(searchParams.get("contract")),
-    agency: readOptional(searchParams.get("agency")),
-    period: readSupportedValue(searchParams.get("period"), supportedPeriods),
-    amount: readSupportedValue(searchParams.get("amount"), supportedAmounts),
+    category: personalFilter ? undefined : readKind(searchParams.get("category")) ?? "construction",
+    region: personalFilter ? undefined : readOptional(searchParams.get("region")),
+    industry: personalFilter ? undefined : readOptional(searchParams.get("industry")),
+    contract: personalFilter ? undefined : readOptional(searchParams.get("contract")),
+    agency: personalFilter ? undefined : readOptional(searchParams.get("agency")),
+    period: personalFilter || view === "closing" ? undefined : readSupportedValue(searchParams.get("period"), supportedPeriods),
+    amount: personalFilter || view === "result" ? undefined : readSupportedValue(searchParams.get("amount"), supportedAmounts),
+    personalFilter,
   };
 }
 

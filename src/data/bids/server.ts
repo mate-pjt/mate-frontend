@@ -1,22 +1,33 @@
 import "server-only";
 
-import { mockBidReader } from "./mock-reader";
-import type { BidListQuery, BidReader } from "./contracts";
+import { cache } from "react";
 
-const bidReader: BidReader = mockBidReader;
+import { httpBidDetailReader } from "./detail-http-reader";
+import { httpBidListReader } from "./http-reader";
+import type { BidDetailQuery, BidListQuery } from "./contracts";
 
-export function getHomeBids() {
-  return bidReader.getHomeBids();
+export async function getHomeBids() {
+  const result = await httpBidListReader.getBidList({
+    view: "all",
+    query: "",
+    page: 1,
+    size: 9,
+  });
+  return result.items;
 }
 
 export function getBidList(query: BidListQuery) {
-  return bidReader.getBidList(query);
+  return httpBidListReader.getBidList(query);
 }
 
-export function getBidDetail(bidId: string) {
-  return bidReader.getBidDetail(bidId);
+const cachedBidDetail = cache((id: string, classificationNo: string | null, itemPage: number, resultId: string | null, participantsPage: number) =>
+  httpBidDetailReader.getBidDetail({ id, classificationNo, itemPage, resultId, participantsPage }),
+);
+
+export function getBidDetail(query: BidDetailQuery) {
+  return cachedBidDetail(query.id, query.classificationNo, query.itemPage, query.resultId, query.participantsPage);
 }
 
 export function getBidFilterOptions() {
-  return bidReader.getFilterOptions();
+  return httpBidListReader.getFilterOptions();
 }
