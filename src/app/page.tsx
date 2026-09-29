@@ -5,6 +5,7 @@ import { HomeAuthCta } from "@/components/home/home-auth-cta";
 import { RightArrowIcon, UpArrowIcon } from "@/components/icons";
 import { BidCard, type BidCardCategoryTone } from "@/components/ui/card";
 import { getHomeBids } from "@/data/bids/server";
+import { bidDetailHref } from "@/lib/bid-detail-url";
 import { createPublicPageMetadata } from "@/lib/metadata";
 import type { BidKind } from "@/types/bid";
 
@@ -15,6 +16,14 @@ export const metadata: Metadata = createPublicPageMetadata({
   path: "/",
 });
 
+export const dynamic = "force-dynamic";
+
+const categoryLabels: Record<BidKind, string> = {
+  construction: "공사",
+  service: "용역",
+  purchase: "물품",
+};
+
 const categoryTones: Record<BidKind, BidCardCategoryTone> = {
   construction: "primary",
   service: "success",
@@ -22,7 +31,7 @@ const categoryTones: Record<BidKind, BidCardCategoryTone> = {
 };
 
 export default async function HomePage() {
-  const homeBids = await getHomeBids();
+  const homeBids = await getHomeBids().catch(() => null);
 
   return (
     <div id="home-top">
@@ -82,24 +91,51 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {homeBids.map((bid) => (
-              <Link href={`/bids/${bid.id}`} key={bid.id}>
-                <BidCard
-                  category={bid.category}
-                  categoryTone={categoryTones[bid.kind]}
-                  className="h-full max-w-none"
-                  closesAt={bid.closesAt}
-                  contractMethod={bid.contractMethod}
-                  estimatedPrice={bid.estimatedPrice.toLocaleString("ko-KR")}
-                  noticeNumber={bid.noticeNumber}
-                  organization={bid.organization}
-                  publishedAt={bid.publishedAt}
-                  title={bid.title}
-                />
-              </Link>
-            ))}
-          </div>
+          {homeBids === null ? (
+            <div className="rounded-[20px] bg-basic-white px-6 py-14 text-center" role="alert">
+              <p className="type-body-1 text-grayscale-800">입찰공고를 불러오지 못했어요.</p>
+              <p className="type-body-7 mt-2 text-grayscale-600">잠시 후 다시 시도해 주세요.</p>
+              <form action="/" className="mt-6" method="get">
+                <button className="type-body-7 rounded-lg bg-primary-400 px-5 py-3 text-basic-white hover:bg-primary-500" type="submit">
+                  다시 시도
+                </button>
+              </form>
+            </div>
+          ) : homeBids.length === 0 ? (
+            <div className="rounded-[20px] bg-basic-white px-6 py-14 text-center" role="status">
+              <p className="type-body-1 text-grayscale-800">현재 표시할 입찰공고가 없어요.</p>
+              <p className="type-body-7 mt-2 text-grayscale-600">새 공고가 등록되면 이곳에서 확인할 수 있어요.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {homeBids.map((bid) => (
+                <Link href={bidDetailHref(bid.id, bid.classificationNo)} key={`${bid.id}:${bid.classificationNo ?? ""}`}>
+                  <BidCard
+                    category={categoryLabels[bid.kind]}
+                    categoryTone={categoryTones[bid.kind]}
+                    className="h-full max-w-none"
+                    closesAt={bid.closesAt ?? "—"}
+                    contractMethod={bid.contractMethod ?? "—"}
+                    estimatedPrice={bid.estimatedPrice == null ? "—" : bid.estimatedPrice.toLocaleString("ko-KR")}
+                    estimatedPriceUnit={bid.estimatedPrice == null ? "" : "원"}
+                    noticeNumber={
+                      <span className="inline-flex flex-col items-end">
+                        {bid.noticeNumber}
+                        {bid.classificationNo ? (
+                          <span className="mt-1 rounded bg-primary-100 px-1.5 py-0.5 type-body-7 no-underline">
+                            분류 {bid.classificationNo}
+                          </span>
+                        ) : null}
+                      </span>
+                    }
+                    organization={bid.demandAgencyName ? `수요기관 · ${bid.demandAgencyName}` : bid.noticeAgencyName ? `공고기관 · ${bid.noticeAgencyName}` : "—"}
+                    publishedAt={bid.publishedAt ?? "—"}
+                    title={bid.title}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

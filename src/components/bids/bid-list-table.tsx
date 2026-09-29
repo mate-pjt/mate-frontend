@@ -2,12 +2,13 @@ import Link from "next/link";
 
 import { ResetIcon } from "@/components/icons";
 import { Pagination } from "@/components/ui/pagination";
-import type { Bid } from "@/types/bid";
+import { bidDetailHref } from "@/lib/bid-detail-url";
+import type { BidListItem } from "@/types/bid-list";
 
 import type { BidView } from "./bid-list-model";
 
 type BidListTableProps = {
-  readonly bids: readonly Bid[];
+  readonly bids: readonly BidListItem[];
   readonly onPageChange: (page: number) => void;
   readonly onReset: () => void;
   readonly page: number;
@@ -73,7 +74,7 @@ export function BidListTable({
               </HeaderCell>
               <HeaderCell><span className="sr-only">공고명</span></HeaderCell>
               <HeaderCell align="right">지역</HeaderCell>
-              <HeaderCell align="right">발주기관</HeaderCell>
+              <HeaderCell align="right">기관</HeaderCell>
               <HeaderCell align="right">업종</HeaderCell>
               <HeaderCell align="center">계약방법</HeaderCell>
               <HeaderCell align="right">공고일</HeaderCell>
@@ -96,38 +97,45 @@ export function BidListTable({
             {bids.map((bid, index) => (
               <tr
                 className={`h-20 [&>td:first-child]:rounded-l-[8px] [&>td:last-child]:rounded-r-[8px] ${index % 2 === 0 ? "[&>td]:bg-grayscale-50" : "[&>td]:bg-white"}`}
-                key={bid.id}
+                key={`${bid.id}:${bid.classificationNo ?? ""}`}
               >
                 <Cell align="center">
-                  <Link className="whitespace-nowrap text-grayscale-500 underline underline-offset-2 hover:text-primary-400" href={`/bids/${bid.id}`}>
+                  <Link className="inline-flex flex-col items-center whitespace-nowrap text-primary-400 hover:underline" href={bidDetailHref(bid.id, bid.classificationNo)}>
                     {bid.noticeNumber}
+                    {bid.classificationNo ? (
+                      <span className="mt-1 rounded bg-primary-100 px-1.5 py-0.5 type-body-7">
+                        분류 {bid.classificationNo}
+                      </span>
+                    ) : null}
                   </Link>
                 </Cell>
                 <Cell>
-                  <Link className="line-clamp-2 text-grayscale-800 hover:text-primary-400" href={`/bids/${bid.id}`}>
+                  <Link className="line-clamp-2 text-grayscale-800 hover:text-primary-400 hover:underline" href={bidDetailHref(bid.id, bid.classificationNo)}>
                     {bid.title}
                   </Link>
                 </Cell>
-                <Cell align="right"><span className="break-keep">{bid.region}</span></Cell>
-                <Cell align="right">{bid.organization}</Cell>
-                <Cell align="right"><span className="block truncate">{bid.industry}</span></Cell>
+                <Cell align="right"><span className="break-keep">{bid.region ?? "—"}</span></Cell>
+                <Cell align="right"><AgencyCell bid={bid} /></Cell>
+                <Cell align="right"><span className="block truncate">{bid.industry ?? "—"}</span></Cell>
                 <Cell align="center">
-                  <span className="inline-flex rounded-[6px] bg-primary-100 px-2 py-1 text-primary-400">
-                    {bid.contractMethod}
-                  </span>
+                  {bid.contractMethod ? (
+                    <span className="inline-flex rounded-[6px] bg-primary-100 px-2 py-1 text-primary-400">
+                      {bid.contractMethod}
+                    </span>
+                  ) : "—"}
                 </Cell>
-                <Cell align="right">{bid.publishedAt}</Cell>
-                <Cell align="right"><span className="whitespace-nowrap">{showsResult ? bid.openedAt : bid.closesAt}</span></Cell>
+                <Cell align="right">{bid.publishedAt ?? "—"}</Cell>
+                <Cell align="right"><span className="whitespace-nowrap">{(showsResult ? bid.openedAt : bid.closesAt) ?? "—"}</span></Cell>
                 {showsResult ? (
                   <>
-                    <Cell align="right">{bid.winningCompany}</Cell>
-                    <Cell align="right">{bid.bidRate.toFixed(3)}%</Cell>
-                    <Cell align="right" emphasized>{formatWon(bid.estimatedPrice * bid.bidRate / 100)}</Cell>
+                    <Cell align="right">{bid.winningCompany ?? "—"}</Cell>
+                    <Cell align="right">{bid.bidRate == null ? "—" : `${bid.bidRate.toFixed(3)}%`}</Cell>
+                    <Cell align="right" emphasized={bid.successfulBidAmount != null}>{formatWon(bid.successfulBidAmount)}</Cell>
                   </>
                 ) : (
                   <>
                     <Cell align="right">{formatWon(bid.baseAmount)}</Cell>
-                    <Cell align="right" emphasized>{formatWon(bid.estimatedPrice)}</Cell>
+                    <Cell align="right" emphasized={bid.estimatedPrice != null}>{formatWon(bid.estimatedPrice)}</Cell>
                   </>
                 )}
               </tr>
@@ -178,6 +186,20 @@ function Cell({
   );
 }
 
-function formatWon(value: number) {
-  return numberFormatter.format(Math.round(value));
+function AgencyCell({ bid }: { readonly bid: BidListItem }) {
+  const name = bid.demandAgencyName ?? bid.noticeAgencyName ?? bid.organization;
+  if (!name) return "—";
+
+  const role = bid.demandAgencyName ? "수요기관" : bid.noticeAgencyName ? "공고기관" : "기관";
+
+  return (
+    <span className="block break-words">
+      <span className="block text-grayscale-500 type-caption">{role}</span>
+      {name}
+    </span>
+  );
+}
+
+function formatWon(value: number | null | undefined) {
+  return value == null ? "—" : numberFormatter.format(Math.round(value));
 }

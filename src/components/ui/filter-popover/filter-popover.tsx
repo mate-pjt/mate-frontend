@@ -552,7 +552,9 @@ export type CalendarCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> 
     FilterActionHandlers & {
         activeType?: DateFilterType;
         endDate?: string;
+        heading?: string;
         selectedQuickRange?: string;
+        showTypeSelector?: boolean;
         startDate?: string;
         advancedDisabled?: boolean;
         onQuickRangeSelect?: (range: string) => void;
@@ -564,11 +566,13 @@ export function CalendarCategoryPopover({
     advancedDisabled = false,
     className,
     endDate,
+    heading = "기간",
     onReset,
     onSave,
     onQuickRangeSelect,
     onTypeSelect,
     selectedQuickRange,
+    showTypeSelector = true,
     startDate,
     ...props
 }: CalendarCategoryPopoverProps) {
@@ -580,8 +584,8 @@ export function CalendarCategoryPopover({
             <FilterBody>
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-4">
-                        <SectionTitle>기간</SectionTitle>
-                        <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={dateTypeOptions} value={activeType} />
+                        <SectionTitle>{heading}</SectionTitle>
+                        {showTypeSelector && <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={dateTypeOptions} value={activeType} />}
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="flex w-full items-center gap-1">

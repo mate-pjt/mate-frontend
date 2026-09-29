@@ -4,6 +4,28 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 
 ## Current Known Failures
 
+## 2026-09-29 - 테스트 배포 브랜치 대신 main으로 OAuth 오류 분석
+
+- Task: 테스트 서버의 Google OAuth 시작 요청 `OAUTH_REQUEST_INVALID` 진단.
+- Expected behavior: 테스트 배포 대상인 백엔드 `dev`의 최신 계약과 브라우저 요청을 비교한다.
+- Actual failure: `main`의 이전 소스만 보고 시작 endpoint에 해당 오류 분기가 없다고 판단해 서버 로그 확인을 우선 제안했다. `dev`에는 MAT-234 변경으로 필수 `returnOrigin` 검증이 추가되어 있었다.
+- Root cause: 저장소 기본 브랜치를 테스트 서버 배포 브랜치로 가정했다.
+- Detection command or review step: 백엔드 `dev`의 OAuth controller/service와 배포 workflow를 확인하고, 기존 요청의 400 및 수정 후 실제 브라우저 가입·재로그인을 비교했다. 테스트 서버의 실행 SHA 자체는 확인하지 못했다.
+- Fix: OAuth 시작 요청에 현재 브라우저 Origin을 `returnOrigin`으로, 귀환 후 가입·session completion 요청에 `flowId`를 전달한다.
+- Prevention rule: 배포 오류를 진단할 때 환경별 배포 브랜치·실행 식별자를 먼저 확인한다. 확인되지 않은 실행 SHA는 소스 브랜치 SHA와 구분하고, 계약 변경은 실제 브라우저 흐름으로 검증한다.
+- Related files: `src/features/auth/api.ts`, `src/app/auth/callback/`, `src/app/auth/signup/`, `docs/qa/auth.md`.
+
+## 2026-09-27 - 공통 응답 성공 필드 오독
+
+- Task: Google 로그인·회사 온보딩 실제 API 연결 코드 구현.
+- Expected behavior: 백엔드 `CommonResponse`의 성공 응답을 정확히 판정한다.
+- Actual failure: Swagger와 백엔드 저장소의 직렬화 테스트에 나온 `success`를 실제 테스트 서버 JSON 필드로 간주해, 정상 응답도 실패로 처리하는 코드가 정적 검증을 통과했다.
+- Root cause: 문서·저장소 테스트와 배포된 서버의 JSON 응답을 직접 대조하지 않았다.
+- Detection command or review step: 테스트 서버의 `GET /api/v1/regions`, `GET /api/v1/industries`, `GET /api/v1/bid-notices` 정상 응답과 인증 오류 응답에서 `isSuccess`를 확인했다. 같은 서버의 `/v3/api-docs` 공통 응답 스키마는 `success`로 표시한다.
+- Fix: 사용자 결정에 따라 프론트 공통 응답 판정을 테스트 서버의 `isSuccess`로 통일한다. Swagger와 백엔드 저장소 테스트의 불일치는 백엔드 확인 사항으로 남긴다.
+- Prevention rule: 새로운 API 경계를 작성할 때 문서뿐 아니라 배포 서버의 정상·오류 JSON 응답을 확인한다. `lint`와 `build`만으로 런타임 계약이 검증됐다고 보지 않는다.
+- Related files: `src/features/auth/api.ts`, `src/data/bids/api-types.ts`, `src/data/bids/http-reader.ts`, `src/data/bids/detail-http-reader.ts`.
+
 ## 2026-08-10 - 정적 검증만으로 PR 준비 상태 판단
 
 - Task: Figma 기반 홈, mock 인증, 입찰공고 목록 변경의 commit/PR 준비 상태 검토.

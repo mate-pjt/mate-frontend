@@ -26,15 +26,15 @@ export const mockBidReader: BidReader = {
     const firstItemIndex = (page - 1) * query.size;
 
     return {
-      items: filteredBids.slice(firstItemIndex, firstItemIndex + query.size),
+      items: filteredBids.slice(firstItemIndex, firstItemIndex + query.size).map((bid) => ({
+        ...bid,
+        demandAgencyName: null,
+        noticeAgencyName: null,
+      })),
       totalCount: filteredBids.length,
       page,
       size: query.size,
     };
-  },
-
-  async getBidDetail(bidId) {
-    return mockBids.find((bid) => bid.id === bidId) ?? null;
   },
 
   async getFilterOptions() {
@@ -42,6 +42,8 @@ export const mockBidReader: BidReader = {
       regions: mockBidRegions,
       industries: uniqueBidValues(mockBids, "industry"),
       contractMethods: uniqueBidValues(mockBids, "contractMethod"),
+      regionOptions: mockBidRegions.map((region) => ({ code: region, label: region })),
+      industryOptions: uniqueBidValues(mockBids, "industry").map((industry) => ({ code: industry, label: industry })),
     };
   },
 };

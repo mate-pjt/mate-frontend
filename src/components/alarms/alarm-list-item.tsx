@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import { CheckboxCircle } from "@/components/ui/checkbox";
 import type { AlarmKind, AlarmNotification } from "@/types/alarm";
 
 const alarmIconPaths: Record<AlarmKind, string> = {
@@ -11,23 +10,18 @@ const alarmIconPaths: Record<AlarmKind, string> = {
 
 type AlarmListItemProps = {
   alarm: AlarmNotification;
-  editing: boolean;
   index: number;
   onRead: (alarmId: string) => void;
-  onSelectedChange: (alarmId: string, selected: boolean) => void;
-  selected: boolean;
+  pending: boolean;
 };
 
 export function AlarmListItem({
   alarm,
-  editing,
   index,
   onRead,
-  onSelectedChange,
-  selected,
+  pending,
 }: AlarmListItemProps) {
   const alternatingSurface = index % 2 === 0 ? "bg-grayscale-50" : "bg-basic-white";
-  const selectionSummary = alarm.messageLines[alarm.messageLines.length - 1] ?? "알림";
 
   const content = (
     <div className="flex min-h-24 min-w-0 flex-1 items-stretch gap-2">
@@ -51,42 +45,28 @@ export function AlarmListItem({
               </time>
             </div>
             <p className="type-body-3 text-grayscale-600">
-              {alarm.messageLines.map((line) => (
-                <span className="block" key={line}>
+              {alarm.messageLines.map((line, lineIndex) => (
+                <span className="block" key={`${lineIndex}-${line}`}>
                   {line}
                 </span>
               ))}
             </p>
           </div>
-          {!editing && (
-            <span className="flex h-full w-4 shrink-0 items-start" aria-hidden>
-              {alarm.unread && (
-                <Image className="size-4" src="/icon/24dp/state.svg" alt="" width={16} height={16} />
-              )}
-            </span>
-          )}
+          <span className="flex h-full w-4 shrink-0 items-start" aria-hidden>
+            {alarm.unread && (
+              <Image className="size-4" src="/icon/24dp/state.svg" alt="" width={16} height={16} />
+            )}
+          </span>
         </div>
       </div>
     </div>
   );
 
-  if (editing) {
-    return (
-      <div className={`flex w-full items-center gap-4 rounded-2xl p-4 ${alternatingSurface}`}>
-        <CheckboxCircle
-          active={selected}
-          ariaLabel={`${index + 1}번째 ${alarm.label}, ${selectionSummary} 선택`}
-          onActiveChange={(active) => onSelectedChange(alarm.id, active)}
-          size="lg"
-        />
-        {content}
-      </div>
-    );
-  }
-
   return (
     <button
+      aria-busy={pending}
       className={`w-full rounded-2xl p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${alternatingSurface}`}
+      disabled={pending}
       onClick={() => onRead(alarm.id)}
       type="button"
     >

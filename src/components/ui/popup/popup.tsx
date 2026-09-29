@@ -281,7 +281,7 @@ export function AlarmPopup({
                     actions={[
                         { label: "다음에 하기", onClick: onIgnore, tone: "secondary" },
                         {
-                            label: "알림 설정",
+                            label: "알림 설정하기",
                             disabled,
                             onClick: onSetAlarm,
                         },
@@ -294,10 +294,10 @@ export function AlarmPopup({
             <div className="flex w-full flex-col gap-2.5">
                 <PopupHeader onClose={onClose} />
                 <div className="flex w-full flex-col gap-6">
-                    <PopupTitle>{"이 공고 놓치는 일 없게,\n메이트가 미리 알려드릴게요!"}</PopupTitle>
+                    <PopupTitle>{"이 입찰공고 놓치는 일 없게,\n메이트가 미리 알려드릴게요!"}</PopupTitle>
                     <div className="flex w-full flex-col gap-4">
                         <div className="flex w-full items-start justify-between">
-                            <span className="text-grayscale-700 type-body-1">공고 알림받기</span>
+                            <span className="text-grayscale-700 type-body-1">입찰공고 알림 받기</span>
                             <Toggle
                                 ariaLabel="공고 알림받기"
                                 checked={checked}

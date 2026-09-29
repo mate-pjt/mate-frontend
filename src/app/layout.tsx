@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SiteHeader } from "@/components/site-header";
 import { ToastViewport } from "@/components/ui/toast";
+import { AuthSessionProvider } from "@/features/auth/session";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -48,9 +49,11 @@ export default function RootLayout({
       className={pretendard.variable}
     >
       <body className="flex min-h-dvh flex-col bg-background text-foreground antialiased">
-        <SiteHeader />
-        <main className="flex min-h-0 flex-1 flex-col">{children}</main>
-        <ToastViewport />
+        <AuthSessionProvider>
+          <SiteHeader />
+          <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+          <ToastViewport />
+        </AuthSessionProvider>
       </body>
     </html>
   );
