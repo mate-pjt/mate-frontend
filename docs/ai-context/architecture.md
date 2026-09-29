@@ -27,6 +27,8 @@ src/
     globals.css
     layout.tsx
     my/page.tsx
+    my/company/page.tsx
+    my/company/start/page.tsx
     my/settings/notifications/page.tsx
     page.tsx
     qna/page.tsx
@@ -59,6 +61,8 @@ src/
     home/
       home-auth-cta.tsx
     my/
+      my-company-client.tsx
+      my-side-menu.tsx
       my-settings-home-client.tsx
       notification-settings-page-client.tsx
     icons/
@@ -119,6 +123,8 @@ src/
     notifications/
       api.ts
     notification-settings/
+      api.ts
+    my-company/
       api.ts
   lib/
     auth-redirect.ts
@@ -190,9 +196,10 @@ public/
 - `src/features/bid-notice-filters`: 계정별 개인 필터의 GET/PUT/reset 브라우저 API, 응답 검증, 버전·전체 필드 URL 왕복 모델이다. `/bids`의 `ALL` 목록에서만 수동 적용하며, 팝업 저장은 현재 목록 URL만 바꾼다. 계정 저장 버튼은 `expectedVersion`을 보내고 409 때 최신값을 다시 읽는다.
 - `src/features/notifications`: 받은 알림의 목록·미확인 건수·읽음 처리를 위한 DTO 검증과 화면 모델 변환을 담당한다. Bearer token이 필요한 브라우저 API는 기존 인증 경계를 사용한다.
 - `src/features/notification-settings`: 계정의 알림 수신 이메일 GET/PATCH·대체 주소 인증 시작/재전송/확인과 맞춤 공고 이메일 ON/OFF의 브라우저 API 및 응답 검증을 담당한다.
+- `src/features/my-company`: 현재 소속 신청 및 연결 회사의 기본 정보 GET을 기존 인증 경계로 호출한다. 두 조회는 브라우저에서 실행하며 mock 데이터로 대체하지 않는다.
 - `src/components/home`: home-only interactive leaf components. `HomeAuthCta`는 브라우저 세션 상태에 따른 추천 공고 이동을 서버 렌더링 홈에서 분리한다.
 - `src/components/alarms`: `/alarms` 전용 목록 항목, 빈 상태, client 상태 orchestration과 헤더 알림 점을 분리한다. 로그인 후 목록은 실제 API를 20건씩 조회하며 읽음 성공 응답만 화면에 반영한다. 로그아웃 상태에는 로그인 복귀 안내를 표시한다. 사용자별 알림 삭제 API가 없어 편집·삭제 버튼은 비활성이고, Figma에서 가려진 7일 후 삭제 안내는 표시하지 않는다.
-- `src/components/my`: `/my`의 Figma 9.0.0 설정·관리 첫 화면에서 인증 상태, 알림 설정 이동, 로그아웃을 담당한다. 아직 연결할 화면이 없는 회사·계정·안내·의견 항목은 준비 중으로 비활성 표시한다. `/my/settings/notifications`에서는 설정 조회·변경 상태, 이메일 수신처 선택·인증 대화상자를 담당하고, 주소 전환과 맞춤 이메일 설정은 서버 응답 이후에만 화면 값을 갱신한다.
+- `src/components/my`: `/my`의 Figma 9.0.0 설정·관리 첫 화면에서 인증 상태, 회사 정보·알림 설정 이동, 로그아웃을 담당한다. `MySideMenu`가 회사/설정 메뉴와 로그아웃을 두 화면에서 공유한다. 계정·안내·의견 항목은 준비 중으로 비활성 표시한다. `/my/company`와 `/my/company/start`는 진입 시 세션을 갱신하고 소속 신청·회사 기본 정보에 따라 빈 화면, 선택, 대기·종료, 연결 정보를 표시한다. 신청·회사 정보는 읽기 전용이고 데이터가 없는 필드는 추정하지 않는다. `/my/settings/notifications`에서는 설정 조회·변경 상태, 이메일 수신처 선택·인증 대화상자를 담당하고, 주소 전환과 맞춤 이메일 설정은 서버 응답 이후에만 화면 값을 갱신한다.
 - `src/components/qna`: `/qna` 전용 네이티브 `details`/`summary` 아코디언을 제공한다. 각 질문은 독립적으로 여러 개를 펼칠 수 있고, 서버에서 받은 구조화된 답변의 강조·밑줄·목록을 렌더링한다.
 - `/alarms` 목록의 회색·흰색 표면은 현재 표시 순번에 따라 교차하고, 읽음 상태와는 독립적이다. 미확인 항목만 우측 파란 점을 표시한다. 헤더 알림 점은 별도 미확인 건수 API가 0보다 클 때 표시한다.
 - `src/components/bids`: 입찰공고 목록 전용 client orchestration, URL state model, filter/search controls, table, empty state를 분리한다. `/bids`의 공고 보기·검색·필터·페이지·표시 개수는 query string을 단일 공유 상태로 사용하며, 조회된 페이지 결과와 필터 선택지를 props로 받는다.

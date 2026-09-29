@@ -194,6 +194,7 @@ interface QnaReader {
 
 ### 인증·회사 온보딩
 
+- `/my/company`와 `/my/company/start`의 사용자별 조회는 `src/features/my-company/api.ts`에서 기존 `authorizedRequest`를 이용한다. 진입마다 브라우저 session refresh로 `companyContext`를 확인한다. 연결 전에는 `GET /api/v1/company-membership-requests/me`의 `404/CR001`만 신청 없음으로 취급하고, 연결 뒤에는 `GET /api/v1/companies/{companyId}`의 기본 정보만 표시한다. 회사 조회 403은 권한 안내, 다른 오류는 재시도로 처리하며 mock fallback이 없다. 선택 화면의 직접 진입에도 같은 상태 검사를 적용한다.
 - `src/features/auth/api.ts`는 테스트 API URL, 공통 응답·오류, cookie 포함 요청, Bearer token 및 401 이후 refresh 재시도를 담당한다.
 - 테스트 서버에서 확인된 공통 성공 플래그는 `isSuccess`다. 공개 metadata·입찰 목록의 정상 응답과 인증 오류 응답에서 확인했으며, 목록·상세 Reader와 인증 API 경계는 이 필드로 판정한다. 현재 Swagger의 `success` 표기와 백엔드 저장소 직렬화 테스트는 불일치하므로 백엔드 확인 전까지 배포 서버의 실제 응답과 사용자 결정을 따른다.
 - `src/features/auth/session.tsx`는 access token을 브라우저 메모리에만 보관하고 refresh cookie를 통한 복원을 담당한다. 토큰을 localStorage나 Server Component props로 내보내지 않는다.

@@ -2,23 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 import { RightArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { SideMenu, type SideMenuItem } from "@/components/ui/side-menu";
-import { errorMessage } from "@/features/auth/api";
 import { useAuthSession } from "@/features/auth/session";
 
-const menuItems: SideMenuItem[] = [
-  { value: "company", label: "나의 회사 정보", icon: "company", disabled: true },
-  { value: "team", label: "함께하는 팀원", icon: "person", disabled: true },
-  { value: "merge", label: "나의 회사 통합", icon: "add", disabled: true },
-  { value: "bid-alerts", label: "알림 설정 공고", icon: "calendar", disabled: true },
-  { value: "settings", label: "설정 및 관리", icon: "setting" },
-  { value: "logout", label: "로그아웃", icon: "out" },
-];
+import { MySideMenu } from "./my-side-menu";
 
 const cards = [
   {
@@ -40,24 +29,7 @@ const cards = [
 ] as const;
 
 export function MySettingsHomeClient() {
-  const router = useRouter();
-  const { state, refresh, logout } = useAuthSession();
-  const [logoutBusy, setLogoutBusy] = useState(false);
-  const [logoutError, setLogoutError] = useState<string | null>(null);
-
-  async function handleLogout() {
-    if (logoutBusy) return;
-    setLogoutBusy(true);
-    setLogoutError(null);
-    try {
-      await logout();
-      router.refresh();
-    } catch (reason) {
-      setLogoutError(errorMessage(reason));
-    } finally {
-      setLogoutBusy(false);
-    }
-  }
+  const { state, refresh } = useAuthSession();
 
   if (state.status === "anonymous") {
     return (
@@ -88,20 +60,7 @@ export function MySettingsHomeClient() {
 
   return (
     <div className="mx-auto flex w-full max-w-[1668px] flex-1 flex-col gap-6 px-4 pb-24 pt-[30px] sm:px-6 lg:flex-row xl:px-0">
-      <div className="w-full shrink-0 lg:w-[220px]">
-        <SideMenu
-          aria-describedby="my-menu-help"
-          ariaLabel="마이페이지 메뉴"
-          className="w-full"
-          items={menuItems.map((item) => item.value === "logout" ? { ...item, label: logoutBusy ? "로그아웃 중..." : item.label, disabled: logoutBusy } : item)}
-          onValueChange={(value) => {
-            if (value === "logout") void handleLogout();
-          }}
-          value="settings"
-        />
-        <p className="mt-3 px-3 text-xs leading-5 text-grayscale-600" id="my-menu-help">흐리게 표시된 메뉴는 준비 중이에요.</p>
-        {logoutError && <p className="mt-2 px-3 type-body-7 text-danger" role="alert">{logoutError}</p>}
-      </div>
+      <MySideMenu value="settings" />
 
       <section aria-labelledby="my-settings-title" className="min-w-0 w-full max-w-[1180px]">
         <div className="p-2">
