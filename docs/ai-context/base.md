@@ -1,6 +1,6 @@
 # Mate Base AI Context
 
-Last updated: 2026-08-12
+Last updated: 2026-09-27
 
 이 문서는 Mate 프론트엔드에서 AI 에이전트가 작업 전 공통으로 확인할 최소 컨텍스트다. secret, token, password, 개인정보, `.env` 실제 값은 읽거나 기록하지 않는다.
 
@@ -29,7 +29,7 @@ Last updated: 2026-08-12
 - `package.json` defines `packageManager` as `pnpm@11.3.0`.
 - Node.js version: `.nvmrc` pins local development to `22.20.0`, matching the verified local Node.js version and satisfying Next.js `>=20.9.0`.
 - `tsconfig.json` has `strict: true`, `noEmit: true`, `jsx: react-jsx`, and path alias `@/*` to `./src/*`.
-- `next.config.ts` currently has no custom Next.js config.
+- `next.config.ts` allows `local.mate-bid.com` to load Next.js development resources through `allowedDevOrigins`; production origins are unchanged.
 - `eslint.config.mjs` uses Next core web vitals, TypeScript configs, and Storybook's flat recommended config.
 - `postcss.config.mjs` uses `@tailwindcss/postcss`.
 - `.gitignore` ignores `.env*`, `.next/`, `node_modules`, `coverage`, `out`, `build`, `storybook-static/`, Storybook logs, and `*.tsbuildinfo`.
