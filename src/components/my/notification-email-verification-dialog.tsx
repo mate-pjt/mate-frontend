@@ -5,14 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { CloseIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { ApiError, errorMessage, type AuthAccess } from "@/features/auth/api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
+import type { AuthAccess } from "@/data/shared/http";
 import {
   confirmNotificationEmailVerification,
   resendNotificationEmailVerification,
   startNotificationEmailVerification,
   type NotificationEmailSetting,
   type NotificationEmailVerification,
-} from "@/features/notification-settings/api";
+} from "@/data/notification-settings/client";
 
 type Props = AuthAccess & {
   open: boolean;
@@ -32,6 +33,7 @@ function formatRemaining(seconds: number): string {
 export function NotificationEmailVerificationDialog({
   getAccessToken,
   refresh,
+  getAccountKey,
   open,
   signupEmail,
   onClose,
@@ -64,7 +66,7 @@ export function NotificationEmailVerificationDialog({
     return () => window.clearInterval(timer);
   }, [open, verification, lastSendAvailableAt]);
 
-  const access = { getAccessToken, refresh };
+  const access = { getAccessToken, refresh, getAccountKey };
   const resendWait = remainingSeconds(verification?.resendAvailableAt ?? null, now);
   const startWait = remainingSeconds(lastSendAvailableAt, now);
   const validity = remainingSeconds(verification?.expiresAt ?? null, now);

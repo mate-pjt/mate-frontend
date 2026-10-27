@@ -1,165 +1,46 @@
 # Mate Architecture Notes
 
-Last updated: 2026-09-29
+Last updated: 2026-09-30
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
 ## Confirmed Structure
 
 ```text
-DESIGN.md
 src/
-  app/
-    alarms/page.tsx
-    auth/
-      page.tsx
-      callback/
-      signup/
-      legal/[document]/
-      start/
-      company/
-        search/
-        invitations/
-        register/
-    bids/page.tsx
-    bids/[bidId]/page.tsx
-    favicon.ico
-    globals.css
-    layout.tsx
-    my/page.tsx
-    my/settings/notifications/page.tsx
-    page.tsx
-    qna/page.tsx
-  assets/
-    fonts/PretendardVariable.woff2
+  app/                 # 기존 App Router routes: 홈·입찰·인증·회사·알림·마이·Q&A
+  assets/fonts/        # 로컬 Pretendard
   components/
-    auth/
-      auth-screen.tsx
-      auth-gate.tsx
-      company-registration.tsx
-    alarms/
-      alarm-empty.tsx
-      alarm-list-item.tsx
-      alarm-page-client.tsx
-      notification-bell.tsx
-    qna/
-      qna-accordion.tsx
-    bids/
-      bid-detail-actions.tsx
-      bid-detail-alert-card.tsx
-      bid-detail-amounts.tsx
-      bid-detail-content.tsx
-      bid-filter-toolbar.tsx
-      bid-list-client.tsx
-      bid-list-empty.tsx
-      bid-list-model.ts
-      bid-list-search.tsx
-      bid-list-table.tsx
-      bid-view-selector.tsx
-    home/
-      home-auth-cta.tsx
-    my/
-      my-settings-home-client.tsx
-      notification-settings-page-client.tsx
-    icons/
-      README.md
+    auth/ alarms/ bids/ home/ my/ qna/ icons/ ui/
+    dev/mock-status.tsx
     site-header.tsx
-    ui/
-      button/
-        button.stories.tsx
-      card/
-        card.stories.tsx
-      checkbox/
-        checkbox.stories.tsx
-      chip/
-        chip.stories.tsx
-      filter-popover/
-        filter-popover.stories.tsx
-      input/
-        input.stories.tsx
-      pagination/
-        pagination.stories.tsx
-      popup/
-        popup.stories.tsx
-      side-menu/
-        side-menu.stories.tsx
-      select/
-        select.stories.tsx
-      tab-menu/
-        tab-menu.stories.tsx
-      toggle/
-        toggle.stories.tsx
-      toast/
-        index.ts
-        toast.stories.tsx
-        toast.tsx
   data/
-    bids/
-      api-mapper.ts
-      api-types.ts
-      contracts.ts
-      http-reader.ts
-      detail-api-types.ts
-      detail-api-mapper.ts
-      detail-http-reader.ts
-      mock-reader.ts
-      server.ts
-    qna/
-      contracts.ts
-      mock-reader.ts
-      server.ts
+    config.ts
+    shared/            # HTTP requester, AuthAccess, ApiError
+    mock/              # 탭 저장소, Clock·시나리오, 상태 검증
+    auth/              # contracts, HTTP/mock Repository, client, session-controller
+    bids/              # 목록·상세 contracts, HTTP/DTO/mapper, mock, server
+    company/           # 조회·가입·문서 contracts, HTTP/mock, client
+    notifications/     # 받은 알림·건수·읽음
+    bid-alerts/        # 공고별 구독
+    personal-filters/  # 계정 필터
+    notification-settings/ # 수신처·인증·ON/OFF
+    qna/               # contracts, content, static-repository, server
   features/
-    auth/
-      api.ts
-      onboarding-api.ts
-      session.tsx
-      types.ts
-    bid-notice-alerts/
-      api.ts
-    notifications/
-      api.ts
-    notification-settings/
-      api.ts
-  lib/
-    auth-redirect.ts
-    metadata.ts
-    bid-detail-url.ts
-    site.ts
-  mocks/
-    alarms.ts
-    bids.ts
-    qna.ts
-  types/
-    alarm.ts
-    bid.ts
-    bid-list.ts
-    bid-detail.ts
-    qna.ts
+    auth/session.tsx   # 세션 Provider와 사용자 행동 조합
+    bid-notice-filters/model.ts # URL 왕복과 필터 UI 조합
+  lib/                 # 복귀 경로·상세 URL·사이트·metadata
+  types/               # 프론트 표시 모델
+  instrumentation.ts   # 운영 mock 실행 차단
 public/
-  images/
-    alarms/no-result.png
-    auth/
-      google-logo.png
-      company-number.png
-      ...
-    bids/no-result.svg
-    home/
-      alarm-illustration.svg
-      cta-crystal.png
-      hero-illustration.svg
-      matching-illustration.svg
-  icon/
-    mate-brand.svg
-    24dp/
-      alarm.svg
-      check_circle.svg
-      close_circle.svg
-      mate.svg
-      ...
-.storybook/
-  main.ts
-  preview.css
-  preview.tsx
+  images/ icon/        # 기존 화면 이미지·정적 아이콘
+  mock/bid-attachment.txt # mock 첨부, 외부 요청 없음
+.storybook/            # Vite와 동일 데이터 설정 snapshot
+vitest.config.ts
+tests/                 # Node 기반 계약·경계·회귀 테스트
+.github/workflows/
+  chromatic.yml        # 기존 유지
+  data-access.yml      # 테스트·lint·구성별 빌드
 ```
 
 ## Confirmed App Patterns
@@ -176,32 +57,24 @@ public/
 
 ## Source Area Notes
 
-- `src/app`: route pages and global app shell.
-- `src/components`: shared UI and layout components.
-- `src/components/icons`: reusable TSX icon components exported from `index.ts`. These replace source-level SVG imports and avoid bundler-specific SVG loaders.
-- `src/components/ui`: reusable UI primitives. Component families are grouped into folders such as `button/`, `card/`, `checkbox/`, `chip/`, `filter-popover/`, `input/`, `pagination/`, `popup/`, `side-menu/`, `select/`, `tab-menu/`, and `toggle/`; each folder exposes its public imports through `index.ts`.
-- `src/components/ui/toast`: Sonner를 Mate 디자인으로 감싼 전역 성공 toast primitive다. 루트 `ToastViewport`는 하나만 마운트하고, 화면에서는 `showToast(message, { duration? })`만 호출한다. 새 호출은 기존 toast를 교체하며 기본 표시 시간은 3초다.
-- `src/data`: 프론트 화면과 데이터 공급원을 분리하는 가벼운 조회 데이터 계층이다. 입찰 공개 목록과 홈 카드는 `api-types.ts`·`api-mapper.ts`·`http-reader.ts`, 공개 상세는 `detail-api-types.ts`·`detail-api-mapper.ts`·`detail-http-reader.ts`를 거쳐 실제 API를 조회한다. `server.ts`는 `server-only` Server Page 진입점이다. 자세한 규칙은 `docs/ai-context/data-access.md`를 따른다.
-- `src/lib`: site metadata helpers와 OAuth/로그인 복귀 경로 검증 함수.
-- `src/mocks`: 현재 UI 흐름을 위한 mock fixture다. 입찰과 Q&A fixture는 각 도메인의 `mock-reader.ts`에서만 import한다.
-- `src/types`: 데이터 계층과 화면이 공유하는 프론트 내부 TypeScript 모델이다.
-- `src/features/auth`: 브라우저 Google OAuth/session completion, 메모리 access token·refresh cookie session, 회사 온보딩 API·DTO를 묶는다. 가입·회사 변경 호출은 사용자 동작과 쿠키/토큰이 필요한 Client Component에서 실행한다. 증명서 처리의 새로고침 복원에는 계정별 문서/버전 UUID만 `sessionStorage`에 보관한다.
-- `src/features/bid-notice-alerts`: 공고별 계정 알림의 `GET|PUT|DELETE` 브라우저 API 경계다. `src/components/bids/bid-detail-alert-card.tsx`가 `AuthSessionProvider`의 Bearer token을 이용해 읽고, 팝업에서 변경을 확정한 뒤 서버 응답으로만 카드 상태를 갱신한다. 받은 알림 목록과는 별개의 기능이다.
-- `src/features/bid-notice-filters`: 계정별 개인 필터의 GET/PUT/reset 브라우저 API, 응답 검증, 버전·전체 필드 URL 왕복 모델이다. `/bids`의 `ALL` 목록에서만 수동 적용하며, 팝업 저장은 현재 목록 URL만 바꾼다. 계정 저장 버튼은 `expectedVersion`을 보내고 409 때 최신값을 다시 읽는다.
-- `src/features/notifications`: 받은 알림의 목록·미확인 건수·읽음 처리를 위한 DTO 검증과 화면 모델 변환을 담당한다. Bearer token이 필요한 브라우저 API는 기존 인증 경계를 사용한다.
-- `src/features/notification-settings`: 계정의 알림 수신 이메일 GET/PATCH·대체 주소 인증 시작/재전송/확인과 맞춤 공고 이메일 ON/OFF의 브라우저 API 및 응답 검증을 담당한다.
-- `src/components/home`: home-only interactive leaf components. `HomeAuthCta`는 브라우저 세션 상태에 따른 추천 공고 이동을 서버 렌더링 홈에서 분리한다.
-- `src/components/alarms`: `/alarms` 전용 목록 항목, 빈 상태, client 상태 orchestration과 헤더 알림 점을 분리한다. 로그인 후 목록은 실제 API를 20건씩 조회하며 읽음 성공 응답만 화면에 반영한다. 로그아웃 상태에는 로그인 복귀 안내를 표시한다. 사용자별 알림 삭제 API가 없어 편집·삭제 버튼은 비활성이고, Figma에서 가려진 7일 후 삭제 안내는 표시하지 않는다.
-- `src/components/my`: `/my`의 Figma 9.0.0 설정·관리 첫 화면에서 인증 상태, 알림 설정 이동, 로그아웃을 담당한다. 아직 연결할 화면이 없는 회사·계정·안내·의견 항목은 준비 중으로 비활성 표시한다. `/my/settings/notifications`에서는 설정 조회·변경 상태, 이메일 수신처 선택·인증 대화상자를 담당하고, 주소 전환과 맞춤 이메일 설정은 서버 응답 이후에만 화면 값을 갱신한다.
-- `src/components/qna`: `/qna` 전용 네이티브 `details`/`summary` 아코디언을 제공한다. 각 질문은 독립적으로 여러 개를 펼칠 수 있고, 서버에서 받은 구조화된 답변의 강조·밑줄·목록을 렌더링한다.
-- `/alarms` 목록의 회색·흰색 표면은 현재 표시 순번에 따라 교차하고, 읽음 상태와는 독립적이다. 미확인 항목만 우측 파란 점을 표시한다. 헤더 알림 점은 별도 미확인 건수 API가 0보다 클 때 표시한다.
-- `src/components/bids`: 입찰공고 목록 전용 client orchestration, URL state model, filter/search controls, table, empty state를 분리한다. `/bids`의 공고 보기·검색·필터·페이지·표시 개수는 query string을 단일 공유 상태로 사용하며, 조회된 페이지 결과와 필터 선택지를 props로 받는다.
-- `src/components/bids/bid-list-model.ts`는 URL의 기간·금액 preset을 허용 목록으로 정규화한다. 공개 목록의 검색·필터·pagination은 백엔드가 처리한다. 기존 mock 배열 검색·표시형 날짜 파싱은 사용되지 않는 fixture 조회용으로 `src/data/bids/mock-reader.ts`에만 남아 있다.
-- 홈·입찰 목록·입찰 상세는 `src/data/bids/server.ts`를 통해 조회하며 Page와 Component에서 `src/mocks/bids.ts`를 직접 import하지 않는다. 공개 목록의 nullable 금액·낙찰 결과는 `BidListItem`, 상세 전용 값은 `BidDetail`로 분리하여 API 값 그대로 표시한다.
-- Q&A는 `src/data/qna/server.ts`를 통해 조회한다. 현재 내부 `QnaItem`은 Figma 답변의 문단·강조·밑줄·목록을 직렬화 가능한 구조로 표현하며, 실제 API의 rich text 형식·pagination·카테고리·관리자 CRUD는 명세가 올 때 별도로 설계한다.
-- `src/assets`: local font assets. UI icons should not be imported from raw SVG files.
-- `public`: static browser-served assets. Static 24dp SVG icons live under `public/icon/24dp`.
-- `.storybook`: Storybook Vite configuration for the local UI component catalog.
+- `src/app`은 route와 shell, `src/components`는 UI와 사용자 행동 조합을 담당한다. endpoint·DTO·HTTP/mock 구현은 직접 import하지 않는다.
+- `src/data/<domain>/contracts.ts`는 화면용 입력·출력과 Repository 인터페이스다. 함수·객체 factory에 HTTP 클라이언트·세션 접근·mock runtime을 주입하며 BaseRepository·상속·IoC는 없다.
+- `client.ts` 또는 `server.ts`만 구현을 선택한다. 7개 공급원 그룹과 혼합 제약은 `config.ts`가 검사한다. 실제 API 실패는 오류로 전파하고 fallback하지 않는다.
+- `src/data/bids/server.ts`와 `src/data/qna/server.ts`는 `server-only`다. 홈·목록·상세는 같은 bids 공급원, Q&A는 API 없는 static 구현을 사용한다. 서버 공개 mock은 불변 합성 fixture이며 사용자별 가변 상태를 서버 전역에 두지 않는다.
+- 백엔드 DTO와 enum은 HTTP Repository·mapper 안으로 제한한다. 목록 `BidListItem`과 상세 `BidDetail`, 가입 회사와 나의 회사 모델은 구분한다. 날짜·금액·nullable·페이지는 경계에서 변환한다.
+- `src/features/auth/session.tsx`의 Provider는 순수 session-controller를 조합한다. API 인증은 메모리 token/refresh cookie, mock 인증은 탭의 합성 세션만 사용한다. `AuthAccess`에는 token·refresh·현재 계정 식별 함수가 있다. 동시 refresh와 계정 전환·로그아웃 중 늦은 응답을 방어한다.
+- `/my/company`는 회사 Repository의 현재 overview를 조회한다. UI가 인증 응답의 회사 상태로 화면을 판단하지 않는다. API 회사 변경 뒤 세션 갱신은 HTTP 구현, mock 회사 상태 갱신은 mock 구현 책임이다. 변경 성공 뒤 세션 실패는 완료 화면과 경고를 유지한다.
+- 등록 페이지의 `AccountScope`는 인증 계정 교체 시 화면 임시 상태를 초기화한다. 완료 결과는 AuthGate 밖에 두어 등록 성공 후 세션 만료에도 유지한다. 전체 mock 보호 요청은 가상 세션 만료를 검사하며, auth API와 업무 mock의 혼합에서는 실제 token/refresh를 추가로 요청하지 않는다.
+- 문서 업로드는 화면에 문서/버전 ID와 opaque handle만 전달한다. 서명 URL·header·checksum·직접 PUT은 HTTP 내부에 있고, mock은 외부 전송·파일 원본 저장 없이 처리 상태를 변경한다. 복원 키는 공급원별로 격리한다.
+- `src/data/mock/store.ts`는 schema·설정·API 환경·auth 공급원·계정별 sessionStorage 공간을 관리한다. 손상 공간만 초기화하고 사용 불가/용량 초과 시 메모리와 개발 표시로 전환한다. API 응답·실제 token·cookie·서명 URL을 복사하지 않는다.
+- `src/components/dev/mock-status.tsx`는 mock이 있을 때 활성 그룹·현재 공간 초기화와 저장소 제한을 표시한다. 화면별 공급원 선택은 제공하지 않는다.
+- `src/features/bid-notice-filters/model.ts`는 URL 상태·순수 필터 조합을 담당한다. 내부 enum은 personal-filters 계약이다. ALL 목록에서 수동 적용, 저장/초기화에 expectedVersion, 409에 최신값 재조회라는 기존 동작을 유지한다.
+- `src/components/alarms`는 20건 페이지·읽음 성공 후 상태와 미확인 점을 조합한다. 회색/흰색 표면은 순번을 따르며 읽음과 독립적이다. 받은 알림 삭제·편집은 준비 중이다.
+- `src/components/my`는 기존 메뉴·회사·수신 설정 UI를 유지한다. 수신처와 맞춤 이메일 ON/OFF는 하나의 공급원이고 각 요청의 성공/실패 처리는 독립적이다. 미구현 메뉴는 준비 중이다.
+- `src/components/bids`는 URL을 검색·필터·페이지 상태로 사용하고 Repository 결과를 props로 받는다. 알림 카드는 계정별 bidAlerts 공급원을 사용한다. 맞춤공고 목록·기관 단독·결과 낙찰금액 필터 등 기존 준비 중 기능은 이번 전환으로 활성화하지 않는다.
+- `src/components/qna`는 native details/summary로 구조화된 static 답변을 렌더링한다. API endpoint·관리자 CRUD는 추측하지 않는다.
+- `src/components/icons`는 TSX 아이콘, `src/components/ui`는 폴더별 index 공개 primitive다. Sonner ToastViewport는 하나이며 화면은 showToast만 사용한다.
+- `.storybook`은 Next와 같은 config resolver로 snapshot을 Vite define에 주입한다. `tests/architecture.test.ts`가 UI의 구현/DTO import 및 클라이언트에서 server-only로 이어지는 경로를 검사한다.
 
 ## Asset Placement Notes
 
@@ -232,9 +105,9 @@ Inference:
 
 ## Verification Constraints
 
-Available project scripts are `dev`, `build`, `start`, `lint`, `storybook`, and `build-storybook`. For normal app implementation verification, use `pnpm lint` and `pnpm build`. For Storybook or shared UI catalog changes, also use `pnpm build-storybook`.
+현재 scripts는 `dev`, `build`, `start`, `lint`, `test`, `test:watch`, `storybook`, `build-storybook`다. 기본 검증은 Node 22.20.0의 `pnpm test`, `pnpm lint`, `pnpm build`, `git diff --check`다. Storybook/공용 모델 영향 시 build-storybook도 실행한다.
 
-No test runner is planned for v0.1. No standalone type-check script exists today.
+Vitest의 HTTP fetch 대역은 실제 API 통합 증거가 아니다. async Server Component는 Next 실행과 실제 브라우저에서도 검증한다. 실제 서버 mutation은 승인된 계정과 변경·복구 범위가 필요하며 기존 QA 대기는 mock PASS로 바꾸지 않는다. 독립 type-check/format script는 없다.
 
 ## Auth And Home Route Contract
 
@@ -257,18 +130,11 @@ Confirmed:
 
 ## Data Access Contract
 
-Confirmed:
+도메인별 Repository·명시적 공급원 선택·HTTP DTO 경계·혼합 제약·mock 상태·업로드 규칙은 `docs/ai-context/data-access.md`를 따른다. UI는 공개 client/server 진입점과 프론트 contracts만 사용한다. 기존 feature api.ts, Reader, 미사용 src/mocks fixture는 전환 후 제거했다.
 
-- 조회 계약은 프론트 화면이 필요로 하는 입력과 결과이며 실제 API DTO를 추측하지 않는다.
-- Mock fixture 직접 import는 해당 도메인의 `mock-reader.ts`로 제한한다.
-- 실제 API 연결 시 `api-types.ts`, 필요한 경우 `api-mapper.ts`, `http-reader.ts`를 추가하고 `server.ts` 진입점은 유지한다.
-- 날짜 형식, nullable, enum, 금액 단위, pagination은 실제 명세를 확인한 뒤 데이터 경계에서 변환한다.
-- 인증/온보딩 생성·변경 API는 Swagger와 백엔드 소스의 확인된 계약을 `src/features/auth`에 두며, 가입 화면이 사용하는 브라우저 호출이다. 다른 도메인의 Writer/Mutation 정책은 별도로 설계한다.
-- 목록과 상세의 필드·endpoint가 달라 `BidListItem`과 `BidDetail`을 분리했다. 홈 카드는 `BidListItem`을 사용하며 기존 mock `Bid`는 fixture로만 유지한다.
-
-See `docs/ai-context/data-access.md` for the implementation and future API integration checklist.
+새 기능은 내부 계약 → mock으로 화면·오류 개발 → 확인된 DTO/HTTP → 계약 테스트 및 실제 통합 → 기능 그룹 api 전환 순서로 개발한다. 개발 실행 안내는 `docs/development/repositories.md`를 확인한다.
 
 ## TODO
 
-- TODO: 향후 다른 계정별 기능도 실제 API·세션 경계를 확인한 뒤 `src/features` 배치를 기능별로 결정한다.
+- TODO: 실제 API 회사·메일·계정별 통합 검증의 승인·데이터 준비 항목은 기존 docs/qa 펀치리스트를 유지한다.
 - TODO: Confirm the final deployment host and production `NEXT_PUBLIC_SITE_URL` policy without reading actual environment values.

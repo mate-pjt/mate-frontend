@@ -13,7 +13,7 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Detection command or review step: 백엔드 `dev`의 OAuth controller/service와 배포 workflow를 확인하고, 기존 요청의 400 및 수정 후 실제 브라우저 가입·재로그인을 비교했다. 테스트 서버의 실행 SHA 자체는 확인하지 못했다.
 - Fix: OAuth 시작 요청에 현재 브라우저 Origin을 `returnOrigin`으로, 귀환 후 가입·session completion 요청에 `flowId`를 전달한다.
 - Prevention rule: 배포 오류를 진단할 때 환경별 배포 브랜치·실행 식별자를 먼저 확인한다. 확인되지 않은 실행 SHA는 소스 브랜치 SHA와 구분하고, 계약 변경은 실제 브라우저 흐름으로 검증한다.
-- Related files: `src/features/auth/api.ts`, `src/app/auth/callback/`, `src/app/auth/signup/`, `docs/qa/auth.md`.
+- Related files: `src/data/auth/http-repository.ts`, `src/data/shared/http.ts`, `src/app/auth/callback/`, `src/app/auth/signup/`, `docs/qa/auth.md`.
 
 ## 2026-09-27 - 공통 응답 성공 필드 오독
 
@@ -24,7 +24,7 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Detection command or review step: 테스트 서버의 `GET /api/v1/regions`, `GET /api/v1/industries`, `GET /api/v1/bid-notices` 정상 응답과 인증 오류 응답에서 `isSuccess`를 확인했다. 같은 서버의 `/v3/api-docs` 공통 응답 스키마는 `success`로 표시한다.
 - Fix: 사용자 결정에 따라 프론트 공통 응답 판정을 테스트 서버의 `isSuccess`로 통일한다. Swagger와 백엔드 저장소 테스트의 불일치는 백엔드 확인 사항으로 남긴다.
 - Prevention rule: 새로운 API 경계를 작성할 때 문서뿐 아니라 배포 서버의 정상·오류 JSON 응답을 확인한다. `lint`와 `build`만으로 런타임 계약이 검증됐다고 보지 않는다.
-- Related files: `src/features/auth/api.ts`, `src/data/bids/api-types.ts`, `src/data/bids/http-reader.ts`, `src/data/bids/detail-http-reader.ts`.
+- Related files: `src/data/auth/http-repository.ts`, `src/data/shared/http.ts`, `src/data/bids/api-types.ts`, `src/data/bids/http-repository.ts`, `src/data/bids/detail-http-repository.ts`.
 
 ## 2026-08-10 - 정적 검증만으로 PR 준비 상태 판단
 
@@ -35,7 +35,7 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Detection command or review step: 악성 `next` 값을 사용한 브라우저 흐름, 기본 query 조합 확인, 카드 원본 데이터 대조, 필터 라벨과 모델 필드 대조.
 - Fix: 내부 경로 검증 함수를 추가하고, 홈 카드를 실제 mock 필드로 구성했으며, 기본 결과 fixture와 `bidStartedAt` 기간 필터를 보완했다.
 - Prevention rule: PR 전 Review Gate에서 보안 입력, 기본 URL 상태, 사용자 노출 라벨과 실제 데이터 필드, fixture별 결과 차이를 별도 시나리오로 검증한다.
-- Related files: `src/lib/auth-redirect.ts`, `src/app/auth/page.tsx`, `src/app/page.tsx`, `src/components/bids/bid-list-model.ts`, `src/mocks/bids.ts`.
+- Related files: `src/lib/auth-redirect.ts`, `src/app/auth/page.tsx`, `src/app/page.tsx`, `src/components/bids/bid-list-model.ts`, `src/data/bids/mock-repository.ts`.
 
 ## Failure Entry Template
 
@@ -67,5 +67,15 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Start feature work with `$feature-workflow`.
 - Run `$ai-review` before PR or commit.
 - Use verifier for independent PASS or FAIL when the change affects user-facing behavior or shared components.
-- Use only actual scripts from `package.json`; currently `pnpm lint` and `pnpm build` are the primary app verification commands, and `pnpm build-storybook` is required for Storybook or shared UI catalog changes.
+- Use only actual scripts from `package.json`; currently `pnpm test`, `pnpm lint`, `pnpm build`, and `git diff --check` are the primary app verification commands, and `pnpm build-storybook` is required for Storybook or shared UI catalog changes.
 - If automatic fixes fail 3 times, stop and ask for developer analysis instead of continuing speculative edits.
+
+## Repository 전환 후 예방 검사 (2026-09-30)
+
+과거 실패 이력의 경로는 현재 Repository 경로로 동기화했다. 과거의 실제 QA 판정은 변경하지 않는다.
+
+- wrapper 오독: `tests/http.test.ts`와 `tests/bids.test.ts`에서 `isSuccess`와 잘못된 `success`, 빈 data, HTTP 오류를 검사한다.
+- OAuth 계약 오독: `tests/auth.test.ts`에서 `returnOrigin`, `flowId`, 안전한 복귀 경로, 가상 가입·로그인 분기를 검사한다. 실제 배포 계약 확인을 이 대역 테스트로 대체하지 않는다.
+- 정적 PASS의 확대 해석: `docs/qa/repositories.md`에서 mock 브라우저/HTTP 대역/실제 API 검증을 분리하고 이전 통합 대기를 보존한다.
+- 계정 경쟁·완료 표시: 중간 verifier가 발견한 늦은 upload descriptor의 계정 오염과 등록 성공 뒤 refresh 401/403에 대한 회귀 테스트 및 완료 화면 검사를 추가한다. 계약·세션·UI를 함께 확인한다.
+- 운영 guard: Next instrumentation의 throw만으로 서버 프로세스가 종료되지 않는 것을 실제 시작 검사에서 확인했다. 운영 mock 거부 시 종료 코드 1까지 검사한다.

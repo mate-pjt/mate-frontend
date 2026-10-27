@@ -1,0 +1,1847 @@
+{
+  "date": "2026-10-27",
+  "basis": "Figma 05.v0.1.1 + 현재 작업트리",
+  "fileKey": "Eayi1SWD8Xq8tGBmlp5SV2",
+  "counts": {
+    "total": 442,
+    "screens": 302,
+    "components": 71,
+    "other": 69,
+    "sections": [
+      {
+        "id": "3140:117483",
+        "section": "13_가입",
+        "children": 55,
+        "screens": 48,
+        "componentRefs": 1,
+        "notes": 6
+      },
+      {
+        "id": "3111:131424",
+        "section": "12_공지사항",
+        "children": 5,
+        "screens": 4,
+        "componentRefs": 0,
+        "notes": 1
+      },
+      {
+        "id": "2311:90589",
+        "section": "11_자주묻는질문",
+        "children": 3,
+        "screens": 2,
+        "componentRefs": 0,
+        "notes": 1
+      },
+      {
+        "id": "2304:29129",
+        "section": "10_알림",
+        "children": 13,
+        "screens": 11,
+        "componentRefs": 0,
+        "notes": 2
+      },
+      {
+        "id": "3139:52486",
+        "section": "09_마이페이지(설정과 관리)",
+        "children": 23,
+        "screens": 16,
+        "componentRefs": 2,
+        "notes": 5
+      },
+      {
+        "id": "3137:60478",
+        "section": "08_마이페이지(공고알림)",
+        "children": 8,
+        "screens": 7,
+        "componentRefs": 0,
+        "notes": 1
+      },
+      {
+        "id": "3137:60116",
+        "section": "07_마이페이지(나의회사 통합)",
+        "children": 26,
+        "screens": 23,
+        "componentRefs": 1,
+        "notes": 2
+      },
+      {
+        "id": "3137:52277",
+        "section": "06_마이페이지(함께하는 팀원)",
+        "children": 32,
+        "screens": 24,
+        "componentRefs": 2,
+        "notes": 6
+      },
+      {
+        "id": "3135:75582",
+        "section": "05_마이페이지(서류함)",
+        "children": 27,
+        "screens": 26,
+        "componentRefs": 0,
+        "notes": 1
+      },
+      {
+        "id": "3134:64573",
+        "section": "04_마이페이지(최근업데이트)",
+        "children": 31,
+        "screens": 25,
+        "componentRefs": 1,
+        "notes": 5
+      },
+      {
+        "id": "3162:51262",
+        "section": "03_마이페이지(나의회사정보)",
+        "children": 59,
+        "screens": 32,
+        "componentRefs": 1,
+        "notes": 26
+      },
+      {
+        "id": "2201:18858",
+        "section": "02_입찰공고상세",
+        "children": 51,
+        "screens": 42,
+        "componentRefs": 2,
+        "notes": 7
+      },
+      {
+        "id": "2201:18147",
+        "section": "01_입찰공고리스트",
+        "children": 106,
+        "screens": 40,
+        "componentRefs": 61,
+        "notes": 5
+      },
+      {
+        "id": "2201:18146",
+        "section": "00_메인",
+        "children": 3,
+        "screens": 2,
+        "componentRefs": 0,
+        "notes": 1
+      }
+    ]
+  },
+  "groups": [
+    {
+      "id": "00",
+      "name": "메인",
+      "status": "부분 구현",
+      "done": "랜딩·실제 목록 카드·상세 이동·CTA",
+      "left": "푸터 내용/링크, CTA의 맞춤 목록 완결",
+      "section": "00_메인",
+      "children": 3,
+      "screens": 2,
+      "componentRefs": 0,
+      "notes": 1,
+      "figmaSectionId": "2201:18146"
+    },
+    {
+      "id": "01",
+      "name": "입찰공고 목록",
+      "status": "부분 구현",
+      "done": "공개 3종·검색·기본 필터·개인 필터·페이지",
+      "left": "맞춤 목록, 고급 필터 편집, 낙찰금액, 검색 기록/추천",
+      "section": "01_입찰공고리스트",
+      "children": 106,
+      "screens": 40,
+      "componentRefs": 61,
+      "notes": 5,
+      "figmaSectionId": "2201:18147"
+    },
+    {
+      "id": "02",
+      "name": "입찰공고 상세",
+      "status": "부분 구현",
+      "done": "공사·용역·물품·금액 전환·첨부·개찰·구독",
+      "left": "정정 이력·원문/추가 일자, 실서버 검증",
+      "section": "02_입찰공고상세",
+      "children": 51,
+      "screens": 42,
+      "componentRefs": 2,
+      "notes": 7,
+      "figmaSectionId": "2201:18858"
+    },
+    {
+      "id": "03",
+      "name": "나의 회사 정보",
+      "status": "부분 구현",
+      "done": "미연결/신청 상태·기본 프로필·등록 재사용",
+      "left": "가입 후 실적/인증/희망금액 카드·신청 취소",
+      "section": "03_마이페이지(나의회사정보)",
+      "children": 59,
+      "screens": 32,
+      "componentRefs": 1,
+      "notes": 26,
+      "figmaSectionId": "3162:51262"
+    },
+    {
+      "id": "04",
+      "name": "최근 업데이트",
+      "status": "미구현",
+      "done": "회사 기본 조회만 별도로 존재",
+      "left": "최신정보 갱신·연도 상태·비교 적용·직접 편집",
+      "section": "04_마이페이지(최근업데이트)",
+      "children": 31,
+      "screens": 25,
+      "componentRefs": 1,
+      "notes": 5,
+      "figmaSectionId": "3134:64573"
+    },
+    {
+      "id": "05",
+      "name": "서류함",
+      "status": "미구현",
+      "done": "가입용 문서 업로드 기반은 존재",
+      "left": "가입 후 목록·상세·다운로드·추가/재업로드·삭제",
+      "section": "05_마이페이지(서류함)",
+      "children": 27,
+      "screens": 26,
+      "componentRefs": 0,
+      "notes": 1,
+      "figmaSectionId": "3135:75582"
+    },
+    {
+      "id": "06",
+      "name": "함께하는 팀원",
+      "status": "미구현",
+      "done": "초대를 받는 온보딩은 존재",
+      "left": "팀원/권한·발송 초대·합류 검토·직급 관리",
+      "section": "06_마이페이지(함께하는 팀원)",
+      "children": 32,
+      "screens": 24,
+      "componentRefs": 2,
+      "notes": 6,
+      "figmaSectionId": "3137:52277"
+    },
+    {
+      "id": "07",
+      "name": "나의 회사 통합",
+      "status": "미구현",
+      "done": "기존 회사 소속 신청과 구분 필요",
+      "left": "보낸/받은 회사 간 통합·단계 검토·부분 승인/거절",
+      "section": "07_마이페이지(나의회사 통합)",
+      "children": 26,
+      "screens": 23,
+      "componentRefs": 1,
+      "notes": 2,
+      "figmaSectionId": "3137:60116"
+    },
+    {
+      "id": "08",
+      "name": "공고 알림 관리",
+      "status": "미구현",
+      "done": "상세의 단건 알림 설정은 존재",
+      "left": "전체/분류 목록·건수·선택/일괄 해제",
+      "section": "08_마이페이지(공고알림)",
+      "children": 8,
+      "screens": 7,
+      "componentRefs": 0,
+      "notes": 1,
+      "figmaSectionId": "3137:60478"
+    },
+    {
+      "id": "09",
+      "name": "설정과 관리",
+      "status": "부분 구현",
+      "done": "설정 홈·이메일 ON/OFF·수신처 인증·로그아웃",
+      "left": "계정 관리·탈퇴·안내/의견 연결, 정책 차이 정리",
+      "section": "09_마이페이지(설정과 관리)",
+      "children": 23,
+      "screens": 16,
+      "componentRefs": 2,
+      "notes": 5,
+      "figmaSectionId": "3139:52486"
+    },
+    {
+      "id": "10",
+      "name": "받은 알림",
+      "status": "부분 구현",
+      "done": "목록·읽음·미확인 건수·더 보기",
+      "left": "대상 화면 이동·새 알림 갱신·편집/삭제",
+      "section": "10_알림",
+      "children": 13,
+      "screens": 11,
+      "componentRefs": 0,
+      "notes": 2,
+      "figmaSectionId": "2304:29129"
+    },
+    {
+      "id": "11",
+      "name": "자주 묻는 질문",
+      "status": "핵심 구현",
+      "done": "5개 static 답변·독립 열림·상단 이동",
+      "left": "의견 배너는 공통 미연결 항목, 현재 정책으로 내용 변경",
+      "section": "11_자주묻는질문",
+      "children": 3,
+      "screens": 2,
+      "componentRefs": 0,
+      "notes": 1,
+      "figmaSectionId": "2311:90589"
+    },
+    {
+      "id": "12",
+      "name": "메이트 소식·공지사항",
+      "status": "미구현",
+      "done": "설계에 목록·분류·상세 존재",
+      "left": "GNB·라우트·콘텐츠 공급원·상세/목록 복귀",
+      "section": "12_공지사항",
+      "children": 5,
+      "screens": 4,
+      "componentRefs": 0,
+      "notes": 1,
+      "figmaSectionId": "3111:131424"
+    },
+    {
+      "id": "13",
+      "name": "가입",
+      "status": "부분 구현",
+      "done": "Google·가입·회사 등록/검색·초대 수락",
+      "left": "네이버·정식 약관·실적 직접 수정·팀원 화면 복귀",
+      "section": "13_가입",
+      "children": 55,
+      "screens": 48,
+      "componentRefs": 1,
+      "notes": 6,
+      "figmaSectionId": "3140:117483"
+    }
+  ],
+  "features": [
+    {
+      "area": "00",
+      "id": "H01",
+      "title": "홈 랜딩·소개·상단 이동",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "정적",
+      "remaining": "반응형 전용 시안은 별도 없음",
+      "priority": "P3",
+      "figma": [
+        "2016:57355"
+      ],
+      "evidence": [
+        "src/app/page.tsx:31",
+        "src/app/page.tsx:142",
+        "src/app/page.tsx:227"
+      ],
+      "verification": "새 mock 브라우저"
+    },
+    {
+      "area": "00",
+      "id": "H02",
+      "title": "전체 입찰공고 9개 카드·상세 이동",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 API 데이터·오류·기관·null 경계의 통합 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "2016:57355"
+      ],
+      "evidence": [
+        "src/app/page.tsx:87",
+        "src/app/page.tsx:110",
+        "docs/qa/home.md:137"
+      ],
+      "verification": "새 mock 브라우저·계약 테스트"
+    },
+    {
+      "area": "00",
+      "id": "H03",
+      "title": "맞춤 공고 확인 CTA",
+      "ui": "구현",
+      "behavior": "목적지 일부",
+      "data": "인증 연결",
+      "remaining": "로그인 후 도착하는 맞춤 목록이 준비 중 안내",
+      "priority": "P1",
+      "figma": [
+        "2016:57355"
+      ],
+      "evidence": [
+        "src/components/home/home-auth-cta.tsx:7",
+        "src/components/bids/bid-list-client.tsx:288"
+      ],
+      "verification": "새 mock 로그인·복귀 확인"
+    },
+    {
+      "area": "00",
+      "id": "H04",
+      "title": "푸터 정보·약관·고객문의",
+      "ui": "빈 영역",
+      "behavior": "미연결",
+      "data": "없음",
+      "remaining": "Figma 푸터 내용·링크·문의 경로를 구현",
+      "priority": "P0",
+      "figma": [
+        "2016:57355",
+        "3261:54545"
+      ],
+      "evidence": [
+        "src/app/page.tsx:225",
+        "src/app/auth/legal/[document]/page.tsx:18"
+      ],
+      "verification": "코드·홈 캡처 대조"
+    },
+    {
+      "area": "01",
+      "id": "L01",
+      "title": "전체·마감임박·개찰결과 목록",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 서버 정렬·페이지·분류별 실데이터 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "2048:58606",
+        "2105:72919",
+        "2105:73460"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-client.tsx:302",
+        "src/data/bids/http-repository.ts:45",
+        "docs/qa/bid-list.md:223"
+      ],
+      "verification": "새 mock 목록·개찰 확인"
+    },
+    {
+      "area": "01",
+      "id": "L02",
+      "title": "맞춤 입찰공고 목록",
+      "ui": "준비 중",
+      "behavior": "미구현",
+      "data": "연결 없음",
+      "remaining": "개인 필터 기능과 별도로 맞춤 목록의 조회·표시·빈/오류·정책 확정",
+      "priority": "P1",
+      "figma": [
+        "3003:47410"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-client.tsx:288",
+        "docs/qa/bid-list.md:197"
+      ],
+      "verification": "새 mock 로그인 후 placeholder 확인"
+    },
+    {
+      "area": "01",
+      "id": "L03",
+      "title": "공고명·번호·기관 검색·초기화",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 기관 역할별 검색 결과 검증 대기",
+      "priority": "P0",
+      "figma": [
+        "2085:70948"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-search.tsx:12",
+        "src/components/bids/bid-list-client.tsx:163"
+      ],
+      "verification": "새 mock 검색·0건 확인"
+    },
+    {
+      "area": "01",
+      "id": "L04",
+      "title": "최근·추천 검색어 팝업",
+      "ui": "없음",
+      "behavior": "보류",
+      "data": "공급원·저장 정책 미정",
+      "remaining": "실제 검색 기록/추천어 근거와 보존 정책 후 연결",
+      "priority": "P3",
+      "figma": [
+        "2085:69617",
+        "2085:70060",
+        "2085:70521"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-search.tsx:21",
+        "docs/ai-context/plan.md:65"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L05",
+      "title": "공사·용역·물품 / 지역·업종·계약 기본 필터",
+      "ui": "구현",
+      "behavior": "기본 선택 구현",
+      "data": "API·mock",
+      "remaining": "복수 업종·지역 등 세부 편집은 별도 범위",
+      "priority": "P1",
+      "figma": [
+        "2068:59079",
+        "2075:63269",
+        "2074:63648",
+        "2093:5556"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:74",
+        "src/components/bids/bid-filter-toolbar.tsx:97"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L06",
+      "title": "기간·금액 preset 필터",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "직접 범위/기준 종류 편집과 구분",
+      "priority": "P1",
+      "figma": [
+        "2081:2349",
+        "2099:67819"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:119",
+        "src/components/bids/bid-filter-toolbar.tsx:140"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L07",
+      "title": "지역 업체·공동도급 등 고급 지역 조건",
+      "ui": "비활성",
+      "behavior": "미연결",
+      "data": "모델 일부 지원",
+      "remaining": "advancedDisabled 해제에 필요한 제어값·콜백·조회 계약 연결",
+      "priority": "P2",
+      "figma": [
+        "2080:64254",
+        "2080:64609"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:86",
+        "src/data/personal-filters/contracts.ts:4"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L08",
+      "title": "날짜 기준 선택·직접 기간 입력",
+      "ui": "비활성",
+      "behavior": "미연결",
+      "data": "모델·URL 지원",
+      "remaining": "선택형 preset 외 고급 편집 UI를 연결",
+      "priority": "P2",
+      "figma": [
+        "2081:61968",
+        "2081:62097"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:121",
+        "src/components/ui/filter-popover/filter-popover.tsx:588"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L09",
+      "title": "금액 종류·직접 최소/최대 입력",
+      "ui": "비활성",
+      "behavior": "미연결",
+      "data": "모델·URL 지원",
+      "remaining": "기초/추정가격 종류와 직접 범위 편집 UI 연결",
+      "priority": "P2",
+      "figma": [
+        "2083:61727",
+        "2085:67295"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:140",
+        "src/data/personal-filters/contracts.ts:12"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "01",
+      "id": "L10",
+      "title": "개찰결과 낙찰금액 필터",
+      "ui": "준비 중",
+      "behavior": "보류",
+      "data": "프론트 연결 없음",
+      "remaining": "현재 서버 계약 확인 후 낙찰금액 필터 구현",
+      "priority": "P2",
+      "figma": [
+        "2134:10709"
+      ],
+      "evidence": [
+        "src/components/bids/bid-filter-toolbar.tsx:132",
+        "docs/qa/bid-list.md:125"
+      ],
+      "verification": "새 mock 비활성 확인"
+    },
+    {
+      "area": "01",
+      "id": "L11",
+      "title": "개인 필터 조회·수동 적용·계정 저장·초기화·409",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 API 재검증 12건 대기; 회사 조건 명시 가져오기/고급 편집은 별도",
+      "priority": "P0",
+      "figma": [
+        "2991:111897",
+        "2991:112500"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-client.tsx:170",
+        "src/components/bids/bid-list-client.tsx:207",
+        "docs/qa/personal-bid-filter.md:55"
+      ],
+      "verification": "계약 테스트·기존 QA 기록"
+    },
+    {
+      "area": "01",
+      "id": "L12",
+      "title": "페이지 수·페이지 이동·빈 결과·오류",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "현재 live 통합 QA 대기; 모든 모바일 전용 시안은 없음",
+      "priority": "P0",
+      "figma": [
+        "2085:69181"
+      ],
+      "evidence": [
+        "src/components/bids/bid-list-client.tsx:385",
+        "src/components/bids/bid-list-table.tsx:60",
+        "docs/qa/bid-list.md:137"
+      ],
+      "verification": "새 mock 0건·개찰·목록 확인"
+    },
+    {
+      "area": "02",
+      "id": "D01",
+      "title": "공사·용역·물품 상세와 분류 선택",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 API 분류·수집값·오류의 통합 QA 9건 대기",
+      "priority": "P0",
+      "figma": [
+        "2113:19107",
+        "2196:16577",
+        "2196:21087"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-content.tsx:35",
+        "src/data/bids/detail-http-repository.ts:42",
+        "docs/qa/bid-detail.md:140"
+      ],
+      "verification": "새 mock 상세·계약 테스트"
+    },
+    {
+      "area": "02",
+      "id": "D02",
+      "title": "금액 숫자/억·만 표시 전환",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "상세 데이터 사용",
+      "remaining": "기능 구현; 전 데이터 경계 브라우저 QA는 별도",
+      "priority": "P2",
+      "figma": [
+        "2181:69810"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-amounts.tsx:9"
+      ],
+      "verification": "새 mock 전환 확인"
+    },
+    {
+      "area": "02",
+      "id": "D03",
+      "title": "공고 링크 복사·나라장터 원문 링크",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "상세 데이터 사용",
+      "remaining": "실제 첨부/원문 접근 통합 확인 대기",
+      "priority": "P2",
+      "figma": [
+        "2113:19107"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-actions.tsx:6",
+        "src/components/bids/bid-detail-content.tsx:59"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "02",
+      "id": "D04",
+      "title": "공고별 알림 조회·설정·해제 팝업",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 API 알림 통합 8건 대기",
+      "priority": "P0",
+      "figma": [
+        "2191:11467",
+        "2192:69778",
+        "2282:26779"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-alert-card.tsx:132",
+        "src/data/bid-alerts/contracts.ts:8",
+        "docs/qa/bid-alert.md:126"
+      ],
+      "verification": "새 mock 설정·새로고침 확인"
+    },
+    {
+      "area": "02",
+      "id": "D05",
+      "title": "정정·취소·재입찰 상태 표시",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "상태·변경시각·사유 표시 범위",
+      "priority": "P2",
+      "figma": [
+        "2201:18876"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-content.tsx:89",
+        "docs/qa/bid-detail.md:66"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "02",
+      "id": "D06",
+      "title": "이전 공고·정정 이력 목록/선택",
+      "ui": "공용 팝업만",
+      "behavior": "실제 상세 미연결",
+      "data": "과거 이력 계약 미연결",
+      "remaining": "CorrectionPopup을 실제 정정 이력 데이터와 상세 상태에 연결",
+      "priority": "P2",
+      "figma": [
+        "2208:20632",
+        "2210:18395",
+        "2210:18751"
+      ],
+      "evidence": [
+        "src/components/ui/popup/popup.tsx:353",
+        "src/components/bids/bid-detail-content.tsx:89",
+        "docs/qa/bid-detail.md:73"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "02",
+      "id": "D07",
+      "title": "개찰결과·회차·참여업체·1~3순위",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "live 데이터와 분류/회차별 결과 통합 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "2205:19427",
+        "2220:18627",
+        "2220:20052"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-content.tsx:100",
+        "src/components/bids/bid-detail-content.tsx:290",
+        "src/data/bids/detail-http-repository.ts:60"
+      ],
+      "verification": "계약 테스트·코드 대조"
+    },
+    {
+      "area": "02",
+      "id": "D08",
+      "title": "물품 품목·합계·페이지",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "11개 이상 물품 등 실제 데이터 통합 대기",
+      "priority": "P0",
+      "figma": [
+        "2196:21087",
+        "2220:20052"
+      ],
+      "evidence": [
+        "src/data/bids/detail-http-repository.ts:52",
+        "docs/qa/bid-detail.md:54"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "02",
+      "id": "D09",
+      "title": "첨부 미리보기/다운로드·관련 공고",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 스트리밍·다운로드/부분실패 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "2113:19107"
+      ],
+      "evidence": [
+        "src/components/bids/bid-detail-content.tsx:165",
+        "src/components/bids/bid-detail-content.tsx:182"
+      ],
+      "verification": "mock 상세·계약 테스트"
+    },
+    {
+      "area": "02",
+      "id": "D10",
+      "title": "지시사항/원문 본문·현장설명일·수집 기준일",
+      "ui": "대체/일부 없음",
+      "behavior": "미제공 부분 있음",
+      "data": "프론트 모델 없음",
+      "remaining": "공고 원문은 링크로 대체; 현장설명은 필요 여부만 표시. 상세 일자·원문 본문 계약과 표시 정책 확인",
+      "priority": "P2",
+      "figma": [
+        "2113:19107",
+        "2181:69353"
+      ],
+      "evidence": [
+        "src/types/bid-detail.ts:22",
+        "src/components/bids/bid-detail-content.tsx:146",
+        "src/components/bids/bid-detail-content.tsx:200",
+        "docs/qa/bid-detail.md:73"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "03",
+      "id": "M01",
+      "title": "미연결 회사·두 시작 선택지",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "live 계정에 의한 통합 검증 대기",
+      "priority": "P0",
+      "figma": [
+        "3162:51271",
+        "3162:51281"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:131",
+        "src/components/my/my-company-client.tsx:149",
+        "docs/qa/my-company.md:114"
+      ],
+      "verification": "새 mock 미연결·선택 확인"
+    },
+    {
+      "area": "03",
+      "id": "M02",
+      "title": "회사 소속 신청 조회·대기/거절/취소/승인지연",
+      "ui": "구현",
+      "behavior": "조회 구현",
+      "data": "API·mock",
+      "remaining": "상태별 실제 계정 5건 차단; 조회와 신청 취소 실행은 별도",
+      "priority": "P0",
+      "figma": [
+        "3162:52364",
+        "3162:52427"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:69",
+        "src/components/my/my-company-client.tsx:230",
+        "docs/qa/my-company.md:114"
+      ],
+      "verification": "계약 테스트·기존 시뮬레이션 기록"
+    },
+    {
+      "area": "03",
+      "id": "M03",
+      "title": "연결 회사의 기본 정보",
+      "ui": "구현",
+      "behavior": "조회 구현",
+      "data": "API·mock",
+      "remaining": "현재는 회사명·인증상태·대표자·번호·업종·주소·전화·설립연도 범위",
+      "priority": "P1",
+      "figma": [
+        "3134:64574"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:252",
+        "src/data/company/contracts.ts:171"
+      ],
+      "verification": "코드·mock 등록 후 확인"
+    },
+    {
+      "area": "03",
+      "id": "M04",
+      "title": "가입 후 실적·인증 3종·희망금액 대시보드",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "overview 모델에 없음",
+      "remaining": "가입 과정에서 보던 실적/인증/희망금액을 회사 관리 화면에서도 조회하도록 확장",
+      "priority": "P1",
+      "figma": [
+        "3134:64574",
+        "3134:66829"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:267",
+        "src/data/company/contracts.ts:171",
+        "docs/qa/my-company.md:8"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "03",
+      "id": "M05",
+      "title": "소속 신청 취소",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "취소 상태 조회와 달리 사용자가 취소하는 명령·화면을 구현",
+      "priority": "P2",
+      "figma": [
+        "3162:52416"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:230",
+        "src/data/company/contracts.ts:199"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "04",
+      "id": "U01",
+      "title": "최근/연도별 회사 정보 갱신 안내",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "해 바뀜·최신/이전 데이터 상태와 갱신 진입을 구현",
+      "priority": "P2",
+      "figma": [
+        "3134:66829",
+        "3135:68266"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:252",
+        "docs/qa/my-company.md:8"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "04",
+      "id": "U02",
+      "title": "최신 정보 불러오기·변경 비교/선택 적용",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "조회 대기·최신정보 유지·선택 반영·충돌/권한 처리",
+      "priority": "P2",
+      "figma": [
+        "3135:68996",
+        "3135:71126",
+        "3135:71288"
+      ],
+      "evidence": [
+        "src/data/company/contracts.ts:193",
+        "src/components/my/my-company-client.tsx:252"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "04",
+      "id": "U03",
+      "title": "회사 정보 직접 편집·프로필 변경",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "업종·주소 등 편집/오류/저장, 이미지 변경 권한과 계약",
+      "priority": "P2",
+      "figma": [
+        "3135:69008",
+        "3135:69602",
+        "3135:70640"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:252",
+        "src/data/company/contracts.ts:193"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "05",
+      "id": "F01",
+      "title": "가입 후 서류함 목록·보유/만료 상태",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "관리 목록 계약 없음",
+      "remaining": "가입용 업로드와 별개인 보관함·문서 생명주기 UI/조회 연결",
+      "priority": "P2",
+      "figma": [
+        "3135:75612",
+        "3135:75734"
+      ],
+      "evidence": [
+        "src/data/company/contracts.ts:212",
+        "src/components/my/my-company-client.tsx:252"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "05",
+      "id": "F02",
+      "title": "보관 서류 상세·다운로드·수정 이력",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "관리 조회/다운로드 계약 없음",
+      "remaining": "등록 문서 조회·유효기간·최종수정·다운로드 구현",
+      "priority": "P2",
+      "figma": [
+        "3135:75782",
+        "3135:83161"
+      ],
+      "evidence": [
+        "src/data/company/contracts.ts:212"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "05",
+      "id": "F03",
+      "title": "보관 문서 추가·재업로드·삭제",
+      "ui": "가입 기반 일부",
+      "behavior": "관리 흐름 미구현",
+      "data": "업로드/버전/처리 기반 있음",
+      "remaining": "기존 업로드 기반을 보관함에 연결; 삭제·권한·충돌·오류·완료 피드백 추가",
+      "priority": "P2",
+      "figma": [
+        "3135:75651",
+        "3135:75938",
+        "3135:80545"
+      ],
+      "evidence": [
+        "src/data/company/contracts.ts:213",
+        "src/app/auth/company/register/document/registration-client.tsx:1"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "05",
+      "id": "F04",
+      "title": "서류 기반 실적·회사정보 반영",
+      "ui": "가입 기반 일부",
+      "behavior": "가입 후 흐름 없음",
+      "data": "등록 proposal 기반 있음",
+      "remaining": "OCR 결과를 회사 갱신/직접 수정과 연결",
+      "priority": "P2",
+      "figma": [
+        "3135:75991",
+        "3135:78459",
+        "3135:81589"
+      ],
+      "evidence": [
+        "src/data/company/contracts.ts:219",
+        "src/components/auth/company-registration.tsx:69"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "06",
+      "id": "T01",
+      "title": "팀원 목록·역할·상세·정보/권한 변경",
+      "ui": "메뉴 비활성",
+      "behavior": "미구현",
+      "data": "관리 계약 없음",
+      "remaining": "관리자/팀원/뷰어별 조회와 편집 권한 구현",
+      "priority": "P2",
+      "figma": [
+        "3137:52702",
+        "3137:53331",
+        "3137:54225"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:12",
+        "src/data/company/contracts.ts:193"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "06",
+      "id": "T02",
+      "title": "관리자 초대 발송·재발송·취소",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "발송 관리 계약 없음",
+      "remaining": "초대를 받는 기능과 별도로 발송자의 관리 화면/API 연결",
+      "priority": "P2",
+      "figma": [
+        "3137:52847",
+        "3137:52911",
+        "3137:52990"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:12",
+        "src/data/company/contracts.ts:202"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "06",
+      "id": "T03",
+      "title": "합류 신청 검토·승인/거절",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "받은 신청 목록·검토 팝업·승인/거절·역할 설정",
+      "priority": "P2",
+      "figma": [
+        "3137:53069",
+        "3137:53154",
+        "3137:53193"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:12"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "06",
+      "id": "T04",
+      "title": "직급 목록·추가·관리",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "가입 중 직급 입력과 별도의 회사 직급 관리",
+      "priority": "P2",
+      "figma": [
+        "3137:53220",
+        "3137:53254",
+        "3137:53288"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:12",
+        "src/data/company/contracts.ts:199"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "07",
+      "id": "G01",
+      "title": "회사 간 통합 요청 발송·상태",
+      "ui": "메뉴 비활성",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "회사 소속 신청과 구분하여 미인증/인증 회사 간 팀원·실적 통합 구현",
+      "priority": "P2",
+      "figma": [
+        "3042:58164",
+        "3043:58978",
+        "3298:52565"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:13",
+        "src/data/company/contracts.ts:199"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "07",
+      "id": "G02",
+      "title": "받은 통합 요청의 팀원·회사 정보 검토",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "팀원 검토와 회사 정보 검토를 완료해야 통합 승인하는 단계 제어",
+      "priority": "P2",
+      "figma": [
+        "3052:55919",
+        "3066:56069",
+        "3070:62541"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:13"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "07",
+      "id": "G03",
+      "title": "전체/일부 승인·거절·충돌/완료",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "팀원 권한·직급·실적 선택 및 통합 후 데이터 일관성 검증",
+      "priority": "P2",
+      "figma": [
+        "3076:66722",
+        "3077:127263",
+        "3077:129182"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:13",
+        "src/data/company/contracts.ts:193"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "08",
+      "id": "A01",
+      "title": "내 알림 설정 공고 전체/분류별 관리 목록",
+      "ui": "메뉴 비활성",
+      "behavior": "미구현",
+      "data": "개별 설정만 있음",
+      "remaining": "전체 분류의 서버 정렬/페이지 계약 선행; GENERAL을 전체로 해석하면 안 됨",
+      "priority": "P1",
+      "figma": [
+        "2268:85301",
+        "2302:26429"
+      ],
+      "evidence": [
+        "src/components/my/my-side-menu.tsx:14",
+        "src/data/bid-alerts/contracts.ts:8",
+        "docs/qa/my-bid-notice-alerts.md:13"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "08",
+      "id": "A02",
+      "title": "알림 등록 일괄 선택·해제·완료",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "단건 해제 기반 있음",
+      "remaining": "관리 목록 편집과 복수 해제의 실패/재조회 정책 구현",
+      "priority": "P1",
+      "figma": [
+        "2290:26111",
+        "2293:24928",
+        "2293:25410",
+        "2293:26421"
+      ],
+      "evidence": [
+        "src/data/bid-alerts/contracts.ts:8",
+        "src/components/my/my-side-menu.tsx:14"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "09",
+      "id": "S01",
+      "title": "설정 첫 화면·메뉴·로그아웃",
+      "ui": "구현",
+      "behavior": "일부 구현",
+      "data": "인증 연결",
+      "remaining": "회사/알림 설정/로그아웃 외 항목은 준비 중",
+      "priority": "P2",
+      "figma": [
+        "3139:52490",
+        "3139:52557"
+      ],
+      "evidence": [
+        "src/components/my/my-settings-home-client.tsx:12",
+        "src/components/my/my-side-menu.tsx:10"
+      ],
+      "verification": "새 mock 메뉴 확인"
+    },
+    {
+      "area": "09",
+      "id": "S02",
+      "title": "계정 정보 조회/관리",
+      "ui": "카드만",
+      "behavior": "미구현",
+      "data": "관리 계약 없음",
+      "remaining": "계정 상세 진입·인증·변경 정책과 UI 연결",
+      "priority": "P2",
+      "figma": [
+        "3139:53049"
+      ],
+      "evidence": [
+        "src/components/my/my-settings-home-client.tsx:14"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "09",
+      "id": "S03",
+      "title": "계정 탈퇴·확인·인증·철회",
+      "ui": "공용 팝업만",
+      "behavior": "실제 계정 흐름 없음",
+      "data": "탈퇴 계약 없음",
+      "remaining": "탈퇴 조건/데이터 처리/회사 대표 권한 정책 확정 후 화면·API 연결",
+      "priority": "P2",
+      "figma": [
+        "3139:53195",
+        "3139:56044",
+        "3139:56270"
+      ],
+      "evidence": [
+        "src/components/ui/popup/popup.tsx:648",
+        "src/components/ui/popup/popup.tsx:726",
+        "src/components/my/my-settings-home-client.tsx:14"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "09",
+      "id": "S04",
+      "title": "맞춤 이메일 ON/OFF",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실서버 4xx/5xx 1건 대기; 발송 자체는 프론트 완료로 판정하지 않음",
+      "priority": "P0",
+      "figma": [
+        "3139:52591"
+      ],
+      "evidence": [
+        "src/components/my/notification-settings-page-client.tsx:219",
+        "src/data/notification-settings/http-repository.ts:94",
+        "docs/qa/notification-settings.md:115"
+      ],
+      "verification": "기존 live 일부 통과·새 mock 확인"
+    },
+    {
+      "area": "09",
+      "id": "S05",
+      "title": "대체 이메일 인증·재전송·전환",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "기존 live QA 3통과/6대기; Mailpit 검증 환경 필요",
+      "priority": "P0",
+      "figma": [
+        "3139:52665",
+        "3139:56715",
+        "3139:52894"
+      ],
+      "evidence": [
+        "src/components/my/notification-email-verification-dialog.tsx:70",
+        "src/data/notification-settings/http-repository.ts:51",
+        "docs/qa/notification-email-recipient.md:122"
+      ],
+      "verification": "계약 테스트·새 mock 확인"
+    },
+    {
+      "area": "09",
+      "id": "S06",
+      "title": "야간 수신·전역 공고 상세 알림 토글",
+      "ui": "현재 정책상 없음",
+      "behavior": "정책 차이",
+      "data": "정책에서 제외",
+      "remaining": "Figma를 그대로 복원하기보다 08:30 이메일·공고별 내부 알림 정책을 디자인에 반영",
+      "priority": "P2",
+      "figma": [
+        "3139:52591"
+      ],
+      "evidence": [
+        "src/components/my/notification-settings-page-client.tsx:222",
+        "docs/ai-context/data-access.md:119"
+      ],
+      "verification": "현재 mate-docs 알림 정책 재확인"
+    },
+    {
+      "area": "09",
+      "id": "S07",
+      "title": "서비스 이용안내 진입",
+      "ui": "카드만",
+      "behavior": "미연결",
+      "data": "내용/경로 미정",
+      "remaining": "안내 진입 동작과 연결할 콘텐츠를 확정; 독립 상세 시안 완성 여부는 불명확",
+      "priority": "P3",
+      "figma": [
+        "3139:52523"
+      ],
+      "evidence": [
+        "src/components/my/my-settings-home-client.tsx:25"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "09",
+      "id": "S08",
+      "title": "의견 보내기·문의 경로",
+      "ui": "배너만",
+      "behavior": "비활성",
+      "data": "연결 없음",
+      "remaining": "수집 채널·외부 링크/폼 정책 후 연결",
+      "priority": "P3",
+      "figma": [
+        "3139:52490",
+        "2314:31201"
+      ],
+      "evidence": [
+        "src/components/my/my-settings-home-client.tsx:100",
+        "src/app/qna/page.tsx:56"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "09",
+      "id": "S09",
+      "title": "mock 이메일 인증 시간 정책",
+      "ui": "구현",
+      "behavior": "정책과 다름",
+      "data": "mock 10분/30초",
+      "remaining": "현재 중앙 정책 3분/60초와 mock·개발 가이드의 차이 해소; API UI는 서버 만료시각 사용",
+      "priority": "P2",
+      "figma": [
+        "3139:56715"
+      ],
+      "evidence": [
+        "src/data/notification-settings/mock-repository.ts:21",
+        "docs/development/repositories.md:70",
+        "src/components/my/notification-email-verification-dialog.tsx:70"
+      ],
+      "verification": "현재 mate-docs §7 대조"
+    },
+    {
+      "area": "10",
+      "id": "N01",
+      "title": "받은 알림 목록·읽음·건수·20건 더 보기",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 읽지 않은 알림·21건 이상 데이터 통합 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "2304:29131",
+        "2304:89716"
+      ],
+      "evidence": [
+        "src/components/alarms/alarm-page-client.tsx:60",
+        "src/components/alarms/notification-bell.tsx:17",
+        "docs/qa/alarms.md:53"
+      ],
+      "verification": "새 mock 20→25·22→21·reload 확인"
+    },
+    {
+      "area": "10",
+      "id": "N02",
+      "title": "받은 알림 편집·선택·삭제",
+      "ui": "준비 중",
+      "behavior": "보류",
+      "data": "삭제 계약 미연결",
+      "remaining": "보존·숨김/삭제 의미와 서버 명령 후 연결; 7일 보존 문구도 정책 보류",
+      "priority": "P2",
+      "figma": [
+        "2304:88975",
+        "2304:89462",
+        "2305:29539",
+        "2304:89973"
+      ],
+      "evidence": [
+        "src/components/alarms/alarm-page-client.tsx:169",
+        "docs/qa/alarms.md:65"
+      ],
+      "verification": "새 mock 비활성 확인"
+    },
+    {
+      "area": "10",
+      "id": "N03",
+      "title": "알림에서 대상 공고·회사·소식 이동",
+      "ui": "없음",
+      "behavior": "읽음만",
+      "data": "DTO actionPath 버림",
+      "remaining": "안전한 내부 경로 검증과 읽음 처리 후 대상 화면 이동 연결",
+      "priority": "P1",
+      "figma": [
+        "2304:29131"
+      ],
+      "evidence": [
+        "src/data/notifications/http-repository.ts:16",
+        "src/data/notifications/http-repository.ts:76",
+        "src/components/alarms/alarm-list-item.tsx:70"
+      ],
+      "verification": "새 mock 클릭 후 /alarms 유지"
+    },
+    {
+      "area": "10",
+      "id": "N04",
+      "title": "새 알림 자동 반영·재연결 갱신",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "REST만",
+      "remaining": "서버 변경 신호 수신→REST 재조회, 재연결/화면복귀·계정 전환 처리",
+      "priority": "P1",
+      "figma": [
+        "2304:29131"
+      ],
+      "evidence": [
+        "src/components/alarms/notification-bell.tsx:35",
+        "src/components/alarms/alarm-page-client.tsx:70"
+      ],
+      "verification": "코드 및 현재 mate-docs §9 대조"
+    },
+    {
+      "area": "11",
+      "id": "Q01",
+      "title": "FAQ 5개·독립 아코디언·상단 이동",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "static 콘텐츠",
+      "remaining": "현재 정책 기준 구현; 디자인의 과거 실시간 설명과 내용 차이 있음",
+      "priority": "P3",
+      "figma": [
+        "2314:31201",
+        "2314:90163"
+      ],
+      "evidence": [
+        "src/components/qna/qna-accordion.tsx:11",
+        "src/data/qna/content.ts:1",
+        "docs/qa/qna.md:108"
+      ],
+      "verification": "기존 QA 7통과·새 mock 재확인"
+    },
+    {
+      "area": "12",
+      "id": "W01",
+      "title": "메이트 소식 목록·업데이트/공지 필터",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 공급원 없음",
+      "remaining": "GNB 메뉴·목록·분류·페이지/빈/오류 상태 구현",
+      "priority": "P3",
+      "figma": [
+        "3111:131425",
+        "3111:131858",
+        "3111:132005"
+      ],
+      "evidence": [
+        "src/components/site-header.tsx:13",
+        "src/data/config.ts:1"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "12",
+      "id": "W02",
+      "title": "소식 상세·목록 복귀",
+      "ui": "없음",
+      "behavior": "미구현",
+      "data": "프론트 계약 없음",
+      "remaining": "상세 콘텐츠·이미지·이전 목록 복귀와 발행 방식 확정",
+      "priority": "P3",
+      "figma": [
+        "3111:132163"
+      ],
+      "evidence": [
+        "src/components/site-header.tsx:13"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O01",
+      "title": "Google 로그인·가입·callback·세션/로그아웃",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "현재 코드의 live OAuth/CORS/쿠키·오류/계정 QA 필요; 기존 17건 전체 판정은 대기",
+      "priority": "P0",
+      "figma": [
+        "2306:88681",
+        "3140:119739",
+        "3140:120573"
+      ],
+      "evidence": [
+        "src/features/auth/session.tsx:19",
+        "src/data/auth/http-repository.ts:1",
+        "docs/qa/auth.md:90"
+      ],
+      "verification": "계약 테스트·새 mock 로그인/복귀"
+    },
+    {
+      "area": "13",
+      "id": "O02",
+      "title": "네이버 로그인",
+      "ui": "준비 중",
+      "behavior": "보류",
+      "data": "프론트 연결 없음",
+      "remaining": "지원 여부·OAuth 계약 확정 후 구현 또는 시안에서 범위 제외",
+      "priority": "P3",
+      "figma": [
+        "2306:88681"
+      ],
+      "evidence": [
+        "src/app/auth/login-choices.tsx:19",
+        "docs/qa/auth.md:86"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O03",
+      "title": "필수 약관 동의·본문",
+      "ui": "동의 UI 구현",
+      "behavior": "테스트 동의 구현",
+      "data": "임시 본문/버전",
+      "remaining": "공개 전 정식 본문·URL·버전·이전 동의 처리 결정 및 연결",
+      "priority": "P0",
+      "figma": [
+        "3140:119739"
+      ],
+      "evidence": [
+        "src/app/auth/signup/signup-form.tsx:137",
+        "src/app/auth/legal/[document]/page.tsx:18",
+        "docs/qa/auth.md:88"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O04",
+      "title": "바로 시작·회사 찾기·등록 선택",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "인증·회사 연결",
+      "remaining": "실제 통합 대기",
+      "priority": "P0",
+      "figma": [
+        "3140:120851",
+        "3140:120942",
+        "3140:121033"
+      ],
+      "evidence": [
+        "src/app/auth/start/start-choices.tsx:1",
+        "src/app/auth/company/register/page.tsx:1"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O05",
+      "title": "기존 회사 검색·소속 신청·대표/팀원 입력",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "이는 회사 간 통합이 아니라 소속 신청; 실제 계정/회사 상태 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "3140:121614",
+        "3140:121981",
+        "3140:122094",
+        "3140:122231"
+      ],
+      "evidence": [
+        "src/app/auth/company/search/search-client.tsx:62",
+        "src/data/company/contracts.ts:199",
+        "docs/qa/auth.md:73"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O06",
+      "title": "사업자번호 조회·처리·등록",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 테스트 사업자번호·충돌·처리 상태 검증 대기",
+      "priority": "P0",
+      "figma": [
+        "3141:52692",
+        "3141:52871",
+        "3141:55269"
+      ],
+      "evidence": [
+        "src/app/auth/company/register/business-number/registration-client.tsx:188",
+        "src/data/company/contracts.ts:206"
+      ],
+      "verification": "계약 테스트·새 mock 경로 확인"
+    },
+    {
+      "area": "13",
+      "id": "O07",
+      "title": "증명서 업로드·OCR·재시도·충돌·등록",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 presigned PUT/CORS/OCR worker·데이터 검증 대기; 보관함 관리와 별도",
+      "priority": "P0",
+      "figma": [
+        "3140:122667",
+        "3140:122897",
+        "3140:123030",
+        "3175:51961"
+      ],
+      "evidence": [
+        "src/app/auth/company/register/document/registration-client.tsx:1",
+        "src/data/company/contracts.ts:212",
+        "docs/qa/auth.md:75"
+      ],
+      "verification": "계약 테스트·기존 mock QA"
+    },
+    {
+      "area": "13",
+      "id": "O08",
+      "title": "조회 실적·인증 표시·대표/직급·희망금액",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "가입 후 회사 대시보드에서는 재사용되지 않음",
+      "priority": "P1",
+      "figma": [
+        "3140:123224",
+        "3140:123383",
+        "3140:123469"
+      ],
+      "evidence": [
+        "src/components/auth/company-registration.tsx:69",
+        "src/components/auth/company-registration.tsx:105"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O09",
+      "title": "가입 중 실적·인증 직접 수정",
+      "ui": "비활성",
+      "behavior": "보류",
+      "data": "프론트 수정 계약 없음",
+      "remaining": "시공능력·대표면허·3종 인증 직접 변경/오류 UI와 저장 계약 확정",
+      "priority": "P2",
+      "figma": [
+        "3141:53469",
+        "3141:54519",
+        "3141:54963"
+      ],
+      "evidence": [
+        "src/components/auth/company-registration.tsx:84",
+        "docs/qa/auth.md:85"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O10",
+      "title": "초대 preview·계정 불일치·수락/거절",
+      "ui": "구현",
+      "behavior": "구현",
+      "data": "API·mock",
+      "remaining": "실제 초대 링크·다른 계정·만료·재사용 통합 QA 대기",
+      "priority": "P0",
+      "figma": [
+        "3141:56082",
+        "3141:56135",
+        "3141:56172"
+      ],
+      "evidence": [
+        "src/app/auth/company/invitations/invitation-client.tsx:1",
+        "src/data/company/contracts.ts:202",
+        "docs/qa/auth.md:82"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "13",
+      "id": "O11",
+      "title": "초대 수락 후 팀원 화면 이동",
+      "ui": "완료 화면 있음",
+      "behavior": "/bids로 대체",
+      "data": "팀원 관리 미구현",
+      "remaining": "Figma의 ‘팀원 화면으로 이동하기’ 흐름은 팀원 관리 개발 후 연결",
+      "priority": "P2",
+      "figma": [
+        "3141:56172"
+      ],
+      "evidence": [
+        "src/app/auth/company/invitations/invitation-client.tsx:78"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "공통",
+      "id": "C01",
+      "title": "색상·서체·버튼·입력·선택·체크·탭·카드·토스트",
+      "ui": "공용 기반 구현",
+      "behavior": "대부분 소비됨",
+      "data": "표시 컴포넌트",
+      "remaining": "04.Design system의 모든 변형이 제품에 쓰인 것은 아님; 새 팀원/갱신 UI는 기능별 확장",
+      "priority": "P3",
+      "figma": [
+        "1988:61271"
+      ],
+      "evidence": [
+        "src/app/globals.css:1",
+        "src/components/ui/button/button.tsx:1",
+        "src/components/ui/toast/toast.tsx:1"
+      ],
+      "verification": "정적·대표 시각 비교"
+    },
+    {
+      "area": "공통",
+      "id": "C02",
+      "title": "정정·비밀번호·탈퇴·업로드 공용 팝업",
+      "ui": "컴포넌트 구현",
+      "behavior": "일부 Storybook 전용",
+      "data": "업무 API 없음",
+      "remaining": "컴포넌트 존재를 제품 기능 완료로 세지 말 것. 실제 도메인 연결 필요",
+      "priority": "P2",
+      "figma": [
+        "2210:17840",
+        "2303:89402",
+        "2303:90900",
+        "2264:95335"
+      ],
+      "evidence": [
+        "src/components/ui/popup/index.ts:1",
+        "src/components/ui/popup/popup.stories.tsx:50",
+        "src/components/ui/popup/popup.tsx:353"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "공통",
+      "id": "C03",
+      "title": "OG 썸네일·브랜드 공유 메타데이터",
+      "ui": "기본 metadata",
+      "behavior": "시안 이미지 미연결",
+      "data": "정적",
+      "remaining": "Figma OG 썸네일의 공유 이미지 적용 여부와 운영 사이트 URL 확정",
+      "priority": "P3",
+      "figma": [
+        "2869:43486"
+      ],
+      "evidence": [
+        "src/app/layout.tsx:17",
+        "src/lib/site.ts:1"
+      ],
+      "verification": "코드 대조"
+    },
+    {
+      "area": "공통",
+      "id": "C04",
+      "title": "상세 main 랜드마크 중첩",
+      "ui": "중첩됨",
+      "behavior": "시각 동작은 가능",
+      "data": "없음",
+      "remaining": "RootLayout main 안에 상세 main이 중첩. 접근성 랜드마크를 하나로 정리",
+      "priority": "P3",
+      "figma": [
+        "2113:19107"
+      ],
+      "evidence": [
+        "src/app/layout.tsx:55",
+        "src/components/bids/bid-detail-content.tsx:42"
+      ],
+      "verification": "브라우저 strict locator와 코드로 확인"
+    },
+    {
+      "area": "03",
+      "id": "M06",
+      "title": "회사 등록·찾기의 기존 온보딩 재사용",
+      "ui": "동등 흐름 재사용",
+      "behavior": "/auth/**로 이동",
+      "data": "기존 회사 Repository",
+      "remaining": "Figma의 /my 내부 연속 화면과 동선이 다름. 뒤로가기·완료 후 복귀는 후속 UX 범위 결정",
+      "priority": "P2",
+      "figma": [
+        "3162:51308",
+        "3162:52186",
+        "3162:51941"
+      ],
+      "evidence": [
+        "src/components/my/my-company-client.tsx:164",
+        "src/components/my/my-company-client.tsx:172",
+        "src/components/auth/company-registration.tsx:148",
+        "docs/qa/my-company.md:52"
+      ],
+      "verification": "새 mock 진입 및 코드 대조"
+    }
+  ]
+}

@@ -4,25 +4,27 @@ import { useEffect, useRef, useState } from "react";
 
 import { UpArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { errorMessage, type AuthAccess } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
+import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import {
   getNotifications,
   markNotificationRead,
   NOTIFICATIONS_CHANGED_EVENT,
   type NotificationPage,
-} from "@/features/notifications/api";
+} from "@/data/notifications/client";
 
 import { AlarmEmpty } from "./alarm-empty";
 import { AlarmListItem } from "./alarm-list-item";
 
 export function AlarmPageClient() {
-  const { state, getAccessToken, refresh } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
 
   if (state.status === "authenticated") {
     return (
       <AuthenticatedAlarmPage
         getAccessToken={getAccessToken}
+        getAccountKey={getAccountKey}
         key={state.authentication.account.id}
         refresh={refresh}
       />
@@ -55,7 +57,7 @@ export function AlarmPageClient() {
   );
 }
 
-function AuthenticatedAlarmPage({ getAccessToken, refresh }: AuthAccess) {
+function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: AuthAccess) {
   const [page, setPage] = useState<NotificationPage | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [moreError, setMoreError] = useState<string | null>(null);
@@ -67,7 +69,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh }: AuthAccess) {
 
   useEffect(() => {
     const controller = new AbortController();
-    const access = { getAccessToken, refresh };
+    const access = { getAccessToken, refresh, getAccountKey };
 
     void getNotifications(access, 0, controller.signal).then(
       (result) => {
@@ -79,7 +81,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh }: AuthAccess) {
     );
 
     return () => controller.abort();
-  }, [getAccessToken, refresh, retry]);
+  }, [getAccessToken, refresh, getAccountKey, retry]);
 
   function retryLoad() {
     setLoadError(null);
@@ -92,7 +94,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh }: AuthAccess) {
     setLoadingMore(true);
     setMoreError(null);
     try {
-      const next = await getNotifications({ getAccessToken, refresh }, page.page + 1);
+      const next = await getNotifications({ getAccessToken, refresh, getAccountKey }, page.page + 1);
       setPage((current) => {
         if (!current || current.page + 1 !== next.page) return current;
         const ids = new Set(current.items.map((item) => item.id));
@@ -116,7 +118,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh }: AuthAccess) {
     setReadingIds((current) => [...current, id]);
     setReadError(null);
     try {
-      const updated = await markNotificationRead({ getAccessToken, refresh }, id);
+      const updated = await markNotificationRead({ getAccessToken, refresh, getAccountKey }, id);
       setPage((current) => current && {
         ...current,
         unreadCount: Math.max(0, current.unreadCount - 1),

@@ -1,0 +1,8731 @@
+[
+  {
+    "area": "00",
+    "section": "메인",
+    "id": "2016:57355",
+    "name": "0.0.0_home_default_full",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 4489,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "00",
+    "section": "메인",
+    "id": "2045:59107",
+    "name": "0.0.0_home_default_resolution",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "00",
+    "section": "메인",
+    "id": "2201:18861",
+    "name": "00",
+    "type": "FRAME",
+    "width": 613,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "H01",
+      "H02",
+      "H03",
+      "H04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2048:58606",
+    "name": "1.0.0_입찰공고(전체)_목록",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2417:39741",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 160,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2105:72919",
+    "name": "1.1.0_입찰공고(전체)_목록",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:8656",
+    "name": "1.1.3_입찰공고(마감)_필터열림(업종)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9495",
+    "name": "1.1.4_입찰공고(마감)_필터열림(계약방법)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:10979",
+    "name": "1.1.5_입찰공고(마감)_필터열림(금액)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L06",
+      "L09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:5513",
+    "name": "1.1.1_입찰공고(마감)_필터열림(공사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:6256",
+    "name": "1.1.2_입찰공고(마감)_필터열림(지역)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05",
+      "L07"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2105:73460",
+    "name": "1.2.0_입찰공고(개찰)_목록",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:13903",
+    "name": "1.2.1_입찰공고(마감)_필터열림(공사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:14774",
+    "name": "1.2.2_입찰공고(마감)_필터열림(지역)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05",
+      "L07"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16365",
+    "name": "1.2.3_입찰공고(마감)_필터열림(업종)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:17217",
+    "name": "1.2.4_입찰공고(마감)_필터열림(계약방법)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2112:17888",
+    "name": "1.2.5_입찰공고(마감)_필터열림(기간)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L06",
+      "L08"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2134:10709",
+    "name": "1.2.6_입찰공고(마감)_필터열림(낙찰금액)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2068:59079",
+    "name": "1.0.1_입찰공고(전체)_필터열림(공사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64282",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:6054",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64415",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:6055",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2081:2349",
+    "name": "1.0.5_입찰공고(전체)_필터열림(기간)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L06",
+      "L08"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2099:67819",
+    "name": "1.0.6_입찰공고(전체)_필터열림(금액)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L06",
+      "L09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:68009",
+    "name": "1.0.7_입찰공고(전체)_필터acitve",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:11959",
+    "name": "1.1.6_입찰공고(마감)_필터acitve",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:56970",
+    "name": "1.2.7_입찰공고(마감)_필터acitve",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:69181",
+    "name": "1.0.7_입찰공고(전체)_(필터empty)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:12121",
+    "name": "1.1.6_입찰공고(마감)_필터empty",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L01",
+      "L05",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:69617",
+    "name": "1.0.8_입찰공고(전체)_(검색_actvie_no_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:12162",
+    "name": "1.1.7_입찰공고(마감)_(검색_actvie_no_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:57767",
+    "name": "1.2.7_입찰공고(마감)_(검색_actvie_no_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:70060",
+    "name": "1.0.8_입찰공고(전체)_(검색_actvie_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:12395",
+    "name": "1.1.7_입찰공고(마감)_(검색_actvie_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:58122",
+    "name": "1.2.7_입찰공고(마감)_(검색_actvie_list)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:70521",
+    "name": "1.0.8_입찰공고(전체)_(검색actvie_typing)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:12629",
+    "name": "1.1.7_입찰공고(마감)_(검색actvie_typing)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:58504",
+    "name": "1.2.7_입찰공고(마감)_(검색actvie_typing)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03",
+      "L04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:70948",
+    "name": "1.0.8_입찰공고(전체)_(검색actvie_result)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:12863",
+    "name": "1.1.7_입찰공고(마감)_(검색actvie_result)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:58887",
+    "name": "1.2.7_입찰공고(마감)_(검색actvie_result)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:67295",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 460,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:11827",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 460,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2085:67423",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 460,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:11828",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 460,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2081:62097",
+    "name": "calender_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2075:63269",
+    "name": "1.0.2_입찰공고(전체)_필터열림(지역)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05",
+      "L07"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2080:64609",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2080:64665",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2080:64784",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2080:64958",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:7206",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:7207",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:7208",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:7209",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:63648",
+    "name": "1.0.3_입찰공고(전체)_필터열림(업종)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2093:5556",
+    "name": "1.0.4_입찰공고(전체)_필터열림(계약방법)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1262,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2096:64745",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:10078",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:17792",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2096:64765",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:10079",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:17793",
+    "name": "contract_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2096:64473",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 196,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:10080",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 232,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:17794",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 232,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64548",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9220",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16942",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64604",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9221",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16943",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64660",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9222",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16944",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2075:63236",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9223",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16945",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9224",
+    "name": "chip_bubble",
+    "type": "INSTANCE",
+    "width": 432,
+    "height": 29,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16946",
+    "name": "chip_bubble",
+    "type": "INSTANCE",
+    "width": 432,
+    "height": 29,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2075:59444",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9225",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16947",
+    "name": "Industry_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2074:64726",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 304,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9226",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 272,
+    "height": 304,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16948",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 272,
+    "height": 304,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2075:59473",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 324,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:9227",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 324,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:16949",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 332,
+    "height": 324,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2081:64661",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 320,
+    "height": 344,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3003:47410",
+    "name": "1.3.0_입찰공고(맞춤)_목록_",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:14639",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:14640",
+    "name": "public_category",
+    "type": "INSTANCE",
+    "width": 307,
+    "height": 260,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:15431",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:15432",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:15433",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2110:15434",
+    "name": "place_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 400,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2112:18861",
+    "name": "calender_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 320,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2112:18862",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 320,
+    "height": 344,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2134:11521",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 408,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2134:11522",
+    "name": "price_category",
+    "type": "INSTANCE",
+    "width": 380,
+    "height": 408,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2201:18872",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1476,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2991:111897",
+    "name": "1.0.9_입찰공고(전체)_(맞춤)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2991:112500",
+    "name": "1.0.9_입찰공고(전체)_(필터 일부 변경시 맞춤 버튼 재 노출)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "L11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:56963",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1476,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:56966",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1476,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "3131:56968",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1476,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "01",
+    "section": "입찰공고 목록",
+    "id": "2407:39580",
+    "name": "업종현황 구글시트",
+    "type": "TEXT",
+    "width": 858,
+    "height": 168,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "L01",
+      "L02",
+      "L03",
+      "L04",
+      "L05",
+      "L06",
+      "L07",
+      "L08",
+      "L09",
+      "L10",
+      "L11",
+      "L12"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2113:19107",
+    "name": "2.0.0_입찰공고상세(공사)_로그인전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2201:18876",
+    "name": "2.3.0_입찰공고상세(정정_공사용역)_default",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:20332",
+    "name": "2.4.0_입찰공고상세(정정_물품)_default",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:18751",
+    "name": "2.3.2_입찰공고상세(정정_공사용역)_공고리스트 변경 후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:20628",
+    "name": "2.4.2_입찰공고상세(정정_물품)_공고리스트 변경 후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2208:20632",
+    "name": "2.3.1_입찰공고상세(정정_공사용역)_공고리스트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:20928",
+    "name": "2.4.1_입찰공고상세(정정_물품)_공고리스트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D05",
+      "D06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:18395",
+    "name": "correction_popup",
+    "type": "INSTANCE",
+    "width": 458,
+    "height": 534,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2210:21226",
+    "name": "correction_popup",
+    "type": "INSTANCE",
+    "width": 458,
+    "height": 534,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2205:19427",
+    "name": "2.5.0_개찰공고상세(공사용역)_default",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3204,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2220:21529",
+    "name": "2.5.2_개찰공고상세(공사용역)_정정공고낙찰결과",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3300,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2220:20052",
+    "name": "2.6.0_개찰공고상세(물품)_default",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3545,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2220:18627",
+    "name": "2.5.1_개찰공고상세(공사용역)_낙찰결과리스트열림",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3624,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2220:20393",
+    "name": "2.6.1_개찰공고상세(물품)_낙찰결과리스트열림",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3965,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2220:22083",
+    "name": "2.6.2_개찰공고상세(물품)_정정공고낙찰결과",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3641,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D07",
+      "D08",
+      "D09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:16577",
+    "name": "2.1.0_입찰공고상세(용역)_로그인전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:21087",
+    "name": "2.2.0_입찰공고상세(물품)_로그인전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3048,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2181:10878",
+    "name": "2.0.0_입찰공고상세(공사)_로그인후(미인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:16865",
+    "name": "2.1.0_입찰공고상세(용역)_로그인후(미인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:21375",
+    "name": "2.2.0_입찰공고상세(물품)_로그인후(미인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3048,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2181:69353",
+    "name": "2.0.0_입찰공고상세(공사)_로그인후(인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:17153",
+    "name": "2.1.0_입찰공고상세(용역)_로그인후(인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2707,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:21663",
+    "name": "2.2.0_입찰공고상세(물품)_로그인후(인증회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3048,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D01",
+      "D03",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2181:69810",
+    "name": "2.0.1_입찰공고상세(공사)_로그인후_카운트변경",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2967,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:17440",
+    "name": "2.1.1_입찰공고상세(용역)_로그인후_카운트변경",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 2967,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:21950",
+    "name": "2.2.1_입찰공고상세(물품)_로그인후_카운트변경",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 3458,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2191:11467",
+    "name": "2.0.2_입찰공고상세(공사)_로그인후_알람설정전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:17727",
+    "name": "2.1.2_입찰공고상세(용역)_로그인후_알람설정전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:22237",
+    "name": "2.2.2_입찰공고상세(물품)_로그인후_알람설정전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2192:69778",
+    "name": "2.0.3_입찰공고상세(공사)_로그인후_알람설정후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:18016",
+    "name": "2.1.3_입찰공고상세(용역)_로그인후_알람설정후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:22526",
+    "name": "2.2.3_입찰공고상세(물품)_로그인후_알람설정후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2192:70364",
+    "name": "2.0.4_입찰공고상세(공사)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:18305",
+    "name": "2.1.4_입찰공고상세(용역)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:22815",
+    "name": "2.2.4_입찰공고상세(물품)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2194:15952",
+    "name": "2.0.7_입찰공고상세(공사)_로그인후_알람해제완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:18593",
+    "name": "2.1.7_입찰공고상세(용역)_로그인후_알람해제완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2196:23103",
+    "name": "2.2.7_입찰공고상세(물품)_로그인후_알람해제완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2281:86851",
+    "name": "2.0.5_입찰공고상세(공사)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2282:26779",
+    "name": "2.0.6_입찰공고상세(공사)_로그인후_알람해제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2281:87140",
+    "name": "2.1.5_입찰공고상세(용역)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2282:27068",
+    "name": "2.1.6_입찰공고상세(용역)_로그인후_알람해제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2281:87429",
+    "name": "2.2.5_입찰공고상세(물품)_로그인후_알람받는중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "2282:27357",
+    "name": "2.2.6_입찰공고상세(물품)_로그인후_알람해제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "D04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59109",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1338,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59116",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1659,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59120",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1659,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59122",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1338,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59112",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1338,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59118",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1338,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "02",
+    "section": "입찰공고 상세",
+    "id": "3131:59114",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1338,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51263",
+    "name": "19",
+    "type": "FRAME",
+    "width": 1514,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51265",
+    "name": "20",
+    "type": "FRAME",
+    "width": 1267,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51267",
+    "name": "21",
+    "type": "FRAME",
+    "width": 1858,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51269",
+    "name": "22",
+    "type": "FRAME",
+    "width": 1028,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51271",
+    "name": "3.0.0_마이페이지(나의회사정보)_회사등록하지않은회원",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "M01"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51281",
+    "name": "3.0.1_마이페이지(나의회사정보)_통합하기후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "M01"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51308",
+    "name": "3.1.0_마이페이지(나의회사정보)_우리회사등록하기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51335",
+    "name": "3.1.1_마이페이지(나의회사정보)_우리회사등록하기(사업자등록하기)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51362",
+    "name": "3.1.2_마이페이지(나의회사정보)_사업자등록증명서 첨부전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3189:116500",
+    "name": "3.1.2_마이페이지(나의회사정보)_사업자등록증명서 첨부시 불러올 수 없는경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51414",
+    "name": "3.1.3_마이페이지(나의회사정보)_사업자등록증명서 첨부후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51531",
+    "name": "3.1.4_마이페이지(나의회사정보)_대기1",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51537",
+    "name": "3.1.5_마이페이지(나의회사정보)_대기2",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51543",
+    "name": "3.1.6_마이페이지(나의회사정보)_회사정보(없는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51592",
+    "name": "3.1.7_마이페이지(나의회사정보)_실적정보조회",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51679",
+    "name": "3.1.7_마이페이지(나의회사정보)_불러왔으나직접수정하기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51750",
+    "name": "3.1.7_마이페이지(나의회사정보)_실적못불러왔을경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51821",
+    "name": "3.1.7_마이페이지(나의회사정보)_실적못불러왔을경우 입력",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51892",
+    "name": "3.1.8_마이페이지(나의회사정보)_대표여부및 희망공고금액",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51938",
+    "name": "Vector 4056",
+    "type": "VECTOR",
+    "width": 2680,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51939",
+    "name": "Vector 4058",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51940",
+    "name": "Vector 4057",
+    "type": "VECTOR",
+    "width": 1340,
+    "height": 1380,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51941",
+    "name": "3.1.9_마이페이지(나의회사정보)_회사등록완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:51950",
+    "name": "3.1.8_마이페이지(나의회사정보)_대표여부(아닐경우)및 희망공고금액",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52001",
+    "name": "3.1.7_마이페이지(나의회사정보)_실적못불러왔을경우 입력오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52072",
+    "name": "Vector 4061",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52073",
+    "name": "Vector 4063",
+    "type": "VECTOR",
+    "width": 0,
+    "height": 723,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52074",
+    "name": "Vector 4064",
+    "type": "VECTOR",
+    "width": 153,
+    "height": 1380,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52075",
+    "name": "3.2.2_마이페이지(나의회사정보)_사업자등록번호조회기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52093",
+    "name": "3.2.3_마이페이지(나의회사정보)_사업자등록번호조회_입력",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52111",
+    "name": "3.2.3_마이페이지(나의회사정보)_사업자등록번호조회_입력오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52129",
+    "name": "Vector 4065",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52130",
+    "name": "Vector 4066",
+    "type": "VECTOR",
+    "width": 151,
+    "height": 5738,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52131",
+    "name": "3.2.4_마이페이지(나의회사정보)_사업자등록번호조회_입력성공",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3173:51667",
+    "name": "3.2.4_마이페이지(나의회사정보)_사업자등록번호조회_이미 회사가 인증됐을경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52185",
+    "name": "Vector 4067",
+    "type": "VECTOR",
+    "width": 5100,
+    "height": 5766,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52186",
+    "name": "3.3.0_마이페이지(나의회사정보)_기존회사찾기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52207",
+    "name": "3.3.1_마이페이지(나의회사정보)_기존회사찾기_성공",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52229",
+    "name": "3.3.2_마이페이지(나의회사정보)_통합신청(대표자)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52284",
+    "name": "3.3.2_마이페이지(나의회사정보)_통합신청(팀원)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52343",
+    "name": "3.3.1_마이페이지(나의회사정보)_기존회사찾기_실패",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52364",
+    "name": "3.3.3_마이페이지(나의회사정보)_통합신청완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "M02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52416",
+    "name": "3.3.4_마이페이지(나의회사정보)_통합신청취소",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "M05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:52427",
+    "name": "3.3.3_마이페이지(나의회사정보)_통합신청거절",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "M02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:59127",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1514,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:66813",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1267,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:66815",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1858,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:66817",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1028,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3162:55352",
+    "name": "3.1.6_마이페이지(나의회사정보)_회사정보(인증이 있는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O07",
+      "O08",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:61228",
+    "name": "Vector 4056",
+    "type": "VECTOR",
+    "width": 2680,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:61426",
+    "name": "Vector 4058",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:61425",
+    "name": "Vector 4057",
+    "type": "VECTOR",
+    "width": 1340,
+    "height": 1380,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:62310",
+    "name": "Vector 4061",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:62308",
+    "name": "Vector 4063",
+    "type": "VECTOR",
+    "width": 0,
+    "height": 723,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:62312",
+    "name": "Vector 4064",
+    "type": "VECTOR",
+    "width": 153,
+    "height": 1380,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:62592",
+    "name": "Vector 4065",
+    "type": "VECTOR",
+    "width": 260,
+    "height": 0,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:62594",
+    "name": "Vector 4066",
+    "type": "VECTOR",
+    "width": 151,
+    "height": 5738,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3134:63245",
+    "name": "Vector 4067",
+    "type": "VECTOR",
+    "width": 5100,
+    "height": 5766,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "03",
+    "section": "나의 회사 정보",
+    "id": "3253:54251",
+    "name": "popup",
+    "type": "INSTANCE",
+    "width": 420,
+    "height": 352,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:64574",
+    "name": "4.0.0_마이페이지(나의회사정보)_AI서류업로드 조회성공",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:66829",
+    "name": "4.0.0_마이페이지(나의회사정보)_AI서류업로드 조회성공(해가바뀐경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:64860",
+    "name": "4.0.0_마이페이지(나의회사정보)_사업자등록증명서 첨부하지않은 유저",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:74811",
+    "name": "4.0.0_마이페이지(나의회사정보)_사업자등록증명서 첨부하지않은 유저",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:66972",
+    "name": "4.0.0_마이페이지(나의회사정보)_사업자등록증명서 첨부하지않은 유저",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:65013",
+    "name": "4.0.0_마이페이지(나의회사정보)_사업자번호조회성공_사업자첨부넣은유저",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:67125",
+    "name": "4.0.0_마이페이지(나의회사정보)_사업자번호조회성공_사업자첨부넣은유저(해가바뀐경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3134:66819",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1514,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:71951",
+    "name": "00",
+    "type": "FRAME",
+    "width": 2723,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:75579",
+    "name": "17",
+    "type": "FRAME",
+    "width": 2861,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:67953",
+    "name": "4.0.0_마이페이지(나의회사정보)_AI서류업로드 조회성공",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:68106",
+    "name": "4.1.0_마이페이지(나의회사정보)_회원정보상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:68266",
+    "name": "4.0.0_마이페이지(나의회사정보)_AI서류업로드 조회성공(해가바뀐경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:68996",
+    "name": "4.1.1_마이페이지(나의회사정보)_회원정보상세(최신정보불러오기 대기1)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69008",
+    "name": "4.2.0_마이페이지(나의회사정보)_회원정보상세(직접편집)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69434",
+    "name": "4.1.4_마이페이지(나의회사정보)_회원정보상세(이미최신정보유지)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69595",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 1135,
+    "height": 304,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69596",
+    "name": "Frame 1000005630",
+    "type": "FRAME",
+    "width": 1052,
+    "height": 304,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69599",
+    "name": "Frame 1000005631",
+    "type": "FRAME",
+    "width": 1078,
+    "height": 304,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:69602",
+    "name": "4.2.1_마이페이지(나의회사정보)_회원정보상세(직접편집)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1712,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:70479",
+    "name": "4.1.4_마이페이지(나의회사정보)_최신정보업데이트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:70640",
+    "name": "4.1.4_마이페이지(나의회사정보)_회원정보상세(프로필변경)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:71126",
+    "name": "4.1.2_마이페이지(나의회사정보)_업데이트팝업",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:71288",
+    "name": "4.1.3_마이페이지(나의회사정보)_업데이트팝업 선택",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:71953",
+    "name": "4.3.0_마이페이지(나의회사정보)_회원정보상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:72113",
+    "name": "4.3.1_마이페이지(나의회사정보)_회원정보상세(최신정보불러오기 대기1)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:72125",
+    "name": "4.3.2_마이페이지(나의회사정보)_회원정보상세(회사정보만 가져온경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:72134",
+    "name": "4.4.0_마이페이지(나의회사정보)_회원정보상세(직접편집)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:72660",
+    "name": "4.3.3_마이페이지(나의회사정보)_회원정보상세(이미최신정보유지)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:72982",
+    "name": "4.3.3_마이페이지(나의회사정보)_최신정보업데이트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "04",
+    "section": "최근 업데이트",
+    "id": "3135:75183",
+    "name": "4.4.1_마이페이지(나의회사정보)_회원정보상세(직접편집)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1712,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "U01",
+      "U02",
+      "U03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75587",
+    "name": "5.1.7_마이페이지(서류함)_등록완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75612",
+    "name": "5.0.0_마이페이지(서류함)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:80545",
+    "name": "5.2.3_마이페이지(서류함)_지웠을경우_ 토스트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75651",
+    "name": "5.1.0_마이페이지(서류함)_서류첨부팝업",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75671",
+    "name": "5.1.0_마이페이지(서류함)_파일첨부오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75691",
+    "name": "5.1.1_마이페이지(서류함)_서류첨부시",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:79553",
+    "name": "5.1.1_마이페이지(서류함)_정보불러오지못함",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75711",
+    "name": "5.1.2_마이페이지(서류함)_서류첨부시",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75734",
+    "name": "5.2.0_마이페이지(서류함)_보유",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75757",
+    "name": "5.3.0_마이페이지(서류함)_재업로드",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:83447",
+    "name": "5.3.0_마이페이지(서류함)_재업로드",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75782",
+    "name": "5.2.1_마이페이지(서류함)_상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1444,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:83161",
+    "name": "5.2.1_마이페이지(서류함)_상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75938",
+    "name": "5.3.1_마이페이지(서류함)_재업로드 팝업",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75963",
+    "name": "5.3.2_마이페이지(서류함)_재업로드 대기1",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:82974",
+    "name": "5.3.3_마이페이지(서류함)_재업로드 대기1",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:75991",
+    "name": "5.1.3_마이페이지(서류함)_회사정보",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:78459",
+    "name": "5.1.4_마이페이지(서류함)_실적정보",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:80670",
+    "name": "5.1.4_마이페이지(서류함)_실적못불러왔을경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:81589",
+    "name": "5.1.4_마이페이지(서류함)_직접수정하기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:79000",
+    "name": "5.1.6_마이페이지(서류함)_희망공고_대표자",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:82035",
+    "name": "5.1.6_마이페이지(서류함)_희망공고_사원",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:76061",
+    "name": "5.2.2_마이페이지(서류함)_재업로드",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:76219",
+    "name": "5.2.3_마이페이지(서류함)_재업로드 팝업",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:82426",
+    "name": "5.2.4_마이페이지(서류함)_불러오기 대기1",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:76377",
+    "name": "5.2.2_마이페이지(서류함)_지우기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "05",
+    "section": "서류함",
+    "id": "3135:78374",
+    "name": "00",
+    "type": "FRAME",
+    "width": 575,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52278",
+    "name": "6.1.0_마이페이지(함께하는팀원)_팀원",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52419",
+    "name": "6.1.3_마이페이지(함께하는팀원)_팀원상세_변경후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52561",
+    "name": "6.2.0_마이페이지(함께하는팀원)_뷰어",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52702",
+    "name": "6.0.0_마이페이지(함께하는팀원)_팀원",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52823",
+    "name": "6.3.0_마이페이지(함께하는팀원)_팀원신청없는경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52847",
+    "name": "6.3.1_마이페이지(함께하는팀원)_팀원초대",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52873",
+    "name": "6.3.2_마이페이지(함께하는팀원)_팀원초대중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52911",
+    "name": "6.3.3_마이페이지(함께하는팀원)_재발송 누를경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52951",
+    "name": "6.3.4_마이페이지(함께하는팀원)_재발송성공",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:52990",
+    "name": "6.3.3_마이페이지(함께하는팀원)_초대취소누를경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53030",
+    "name": "6.3.4_마이페이지(함께하는팀원)_초대취소",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53069",
+    "name": "6.5.0_마이페이지(함께하는팀원)_합류있는경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53117",
+    "name": "6.4.0_마이페이지(함께하는팀원)_합류있는경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53154",
+    "name": "6.4.1_마이페이지(함께하는팀원)_검토팝업",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53193",
+    "name": "6.4.2_마이페이지(함께하는팀원)_합류거절",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53218",
+    "name": "team_invite_popup",
+    "type": "INSTANCE",
+    "width": 640,
+    "height": 908,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53219",
+    "name": "team_invite_popup",
+    "type": "INSTANCE",
+    "width": 640,
+    "height": 908,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53220",
+    "name": "6.6.0_마이페이지(함께하는팀원)_직급관리",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53254",
+    "name": "6.6.0_마이페이지(함께하는팀원)_직급관리 추가중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53288",
+    "name": "6.6.0_마이페이지(함께하는팀원)_직급관리 추가완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53331",
+    "name": "6.0.1_마이페이지(함께하는팀원)_팀원상세_풀페이지",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1956,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53557",
+    "name": "6.0.1_마이페이지(함께하는팀원)_팀원상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:53782",
+    "name": "6.1.1_마이페이지(함께하는팀원)_팀원상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:54225",
+    "name": "6.2.1_마이페이지(함께하는팀원)_뷰어상세_풀페이지",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1166,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:54443",
+    "name": "6.1.1_마이페이지(함께하는팀원)_팀원상세_풀페이지",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1878,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:54779",
+    "name": "6.1.2_마이페이지(함께하는팀원)_팀원상세_변경사항",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1878,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60081",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1910,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60085",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1772,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60083",
+    "name": "00",
+    "type": "FRAME",
+    "width": 3131,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60091",
+    "name": "00",
+    "type": "FRAME",
+    "width": 2325,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60087",
+    "name": "00",
+    "type": "FRAME",
+    "width": 2740,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "06",
+    "section": "함께하는 팀원",
+    "id": "3137:60089",
+    "name": "00",
+    "type": "FRAME",
+    "width": 2602,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "T01",
+      "T02",
+      "T03",
+      "T04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3042:58164",
+    "name": "7.0.0_마이페이지(나의회사통합)_통합요청(인증된회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3043:58792",
+    "name": "7.0.1_마이페이지(나의회사통합)_통합요청 작성중",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3043:58978",
+    "name": "7.0.2_마이페이지(나의회사통합)_통합요청 완료(인증된)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3046:53262",
+    "name": "7.0.2_마이페이지(나의회사통합)_통합요청 완료(미인증된)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3298:52565",
+    "name": "7.0.2_마이페이지(나의회사통합)_통합요청 거절",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3043:58602",
+    "name": "7.0.0_마이페이지(나의회사통합)_통합요청(미인증된회사)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3175:52303",
+    "name": "7.0.0_마이페이지(나의회사통합)_통합이 없을경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3137:60117",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1701,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3137:60150",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1701,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3052:55919",
+    "name": "7.1.0_마이페이지(나의회사통합)_통합요청받은",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3066:56069",
+    "name": "7.1.1_마이페이지(나의회사통합)_통합요청받은_팀원검토(대표자)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3072:57004",
+    "name": "7.1.1_마이페이지(나의회사통합)_통합요청받은_팀원검토(사원)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3072:58065",
+    "name": "team_invite_popup",
+    "type": "INSTANCE",
+    "width": 640,
+    "height": 908,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3068:61189",
+    "name": "7.1.2_마이페이지(나의회사통합)_통합요청받은_팀원검토완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3070:62541",
+    "name": "7.1.3_마이페이지(나의회사통합)_통합요청받은_회사정보(검토)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3075:59221",
+    "name": "7.1.3_마이페이지(나의회사통합)_통합요청받은_회사정보(승인)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3076:66722",
+    "name": "7.1.4_마이페이지(나의회사통합)_통합요청받은_통합승인(전부)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3077:127263",
+    "name": "7.1.4_마이페이지(나의회사통합)_통합요청받은_통합승인(일부_01)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3077:127492",
+    "name": "7.1.4_마이페이지(나의회사통합)_통합요청받은_통합승인(일부_02)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3077:127721",
+    "name": "7.1.4_마이페이지(나의회사통합)_통합요청받은_통합승인(일부_03)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3077:127950",
+    "name": "7.1.5_마이페이지(나의회사통합)_통합요청받은_통합승인(거절)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3137:60152",
+    "name": "7.1.6_마이페이지(나의회사통합)_통합요청받은_통합승인(거절중)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3077:129182",
+    "name": "7.1.7_마이페이지(나의회사통합)_통합요청받은_통합승인(거절완료)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3075:66454",
+    "name": "7.1.3_마이페이지(나의회사통합)_통합요청받은_회사정보(미승인)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3068:62211",
+    "name": "7.1.2_마이페이지(나의회사통합)_통합요청받은_팀원검토일부거절",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "07",
+    "section": "나의 회사 통합",
+    "id": "3068:61910",
+    "name": "7.1.2_마이페이지(나의회사통합)_통합요청받은_전부거절",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "G01",
+      "G02",
+      "G03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2268:85301",
+    "name": "8.0.0_마이페이지(공고알림)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2293:85613",
+    "name": "8.0.0_마이페이지(공고알림)_미인증",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2302:26429",
+    "name": "8.0.0_마이페이지(공고알림)최근업데이트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2290:26111",
+    "name": "8.0.1_마이페이지(공고알림)_편집",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2293:24928",
+    "name": "8.0.2_마이페이지(공고알림)_편집_전체선택",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2293:26421",
+    "name": "8.0.2_마이페이지(공고알림)_편집_전체해제완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "2293:25410",
+    "name": "8.0.2_마이페이지(공고알림)_편집_전체해제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "08",
+    "section": "공고 알림 관리",
+    "id": "3137:60479",
+    "name": "18",
+    "type": "FRAME",
+    "width": 714,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "A01",
+      "A02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52487",
+    "name": "00",
+    "type": "FRAME",
+    "width": 890,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56478",
+    "name": "00",
+    "type": "FRAME",
+    "width": 990,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56480",
+    "name": "00",
+    "type": "FRAME",
+    "width": 714,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:57368",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1128,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:57370",
+    "name": "00",
+    "type": "FRAME",
+    "width": 714,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52490",
+    "name": "9.0.0_마이페이지(설정과관리)_기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S01",
+      "S08"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52523",
+    "name": "9.3.0_마이페이지(설정과관리)_서비스이용정보",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S07",
+      "S08"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52557",
+    "name": "9.4.0_마이페이지(설정과관리)_로그아웃",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S01",
+      "S08"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52591",
+    "name": "9.2.0_마이페이지(설정과관리)_알림설정",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52665",
+    "name": "9.2.1_마이페이지(설정과관리)_다른이메일로 받기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56482",
+    "name": "9.2.2_마이페이지(설정과관리)_다른이메일로타이핑",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56715",
+    "name": "9.2.3_마이페이지(설정과관리)_인증번호",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56956",
+    "name": "9.2.3_마이페이지(설정과관리)_인증번호_입력",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52741",
+    "name": "9.2.3_마이페이지(설정과관리)_인증번호_재전송",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:52894",
+    "name": "9.2.4_마이페이지(설정과관리)_인증완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S04",
+      "S05",
+      "S06",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53049",
+    "name": "9.1.0_마이페이지(설정과관리)_계정정보관리",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53195",
+    "name": "9.1.1_마이페이지(설정과관리)_계정정보관리_탈퇴",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56044",
+    "name": "9.1.2_마이페이지(설정과관리)_계정정보관리_탈퇴",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53295",
+    "name": "9.1.3_마이페이지(설정과관리)_계정정보관리_탈퇴",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:56270",
+    "name": "9.1.4_마이페이지(설정과관리)_계정정보관리_탈퇴",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53395",
+    "name": "9.1.4_마이페이지(설정과관리)_계정정보관리_탈퇴안함",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "S03"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53502",
+    "name": "alarmemail_popup",
+    "type": "INSTANCE",
+    "width": 458,
+    "height": 462,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "09",
+    "section": "설정과 관리",
+    "id": "3139:53505",
+    "name": "alarmemail_popup",
+    "type": "INSTANCE",
+    "width": 640,
+    "height": 350,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2304:29131",
+    "name": "10.0.0_알람페이지_기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2304:89716",
+    "name": "10.0.1_알람페이지_읽은경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2304:88975",
+    "name": "10.0.2_알람페이지_편집",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2304:89462",
+    "name": "10.0.3_알람페이지_일부선택",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2305:29539",
+    "name": "10.0.4_알람페이지_일부삭제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2304:89973",
+    "name": "10.0.4_알람페이지_전부삭제",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2853:109292",
+    "name": "10.1.0_알람페이지_비어있는경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2855:111421",
+    "name": "10.1.1_알람페이지_소식있을경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2855:112837",
+    "name": "10.1.2_알람페이지_소식일부 읽은경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2855:113245",
+    "name": "10.1.3_알람페이지_전체읽은경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "2855:113653",
+    "name": "10.1.4_알람페이지_미로그인",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "N01",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "3139:114678",
+    "name": "00",
+    "type": "FRAME",
+    "width": 437,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "N01",
+      "N02",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "10",
+    "section": "받은 알림",
+    "id": "3266:51794",
+    "name": "구글 알림 리스트",
+    "type": "TEXT",
+    "width": 521,
+    "height": 112,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "N01",
+      "N02",
+      "N03",
+      "N04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "11",
+    "section": "자주 묻는 질문",
+    "id": "2314:31201",
+    "name": "11.0.0_자주묻는질문_기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "핵심 구현",
+    "featureIds": [
+      "Q01"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "11",
+    "section": "자주 묻는 질문",
+    "id": "2314:90163",
+    "name": "11.0.0_자주묻는질문_열림",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1348,
+    "kind": "화면 상태",
+    "assessment": "핵심 구현",
+    "featureIds": [
+      "Q01"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "11",
+    "section": "자주 묻는 질문",
+    "id": "3139:114854",
+    "name": "00",
+    "type": "FRAME",
+    "width": 990,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "Q01"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "12",
+    "section": "메이트 소식·공지사항",
+    "id": "3111:131425",
+    "name": "12.0.0_메이트 소식_기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "W01",
+      "W02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "12",
+    "section": "메이트 소식·공지사항",
+    "id": "3111:132163",
+    "name": "12.1.0_메이트 소식_상세",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "W01",
+      "W02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "12",
+    "section": "메이트 소식·공지사항",
+    "id": "3111:131858",
+    "name": "12.0.1_메이트 소식_업데이트",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "W01",
+      "W02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "12",
+    "section": "메이트 소식·공지사항",
+    "id": "3111:132005",
+    "name": "12.0.2_메이트 소식_공지사항",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "미구현",
+    "featureIds": [
+      "W01",
+      "W02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "12",
+    "section": "메이트 소식·공지사항",
+    "id": "3139:114857",
+    "name": "00",
+    "type": "FRAME",
+    "width": 852,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "W01",
+      "W02"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:117484",
+    "name": "00",
+    "type": "FRAME",
+    "width": 437,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122413",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1481,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122415",
+    "name": "00",
+    "type": "FRAME",
+    "width": 990,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122417",
+    "name": "00",
+    "type": "FRAME",
+    "width": 1305,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:59194",
+    "name": "00",
+    "type": "FRAME",
+    "width": 752,
+    "height": 384,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "2306:88681",
+    "name": "13.0.0_가입_기본",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:119739",
+    "name": "13.0.1_가입_구글로그인_회원정보(입력전)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:119875",
+    "name": "13.0.2_가입_구글로그인_회원정보(일부입력후)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:120573",
+    "name": "13.0.2_가입_구글로그인_회원정보(전부입력후)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:120238",
+    "name": "Frame 1000005538",
+    "type": "FRAME",
+    "width": 640,
+    "height": 859,
+    "kind": "설명/구조",
+    "assessment": "제목·주석·연결선 등 기능 수 제외",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:120283",
+    "name": "select_menu",
+    "type": "INSTANCE",
+    "width": 594,
+    "height": 344,
+    "kind": "보조 컴포넌트",
+    "assessment": "보조 컴포넌트 참조",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:120851",
+    "name": "13.0.3_가입_메이트 시작",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:120942",
+    "name": "13.0.3_가입_메이트 바로시작",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121033",
+    "name": "13.0.4_가입_바로 입찰공고로 이동",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O01",
+      "O02",
+      "O03",
+      "O04"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121614",
+    "name": "13.1.3_가입_기존회사찾기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121705",
+    "name": "13.1.4_가입_회사통합신청",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121777",
+    "name": "13.1.5_가입_회사통합조회",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121916",
+    "name": "13.1.5_가입_회사통합조회_오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:121981",
+    "name": "13.1.6_가입_회사통합신청(대표자)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122094",
+    "name": "13.1.6_가입_회사통합신청(팀원)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122231",
+    "name": "13.1.7_가입_회사통합신청완료",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O05"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122322",
+    "name": "13.2.3_가입_우리회사등록하기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122511",
+    "name": "13.2.4_가입_우리회사등록하기(선택전)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122589",
+    "name": "13.2.4_가입_우리회사등록하기(선택후)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122667",
+    "name": "13.2.5_가입_우리회사등록하기_파일첨부전",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122773",
+    "name": "13.2.5_가입_우리회사등록하기_파일첨부후",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:122897",
+    "name": "13.2.5_가입_우리회사등록하기_파일첨부오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123030",
+    "name": "13.2.6_가입_우리회사등록하기_대기1",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123075",
+    "name": "13.2.6_가입_우리회사등록하기_대기2",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123143",
+    "name": "13.2.7_가입_우리회사등록하기_회사정보(인증없는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3175:51961",
+    "name": "13.2.7_가입_우리회사등록하기_회사정보(이미 잇는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123224",
+    "name": "13.2.8_가입_우리회사등록하기_실적정보",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:53469",
+    "name": "13.2.8_가입_우리회사등록하기_실적정보_직접수정하러가기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:54055",
+    "name": "13.2.8_가입_우리회사등록하기_실적정보_불러오지못한경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123383",
+    "name": "13.2.9_가입_우리회사등록하기_마지막(대표자)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123469",
+    "name": "13.2.9_가입_우리회사등록하기_마지막(팀원)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:55492",
+    "name": "13.3.9_가입_우리회사등록하기_사업자등록번호조회_마지막(팀원)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123674",
+    "name": "13.2.10_가입_우리회사등록하기_마지막(팀원)_직급지울경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O07",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:55594",
+    "name": "13.3.10_가입_우리회사등록하기_사업자등록번호조회_마지막(팀원)_직급지울경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3140:123776",
+    "name": "13.3.4_가입_우리회사등록하기(선택후)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:52692",
+    "name": "13.3.5_가입_우리회사등록하기_사업자등록번호조회",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:52750",
+    "name": "13.3.6_가입_우리회사등록하기_사업자등록번호조회_입력",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:52809",
+    "name": "13.3.6_가입_우리회사등록하기_사업자등록번호조회_입력오류",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:52871",
+    "name": "13.3.7_가입_우리회사등록하기_사업자등록번호조회_회사정보(없는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3175:52148",
+    "name": "13.3.7_가입_우리회사등록하기_사업자등록번호조회_회사정보(있는경우)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:52919",
+    "name": "13.3.8_가입_우리회사등록하기_사업자등록번호조회_실적정보",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:55269",
+    "name": "13.3.9_가입_우리회사등록하기_사업자등록번호조회_마지막(대표자)",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:54519",
+    "name": "13.3.8_가입_우리회사등록하기_사업자등록번호조회_실적정보직접수정하기",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:54963",
+    "name": "13.3.8_가입_우리회사등록하기_사업자등록번호조회_실적정보_불러오지못한경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:53001",
+    "name": "14.3.6_가입_우리회사등록하기_사업자등록번호조회_조회불가",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O06",
+      "O08",
+      "O09"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:56082",
+    "name": "13.5.0_가입_다른메일에서 링크를 열경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:56085",
+    "name": "13.6.0_가입_다른메일에서 링크를 열경우",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:56088",
+    "name": "13.6.1_가입_다른메일에서 링크를 열경우_로그인후 회원정보입력",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:56135",
+    "name": "13.6.2_가입_다른메일에서 링크를 열경우_초대",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  },
+  {
+    "area": "13",
+    "section": "가입",
+    "id": "3141:56172",
+    "name": "13.6.3_가입_다른메일에서 링크를 열경우_초대승낙",
+    "type": "FRAME",
+    "width": 1920,
+    "height": 1080,
+    "kind": "화면 상태",
+    "assessment": "부분 구현",
+    "featureIds": [
+      "O10",
+      "O11"
+    ],
+    "coverage": "메타데이터 전수 수집·기능별 코드 연결",
+    "browser": "대표 흐름 검증; 개별 프레임 단독 전 상태는 별도"
+  }
+]

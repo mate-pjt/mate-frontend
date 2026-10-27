@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthCard, AuthError } from "@/components/auth/auth-screen";
-import { completeGoogleSession, errorMessage } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
+import { completeGoogleSession } from "@/data/auth/client";
 import { useAuthSession } from "@/features/auth/session";
 import { sanitizeLocalNextPath } from "@/lib/auth-redirect";
 

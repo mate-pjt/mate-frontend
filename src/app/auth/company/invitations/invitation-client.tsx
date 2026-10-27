@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
-import { errorMessage, googleAuthorizationUrl } from "@/features/auth/api";
-import { acceptInvitation, declineInvitation, previewInvitation, resumeInvitation } from "@/features/auth/onboarding-api";
+import { errorMessage } from "@/data/shared/errors";
+import { googleAuthorizationUrl } from "@/data/auth/client";
+import { acceptInvitation, declineInvitation, previewInvitation, resumeInvitation } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { InvitationContext } from "@/features/auth/types";
+import type { InvitationContext } from "@/data/company/contracts";
 
 const invitationPath = "/auth/company/invitations";
 const roleLabels = { ADMIN: "관리자", AGENT: "담당자", VIEWER: "조회자" } as const;
@@ -51,13 +52,11 @@ export function InvitationClient() {
     setBusy(true);
     setError(null);
     try {
-      if (accept) await acceptInvitation(access, context.version);
-      else await declineInvitation(access, context.version);
-      setFinished(accept ? "accepted" : "declined");
       if (accept) {
-        try { await access.refresh(); }
-        catch { setSessionWarning("초대 수락은 완료됐지만 로그인 상태를 갱신하지 못했습니다. 새로고침 후 확인해 주세요."); }
-      }
+        const result = await acceptInvitation(access, context.version);
+        setSessionWarning(result.sessionWarning ?? null);
+      } else await declineInvitation(access, context.version);
+      setFinished(accept ? "accepted" : "declined");
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
@@ -69,7 +68,7 @@ export function InvitationClient() {
     setBusy(true);
     try {
       await access.logout();
-      window.location.assign(googleAuthorizationUrl(invitationPath));
+      window.location.assign(googleAuthorizationUrl(invitationPath, "alternate"));
     } catch (reason) {
       setError(errorMessage(reason));
       setBusy(false);
@@ -100,7 +99,7 @@ export function InvitationClient() {
           {access.state.status === "anonymous" ? (
             <div className="space-y-3">
               <p className="text-grayscale-600 type-body-7">초대받은 Google 계정으로 로그인해 주세요.</p>
-              <button className="w-full rounded-xl bg-primary px-5 py-4 text-white" onClick={() => window.location.assign(googleAuthorizationUrl(invitationPath))} type="button">Google로 로그인</button>
+              <button className="w-full rounded-xl bg-primary px-5 py-4 text-white" onClick={() => window.location.assign(googleAuthorizationUrl(invitationPath, "alternate"))} type="button">Google로 로그인</button>
             </div>
           ) : null}
           {access.state.status === "authenticated" && context.emailMatched === false ? (

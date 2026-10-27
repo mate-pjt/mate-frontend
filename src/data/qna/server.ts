@@ -1,10 +1,10 @@
 import "server-only";
 
-import type { QnaReader } from "./contracts";
-import { mockQnaReader } from "./mock-reader";
+import type { QnaRepository } from "./contracts";
+import { staticQnaRepository } from "./static-repository";
 
-const qnaReader: QnaReader = mockQnaReader;
+const qnaRepository: QnaRepository = staticQnaRepository;
 
 export function getQnaItems() {
-  return qnaReader.getQnaItems();
+  return qnaRepository.getQnaItems();
 }

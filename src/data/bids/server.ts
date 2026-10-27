@@ -2,12 +2,19 @@ import "server-only";
 
 import { cache } from "react";
 
-import { httpBidDetailReader } from "./detail-http-reader";
-import { httpBidListReader } from "./http-reader";
+import { getDataConfig } from "../config";
+import { createHttpBidDetailRepository } from "./detail-http-repository";
+import { createHttpBidListRepository } from "./http-repository";
+import { createMockBidRepository } from "./mock-repository";
+const getRepositories = cache(() => {
+  const config = getDataConfig();
+  const mock = config.sources.bids === "mock" ? createMockBidRepository(Date.now, config.scenarios.bids) : null;
+  return { list: mock ?? createHttpBidListRepository(config.apiEnvironment), detail: mock ?? createHttpBidDetailRepository(config.apiEnvironment) };
+});
 import type { BidDetailQuery, BidListQuery } from "./contracts";
 
 export async function getHomeBids() {
-  const result = await httpBidListReader.getBidList({
+  const result = await getRepositories().list.getBidList({
     view: "all",
     query: "",
     page: 1,
@@ -17,11 +24,11 @@ export async function getHomeBids() {
 }
 
 export function getBidList(query: BidListQuery) {
-  return httpBidListReader.getBidList(query);
+  return getRepositories().list.getBidList(query);
 }
 
 const cachedBidDetail = cache((id: string, classificationNo: string | null, itemPage: number, resultId: string | null, participantsPage: number) =>
-  httpBidDetailReader.getBidDetail({ id, classificationNo, itemPage, resultId, participantsPage }),
+  getRepositories().detail.getBidDetail({ id, classificationNo, itemPage, resultId, participantsPage }),
 );
 
 export function getBidDetail(query: BidDetailQuery) {
@@ -29,5 +36,5 @@ export function getBidDetail(query: BidDetailQuery) {
 }
 
 export function getBidFilterOptions() {
-  return httpBidListReader.getFilterOptions();
+  return getRepositories().list.getFilterOptions();
 }

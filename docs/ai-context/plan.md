@@ -2,6 +2,12 @@
 
 This is the v0.1 AI harness workflow for feature work in Mate.
 
+## 현재 실행계획 진입점 (2026-10-27)
+
+Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기준선·WBS](../development/figma-v01/README.md)**에서 관리한다. [79개 원본 연결표](../development/figma-v01/coverage.md)로 누락을 확인하고, 선택한 `tasks/작업ID.md`에서 요구사항·결정·체크포인트·검증/리뷰 근거를 이어간다. [작업 운영 규칙](../development/figma-v01/workflow.md)을 기존 Required Flow와 함께 적용한다.
+
+아래 Status는 기존 구현/QA·승인 예외의 **날짜별 이력**으로 보존한다. 이를 새 WBS의 현재 상태와 별도 최신 목록으로 중복 관리하지 않는다. `구현 완료` 이력이 실제 API 통합 완료를 의미하지 않으며 기존 QA의 대기/차단은 유지한다. 최초 다음 작업은 `PREP-01`의 읽기 전용 QA 사전 점검이고 앱 코드 수정·실제 API 실행은 이번 문서화 범위에 포함되지 않는다.
+
 ## Required Flow
 
 1. Structure requirements.
@@ -45,9 +51,11 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - 2026-09-28: `/qna`의 다섯 답변과 소개 문구를 `mate-docs`의 개인 필터·08:30 맞춤 이메일·공고별 내부 알림 정책에 맞춰 수정하고 Figma 의견 배너를 기존 `준비 중` 방식으로 추가했다. Safari 데스크톱과 390/320px 브라우저에서 아코디언·키보드·상단 이동·모바일 배치를 검증했으며, 현재 Q&A API가 없어 목 기반 화면 결과 7건을 `docs/qa/qna.md`에 기록했다. Node 22.20.0 lint·build·diff-check 통과.
 - 2026-09-28: `/bids`의 `ALL`에 계정별 개인 필터 GET/PUT/reset, 수동 적용, 전체 값 URL 왕복, 버전 충돌 안내를 구현했다. 로컬 HTTPS Chrome에서 Google 로그인·저장/재조회·복수 유형/지역/금액 적용·초기화·409 충돌을 실제 API로 관찰했다. 화면 캡처·백엔드 배포 식별자 등 공통 QA 증거가 부족해 12건 모두 `docs/qa/personal-bid-filter.md`에 대기 중이다.
 - 2026-09-29: 백엔드 `dev`의 Google OAuth 계약 변경(MAT-234)에 맞춰 시작 요청의 `returnOrigin`과 귀환 후 인증 요청의 `flowId`를 전달했다. 로컬 HTTPS Chrome에서 테스트 서버의 신규 가입→입찰공고 로그인 상태→로그아웃→기존 계정 재로그인을 확인했다. `pnpm lint`·`pnpm build`가 통과했으며 상세 범위는 `docs/qa/auth.md`에 기록했다. 다른 인증 오류·회사 가입 사례의 전체 QA 판정은 유지한다.
+- 2026-09-30: 승인된 Repository 전환을 완료했다. 현재 구현된 7개 공급원 계약/HTTP/mock, 빌드 snapshot·운영 guard·탭 저장소, 소비자 이전과 legacy 제거, Vitest 4.1.11 및 CI를 반영했다. Node 22.20.0에서 62 tests·lint·API/mock/hybrid build·Storybook·diff-check와 독립 verifier/ai-review/context-audit PASS. mock 데스크톱/390px·HTTP 대역·혼합 구성·운영 artifact 차단도 검증했다. 실제 API QA 대기/차단과 원격 CI/배포는 별도다. 증거는 `docs/qa/repositories.md`, 검토는 `docs/qa/repository-review.md`에 기록했다.
 
 ### In Progress
 
+- 2026-09-29: Figma 기반 `/my/company`와 `/my/company/start`를 추가하고 `/my`의 회사 메뉴를 활성화했다. 세션 갱신 후 미연결·신청 대기/종료·연결 상태를 기존 브라우저 인증 API로 조회하며 연결 회사는 기본 정보만 읽기 전용으로 표시한다. 정적 검증과 상태별 브라우저 화면 검증 결과는 `docs/qa/my-company.md`에서 관리한다. 승인된 연결 계정과 신청 대기 계정의 실제 API 통합 검증 전까지 기능 전체 통합 PASS는 보류한다.
 - 알림 수신 이메일 인증·전환 코드는 구현됐고 정적 검증, 인증 시작 화면, 인증 전 390/320px·키보드 조작을 확인했다. 브라우저에서 인증 시작 요청만 차단해 연결 실패 안내와 기존 주소 유지도 확인했다. `docs/qa/notification-email-recipient.md`의 9건 중 3건 통과, 6건 대기다. 테스트 서버가 메일을 Mailpit에 보관해 인증 완료·주소 전환을 끝내지 못했으므로 기능 최종 PASS는 보류한다. 개발자는 환경 의존 검증을 펀치리스트/TODO에 남기고 다음 작업을 시작하는 예외를 승인했다.
 
 ### Next
@@ -62,11 +70,27 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 - TODO: 개찰결과의 낙찰금액 범위 필터 API 계약과 맞춤공고 목록 API 계약을 백엔드 담당자와 확정한 뒤 별도 기능으로 연결한다.
 - TODO: Figma의 최근·추천 검색어 팝업은 실제 검색 기록과 추천어의 데이터 공급원·저장 정책이 정해지면 별도 기능으로 복원한다.
 - TODO: `docs/qa/README.md` 목록의 기존 화면과 새 Figma 기능에 대한 브라우저 통합 항목을 기능별로 채운다.
-- TODO: `/my`의 계정 관리·서비스 이용안내·의견 보내기·회사 메뉴는 각 화면의 정책과 API가 확정되면 별도 요구사항으로 구현하고 펀치리스트를 추가한다.
+- TODO: `/my`의 계정 관리·서비스 이용안내·의견 보내기는 각 화면의 정책과 API가 확정되면 별도 요구사항으로 구현하고 펀치리스트를 추가한다. 회사 정보의 시공능력·인증·희망 금액 카드, 수정, 신청 취소는 별도 범위다.
 
 ## Status Update Rules
 
-- After feature work completes, update Completed, In Progress, and Next only when the state is clear from the task and repository evidence.
+### 승인된 Repository 전환 단계 (2026-09-30)
+
+| 단계 | 진행 상태 | 근거 |
+| --- | --- | --- |
+| 1. 기준선 | 완료 | HEAD/branch·기존 변경 보존, 7개 그룹·Q&A의 호출/소비자 이전 목록 기록 |
+| 2. 테스트 기반 | 완료 | 승인된 Vitest 4.1.11, Node/fetch/Storage/Clock 대역 |
+| 3. 공통 기반 | 완료 | HTTP/오류/AuthAccess·설정 snapshot·환경 guard·저장소 계약 테스트 |
+| 4. 공개 조회 | 완료 | 홈/목록/상세 Repository·최신 mock·Q&A static, 실제 Next 브라우저 확인 |
+| 5. 인증 | 완료 | API refresh/epoch 보존·가상 login/signup/expiry/pending flow |
+| 6. 계정 기능 | 완료 | 알림/구독/필터/수신 설정 계약·변경/재조회/reload |
+| 7. 회사 | 완료 | 조회/가입/문서·opaque upload·성공+refresh 실패 경고·혼합/계정 격리 |
+| 8. 통합 정리 | 완료 | legacy 제거·import 경계·CI·개발 가이드와 문서 동기화 |
+| 9. 최종 검증 | 완료 | 자동·구성별 빌드·브라우저·운영 차단 및 context-audit/verifier/ai-review PASS |
+
+실제 서버 mutation과 원격 CI/배포는 위 완료 범위에 포함하지 않는다. 세부 검증 방법·증거·미실행 범위는 `docs/qa/repositories.md`를 따른다.
+
+- For the Figma v0.1 backlog, update the WBS current/next/status and the task record from evidence. Keep the Completed, In Progress, and Next entries below as dated history; add a dated milestone only when useful, without duplicating live task status.
 - If the state is uncertain or depends on product/team priority, do not guess; ask the developer with a recommended update.
 
 ## Requirement Structuring
@@ -112,8 +136,10 @@ Use only commands backed by actual `package.json` scripts.
 Primary verification commands:
 
 ```bash
+pnpm test
 pnpm lint
 pnpm build
+git diff --check
 ```
 
 For Storybook configuration, component stories, or shared UI catalog changes, also run:
@@ -124,7 +150,9 @@ pnpm build-storybook
 
 Use `pnpm dev` only when interactive/browser verification is needed. Use `pnpm start` only after a successful build when serving the production app is relevant.
 
-Do not invent `pnpm test`, `pnpm type-check`, or `pnpm format`; those scripts do not exist as of 2026-06-25.
+Markdown/기준선 데이터만 다루고 실행 코드·패키지·빌드 설정에 영향이 없는 작업은 [문서 검증 기준](../development/figma-v01/workflow.md)에 따라 링크·ID/커버리지·의존성·상태·원본 무결성·변경 범위와 diff-check를 검증 계획으로 삼을 수 있다. 이때 앱 test/lint/build 미실행 사유를 기록한다. 기능 변경의 기본 검증을 면제하지 않는다.
+
+`test`/`test:watch`는 2026-09-30 승인된 Vitest 도입으로 존재한다. `type-check`와 `format` script는 없으므로 명령을 만들어 내지 않는다. 공급원 변경 시 api/mock/hybrid 구성과 운영 guard를 확인한다. HTTP 대역 PASS를 실제 API 통합 PASS로 확대하지 않는다.
 
 ## Failure Loop
 

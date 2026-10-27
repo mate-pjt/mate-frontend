@@ -5,7 +5,7 @@
 - Figma: [11_자주묻는질문 기본 `2314:31201`](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-31201), [펼침 `2314:90163`](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-90163)
 - 구현 화면: `/qna`
 - 정책: `mate-docs` [알림과 맞춤 공고 이메일](https://github.com/mate-pjt/mate-docs/blob/b3251bba2a9fbc7de8857ee73dfb955db5720a3c/docs/domain/notification/overview.md), [공고 찾기와 관련 공고](https://github.com/mate-pjt/mate-docs/blob/b3251bba2a9fbc7de8857ee73dfb955db5720a3c/docs/domain/bid/matching-and-related-notices.md)
-- API: **Q&A API 없음**. 2026-09-28 테스트 서버 `/v3/api-docs`에 FAQ/Q&A 경로가 없으며, `src/data/qna/server.ts`는 `mock-reader.ts`를 사용한다.
+- API: **Q&A API 없음**. 2026-09-28 테스트 서버 `/v3/api-docs`에 FAQ/Q&A 경로가 없었다. 2026-09-30 Repository 전환 후 `src/data/qna/server.ts`는 `static-repository.ts`를 사용한다. 아래 2026-09-28 검증 이력과 판정은 유지한다.
 - 정적 검증: Node 22.20.0 `pnpm lint`, `pnpm build`, `git diff --check` 통과
 - 이번 화면의 브라우저 상태: `7건 통과`. 이는 목 데이터로 렌더링한 화면 검증이며 백엔드 Q&A API 통합 결과가 아니다.
 

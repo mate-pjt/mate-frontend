@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { useAuthSession } from "@/features/auth/session";
-import { getUnreadNotificationCount, NOTIFICATIONS_CHANGED_EVENT } from "@/features/notifications/api";
+import { getUnreadNotificationCount, NOTIFICATIONS_CHANGED_EVENT } from "@/data/notifications/client";
 
 export function NotificationBell() {
   const pathname = usePathname();
-  const { state, getAccessToken, refresh } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
   const accountId = state.status === "authenticated" ? state.authentication.account.id : null;
   const [unread, setUnread] = useState<{ accountId: number; count: number } | null>(null);
 
@@ -22,7 +22,7 @@ export function NotificationBell() {
 
     function loadCount() {
       const version = ++requestVersion;
-      void getUnreadNotificationCount({ getAccessToken, refresh }, controller.signal).then(
+      void getUnreadNotificationCount({ getAccessToken, refresh, getAccountKey }, controller.signal).then(
         (count) => {
           if (!controller.signal.aborted && version === requestVersion) setUnread({ accountId: currentAccountId, count });
         },
@@ -38,7 +38,7 @@ export function NotificationBell() {
       controller.abort();
       window.removeEventListener(NOTIFICATIONS_CHANGED_EVENT, loadCount);
     };
-  }, [accountId, pathname, getAccessToken, refresh]);
+  }, [accountId, pathname, getAccessToken, refresh, getAccountKey]);
 
   const count = unread?.accountId === accountId ? unread.count : null;
 

@@ -1,0 +1,286 @@
+{
+  "regions": {
+    "items": [
+      {
+        "code": "11",
+        "name": "서울",
+        "fullName": "서울특별시",
+        "parentCode": null,
+        "depth": 1
+      }
+    ]
+  },
+  "industries": {
+    "items": [
+      {
+        "code": "0001",
+        "name": "토목공사업",
+        "classificationCode": null,
+        "classificationName": null,
+        "categoryCodes": []
+      }
+    ],
+    "totalCount": 1
+  },
+  "bidList": {
+    "items": [
+      {
+        "id": 20001,
+        "bidNtceNo": "HTTP-20001",
+        "bidNtceOrd": "00",
+        "noticeName": "HTTP 대역 시설공사 공고",
+        "bidType": "CONSTRUCTION",
+        "status": "NORMAL",
+        "progressState": "RESULT_AVAILABLE",
+        "noticePublishedAt": "2030-05-30T00:00:00Z",
+        "bidQualificationRegistrationDeadlineAt": "2030-06-02T00:00:00Z",
+        "contractMethod": "GENERAL",
+        "noticeAgencyName": "HTTP 대역 공고기관",
+        "demandAgencyName": "HTTP 대역 수요기관",
+        "bidBeginAt": "2030-06-01T00:00:00Z",
+        "bidCloseAt": "2030-06-03T00:00:00Z",
+        "openAt": "2030-06-03T01:00:00Z",
+        "budgetAmount": 100000000,
+        "estimatedPrice": null,
+        "basePrice": 100000000,
+        "baseAmountPublicationStatus": "PUBLISHED",
+        "baseAmountCollectionState": null,
+        "lowerBoundRate": null,
+        "lowerBoundRateStatus": "NOT_PROVIDED",
+        "participationRegionStatus": "HAS_ROWS",
+        "participationRegionCount": 1,
+        "participationRegionCollectionState": null,
+        "participationRegionDisplayName": "서울특별시",
+        "participationRegions": [
+          {
+            "name": "서울특별시"
+          }
+        ],
+        "representativeIndustry": {
+          "code": "0001",
+          "name": "토목공사업",
+          "mappedToMaster": true,
+          "referenceStatus": "ACTIVE",
+          "sources": [
+            "INDUSTRY_MASTER"
+          ]
+        },
+        "industryCount": 1,
+        "licenseLimitStatus": "HAS_ROWS",
+        "licenseLimitCollectionState": null,
+        "resultSummary": null,
+        "row": null,
+        "aValueAcquisitionStatus": "NOT_APPLICABLE"
+      }
+    ],
+    "page": 0,
+    "size": 10,
+    "totalElements": 1,
+    "totalPages": 1,
+    "hasNext": false
+  },
+  "bidDetail": {
+    "id": 20001,
+    "classificationContext": {
+      "scope": "CLASSIFICATION",
+      "selectedBidClsfcNo": "1",
+      "knownClassificationCount": 2,
+      "classifications": [
+        {
+          "bidClsfcNo": "1"
+        },
+        {
+          "bidClsfcNo": "2"
+        }
+      ]
+    },
+    "sourceKey": {
+      "bidNtceNo": "HTTP-20001",
+      "bidNtceOrd": "00"
+    },
+    "header": {
+      "noticeName": "HTTP 대역 시설공사 공고",
+      "bidType": "CONSTRUCTION",
+      "status": "NORMAL",
+      "noticeChangedAt": null,
+      "changeReason": null,
+      "noticeUrl": null,
+      "referenceNumber": null
+    },
+    "amount": {
+      "budgetAmount": 100000000,
+      "estimatedPrice": null,
+      "vatAmount": null,
+      "projectAmount": 100000000,
+      "projectAmountAvailability": "PROVIDED",
+      "priceDecisionMethod": null,
+      "basePrice": 100000000,
+      "baseAmountCollectionState": {
+        "status": "SUCCEEDED",
+        "freshness": "CURRENT",
+        "lastSuccessfulAt": null
+      },
+      "lowerBoundRate": null,
+      "pureConstructionCost": null
+    },
+    "procedure": {
+      "bidMethod": "전자입찰",
+      "contractMethod": "GENERAL",
+      "successfulBidMethod": null,
+      "successfulBidMethodStandard": null,
+      "internationalBid": {
+        "value": null,
+        "availability": "NOT_PROVIDED"
+      },
+      "rebidAllowed": {
+        "value": null,
+        "availability": "NOT_PROVIDED"
+      }
+    },
+    "agencies": {
+      "noticeAgency": {
+        "name": "HTTP 대역 공고기관",
+        "officerName": null,
+        "officerPhone": null,
+        "officerEmail": null
+      },
+      "demandAgency": {
+        "name": "HTTP 대역 수요기관",
+        "officerEmail": null
+      },
+      "orderingRegionName": "서울특별시"
+    },
+    "eligibility": {
+      "isLocalRestricted": true,
+      "isIndustryRestricted": true,
+      "isSiteExplanationRequired": false,
+      "isPqRequired": false,
+      "performanceCompetition": {
+        "value": null,
+        "availability": "NOT_PROVIDED"
+      },
+      "mutualMarketEntry": {
+        "value": null,
+        "availability": "NOT_PROVIDED"
+      },
+      "isDetailedBid": false,
+      "industries": [
+        {
+          "code": "0001",
+          "name": "토목공사업"
+        }
+      ],
+      "licenseLimitStatus": "HAS_ROWS",
+      "licenseLimitCollectionState": {
+        "status": "SUCCEEDED",
+        "freshness": "CURRENT",
+        "lastSuccessfulAt": null
+      },
+      "participationRegionStatus": "HAS_ROWS",
+      "participationRegionCollectionState": {
+        "status": "SUCCEEDED",
+        "freshness": "CURRENT",
+        "lastSuccessfulAt": null
+      },
+      "participationRegionDisplayName": "서울특별시",
+      "participationRegions": [
+        {
+          "name": "서울특별시"
+        }
+      ]
+    },
+    "jointSupply": {
+      "methodName": null,
+      "agreementReceiptMethod": null,
+      "agreementDeadlineAt": null
+    },
+    "schedule": {
+      "noticePublishedAt": "2030-05-30T00:00:00Z",
+      "bidQualificationRegistrationDeadlineAt": "2030-06-02T00:00:00Z",
+      "bidBeginAt": "2030-06-01T00:00:00Z",
+      "bidCloseAt": "2030-06-03T00:00:00Z",
+      "openAt": "2030-06-03T01:00:00Z"
+    },
+    "originalNotice": {
+      "available": false,
+      "noticeUrl": null
+    }
+  },
+  "attachments": {
+    "bidNoticeId": 20001,
+    "attachments": []
+  },
+  "related": {
+    "relationType": "INDUSTRY",
+    "items": [
+      {
+        "bidNoticeId": 20002,
+        "bidClsfcNo": "1",
+        "noticeName": "HTTP 대역 관련 공고",
+        "bidType": "CONSTRUCTION",
+        "participationRegionDisplayName": "서울특별시",
+        "noticePublishedAt": "2030-05-30T00:00:00Z",
+        "projectAmount": null
+      }
+    ],
+    "hasNext": false
+  },
+  "results": {
+    "bidNoticeId": 20001,
+    "sectionCollectionState": {
+      "status": "SUCCEEDED",
+      "freshness": "CURRENT",
+      "lastSuccessfulAt": null
+    },
+    "completeness": "RESULTS_AVAILABLE",
+    "noticeLevelState": null,
+    "results": [
+      {
+        "bidResultId": 201,
+        "bidClsfcNo": "1",
+        "rbidNo": "1",
+        "resultStatus": "AWARDED",
+        "plannedOpenAt": "2030-06-03T01:00:00Z",
+        "actualOpenAt": "2030-06-03T01:00:00Z",
+        "participantCount": 1,
+        "openingResultMessage": null,
+        "openingFirstPlace": {
+          "rank": "1",
+          "companyName": "HTTP 대역 참여회사",
+          "ceoName": null,
+          "bidAt": "2030-06-03T00:00:00Z",
+          "bidRate": 88.12,
+          "bidAmount": 88120000,
+          "resultRemark": null
+        },
+        "winner": {
+          "companyName": "HTTP 대역 참여회사",
+          "ceoName": null,
+          "successfulBidAmount": 88120000,
+          "successfulBidRate": 88.12,
+          "successfulBidDate": "2030-06-03"
+        },
+        "failing": null,
+        "rebid": null
+      }
+    ]
+  },
+  "participants": {
+    "bidNoticeId": 20001,
+    "bidResultId": 201,
+    "participants": [
+      {
+        "rank": "1",
+        "companyName": "HTTP 대역 참여회사",
+        "ceoName": null,
+        "bidAt": "2030-06-03T00:00:00Z",
+        "bidRate": 88.12,
+        "bidAmount": 88120000,
+        "resultRemark": null
+      }
+    ],
+    "page": 0,
+    "totalPages": 1,
+    "totalElements": 1
+  }
+}

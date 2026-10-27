@@ -6,14 +6,14 @@ import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { errorMessage } from "@/features/auth/api";
-import { searchCompanies } from "@/features/auth/onboarding-api";
+import { errorMessage } from "@/data/shared/errors";
+import { searchCompanies } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { CompanySearchPage } from "@/features/auth/types";
+import type { CompanySearchPage } from "@/data/company/contracts";
 
 export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) {
   const session = useAuthSession();
-  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh }), [session.getAccessToken, session.refresh]);
+  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const [query, setQuery] = useState(initialQuery);
   const [result, setResult] = useState<CompanySearchPage | null>(null);
   const [busy, setBusy] = useState(false);

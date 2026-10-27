@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import type { BidAmountRange, SignupCompanyProfile } from "@/features/auth/types";
+import type { BidAmountRange, SignupCompanyProfile } from "@/data/company/contracts";
 
 export const amountChoices: Array<{ value: BidAmountRange; label: string }> = [
   { value: "BELOW_100_MILLION", label: "~ 1억 원 미만" },

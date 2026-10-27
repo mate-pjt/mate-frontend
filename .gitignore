@@ -42,3 +42,6 @@ next-env.d.ts
 
 *storybook.log
 storybook-static/
+
+# Local browser QA output (screenshots, snapshots and console logs).
+/.playwright-cli/

@@ -5,6 +5,8 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 ## 파일 구성
 
 - [`punchlist-template.md`](./punchlist-template.md): 모든 신규 기능에 복사할 공통 양식
+- [`repositories.md`](./repositories.md): 7개 공급원 전환의 자동 테스트·mock 브라우저·HTTP 대역 결과와 실제 API 검증의 구분
+- [`repository-review.md`](./repository-review.md): 전환 작업의 context-audit·verifier·ai-review 기록
 - [`auth.md`](./auth.md): 13_가입 화면의 로그인·회원가입·회사 온보딩·초대 수락
 - [`bid-list.md`](./bid-list.md): 공개 입찰공고 목록의 전체·마감임박·개찰결과, 필터·검색·페이지와 준비 중 상태
 - [`personal-bid-filter.md`](./personal-bid-filter.md): 계정별 맞춤 필터의 조회·적용·저장·초기화·버전 충돌
@@ -16,6 +18,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`notification-settings.md`](./notification-settings.md): 마이페이지 맞춤 공고 이메일 설정 조회·변경과 로그인 안내
 - [`notification-email-recipient.md`](./notification-email-recipient.md): 알림 수신 주소 선택, 대체 주소 인증·재전송·전환
 - [`my-settings-home.md`](./my-settings-home.md): 설정 및 관리 첫 화면, 알림 설정 진입·로그아웃·로그인 복귀
+- [`my-company.md`](./my-company.md): 나의 회사 정보의 미연결·신청·연결 상태와 회사 선택 진입
 - [`qna.md`](./qna.md): 자주 묻는 질문의 정책 문구·아코디언·모바일·의견 배너
 - 이후 기능마다 `docs/qa/<기능-slug>.md`를 하나씩 만들고 아래 목록에 추가한다.
 
@@ -34,7 +37,8 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 | 맞춤 공고 이메일 설정 | `/my/settings/notifications` | [9.2.0 알림 설정, 3139:52591](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=3139-52591) | [notification-settings.md](./notification-settings.md) | 실제 API·모바일·네트워크 실패 통과, 서버 오류 응답 대기 |
 | 알림 수신 이메일 인증·전환 | `/my/settings/notifications` | [9.2.0 알림 설정, 3139:52591](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=3139-52591) | [notification-email-recipient.md](./notification-email-recipient.md) | 인증 전 모바일·키보드와 발송 시작 통과, 인증 완료·전환은 Mailpit 열람 대기 |
 | 자주 묻는 질문 | `/qna` | [11_자주묻는질문, 2314:31201](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-31201) | [qna.md](./qna.md) | 목 기반 브라우저 화면 7건 통과, Q&A API 없음 |
-| 설정 및 관리 첫 화면 | `/my` | [9.0.0 설정 및 관리, 3139:52490](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3139-52490) | [my-settings-home.md](./my-settings-home.md) | 이번 범위 7건 통과, 하위 화면은 준비 중 |
+| 설정 및 관리 첫 화면 | `/my` | [9.0.0 설정 및 관리, 3139:52490](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3139-52490) | [my-settings-home.md](./my-settings-home.md) | 2026-09-28 기존 화면 7건 통과, 새 회사 메뉴 재확인 대기 |
+| 나의 회사 정보 | `/my/company`, `/my/company/start` | [미연결 3162:51271](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-51271) 외 3개 상태 | [my-company.md](./my-company.md) | 실제 통합 0건 통과·5건 차단·5건 대기 |
 
 새 Figma 기능이나 화면을 구현할 때 실제 통합 테스트가 미뤄졌다면 해당 기능의 펀치리스트 파일을 즉시 만든다. 위 목록의 `미작성`은 검증 완료를 뜻하지 않는다. 기능이 늘면 같은 표에 행을 추가한다. 하나의 화면에서 정상·빈 상태·오류·권한·모바일 등 서로 다른 결과가 나오면 별도 case ID를 쓴다.
 
