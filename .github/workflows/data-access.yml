@@ -1,0 +1,48 @@
+name: Data access checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm lint
+  build:
+    needs: checks
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - profile: api
+            overrides: '{}'
+          - profile: mock
+            overrides: '{}'
+          - profile: hybrid
+            overrides: '{"company":"mock","notifications":"mock","notificationSettings":"mock"}'
+    env:
+      MATE_APP_ENV: preview
+      MATE_DATA_PROFILE: ${{ matrix.profile }}
+      MATE_DATA_OVERRIDES: ${{ matrix.overrides }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
