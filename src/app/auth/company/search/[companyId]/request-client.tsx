@@ -6,10 +6,10 @@ import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { errorMessage } from "@/features/auth/api";
-import { getMembershipContext, requestMembership } from "@/features/auth/onboarding-api";
+import { errorMessage } from "@/data/shared/errors";
+import { getMembershipContext, requestMembership } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { MembershipApplicationContext } from "@/features/auth/types";
+import type { MembershipApplicationContext } from "@/data/company/contracts";
 
 export function MembershipApplication({ companyId }: { companyId: number }) {
   const access = useAuthSession();

@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 
 import { StrokeLeftArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { ApiError, errorMessage, type AuthAccess } from "@/features/auth/api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
+import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import {
-  getCompanyBasicProfile,
-  getMyMembershipRequest,
+  getMyCompanyOverview,
   type CompanyBasicProfile,
-  type MembershipRequest,
-} from "@/features/my-company/api";
+  type MyMembershipRequest as MembershipRequest,
+} from "@/data/company/client";
 
 import { MySideMenu } from "./my-side-menu";
 
@@ -27,12 +27,13 @@ type LoadState =
   | { status: "error"; message: string };
 
 export function MyCompanyClient({ view }: { view: CompanyView }) {
-  const { state, getAccessToken, refresh } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
 
   if (state.status === "authenticated") {
     return (
       <AuthenticatedMyCompany
         getAccessToken={getAccessToken}
+        getAccountKey={getAccountKey}
         key={`${state.authentication.account.id}:${view}`}
         refresh={refresh}
         view={view}
@@ -65,66 +66,28 @@ export function MyCompanyClient({ view }: { view: CompanyView }) {
   );
 }
 
-function AuthenticatedMyCompany({ getAccessToken, refresh, view }: AuthAccess & { view: CompanyView }) {
+function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }: AuthAccess & { view: CompanyView }) {
   const [result, setResult] = useState<LoadState>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
-    const access = { getAccessToken, refresh };
-
-    async function loadCompany(companyId: number) {
-      const profile = await getCompanyBasicProfile(access, companyId, controller.signal);
-      if (!controller.signal.aborted) {
-        if (profile.companyId !== companyId) throw new ApiError(0, "COMPANY_MISMATCH", "회사 정보를 확인하지 못했어요. 다시 시도해 주세요.");
-        setResult({ status: "connected", profile });
-      }
-    }
+    const access = { getAccessToken, refresh, getAccountKey };
 
     async function load() {
       try {
-        const session = await refresh();
-        if (controller.signal.aborted || !session) return;
-        if (session.companyContext) {
-          await loadCompany(session.companyContext.companyId);
-          return;
-        }
-
-        let request: MembershipRequest;
-        try {
-          request = await getMyMembershipRequest(access, controller.signal);
-        } catch (error) {
-          if (error instanceof ApiError && error.status === 404 && error.code === "CR001") {
-            if (!controller.signal.aborted) setResult({ status: "empty" });
-            return;
-          }
-          throw error;
-        }
-        if (controller.signal.aborted) return;
-        if (request.status === "APPROVED") {
-          const updated = await refresh();
-          if (controller.signal.aborted || !updated) return;
-          if (updated.companyContext) {
-            await loadCompany(updated.companyContext.companyId);
-          } else {
-            setResult({ status: "approved-stale", request });
-          }
-          return;
-        }
-        setResult({ status: request.status === "PENDING" ? "pending" : "terminated", request });
+        const overview = await getMyCompanyOverview(access, controller.signal);
+        if (!controller.signal.aborted) setResult(overview);
       } catch (error) {
         if (controller.signal.aborted) return;
-        if (error instanceof ApiError && error.status === 403) {
-          setResult({ status: "denied" });
-        } else {
-          setResult({ status: "error", message: errorMessage(error) });
-        }
+        if (error instanceof ApiError && error.status === 403) setResult({ status: "denied" });
+        else setResult({ status: "error", message: errorMessage(error) });
       }
     }
 
     void load();
     return () => controller.abort();
-  }, [attempt, getAccessToken, refresh]);
+  }, [attempt, getAccessToken, refresh, getAccountKey]);
 
   function retry() {
     setResult({ status: "loading" });

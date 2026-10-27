@@ -7,16 +7,16 @@ import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { CompanyEvidencePanel, CompanyIdentityPanel, RegistrationFinished, RegistrationPreferences } from "@/components/auth/company-registration";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { ApiError, errorMessage } from "@/features/auth/api";
-import { clearBusinessConnection, createBusinessConnection, createUnverifiedCompany, getBusinessConnection } from "@/features/auth/onboarding-api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
+import { clearBusinessConnection, createBusinessConnection, createUnverifiedCompany, getBusinessConnection } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { BidAmountRange, BusinessConnection } from "@/features/auth/types";
+import type { BidAmountRange, BusinessConnection } from "@/data/company/contracts";
 
 type Step = "input" | "enriching" | "identity" | "evidence" | "preferences" | "not-found" | "verified" | "done";
 
 export function BusinessNumberRegistration() {
   const session = useAuthSession();
-  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh }), [session.getAccessToken, session.refresh]);
+  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const [step, setStep] = useState<Step>("input");
   const [businessNumber, setBusinessNumber] = useState("");
   const [connection, setConnection] = useState<BusinessConnection | null>(null);
@@ -160,10 +160,9 @@ export function BusinessNumberRegistration() {
     setError(null);
     try {
       if (registerKey.current?.payload !== payload) registerKey.current = { payload, key: crypto.randomUUID() };
-      await createUnverifiedCompany(access, body, registerKey.current.key);
+      const result = await createUnverifiedCompany(access, body, registerKey.current.key);
+      setDoneWarning(result.sessionWarning ?? null);
       setStep("done");
-      try { await access.refresh(); }
-      catch { setDoneWarning("회사 등록은 완료됐지만 로그인 상태를 갱신하지 못했습니다. 새로고침 후 확인해 주세요."); }
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
@@ -174,8 +173,7 @@ export function BusinessNumberRegistration() {
   const profile = connection?.companyProfile;
   const backStep = step === "identity" ? "input" : step === "evidence" ? "identity" : "evidence";
 
-  return (
-    <AuthGate>
+  const content = (
       <AuthCard>
         {step === "input" || step === "enriching" || step === "not-found" || step === "verified" ? <AuthBack href="/auth/company/register" /> : null}
         {step === "identity" || step === "evidence" || step === "preferences" ? (
@@ -243,6 +241,6 @@ export function BusinessNumberRegistration() {
         {step === "done" ? <RegistrationFinished verified={false} warning={doneWarning} /> : null}
         <div className="mt-4"><AuthError message={error} /></div>
       </AuthCard>
-    </AuthGate>
   );
+  return step === "done" ? content : <AuthGate>{content}</AuthGate>;
 }

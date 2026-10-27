@@ -8,7 +8,7 @@ import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { CompanyEvidencePanel, CompanyIdentityPanel, RegistrationFinished, RegistrationPreferences } from "@/components/auth/company-registration";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { ApiError, errorMessage } from "@/features/auth/api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
 import {
   completeDocumentUpload,
   createDocumentUpload,
@@ -19,19 +19,19 @@ import {
   getRegistrationProposal,
   retryDocumentProcessing,
   uploadDocumentFile,
-} from "@/features/auth/onboarding-api";
+  documentStorageKey,
+} from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { BidAmountRange, CompanyRegistrationProposal, DocumentProcessing } from "@/features/auth/types";
+import type { BidAmountRange, CompanyRegistrationProposal, DocumentProcessing } from "@/data/company/contracts";
 
 const acceptedFileTypes: Record<string, string> = { pdf: "application/pdf", jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png" };
 type Step = "upload" | "processing" | "processing-failed" | "identity" | "evidence" | "preferences" | "verified" | "done";
 type DocumentTarget = { documentId: string; versionId: string };
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const documentStorageKey = (accountId: number) => `mate:signup-document:${accountId}`;
 
 export function DocumentRegistration() {
   const session = useAuthSession();
-  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh }), [session.getAccessToken, session.refresh]);
+  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const inputRef = useRef<HTMLInputElement>(null);
   const uploadKey = useRef<{ signature: string; key: string } | null>(null);
   const retryKey = useRef<string | null>(null);
@@ -169,7 +169,7 @@ export function DocumentRegistration() {
       const uploadSession = target
         ? await createDocumentVersion(access, target.documentId, target.versionId, file, uploadKey.current.key)
         : await createDocumentUpload(access, file, uploadKey.current.key);
-      await uploadDocumentFile(uploadSession.upload, file);
+      await uploadDocumentFile(access, uploadSession.uploadHandle, file);
       await completeDocumentUpload(access, uploadSession.documentId, uploadSession.versionId);
       const nextTarget = { documentId: uploadSession.documentId, versionId: uploadSession.versionId };
       if (accountId !== null) {
@@ -260,10 +260,8 @@ export function DocumentRegistration() {
       if (accountId !== null) {
         try { window.sessionStorage.removeItem(documentStorageKey(accountId)); } catch { /* Storage may be unavailable. */ }
       }
-      setDoneWarning(result.conflict ? "기존 회사와의 합치기 제안은 별도 검토를 거쳐 처리됩니다." : null);
+      setDoneWarning(result.sessionWarning ?? (result.conflict ? "기존 회사와의 합치기 제안은 별도 검토를 거쳐 처리됩니다." : null));
       setStep("done");
-      try { await access.refresh(); }
-      catch { setDoneWarning("회사 등록은 완료됐지만 로그인 상태를 갱신하지 못했습니다. 새로고침 후 확인해 주세요."); }
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
@@ -275,8 +273,7 @@ export function DocumentRegistration() {
   const identityReady = Boolean(industry && (!proposal?.conflict?.decisionRequired || conflictChoice) && (!proposal?.businessNumberCorrection?.decisionRequired || correctNumber));
   const backStep = step === "identity" ? "upload" : step === "evidence" ? "identity" : "evidence";
 
-  return (
-    <AuthGate>
+  const content = (
       <AuthCard>
         {restoring ? <p className="text-grayscale-700 type-body-3" role="status">이전 증명서 처리 상태를 확인하고 있어요.</p> : null}
         {step === "upload" || step === "processing" || step === "processing-failed" || step === "verified" ? <AuthBack href="/auth/company/register" /> : null}
@@ -382,6 +379,6 @@ export function DocumentRegistration() {
         {step === "done" ? <RegistrationFinished verified warning={doneWarning} /> : null}
         <div className="mt-4"><AuthError message={error} /></div>
       </AuthCard>
-    </AuthGate>
   );
+  return step === "done" ? content : <AuthGate>{content}</AuthGate>;
 }
