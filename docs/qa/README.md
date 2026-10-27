@@ -4,6 +4,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 
 ## 파일 구성
 
+- [`prep-01-readiness.md`](./prep-01-readiness.md): QA-01~13의 2026-10-28 문서 기반 준비 점검, 실행 식별자 확보 방법·담당 역할·승인/복구 공백과 조건부 실행 순서. 실제 통합 실행 결과는 아님
 - [`punchlist-template.md`](./punchlist-template.md): 모든 신규 기능에 복사할 공통 양식
 - [`repositories.md`](./repositories.md): 7개 공급원 전환의 자동 테스트·mock 브라우저·HTTP 대역 결과와 실제 API 검증의 구분
 - [`repository-review.md`](./repository-review.md): 전환 작업의 context-audit·verifier·ai-review 기록
