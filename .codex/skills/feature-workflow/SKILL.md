@@ -74,7 +74,7 @@ Before editing, present:
 - Risks
 - Verification method
 
-Use only actual `package.json` scripts for verification. As of 2026-06-26, the confirmed scripts are `dev`, `build`, `start`, `lint`, `storybook`, and `build-storybook`; the primary app verification commands are `pnpm lint` and `pnpm build`. For Storybook or shared UI catalog changes, also run `pnpm build-storybook`.
+Use only actual `package.json` scripts for verification. As of 2026-09-30, the confirmed scripts are `dev`, `build`, `start`, `lint`, `test`, `test:watch`, `storybook`, and `build-storybook`; the primary app verification commands are `pnpm test`, `pnpm lint`, `pnpm build`, and `git diff --check`. Vitest runs data contracts in Node without jsdom/MSW. For Storybook or shared UI catalog changes, also run `pnpm build-storybook`.
 
 Do not invent `test`, `type-check`, or `format` commands unless they exist in the current `package.json`.
 
@@ -96,8 +96,10 @@ Run the planned verification commands that exist in `package.json`.
 Default sequence:
 
 ```bash
+pnpm test
 pnpm lint
 pnpm build
+git diff --check
 ```
 
 For Storybook configuration, component stories, or shared UI catalog changes, also run:
@@ -108,7 +110,7 @@ pnpm build-storybook
 
 Use `pnpm dev` only for local browser verification. Use `pnpm start` only after a successful build when production serving is relevant.
 
-Record each command result in the final report.
+Record each command result in the final report. Data-access changes must cover API/mock/hybrid configuration, deployment guards, storage/account isolation and contract tests. Check asynchronous Server Components in a real Next process/browser. Keep HTTP fetch doubles, mock UI checks and real API integration results separate. Live API mutations require approved accounts and change/restoration scope; preserve previous pending QA.
 
 ## 6. Fix And Reverify
 

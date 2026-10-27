@@ -33,7 +33,8 @@ Check:
 - Type risk: strict TypeScript, imports, route conventions, and Next build behavior are unlikely to fail.
 - Runtime risk: user-facing flows, edge cases, loading/empty/error states, and accessibility are considered when relevant.
 - Security risk: no secret, token, password, personal data, or `.env` value is introduced or printed.
-- Verification integrity: only actual `package.json` scripts are claimed; missing test/type-check scripts are not invented.
+- Data-access integrity: verify public Repository entry points, seven source groups and hybrid constraints, immutable build snapshot, production mock guard, no automatic fallback, DTO boundaries, storage/account isolation, and upload handles. Verify mock/HTTP double/live API evidence separately; existing pending integration stays pending.
+- Verification integrity: `pnpm test` runs Vitest Node contract/architecture tests; async Server Components also need real Next/browser checks. Only actual `package.json` scripts are claimed; missing test/type-check scripts are not invented.
 - Documentation update: package manager or scripts changes match `base.md`; folder/API/mock/component rule changes match `architecture.md`; status changes are reflected in `plan.md`; AI failures are recorded in `ai-failures.md`; harness workflow changes match `harness.md`.
 - Context audit escalation: recommend `$context-audit` when code/document consistency is suspicious, or when structure, scripts, package manager, Codex skills, agents, or harness configuration changed. Do not require it for every small change.
 

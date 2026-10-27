@@ -45,6 +45,12 @@ Prefer `rg --files`, `find`, `git status --short --branch`, and direct reads of 
 - Check whether documented app patterns, component grouping, API/mock/component rules, and token notes still match visible code structure.
 - Treat future folder policy or ownership questions as developer confirmation required.
 
+### data-access.md
+
+- Compare the seven Repository source groups, client/server public entries, DTO boundaries and removed Reader/feature API paths against the source.
+- Check config snapshot, deployment/hybrid constraints, sessionStorage isolation, upload/privacy rules and documented scenario names against implementation.
+- Keep source observations, mock/HTTP-double checks and pending live integration evidence distinct.
+
 ### plan.md
 
 - Compare stated Completed, In Progress, and Next items with repository evidence and the current task history available in context.
@@ -80,6 +86,8 @@ PASS / WARN / FAIL
 ### base.md
 
 ### architecture.md
+
+### data-access.md
 
 ### plan.md
 
