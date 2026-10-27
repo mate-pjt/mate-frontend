@@ -7,14 +7,15 @@ import { useEffect, useRef, useState } from "react";
 import { CheckIcon } from "@/components/icons";
 import { AlarmPopup } from "@/components/ui/popup";
 import { showToast } from "@/components/ui/toast";
-import { ApiError, errorMessage, type AuthAccess } from "@/features/auth/api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
+import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import {
   activateBidNoticeAlert,
   deactivateBidNoticeAlert,
   getBidNoticeAlert,
   type BidNoticeAlertStatus,
-} from "@/features/bid-notice-alerts/api";
+} from "@/data/bid-alerts/client";
 
 type AlertCardProps = { readonly bidId: string; readonly closeAt: string | null };
 type LoadedAlert =
@@ -23,7 +24,7 @@ type LoadedAlert =
 
 export function BidDetailAlertCard({ bidId, closeAt }: AlertCardProps) {
   const router = useRouter();
-  const { state, getAccessToken, refresh } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
 
   if (state.status === "authenticated") {
     return (
@@ -31,6 +32,7 @@ export function BidDetailAlertCard({ bidId, closeAt }: AlertCardProps) {
         bidId={bidId}
         closeAt={closeAt}
         getAccessToken={getAccessToken}
+        getAccountKey={getAccountKey}
         key={`${state.authentication.account.id}:${bidId}`}
         refresh={refresh}
       />
@@ -73,6 +75,7 @@ function AuthenticatedAlertCard({
   closeAt,
   getAccessToken,
   refresh,
+  getAccountKey,
 }: AlertCardProps & AuthAccess) {
   const [loaded, setLoaded] = useState<LoadedAlert | null>(null);
   const [retry, setRetry] = useState(0);
@@ -85,7 +88,7 @@ function AuthenticatedAlertCard({
 
   useEffect(() => {
     const controller = new AbortController();
-    const access = { getAccessToken, refresh };
+    const access = { getAccessToken, refresh, getAccountKey };
 
     void getBidNoticeAlert(access, bidId, controller.signal).then(
       (value) => {
@@ -97,7 +100,7 @@ function AuthenticatedAlertCard({
     );
 
     return () => controller.abort();
-  }, [bidId, getAccessToken, refresh, retry]);
+  }, [bidId, getAccessToken, refresh, getAccountKey, retry]);
 
   useEffect(() => {
     if (!open) return;
@@ -133,7 +136,7 @@ function AuthenticatedAlertCard({
     setMutationError(null);
 
     try {
-      const access = { getAccessToken, refresh };
+      const access = { getAccessToken, refresh, getAccountKey };
       const next = draftEnabled
         ? await activateBidNoticeAlert(access, bidId)
         : await deactivateBidNoticeAlert(access, bidId);
