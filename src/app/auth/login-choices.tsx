@@ -1,19 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { googleAuthorizationUrl } from "@/features/auth/api";
+import { getLoginChoices, googleAuthorizationUrl } from "@/data/auth/client";
 
 export function LoginChoices({ nextPath }: { nextPath: string }) {
   return (
     <div className="space-y-[10px]">
-      <button
+      {getLoginChoices().map((choice) => <button
+        key={choice.id}
         className="flex h-14 w-full items-center justify-center gap-[10px] rounded-xl border border-grayscale-200 bg-white text-grayscale-800 type-body-1 hover:bg-grayscale-50"
-        onClick={() => window.location.assign(googleAuthorizationUrl(nextPath))}
+        onClick={() => window.location.assign(googleAuthorizationUrl(nextPath, choice.id))}
         type="button"
       >
         <Image src="/images/auth/google-logo.png" alt="" width={20} height={20} />
-        Google로 로그인
-      </button>
+        {choice.label}
+      </button>)}
       <button
         aria-label="네이버 로그인 준비 중"
         className="flex h-14 w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl bg-[#03c75a] text-white opacity-55 type-body-1"

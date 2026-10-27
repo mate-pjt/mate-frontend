@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { SideMenu, type SideMenuItem } from "@/components/ui/side-menu";
-import { errorMessage } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 
 const menuItems: SideMenuItem[] = [

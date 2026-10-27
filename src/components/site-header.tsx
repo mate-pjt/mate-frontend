@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ButtonLink } from "./ui/button";
 import { CloseIcon } from "./icons";
 import { NotificationBell } from "./alarms/notification-bell";
-import { errorMessage } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 
 const navigationItems = [

@@ -7,9 +7,10 @@ import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
 import { CheckboxSquare } from "@/components/ui/checkbox";
 import { TextInput } from "@/components/ui/input";
-import { completeSocialSignup, errorMessage, getCurrentSocialSignup } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
+import { completeSocialSignup, getCurrentSocialSignup } from "@/data/auth/client";
 import { useAuthSession } from "@/features/auth/session";
-import type { AgreementCode, SocialSignup } from "@/features/auth/types";
+import type { AgreementCode, SocialSignup } from "@/data/auth/contracts";
 import { sanitizeLocalNextPath } from "@/lib/auth-redirect";
 
 const agreementCodes: AgreementCode[] = ["PRIVACY_POLICY", "TERMS_OF_SERVICE"];
