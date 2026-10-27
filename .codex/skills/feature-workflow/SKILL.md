@@ -20,6 +20,8 @@ Read these files before designing a change:
 - `docs/ai-context/harness.md` when checking the end-to-end harness sequence
 - `docs/ai-context/ai-failures.md` when the task resembles a past failure
 
+For Figma v0.1 follow-up work, also read `docs/development/figma-v01/README.md` (the single source of current/next/status), its `workflow.md`, the selected task's last checkpoint and prerequisite decisions/evidence. The baseline snapshot is historical; recheck current git state and relevant owning sources. Do not treat a candidate task definition as an approved Implementation Brief.
+
 Inspect `package.json` directly before verification so script choices reflect the current repo.
 
 Never read `.env`, `.env.local`, `.env.*`, private keys, tokens, password files, or credential dumps.
@@ -80,6 +82,8 @@ Do not invent `test`, `type-check`, or `format` commands unless they exist in th
 
 ## 4. Implement Narrowly
 
+Before execution, record branch/HEAD, pre-existing worktree changes, the agreed brief/design/verification scope and the next concrete action in the task record. Mark only one WBS task as active. Update checkpoints during work and before waiting, stopping or handing off; do not reconstruct context only at the end.
+
 Follow these rules:
 
 - Preserve existing folder structure and local code style.
@@ -92,6 +96,8 @@ Follow these rules:
 ## 5. Verify
 
 Run the planned verification commands that exist in `package.json`.
+
+For Markdown/baseline-data-only work with no executable source, package or build impact, a planned check of links, IDs/coverage, dependency/status consistency, snapshot integrity, change-scope preservation and `git diff --check` may replace irrelevant app test/lint/build runs. Record why app commands were not run. This does not waive functional verification for app changes.
 
 Default sequence:
 
@@ -133,6 +139,7 @@ Before completing the task, check whether the change requires updates to:
 - `docs/ai-context/plan.md`: implementation status, Completed, In Progress, or Next items changed.
 - `docs/ai-context/ai-failures.md`: an AI mistake repeated, caused rework, or exposed a prevention rule.
 - `docs/ai-context/harness.md`: harness usage, sequence, or role responsibilities changed.
+- `docs/development/figma-v01/README.md` and the selected task record: current/next/status, decisions, checkpoints and verification/review evidence. Keep the live status in the WBS only; update `coverage.md` if task mapping or scope changes. Existing real-API QA remains in `docs/qa`, with pending/blocked cases preserved.
 
 If a needed update is a simple factual sync from files already inspected, update the relevant document. If it requires policy, architecture direction, or team agreement, do not guess; ask the developer with a recommended answer.
 
@@ -177,6 +184,8 @@ When `$ai-review` is required, include its review result using the `$ai-review` 
 ## 9. Complete
 
 Return `PASS` only when the requirement is satisfied, verification has passed, Documentation Update Check is complete, and Review Gate is complete. Explain any skipped verification or review.
+
+After the gates pass, close the selected task's evidence/checklist, update WBS current/next/status, and specify one next task with its first concrete action. Do not automatically begin the next feature before its own requirement gate. If blocked, preserve the blocker/resume condition and the exact scope of any existing developer-approved exception; do not generalize a deferred live check to other tasks.
 
 Final response must include:
 

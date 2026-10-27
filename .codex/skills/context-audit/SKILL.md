@@ -53,6 +53,7 @@ Prefer `rg --files`, `find`, `git status --short --branch`, and direct reads of 
 
 ### plan.md
 
+- For the Figma v0.1 execution index, check `docs/development/figma-v01/README.md`, `coverage.md` and the selected task record: current/next/status has one authority, 79 baseline IDs remain covered, prerequisites and resume conditions are explicit, and historical/mock/live evidence is not conflated. Keep unrelated pre-existing drift separate from mismatches introduced by the current change.
 - Compare stated Completed, In Progress, and Next items with repository evidence and the current task history available in context.
 - Do not infer team priority from code alone.
 - Mark stale status, missing completed harness changes, or ambiguous roadmap items separately.

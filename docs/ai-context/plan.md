@@ -2,6 +2,12 @@
 
 This is the v0.1 AI harness workflow for feature work in Mate.
 
+## 현재 실행계획 진입점 (2026-10-27)
+
+Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기준선·WBS](../development/figma-v01/README.md)**에서 관리한다. [79개 원본 연결표](../development/figma-v01/coverage.md)로 누락을 확인하고, 선택한 `tasks/작업ID.md`에서 요구사항·결정·체크포인트·검증/리뷰 근거를 이어간다. [작업 운영 규칙](../development/figma-v01/workflow.md)을 기존 Required Flow와 함께 적용한다.
+
+아래 Status는 기존 구현/QA·승인 예외의 **날짜별 이력**으로 보존한다. 이를 새 WBS의 현재 상태와 별도 최신 목록으로 중복 관리하지 않는다. `구현 완료` 이력이 실제 API 통합 완료를 의미하지 않으며 기존 QA의 대기/차단은 유지한다. 최초 다음 작업은 `PREP-01`의 읽기 전용 QA 사전 점검이고 앱 코드 수정·실제 API 실행은 이번 문서화 범위에 포함되지 않는다.
+
 ## Required Flow
 
 1. Structure requirements.
@@ -84,7 +90,7 @@ This is the v0.1 AI harness workflow for feature work in Mate.
 
 실제 서버 mutation과 원격 CI/배포는 위 완료 범위에 포함하지 않는다. 세부 검증 방법·증거·미실행 범위는 `docs/qa/repositories.md`를 따른다.
 
-- After feature work completes, update Completed, In Progress, and Next only when the state is clear from the task and repository evidence.
+- For the Figma v0.1 backlog, update the WBS current/next/status and the task record from evidence. Keep the Completed, In Progress, and Next entries below as dated history; add a dated milestone only when useful, without duplicating live task status.
 - If the state is uncertain or depends on product/team priority, do not guess; ask the developer with a recommended update.
 
 ## Requirement Structuring
@@ -143,6 +149,8 @@ pnpm build-storybook
 ```
 
 Use `pnpm dev` only when interactive/browser verification is needed. Use `pnpm start` only after a successful build when serving the production app is relevant.
+
+Markdown/기준선 데이터만 다루고 실행 코드·패키지·빌드 설정에 영향이 없는 작업은 [문서 검증 기준](../development/figma-v01/workflow.md)에 따라 링크·ID/커버리지·의존성·상태·원본 무결성·변경 범위와 diff-check를 검증 계획으로 삼을 수 있다. 이때 앱 test/lint/build 미실행 사유를 기록한다. 기능 변경의 기본 검증을 면제하지 않는다.
 
 `test`/`test:watch`는 2026-09-30 승인된 Vitest 도입으로 존재한다. `type-check`와 `format` script는 없으므로 명령을 만들어 내지 않는다. 공급원 변경 시 api/mock/hybrid 구성과 운영 guard를 확인한다. HTTP 대역 PASS를 실제 API 통합 PASS로 확대하지 않는다.
 
