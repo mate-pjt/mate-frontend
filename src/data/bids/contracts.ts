@@ -1,4 +1,4 @@
-import type { Bid, BidKind } from "@/types/bid";
+import type { BidKind } from "@/types/bid";
 import type { BidListItem } from "@/types/bid-list";
 import type { BidDetailPageData } from "@/types/bid-detail";
 import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
@@ -38,8 +38,7 @@ export type BidFilterOptions = {
   readonly industryOptions: readonly { readonly code: string; readonly label: string }[];
 };
 
-export interface BidReader {
-  getHomeBids(): Promise<readonly Bid[]>;
+export interface BidListRepository {
   getBidList(query: BidListQuery): Promise<BidListResult>;
   getFilterOptions(): Promise<BidFilterOptions>;
 }
@@ -52,6 +51,6 @@ export type BidDetailQuery = {
   readonly participantsPage: number;
 };
 
-export interface BidDetailReader {
+export interface BidDetailRepository {
   getBidDetail(query: BidDetailQuery): Promise<BidDetailPageData | null>;
 }
