@@ -6,9 +6,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/ui/select";
 import { BasicPopup } from "@/components/ui/popup";
 import type { BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
-import { ApiError, errorMessage } from "@/features/auth/api";
+import { ApiError, errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
-import { getPersonalFilter, resetPersonalFilter, savePersonalFilter } from "@/features/bid-notice-filters/api";
+import { getPersonalFilter, resetPersonalFilter, savePersonalFilter } from "@/data/personal-filters/client";
 import {
   hasPersonalConditions,
   samePersonalFilter,
@@ -40,7 +40,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { state: authState, getAccessToken, refresh } = useAuthSession();
+  const { state: authState, getAccessToken, refresh, getAccountKey } = useAuthSession();
   const accountId = authState.status === "authenticated" ? authState.authentication.account.id : null;
   const [loadedAccountId, setLoadedAccountId] = useState<number | null>(null);
   const [loadedStatus, setPersonalStatus] = useState<"ready" | "error">("ready");
@@ -107,7 +107,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   useEffect(() => {
     if (accountId === null || state.view !== "all") return;
     const controller = new AbortController();
-    void getPersonalFilter({ getAccessToken, refresh }, controller.signal)
+    void getPersonalFilter({ getAccessToken, refresh, getAccountKey }, controller.signal)
       .then((value) => {
         if (controller.signal.aborted) return;
         setSnapshot(value);
@@ -123,7 +123,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         setPersonalMessage(errorMessage(error));
       });
     return () => controller.abort();
-  }, [accountId, getAccessToken, refresh, state.view]);
+  }, [accountId, getAccessToken, refresh, getAccountKey, state.view]);
 
   function navigate(next: URLSearchParams) {
     router.push(`${pathname}${next.size > 0 ? `?${next.toString()}` : ""}`);
@@ -188,7 +188,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   async function reloadPersonalFilter(message = "") {
     const requestedAccountId = accountId;
     try {
-      const latest = await getPersonalFilter({ getAccessToken, refresh });
+      const latest = await getPersonalFilter({ getAccessToken, refresh, getAccountKey });
       if (activeAccountId.current !== requestedAccountId) return;
       setSnapshot(latest);
       setPersonalStatus("ready");
@@ -212,7 +212,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     setSaving(true);
     setPersonalMessage("");
     try {
-      const saved = await savePersonalFilter({ getAccessToken, refresh }, snapshot.version, filter);
+      const saved = await savePersonalFilter({ getAccessToken, refresh, getAccountKey }, snapshot.version, filter);
       if (activeAccountId.current !== requestedAccountId) return;
       setSnapshot(saved);
       setPersonalMessage("내 맞춤 조건을 계정에 저장했어요. 다음 맞춤 이메일부터 반영됩니다.");
@@ -231,7 +231,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     setSaving(true);
     setPersonalMessage("");
     try {
-      const saved = await resetPersonalFilter({ getAccessToken, refresh }, snapshot.version);
+      const saved = await resetPersonalFilter({ getAccessToken, refresh, getAccountKey }, snapshot.version);
       if (activeAccountId.current !== requestedAccountId) return;
       setSnapshot(saved);
       setResetOpen(false);
