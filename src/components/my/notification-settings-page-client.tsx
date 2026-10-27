@@ -7,7 +7,8 @@ import { CheckIcon, RightArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { showToast } from "@/components/ui/toast";
-import { errorMessage, type AuthAccess } from "@/features/auth/api";
+import { errorMessage } from "@/data/shared/errors";
+import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import {
   changeNotificationEmailRecipient,
@@ -16,17 +17,18 @@ import {
   getNotificationEmailSetting,
   type MatchedBidEmailSetting,
   type NotificationEmailSetting,
-} from "@/features/notification-settings/api";
+} from "@/data/notification-settings/client";
 
 import { NotificationEmailVerificationDialog } from "./notification-email-verification-dialog";
 
 export function NotificationSettingsPageClient() {
-  const { state, getAccessToken, refresh } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
 
   if (state.status === "authenticated") {
     return (
       <AuthenticatedNotificationSettings
         getAccessToken={getAccessToken}
+        getAccountKey={getAccountKey}
         key={state.authentication.account.id}
         refresh={refresh}
       />
@@ -59,7 +61,7 @@ export function NotificationSettingsPageClient() {
   );
 }
 
-function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAccess) {
+function AuthenticatedNotificationSettings({ getAccessToken, refresh, getAccountKey }: AuthAccess) {
   const [emailSetting, setEmailSetting] = useState<NotificationEmailSetting | null>(null);
   const [matchedSetting, setMatchedSetting] = useState<MatchedBidEmailSetting | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -74,7 +76,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAcce
 
   useEffect(() => {
     const controller = new AbortController();
-    const access = { getAccessToken, refresh };
+    const access = { getAccessToken, refresh, getAccountKey };
 
     void Promise.all([
       getNotificationEmailSetting(access, controller.signal),
@@ -91,7 +93,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAcce
     );
 
     return () => controller.abort();
-  }, [getAccessToken, refresh, retry]);
+  }, [getAccessToken, refresh, getAccountKey, retry]);
 
   function retryLoad() {
     setLoadError(null);
@@ -106,7 +108,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAcce
     setSaving(true);
     setSaveError(null);
     try {
-      const updated = await changeMatchedBidEmailSetting({ getAccessToken, refresh }, enabled);
+      const updated = await changeMatchedBidEmailSetting({ getAccessToken, refresh, getAccountKey }, enabled);
       setMatchedSetting(updated);
       showToast(enabled ? "맞춤 공고 이메일을 켰어요." : "맞춤 공고 이메일을 껐어요.");
     } catch (error) {
@@ -128,7 +130,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAcce
     setRecipientSaving(true);
     setRecipientError(null);
     try {
-      const updated = await changeNotificationEmailRecipient({ getAccessToken, refresh }, recipientType);
+      const updated = await changeNotificationEmailRecipient({ getAccessToken, refresh, getAccountKey }, recipientType);
       setEmailSetting(updated);
       showToast("알림 수신 이메일을 변경했어요.");
     } catch (error) {
@@ -202,6 +204,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh }: AuthAcce
 
           <NotificationEmailVerificationDialog
             getAccessToken={getAccessToken}
+            getAccountKey={getAccountKey}
             onClose={() => setVerificationOpen(false)}
             onVerified={(updated) => {
               setEmailSetting(updated);
