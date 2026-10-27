@@ -1,5 +1,5 @@
 import type { QnaItem } from "@/types/qna";
 
-export interface QnaReader {
+export interface QnaRepository {
   getQnaItems(): Promise<readonly QnaItem[]>;
 }
