@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { MockStatus } from "@/components/dev/mock-status";
 import { SiteHeader } from "@/components/site-header";
 import { ToastViewport } from "@/components/ui/toast";
 import { AuthSessionProvider } from "@/features/auth/session";
@@ -53,6 +54,7 @@ export default function RootLayout({
           <SiteHeader />
           <main className="flex min-h-0 flex-1 flex-col">{children}</main>
           <ToastViewport />
+          <MockStatus />
         </AuthSessionProvider>
       </body>
     </html>
