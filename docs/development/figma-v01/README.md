@@ -20,6 +20,8 @@
 4. [79개 항목 연결표](coverage.md): 원본 항목이 어떤 작업으로 해결되는지 역추적.
 5. [기존 AI plan](../../ai-context/plan.md)·[하네스](../../ai-context/harness.md)·[실제 API QA](../../qa/README.md).
 
+새 대화는 [고정 시작 프롬프트](start-prompt.md)를 사용한다. 커밋/push·PR·CI·main 동기화까지 요청한 경우 [Task별 전체 전달 흐름](task-cycle.md)을 따른다. PREP-01 전 기존 미커밋 변경 정리의 기록은 [main 통합 검토](reviews/main-integration.md)에서 확인한다. 이 정리로 PREP-01의 실제 QA 준비 점검을 실행한 것은 아니다.
+
 ## 분해 기준과 순서
 
 원본 **79개 항목을 99개 실행 작업**으로 연결했다. 개발 54개(문서 작업 2개 포함), 검증 17개(사전 점검·취합 포함), 정책 결정 28개다. 항목과 작업은 다대다 관계이며 개수는 개발 진척률이 아니다.
