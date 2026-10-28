@@ -72,12 +72,13 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 
 ### AlarmList
 
-- Structure: 페이지 제목과 설명, 편집 toolbar, 알림 목록 또는 빈 상태, 삭제 완료 toast
-- States: 미확인, 확인, 편집, 부분 선택, 전체 선택, 삭제 후 빈 상태
-- Surface: 현재 표시 순번의 홀수 항목은 `grayscale-50`, 짝수 항목은 흰색을 사용하며 읽음 여부와 배경을 연결하지 않는다. 삭제 후 남은 목록은 다시 순번을 계산한다.
-- Interaction: 일반 모드의 항목 선택은 해당 알림만 확인 처리한다. 편집 모드에서는 큰 원형 checkbox로 선택하고, 삭제 후 편집 상태와 선택을 초기화한다.
-- Feedback: 삭제 완료 피드백은 공용 `showToast`를 사용한다.
-- Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공하며, 편집 중에는 읽음 점을 숨기고 checkbox label로 선택 대상을 설명한다.
+- Structure: 페이지 제목과 설명, 비활성 `편집 (준비 중)` 버튼, 받은 알림 목록 또는 빈 상태, 20건 단위 `더 보기`
+- States: 로딩, 조회 오류/재시도, 빈 목록, 미확인/확인, 읽음 처리 중/오류, 다음 페이지 로딩/오류
+- Surface: 현재 표시 순번의 홀수 항목은 `grayscale-50`, 짝수 항목은 흰색을 사용하며 읽음 여부와 배경을 연결하지 않는다.
+- Interaction: 항목 선택은 읽음 요청의 성공 응답 뒤 해당 알림과 미확인 건수를 갱신하고 목록에 머문다. 편집·선택·삭제와 `actionPath` 목적지 이동은 현재 제품에 연결하지 않았다.
+- Feedback: 읽음 요청이 실패하면 기존 미확인 상태를 유지하고 오류를 표시한다. 현재 페이지에 삭제 완료 toast는 없다.
+- Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공한다. 항목은 키보드로 조작하는 버튼이며 읽음 요청 중 `aria-busy`와 비활성 상태를 제공한다.
+- Evidence: [현재 화면](src/components/alarms/alarm-page-client.tsx), [목록 항목](src/components/alarms/alarm-list-item.tsx), [실제 API QA와 미결 정책](docs/qa/alarms.md). 과거 편집·삭제 디자인 검증 이력은 현재 동작의 증거가 아니다.
 
 ### QnaAccordion
 
@@ -132,11 +133,20 @@ Mixed 전략을 사용한다.
 - 현재 경로, form label, landmark를 명시한다.
 - 본문 대비 4.5:1, 큰 텍스트 대비 3:1을 목표로 한다.
 
+### 인증·받은 알림의 현재 구현과 검증 경계
+
+2026-10-28 소스 대조 기준이다. 과거 CTA 검증용 localStorage mock 인증과 페이지 메모리 알림은 당시 승인된 구현 이력이며, 현재 미연동 부채로 유지하지 않는다. 현재 배포/실행 상태나 실제 API 통합 완료를 뜻하지 않는다.
+
+| 영역 | 현재 구현 | 근거와 남은 검증/기능 |
+| --- | --- | --- |
+| 인증 | 공개 auth client가 빌드 설정에 따라 HTTP/mock Repository를 선택한다. API는 서버 중심 Google OAuth와 메모리 access token·refresh cookie로 세션을 복원한다. 실제 token은 localStorage/sessionStorage에 저장하지 않는다. mock 인증은 외부 OAuth/API 없이 탭의 합성 계정 ID·만료 시각으로 복원한다. | [Provider](src/features/auth/session.tsx)·[session controller](src/data/auth/session-controller.ts)·[auth client](src/data/auth/client.ts). [기존 인증 QA](docs/qa/auth.md)는 부분 실행 이력과 남은 사례를 구분하며, 현재 통합 재검증은 [QA-04](docs/development/figma-v01/tasks/QA-04.md) 범위다. |
+| 받은 알림 | notifications Repository가 목록·미확인 건수·읽음을 제공한다. HTTP 구현은 목록/건수 GET과 읽음 PATCH에 연결돼 있다. mock의 목록/읽음 상태는 설정·환경·계정별 sessionStorage에 보존하며, 저장소 제한 시 메모리로 동작해 새로고침 유지를 보장하지 않는다. | [공개 client](src/data/notifications/client.ts)·[HTTP 구현](src/data/notifications/http-repository.ts)·[mock 구현](src/data/notifications/mock-repository.ts)·[탭 저장소](src/data/mock/store.ts). [기존 알림 QA](docs/qa/alarms.md)의 빈 목록·로그인 관련 과거 통과와 알림 fixture/읽음/21건 이상 대기를 유지한다. [QA-11](docs/development/figma-v01/tasks/QA-11.md)은 테스트 알림 준비가 필요하다. |
+
+공급원은 동일한 빌드 snapshot에서 선택하며 API 오류의 자동 mock 대체는 없다. 상세 계약은 [data-access.md](docs/ai-context/data-access.md)와 [architecture.md](docs/ai-context/architecture.md)를 따른다. 받은 알림 편집·삭제는 삭제/숨김 계약 미확정으로 준비 중이며, 공고별 구독 해제와 다르다. 이동/읽음 정책은 [POL-04](docs/development/figma-v01/tasks/POL-04.md), 변경 신호·REST 재조회 계약은 [POL-05](docs/development/figma-v01/tasks/POL-05.md), 삭제/숨김·보존은 [POL-20](docs/development/figma-v01/tasks/POL-20.md)에서 별도로 결정한다. 이 문서 정정으로 해당 기능이나 7일 자동 삭제를 활성화하지 않는다.
+
 ### Accepted Debt
 
 | Item | Location | Why accepted | Owner / Exit |
 | --- | --- | --- | --- |
-| 인증은 `localStorage` 기반 mock 상태 | `src/lib/mock-auth.ts` | 백엔드 인증 미연동 상태에서 CTA 흐름 검증을 위해 개발자가 승인 | 백엔드 인증 연결 시 실제 session adapter로 교체 |
-| 알림은 페이지 메모리 기반 mock 상태 | `/alarms` | 알림 API와 영속화 정책이 확정되기 전 Figma 상호작용 검증을 위해 개발자가 승인 | 백엔드 알림 API 연결 시 읽음·삭제 mutation과 서버 초기 상태로 교체 |
 | 홈 반응형 상세 스펙 미제공 | `/` | Figma가 1920px desktop frame만 제공 | 개발자 화면 검증 후 breakpoint 세부값 보정 |
 | 입찰공고 모바일 전용 카드 스펙 미제공 | `/bids` | Figma가 1920px desktop table frame만 제공 | 모바일 디자인 제공 전까지 필터 줄바꿈과 테이블 가로 스크롤을 유지 |
