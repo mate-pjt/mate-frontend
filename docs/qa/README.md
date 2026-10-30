@@ -29,7 +29,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 | --- | --- | --- | --- | --- |
 | 가입·로그인·회사 온보딩 | `/auth/**` | [13_가입, 3140:117483](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3140-117483) | [auth.md](./auth.md) | 대기 |
 | 홈 | `/` | [00_메인, 2016:57355](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2016-57355) | [home.md](./home.md) | 2026-10-30 2통과·7차단 유지 — 사용자 승인으로 잔여 검증 보류 후 다음 Task 진행 허용. 전체 통합 PASS 아님 |
-| 공개 입찰공고 목록·맞춤 준비 중 | `/bids` | [01_입찰공고리스트, 2201:18147](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2201-18147) | [bid-list.md](./bid-list.md) | 대기 |
+| 공개 입찰공고 목록·맞춤 준비 중 | `/bids` | [01_입찰공고리스트, 2201:18147](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2201-18147) | [bid-list.md](./bid-list.md) | 2026-10-30 실제 4통과·12차단, 재시도 결함 수정·QA-02 제한 종료(승인 예외); 전체 통합 PASS 아님 |
 | 계정별 개인 맞춤 필터 | `/bids`의 `ALL` | [01_입찰공고리스트, 2201:18147](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2201-18147) | [personal-bid-filter.md](./personal-bid-filter.md) | 0건 통과·12건 대기 (OAuth 시작 오류 해소, 필터 재검증 필요) |
 | 입찰공고 상세 | `/bids/[bidId]` | [02_입찰공고상세, 2201:18858](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2201-18858) | [bid-detail.md](./bid-detail.md) | 대기 |
 | 공고별 알림 설정 | `/bids/[bidId]` | [설정 카드 3210:112734](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=3210-112734) | [bid-alert.md](./bid-alert.md) | 대기 |
