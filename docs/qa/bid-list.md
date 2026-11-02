@@ -1,5 +1,7 @@
 # 공개 입찰공고 목록 브라우저 통합 테스트
 
+> 기존 BID-01~16의 개별 상태/환경과 2026-10-30 실행은 당시 이력으로 보존한다. 최근 판정은 [2026-11-02 재검증](#qa-02-20261102)의 동일 case별 표를 따른다. Task 상태는 WBS만 관리한다.
+
 ## 기준
 
 - Figma 파일/섹션: [01_입찰공고리스트, 2201:18147](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.1?node-id=2201-18147)
@@ -8,7 +10,7 @@
 - 담당자/검토자: 미정
 - 이번 작업의 정적 검증: Node 22.20.0에서 `pnpm lint`, `pnpm build`, `pnpm build-storybook`, `git diff --check` 통과. DTO mapper fixture에서 0-based 페이지 변환, 분류번호, 수요기관 우선, 분류별 null 기초금액, nullable 추정가격, KST 실제 개찰일·낙찰금액, 중복 업종 라벨 변환 통과.
 - 기관 역할 표시 변경: Node 22.20.0에서 `pnpm lint`, `pnpm build`, `pnpm build-storybook`, `git diff --check` 통과. 목록 DTO의 두 기관명 분리·공백·null 경계 시나리오를 확인했다. 실제 표시는 아래 BID-05·BID-11에서 브라우저 검증 대기다.
-- 실제 백엔드 브라우저 통합 상태: **2026-10-30 부분 통과: 4통과·12차단. QA-02 승인 예외에 따른 제한 종료와 전체 통합 PASS를 구분한다.**
+- 실제 백엔드 브라우저 통합 상태: **2026-11-02 재검증: 10통과·6차단. 이전 4통과·12차단/승인 예외 이력을 보존하며 전체 통합 PASS와 구분한다.**
 
 ## 실행 환경 기록
 
@@ -260,3 +262,47 @@ OAuth 귀환 수집은 auth events0·`truncated=true`로 completion HTTP 상태�
 QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Network 해제·viewport reset·소유 Chrome 탭 닫힘, 소유 Next 종료0·PID17569/이전17224 소멸·3000 비청취를 확인했다. 신규 계정/fixture/회사/개인 필터 저장·초기화·구독 변경은 하지 않았다. Google 계정의 일반 로그인 상태나 공유 서버 기록을 임의 삭제하지 않았다.
 
 12차단 재개에는 공사/물품·마감임박/개찰결과·20건 초과·복수 분류·서로 다른 두 기관/기관 null·금액/일자/null 경계 공고와 기대 목록·정렬·페이지, 현재 backend 실행 버전 대응 증거가 필요하다. 필요한 역할은 공개 fixture/백엔드 배포 담당·프론트 QA 실행자이며 실제 개인 배정은 미확인이다(마지막 확인 2026-10-30). 같은 BID case ID로 재검증하며 QA-16에서 이 잔여분을 전체 통합 PASS로 집계하지 않는다. 이번 제한 종료 승인을 QA-03 이후 검증 면제로 확대하지 않는다.
+
+<a id="qa-02-20261102"></a>
+
+## QA-02 추가 데이터 재검증 · 2026-11-02 KST
+
+### 범위·실행·증거
+
+- 사용자 요청으로 QA-02만 재개하고 확인할 수 없는 조건은 차단으로 남겼다. 같은 Task의 기존 데이터 조회/누락 차단·제한 종료/Git 및 QA-A 인증·소유 프로세스 조회 실패/해제·정리 승인을 유지한다. 신규 fixture/DB·업무 mutation·다른 Task 실행·공유 운영/배포는 하지 않았다. 이번 제품 수정은 없다.
+- 시작 clean `main=origin/main=872b5ac34b8511b3caf74bfe8a5444702c34c95b` → `qa/qa-02-bid-list-resume`. Node 22.20.0/pnpm 11.3.0/Next 16.2.9, `https://local.mate-bid.com:3000` → `https://api-test.mate-bid.com`, 명시적 api/local 입력. 같은 소스의 빌드 snapshot은 `67eb70b3`(7그룹 api); 이번 dev snapshot 별도 추출 대신 입력과 실제 세 공개 endpoint 응답을 관찰했다. 환경파일은 검증용 guard가 내용 로딩을 차단했다. 개인 키/실제 환경값은 열람하지 않았다.
+- 준비 조회: ALL 공사36/용역276/물품0, CLOSING_SOON 공사8/용역177/물품0, RESULT 세 종류 모두0. ALL 공개 보기 312행을 100행씩4 GET으로 확인했다. 약 1만 건 DB 전체 적재 성공의 증거는 아니다. 스캔상 기초금액 null312·업종 null109, 추정가격/기관/지역 null0·분류0·서로 다른 두 기관명32행이다. 종류/보기/필터별 건수는 해당 실행 시각의 응답과 대조하며 전체 적재량과 혼동하지 않는다.
+- 실제 Chrome 실행 09:53:59~10:02:23 KST, 설치 버전 `156.0.8078.79`(실행 버전 별도 미노출), 1440×900/390×844/320×844. 기존 Chrome 연결/인증서 상태에서 경고 없이 열렸다. 이번 인증서/키체인·보안 설정 변경은 없다. 사용자가 기존 QA-A를 직접 선택해 로그인하고 복귀 완료를 회신했다.
+- 백엔드 최근 test deployment `7366507325`/source `0e7ac62d605279fc8d51455794a910eece8aeed5`·성공 상태를 재조회했지만 현재 실행 프로세스/이미지와의 대응 증거는 미확보다. 과거 성공 배포를 현재 실행 SHA로 확정하지 않는다.
+- 증거: [execution-summary.json](/Users/jisung/.codex/visualizations/2026/11/02/qa-02-bid-list-resume/execution-summary.json)과 같은 디렉터리의 readiness/fixture-limits/public-fetch/public-validation·case별 JSON/PNG·인증/정리 기록. 공개 준비 파일에는 허용된 공고/기관/업종·지역 metadata만, 표의 공고명·번호·기관 등 셀은 지문으로 기록했다. 인증 query/header/body·token/cookie·계정 원문·환경파일 값은 수집하지 않는다. 전체 원본 응답/비공개 문서·실행 artifact는 Git에 포함하지 않는다.
+
+### 동일 case별 최근 결과
+
+| 사례 | 2026-11-02 판정 | 이번 실제 확인·증거 | 남은 조건 |
+| --- | --- | --- | --- |
+| BID-01 | 통과 | 기본 공사36·첫10행, API `ALL/CONSTRUCTION/page0/size10/bidCloseAt,asc`와 표/건수·순서·현재 표시값 일치. `default-construction.json`, `public-validation.json` | 다른 종류/분류 경계는 해당 case 차단으로 구분 |
+| BID-02 | 통과 | UI 보기 선택으로 곧 마감 공사8행·API/표/순서 일치, 기간 필터 없음. 전체 공사36과 포함/제외 비교. `closing-construction.json` | RESULT는 BID-03으로 분리 |
+| BID-03 | 차단 | RESULT 공사/용역/물품 모두0·openAt,desc와 빈 화면 확인. `readiness.json`, `result-empty.json` | 낙찰 완료/유찰/대기·실제 개찰일/낙찰업체·율/금액 미확보 |
+| BID-04 | 차단 | 공사와 용역의 실제 행, 물품0·종류 enum/URL/페이지 초기화 확인. 용역은 1개월 조건이 유지된 상태에서275행(무기간276과 구분). `category-service.json`, `category-goods-empty.json` | 물품 실제 행 없음. 빈 응답만으로 3종 전체 통과 아님 |
+| BID-05 | 통과 | 같은 공고1002223의 공고명/번호·서로 다른 공고기관/수요기관으로 각각1행, 입력/URL 일치·뒤로가기·페이지2 검색→첫 페이지·Enter 초기화·옛 agency 제거 완료. `search-*.json`, `back-search-restored.json`, `legacy-agency-removed.json` | redirect 중간 관찰은 별도 보존·최종 결과와 구분 |
+| BID-06 | 통과 | 부산→26·결과23행, 실제 부산 공고 포함/전남 제한 공고 제외·해제36행. 업종 종합국가유산수리업(보수단청업)→0042·3행·해제36행, 알려진 해당 단일 업종 공고 포함/다른 단일 업종 공고 제외. `region-busan.json`, `industry-0042.json`, `public-validation.json` | 복수/고급 편집은 범위 밖. API 지역 결과의 지역 제한 없음 공고 포함도 준비 스캔과 대조 |
+| BID-07 | 통과 | 공사 GENERAL13/LIMITED22/PRIVATE1, 용역 NOMINATION3의 실제 행·라벨→enum·건수/각 행 계약과 해제 확인. `contract-*.json` | 새로운 계약 정책을 결정하지 않음 |
+| BID-08 | 차단 | 4기간의 KST dateFrom/BID_BEGIN·36행, 5개 BASE_PRICE 범위/해제와 각0행 확인. `period-*.json`, `amount-preset-*.json` | 기초금액312행 모두 null·정확한 날짜/금액 경계 표본 없음. 경계 중복/누락을 PASS로 추정하지 않음 |
+| BID-09 | 차단 | RESULT 1개월 dateFrom/dateTo, 금액 파라미터 없음·낙찰금액 준비 중 비활성 확인. `result-period-month.json` | 최근/과거 실제 개찰결과 없음 |
+| BID-10 | 통과 | UI size20/page1→API page0 20행, UI page2→API page1 16행. 두 페이지 ID 중복 없이 공사36행 전체/순서와 일치. page999→API998·빈 페이지 문구·Enter 첫 페이지 복귀. `page-size20-*.json`, `out-of-range-page.json`, `first-page-return.json` | 20행 초과 누락 해소. 범위 밖 페이지와 검색0은 서로 구분 |
+| BID-11 | 차단 | 기초금액/업종 null의 —, 서로 다른 두 기관에서도 수요기관 우선과 존재 값 표시를 실제 표/응답으로 대조 | 추정가격/지역/기관 누락 및 결과 nullable 사례 없음. 부분 null 확인을 전체 통과로 바꾸지 않음 |
+| BID-12 | 차단 | 단일 행의 공고번호/제목 두 링크가 `/bids/1002223`로 동일, 제목 Enter·해당 상세 h1 지문·뒤로가기 검색 복원 확인. `single-detail-link.json`, `detail-back-restored.json` | 분류 행/같은 ID의 두 분류 쌍 없음. 상세 section 자체는 이번 판정 범위 아님 |
+| BID-13 | 통과 | 없는 검색어의 실제200/0행·빈 결과 문구, 금액/물품0에서도 mock 대체 없음. `empty-search.json`, `empty-search-ui.txt` | 누락 fixture를 합성하지 않음 |
+| BID-14 | 통과 | 목록/지역/업종 각각 소유 프로세스 fetch만 실패(outbound 없음)→오류/표0, 해제 후 Enter 재시도로 새 실제 GET200/표20행 복구. `failure-*.json`, `retry-*.json`, `public-fetch.ndjson` | 이전 reset 결함은 이미 main 수정됨. 이번 수정0, 실제 backend 4xx/5xx 증거 아님 |
+| BID-15 | 통과 | 비로그인 recommended 직접 접근의 next 보존·사용자 QA-A 로그인 복귀·준비 화면/표0. observer 재활성 후 refresh Fetch200·logout Fetch200 및 이후 로그인 복귀. 해당 구간의 공개 목록/metadata fetch delta0. `recommended-*.json`, `network-refresh-reenabled-settled.json`, `network-logout.json`, `final-anonymous.json` | OAuth completion/쿠키 삭제 미판정. 초기 수집 truncation·빈 이벤트를 성공/미발생 근거로 쓰지 않음 |
+| BID-16 | 통과 | 1440/390/320에서 20행 유지·document 가로 넘침 없음, 표 overflow auto·모바일 scrollLeft0→305, 메뉴 Enter/Escape·검색/페이지/링크/재시도 Enter 확인. `responsive.json`, `horizontal-scroll.json`, `keyboard-menu.json` | 표 내부 가로 스크롤과 페이지 가로 넘침을 구분 |
+
+### 검증·정리·재개
+
+- 최근 결과 **통과/실패/차단/대기 `10/0/6/0`**. 새 통과는 BID-01·02·05·06·07·10이며 BID-13~16도 재확인했다. BID-03·04·08·09·11·12 및 현재 backend 실행 버전 대응이 남아 **전체 통합은 차단**이다. 이전 4/0/12/0과 BID-14 최초 실패/수정 이력을 덮어쓰지 않는다.
+- 실제 공개 화면44개 상태를 서버 응답과 행/건수·링크/순서·모든 현재 표시 셀 지문으로 대조했고 독립 포함/제외·페이지 합집합/교집합 검사도 PASS. 이는 경계 표본이 없는 6사례의 통과를 대신하지 않는다.
+- test/lint/build는 이번에 재실행하지 않았다. 직전 QA-01의 Node22.20.0 test62/8파일·lint·api/local 기본 Turbopack build PASS와 현재 제품/테스트/설정 등220개 파일의 지문 일치를 확인해 [재사용 근거](/Users/jisung/.codex/visualizations/2026/11/02/qa-02-bid-list-resume/static-evidence-reuse.json)로 연결했다. 이번 검증은 새 실제 Next/Chrome 실행이며 코드/설정 변경이나 제품 실패가 없어 영향 없는 앱 검사를 반복하지 않았다. 로컬 build-storybook도 공용 UI/Storybook 변경 없어 미실행이다.
+- 최초 외부 공개 validator는 이름이 같은 redirect 중간/최종 기록을 함께 세어 실패했다. `*-intermediate` 파일을 최종 판정에서 제외하는 helper1회 교정 후44상태 모두 PASS; 원래 실패 기록과 중간 관찰은 보존했다. 제품 수정0/3. OAuth 복귀 후 초기 buffer는 truncated/빈 이벤트였고 Network 관찰을 다시 켠 뒤 false 구간에서 refresh Fetch200(seq4550), logout Fetch200(seq4569)을 실제 회수했다. completion HTTP나 cookie/header/body를 추정하지 않는다.
+- QA-A logout200/보호 진입의 로그인 복귀·소유 Next 종료0·소유 PID/group 소멸/3000·3001 비청취·실패 제어 제거·화면 override reset·Network disable·소유 Chrome 탭 닫힘 완료. `cleanup.json`, `process-exit.json` 참조. Google 일반 로그인/무관한 탭·공유 서버 데이터는 정리 대상으로 삼지 않았다.
+- 남은6사례는 공개 테스트 데이터/배포 담당이 물품·결과 상태/금액·분류 쌍·기관/지역/추정가격/결과 null·정확한 날짜/기초금액 경계 및 현재 실행 식별자를 준비하면 같은 BID ID로 재개한다. 실제 계약상 발생하지 않는 조건은 담당자 합의 전 임의로 면제하지 않는다. 기존 QA-02 전용 제한 진행/Git 예외만 유지하고 다음 Task의 검증 면제로 확대하지 않는다.
+- 다음 후보는 QA-03 재개다. P0 표 순서·PREP-01/QA-04 main 선행·기존 QA-02 진행 예외를 근거로 별도 Gate를 준비하며, 이번 대화에서 상세 QA를 실행하지 않는다.
