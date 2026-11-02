@@ -372,3 +372,28 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 ### 2026-11-02 15:26 KST · 다음 작업 선정의 후속 승인
 
 사용자는 **“QA-06의 남은 항목은 차단으로 유지하고 QA-07을 다음 작업으로 선정하는 예외”**를 승인하고 QA-07은 새 대화에서 시작한다고 명시했다. 위 사전 점검 종료 시점의 ‘다음 QA-06 재개/QA-07 예외 없음’은 당시 이력으로 보존하고 현재 다음 작업은 [WBS](../development/figma-v01/README.md)의 **QA-07**을 따른다. [승인/인계 기록](../development/figma-v01/tasks/QA-06.md#qa-06-next-qa-07-exception) 참조. AUTH-14/15 0통과·2차단과 자원/변경·복구·실행 대응 미확보는 불변이다. 이 후속의 실제 API/QA-07 실행은 없으며 합성 문서·계정·업로드/등록의 변경·잔존·복구와 환경/실행 근거는 다음 QA-07 요구사항 Gate에서 확인한다. 이 선정은 QA-06 통합 PASS나 QA-07 실제 실행 승인이 아니다.
+
+<a id="qa-07-20261102"></a>
+
+## QA-07 가입 문서 업로드·OCR 사전 점검 · 2026-11-02 KST
+
+[작업/재개 조건](../development/figma-v01/tasks/QA-07.md#qa-07-resume) · [검토 기록](../development/figma-v01/reviews/QA-07.md). 이 절은 과거 auth 기록/17개 case 정의를 보존한 추가 관찰이다. 현재/다음 Task와 상태는 [WBS](../development/figma-v01/README.md)만 소유한다.
+
+- 승인: 파일/처리 기록과 등록 후 회사/소속/권한 등의 잔존 영향, 로그아웃만으로 복구되지 않는다는 설명 후 사용자가 **“사전 점검만 진행 (추천)”** 선택. 소스/문서/기존 계약 테스트와 Git 전달만 수행한다. QA-06의 다음 QA-07 선정 예외를 실제 mutation·복구/운영/배포 승인으로 확대하지 않았다.
+- 환경/식별: 시작 `main`/`origin/main` `d12222ecc61b7e6f094f6e3a4c69c9da6fb85e6a`·clean, fetch/FF 후 `qa/qa-07-document-ocr`. PREP-01·QA-04·QA-06 선정 예외 main 반영 확인. 기본 Node26.5.0과 실행 Node22.20.0/pnpm11.3.0을 구분했다. 실제 대상 주소는 문서상 local HTTPS→api-test이며 이번에 접속하지 않아 도달/실행/CORS 상태를 새로 주장하지 않는다.
+- 실행 증거: Node22 `pnpm test` **8파일62건·exit0**(15:33:52 KST 시작·626ms). Vitest4.1.11 Node의 mock/HTTP fetch 대역이다. 테스트의 `File`은 합성 바이트와 MIME/metadata이며 실제 OCR용 합성 PDF/JPG/PNG 준비나 업로드를 뜻하지 않는다.
+
+| case | 현행 소스/계약 테스트로 확인한 범위 | 이번 실제 판정·미실행/차단 이유 |
+| --- | --- | --- |
+| AUTH-09 | `chooseFile`의 확장자/MIME·1byte~10MiB 검증, 파일별 멱등 키·SHA-256/metadata, private DTO→opaque handle·직접 PUT `credentials: omit`·서버 제공 header·성공 후 완료 POST 소스. HTTP 대역에서 checksum/metadata/멱등 header/PUT·서명 descriptor 비노출 검증 | **차단**. 승인된 합성 PDF/JPG/PNG/오류 파일·계정·객체/문서 정리 범위와 실제 storage PUT/CORS/서명/업로드 실패·완료 전환 미확인 |
+| AUTH-10 | 1초 간격 polling과 effect 정리, API 계정별 UUID 복원 키/mock namespace 분리, 처리 실패 상태·수동 OCR/verification 재시도·버전 교체·proposal 전환 소스. mock에서 복원/실패/재시도/등록과 구버전 거부 검증 | **차단**. 실제 worker/상태·문서/버전·polling 중복/중단·새로고침·지연/실패/재시도/재업로드 fixture와 잔존/복구 근거 없음 |
+| AUTH-11 | proposal/profile 표시, 업종 검색·code 선택, 억 원 변환·null/정보 없음·대표면허/3종 인증·자료 기준일과 직접 수정 disabled 소스 | **차단**. 기대 추출값·실적/인증·업종/null fixture 미확보. 실제 proposal/industries/변환 UI 결과 미실행 |
+| AUTH-12 | VERIFIED/COMPANY_ALREADY_VERIFIED의 기존 회사 찾기 분기, 서버 allowedChoices에 따른 미인증 충돌 선택·정정 동의와 제출 전 guard 소스. mock revision 충돌 검증은 존재 | **차단**. 인증/미인증 중복·계정 권한별 allowedChoices·번호 정정의 승인된 fixture/기대 결과·변경/복구 범위 없음. 실제 충돌 선택·등록 요청 미실행 |
+| AUTH-13 | 대표/팀원 직급·6금액대·전화·업종·충돌 선택, payload별 멱등 키/busy·등록 완료 후 세션 경고·AccountScope 소스. mock 검증 등록/회사 연결, HTTP handle 발급 중 계정 경쟁 검사. 공통 postCommit의 refresh 실패/401/403 테스트는 **번호 등록 호출**이며 문서 등록 endpoint의 직접 검증은 아님 | **차단**. 실제 문서 등록·중복 방지/서버 회사·소속/인증/충돌 잔존·refresh 실패/계정 경쟁·복구 미실행. 공유 helper/소스 관찰을 실제 문서 등록 PASS로 확대하지 않음 |
+
+- 합계: 이번 AUTH-09~13은 **0통과·0실패·5차단·0대기**다. 문서 경로 AUTH-17의 desktop/mobile·키보드/오류 읽기/중복 클릭도 미실행·차단이며 5개 합계에 중복 산입하지 않는다. 과거 AUTH-09의 업로드 전 UI 관찰, QA-04 인증 한정 PASS와 QA-05/06 차단은 보존한다.
+- 소유 소스: `src/app/auth/company/register/document/registration-client.tsx`, `src/data/company/{client,contracts,http-repository,api-types,mock-repository}.ts`, `src/components/auth/{company-registration,account-scope}.tsx`, `tests/company.test.ts`. UI는 public Repository를 사용하고 서명 URL/header는 private HTTP 경계에 둔다. 이번에 소스/테스트 수정 없음.
+- 남은 준비/담당: 합성 문서·계정/회사 fixture 담당, storage/OCR 담당, 등록 API/정리 담당, 배포 담당·프론트 QA·개발자 승인자가 필요하며 개인 배정은 미확인이다. 비식별 별칭/안전한 위치·기대값·대상/횟수·문서/객체/버전/제안·회사/membership/권한/합치기 제안의 잔존 허용·정리 방법/담당과 현재 frontend snapshot/auth/company=api·backend/storage/OCR 실행 대응·안전한 오류/해제 방법 확보 후 재개한다. 승인 예외나 없는 삭제 API를 추정하지 않는다.
+- 미실행/복구: 실제 API(GET 포함)/OAuth·브라우저·업로드/등록·서비스/데이터 변경 **0회**, 새 잔존/복구 대상 없음. 과거 계정/문서 상태도 조회하지 않았다. Node 계약 테스트는 종료했다. 브라우저 버전/viewport·UI 캡처/Network·실제 호출 시각은 미실행으로 해당 없음, 현재 runtime snapshot/backend 배포 대응은 미확보다. 과거 실행 값을 재사용하지 않는다.
+- 로컬 증거(Git 미포함): `/Users/jisung/.codex/visualizations/2026/11/02/01a19af5-37ba-7f00-bb01-948b2c910697/qa-07/`의 시작/점검 manifest·테스트 로그·문서 검사·audit/리뷰 원문·최종 지문/Git receipt. 환경파일 값/개인 키/인증 로그·실제 문서·서명 URL/header·개인정보/비밀값은 열람하거나 남기지 않았다.
+- 다음 하나: **QA-07 재개**. 실제 5개 필수 사례가 차단이고 QA-08 진행 예외가 없어 다음 P0로 자동 전환하지 않는다. 첫 행동은 main/Git와 위 자원·변경/잔존/복구/실행 식별자를 확인해 실제 QA 요구사항 Gate를 작성하는 것이다. 가입 후 서류함/대시보드 개발은 이 범위에 포함하지 않는다.
