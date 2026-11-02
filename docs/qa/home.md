@@ -1,6 +1,6 @@
 # 홈 브라우저 통합 테스트
 
-> 아래 초기 펀치리스트의 `대기`·`미실행`은 과거 기록으로 보존한다. 현재 QA-01 실행의 사례별 결과와 재개 조건은 [2026-10-30 실행](#qa-01-실행--2026-10-30-kst)을 따른다. Task의 현재/다음/상태는 [WBS](../development/figma-v01/README.md)만 관리한다.
+> 아래 초기 펀치리스트와 2026-10-30 실행은 과거 기록으로 보존한다. 최근 사례별 결과와 재개 조건은 [2026-11-02 재검증](#qa-01-재검증--2026-11-02-kst)을 따른다. Task의 현재/다음/상태는 [WBS](../development/figma-v01/README.md)만 관리한다.
 
 ## 기준
 
@@ -179,3 +179,37 @@
 - 실제 HOME-07·08 통과, HOME-01~06·09 차단의 `2/0/7/0`은 그대로다. 예외 종료를 실제 홈 전체 통합 PASS로 바꾸지 않는다. 추가 공고/DB/백엔드 변경이나 새 API 요청은 이 후속 결정 때문에 실행하지 않았다.
 - 잔여 7사례와 backend 실행 버전 미확인은 위 동일 case ID·조건·증거에 남긴다. 준비 데이터·실행 식별자·인증 metadata/cursor 수집 경로 확보 또는 개발자 재개 요청 시 재검증한다. QA-16 취합에서도 승인 예외/미확보를 분리한다.
 - 다음 Task는 WBS의 **QA-02**다. QA-02의 자체 Gate/자원·검증을 별도로 확인하며 이번 예외를 전파하지 않는다. 이번 대화에서는 QA-02를 실행하지 않는다.
+
+## QA-01 재검증 · 2026-11-02 KST
+
+### 요청·환경·증거
+
+- 사용자 요청으로 추가 데이터 조회 및 QA-01만 재개했다. 기존 “현재 데이터만 조회·없는 조건은 차단”과 QA-A 인증·소유 프로세스 한정 연결 실패/해제·정리 승인, 최초 Git 전달 승인을 유지한다. 신규 가입·fixture/DB·업무 데이터·공유 서비스·배포 변경은 하지 않았다.
+- 프론트: `qa/qa-01-home-resume`, 시작 clean `main=origin/main=87e4d3c1dc70bbc6442013464dd71c88f29b39f2`, 이후 이 Task의 Markdown만 변경. Node 22.20.0/pnpm 11.3.0/Next 16.2.9. `https://local.mate-bid.com:3000`에서 명시적 api/local 실행, 빌드 snapshot `67eb70b3`의 7그룹 모두 api. 실행 observer로 실제 서버 GET을 별도 확인했다.
+- 백엔드: `https://api-test.mate-bid.com`. 조회 시각 09:29~09:34 KST. 홈 조건 `ALL/page=0/size=9/sort=bidCloseAt,asc`는 HTTP 200/isSuccess=true·9행·totalElements=312다. “약 1만 건 적재”라는 사용자 전달과 이 보기의 312행은 별개이며 DB 전체 건수/적재 성공을 검증한 것은 아니다. 100행씩 4회 조회한 공개 보기 312행에서는 용역 276·공사 36, 물품 0·분류 행 0, 홈 검사 필드 null 0, 기관명이 다른 양쪽 보유 32·공고기관만/양쪽 없음 0이다. 이는 홈 화면 사례의 통과를 대신하지 않는 준비 확인이다.
+- GitHub의 최근 test deployment `7366507325`·source `0e7ac62d605279fc8d51455794a910eece8aeed5`와 성공 상태를 재조회했다. 현재 실행 프로세스/이미지와의 대응 증거는 여전히 미확보다. 오래된 배포 메타데이터를 현재 서버 실행 SHA로 확정하지 않는다.
+- Chrome extension, 설치 버전 `156.0.8078.79`(실행 버전 별도 미노출). 처음 IAB와 Chrome 모두 `ERR_CERT_AUTHORITY_INVALID`; 사용자가 Chrome 연결과 로컬 인증서 안내 확인을 직접 수행하고 “메이트 홈 화면이 열렸음”으로 회신했다. 에이전트는 보안 안내를 통과하거나 인증서/키체인 설정을 변경하지 않았다. 사용자는 열린 로그인 세션이 기존 QA-A임을 별도로 확인했다.
+- 로컬 증거: [실행 요약](/Users/jisung/.codex/visualizations/2026/11/02/qa-01-home-resume/execution-summary.json)과 같은 디렉터리의 `readiness.json`, `public-inventory.json`, `public-fetch.ndjson`, `public-checks.json`, DOM/반응형/링크/인증 상태 JSON·PNG·검증 로그. 공개 제목은 비교용 SHA-256, 인증은 경로/HTTP 상태만 남기며 query/header/body·token/cookie·계정 원문·환경파일 값은 읽거나 보존하지 않는다. Git에는 이 로컬 실행 파일을 포함하지 않는다.
+
+### 동일 사례 재검증 결과
+
+| 사례 | 2026-11-02 결과 | 이번 확인·증거 | 남은 조건 |
+| --- | --- | --- | --- |
+| HOME-01 | 통과 | Next 공개 GET 200·9행을 홈 카드 9개와 순서/제목 지문/주소/마감 정렬로 대조했다. API page=0/size=9·bidTypes 없음. `public-fetch.ndjson`, `home-initial-dom.json`, `public-checks.json`, `home-cards-desktop.png` | 복수 분류의 행 보존은 HOME-03 차단으로 별도 관리 |
+| HOME-02 | 차단 | 현재 홈 9행 모두 용역. 공고일·KST 마감·일반/제한경쟁·원 단위 추정가격이 실제 응답과 모두 일치. `public-checks.json` | 공개 보기에는 공사 36행이 있으나 현재 홈 첫 9행에는 없음. 물품도 없으므로 3종 배지를 실제 홈에서 모두 확인하지 못함. 임의 재정렬/응답 합성 안 함 |
+| HOME-03 | 차단 | Tab으로 첫 카드 포커스 → Enter → `/bids/1001140`·분류 query 없음·선택 공고 h1 지문 일치. `keyboard-card-focus.json`, `detail-link.json` | 공개 312행에 분류 행·같은 ID의 다른 분류 쌍 없음. 두 분류 URL 보존은 미실행. 상세 section/첨부 자체는 QA-03으로 이 Task에서 판정하지 않음 |
+| HOME-04 | 차단 | 현재 홈 9행은 수요/공고 기관명이 모두 동일하며 `수요기관 · 이름` 표시 일치. `public-checks.json` | 다른 두 기관명 32행은 API 준비 관찰만 있고 홈에는 표시되지 않음. 공고기관만·기관 양쪽 없음 사례도 없어 세 분기/역할 교환을 모두 검증하지 못함 |
+| HOME-05 | 차단 | 공개 보기 312행의 `noticePublishedAt`, `bidCloseAt`, `contractMethod`, `estimatedPrice` null은 각각 0. 현재 홈의 존재 값 표시만 확인 | 각 null의 홈 표시가 필요. 계약 테스트 62 PASS를 live null PASS로 바꾸지 않음 |
+| HOME-06 | 차단 | 이번 홈은 9행. 2026-10-30의 1행 표시 관찰은 과거 증거로 보존 | 현재 홈과 같은 조건에서 1~8행·0행을 준비할 수 없어 미실행. 필터 없는 홈의 응답을 로컬 합성/잘라내기로 대체하지 않음 |
+| HOME-07 | 통과 | 소유 Next의 공개 목록 fetch만 1회 연결 실패(outbound 없음) → alert·카드 0·다른 섹션/전체 보기 유지. 제어 해제 후 Tab 재시도 포커스/Enter → 실제 API 200·9행 복구. `fetch-failure.json`, `retry-focus.json`, `fetch-recovered.json` 및 두 mobile PNG | 실제 backend 5xx 증거와 구분. 제어 파일 제거·프로세스 종료 확인 |
+| HOME-08 | 통과 | 요청 1440/820/390에서 카드 9개가 3/2/1열·gap 20, document 가로 넘침 없음. client width 1425/805/375. 카드 Tab/Enter·전체 보기 Enter `/bids`·재시도 키보드 사용 확인. `responsive.json`, `all-link.json` | 목록 내부 필터/검색은 이번에 실행하지 않음 |
+| HOME-09 | 통과 | 사용자 확인 QA-A의 기존 세션에서 홈 하드 리로드 → refresh Fetch 200·로그인 UI → CTA `/bids?view=recommended`·준비 중 h1. 로그아웃 Fetch 200 후 CTA → `/auth?mode=login&next=%2Fbids%3Fview%3Drecommended`; 새 홈 navigation/재시도 후 refresh Fetch 401·비로그인 UI/CTA enabled 확인. `network-authenticated-settled.json`, `authenticated-cta.json/png`, `network-logout-initial.json`, `anonymous-cta.json/png`, `network-anonymous-home.json`, `final-anonymous.json` | 새 Google OAuth/session completion 자체는 실행하지 않음. 기존 승인 세션 복원·홈 두 분기만 통과. 응답 header/cookie 삭제는 미열람·미판정 |
+
+### 판정·수집 한계·정리
+
+- 최근 사례 수는 **통과/실패/차단/대기 `4/0/5/0`**. 새 통과는 HOME-01·09이며 HOME-07·08은 이번 소스로 재검증했다. 필수 경계 5사례와 현재 backend 실행 버전 대응 미확보로 **QA-01 전체 통합은 차단**이다. 과거 `2/0/7/0`을 덮어쓰지 않는다.
+- 첫 reload 수집 `network-authenticated-reload.json`에는 `truncated=true`가 있어 해당 구간의 완전성은 주장하지 않는다. 이어진 수집 `network-authenticated-settled.json`의 `truncated=false` 구간에서 refresh Fetch 200(sequence 402)을 실제 회수했다. 로그아웃 200(sequence 820)·이후 refresh 401(sequence 1306/1651)도 각각 `truncated=false`에서 회수했다. 미수집을 성공으로 추정하던 과거 차단과 달리 이번 HOME-09는 이 실제 상태와 UI에 근거한다. CORS Preflight 200을 Fetch 성공으로 세지 않는다.
+- 정적/계약: Node 22.20.0 `pnpm test` 62 tests/8파일·`pnpm lint`·api/local 기본 Turbopack `pnpm build` PASS. mock/HTTP 대역 결과와 실제 API 결과는 별도다. 제품/공유 UI/Storybook 변경이 없어 로컬 build-storybook은 미실행.
+- QA-A 로그아웃 200 및 이후 refresh 401·비로그인 UI를 확인했고, 실패 제어 파일 제거·화면 override reset·Network disable·소유 Chrome/IAB 탭 닫힘·소유 Next 종료 0·소유 PID 소멸·3000/3001 비청취를 확인했다. `cleanup.json`·`process-exit.json` 참조. 인증서/키체인·공유 서버·데이터는 변경하지 않았다.
+- 다음 재개에 필요한 역할은 공개 공고 테스트 데이터/배포 담당과 프론트 QA 실행자다. 홈 첫 9행에 3종·두 분류 쌍·기관 세 분기·각 null·1~8/0행 조건 및 실행 버전 대응이 준비되면 동일 HOME-02~06을 다시 실행한다. 담당 개인은 임의 지정하지 않는다.
+- 2026-10-30의 QA-01 전용 잔여 검증 보류/다음 진행 예외는 해당 범위로 보존한다. 이번에는 추가로 확인한 결과와 미해소 5사례를 남기며, 문서/검토/Git 전달 성공을 전체 통합 PASS나 다른 Task 검증 면제로 바꾸지 않는다. 후속 후보는 WBS의 QA-02 재개이며 이번 대화에서 실행하지 않는다.
