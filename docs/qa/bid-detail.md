@@ -8,7 +8,7 @@
 - 담당자/검토자: 미정
 - 기존 상세 구현 시 정적 검증(과거): Node 22.20.0에서 `pnpm lint`, `pnpm build`, `git diff --check` 통과. 별도 DTO mapper 계약 시나리오에서 분류번호·KST·nullable 금액·수집 미확정 상태·안전한 외부 URL·첨부 미리보기·낙찰 결과·0-based 페이지 변환 통과.
 - 기관 역할 표시 변경: Node 22.20.0에서 `pnpm lint`, `pnpm build`, `pnpm build-storybook`, `git diff --check` 통과. 공고기관 담당자 이메일이 없고 수요기관 담당자 이메일만 있는 DTO에서도 두 출처를 분리하는 시나리오를 확인했다. 실제 표시는 아래 DETAIL-02에서 브라우저 검증 대기다.
-- 실제 백엔드 브라우저 통합 상태: **2026-10-30 통과 0·실패 0·차단 9·대기 0**. 각 case의 전체 조건으로 판정했으며 부분 확인을 전체 통과로 세지 않았다. 사용자 승인으로 QA-03 수행·정리·잔여 추적·문서/Review Gate를 제한 종료한다. 전체 통합 PASS 아님. [작업 기록](../development/figma-v01/tasks/QA-03.md) · [검토 기록](../development/figma-v01/reviews/QA-03.md).
+- 실제 백엔드 브라우저 통합 상태: **2026-11-02 추가 데이터 재검증 1통과·0실패·8차단·0대기**. 최신 결과는 [재개 결과 표](#qa-03-20261102)를 따른다. 아래 기존 9개 테스트 항목의 상태·부분 확인은 2026-10-30의 0통과·9차단 이력으로 보존한다. QA-03 전용 제한 종료 승인과 전체 통합 PASS는 별개다. [작업 기록](../development/figma-v01/tasks/QA-03.md) · [검토 기록](../development/figma-v01/reviews/QA-03.md).
 
 ## 실행 환경 기록
 
@@ -165,3 +165,49 @@
 - 복구: 소유 Next process group 38186 종료 0·3000 비청취, 실패 제어 제거, 브라우저 Network 해제·viewport reset·소유 탭 닫힘. 다운로드 0건으로 정리할 파일 원본 없음. API 데이터 복구 불필요.
 - 도구/실행 한계: 첫 404 캡처는 로딩 중 흰 화면이어서 판정에 사용하지 않고, 404 heading 대기 후 재촬영했다. back 연속 조작 후 URL/화면 갱신 미확인 상태는 목록 reload 후 공고명 진입으로 회복했으며 정상 history 복귀 PASS로 세지 않았다. Browser.getVersion/평가 범위의 navigator가 지원되지 않아 공개 Document 요청의 축약 UA만 기록했다. 이는 소스 자동 수정이 아니다.
 - 최종 Task 판정: 사용자 승인된 **수행·정리·잔여 추적·문서/Review Gate의 제한 종료**다. 종료 편집의 freshness 재검토와 Git 전달은 별도로 확인한다. 실제 상세 전체 통합은 차단이며 완료로 바꾸지 않는다. Review Gate·Git 전달 상태는 작업/검토 기록과 PR에서 확인한다.
+
+
+<a id="qa-03-20261102"></a>
+
+## 2026-11-02 추가 데이터 재검증
+
+사용자 요청 “QA-03도 추가된 데이터로 보류했던 항목부터 다시 검증…확인할 수 없는 조건은 차단”에 따라 QA-03만 재개했다. **전체 case 1통과·0실패·8차단·0대기**다. DETAIL-07이 새로 통과했고, 나머지는 부분 확인을 늘리되 원래 전체 조건과 차단을 유지한다. 기존 2026-10-30의 0/0/9/0과 위 case 정의·미충족 완료 기준을 덮어쓰지 않는다.
+
+### 이번 실행 환경·증거
+
+| 항목 | 확인한 값과 한계 |
+| --- | --- |
+| 시각 | 2026-11-02 13:56:59~14:00:58 KST의 실제 UI 관찰. 소유 Next 종료 14:01:42 KST |
+| 프론트 | `https://local.mate-bid.com:3000`, `qa/qa-03-bid-detail-resume`, 시작 `main=origin/main=067c8a2b14a6b11c484d19cbe8498c403cf60b22`·clean. 실행 중 QA-03/WBS Markdown만 변경, 앱 소스 불변 |
+| 실행 | Node22.20.0·pnpm11.3.0·Next16.2.9/Turbopack. `.env*` 내용을 열지 않는 외부 guard와 명시적 공개 api/local 입력. 7개 그룹 모두 api, 같은 소스/입력의 기존 계산 지문 `67eb70b3`; 이번 dev snapshot 값 자체를 별도 추출한 것은 아님 |
+| 백엔드 | `https://api-test.mate-bid.com`. 최신 조회한 test 성공 deployment7366507325·source0e7ac62d605279fc8d51455794a910eece8aeed5·run40552546758은 과거 배포 이력이다. 현재 실행 SHA/이미지와의 대응은 미확인 |
+| 브라우저 | Chrome extension, 설치 버전156.0.8078.79(실행 프로세스 patch는 별도 미수집), 1440×900·390×844·320×844. 기존 로컬 인증서 안내 없이 진입, 신뢰/보안 설정 변경 없음 |
+| 공개 준비 조회 | ALL 260행/260 ID·공사32/용역228/물품0, NORMAL221/MODIFIED15/REBID24/CANCELLED0, 복수/선택 분류0, RESULT0. page0~2/size100 스캔 완료. 이는 이번 공개 조회 결과이며 DB 약1만건 전체 적재 확인이 아님. 앞선 QA-01/02의 312행을 현재 값으로 재사용하지 않음 |
+| 실제 관찰과 대조 | 공개 본문/section 실제 GET과 안전한 DOM 23상태의 제목/번호·5개 KST 일정·금액3·예가·제한/자격·기관 역할·참조번호·관련 카드·첨부 메타데이터를 대조해 PASS. 로컬 실패는 별도 표기 |
+| 정적 검증 | 직전 QA-01에서 실제 실행한 Node22 `pnpm test`62건/8파일·lint·api/local Turbopack build 로그를 재사용. 실행/설정/패키지/테스트/하네스228파일과 로그 SHA-256 일치 확인. **이번 QA-03에서는 세 명령을 재실행하지 않았다.** Storybook/공용 UI 영향이 없어 build-storybook 미실행 |
+
+비식별 증거는 [로컬 실행 디렉터리](/Users/jisung/.codex/visualizations/2026/11/02/qa-03-bid-detail-resume/)의 `readiness.json`, `public-fetch.ndjson`, `related-exact-match.json`, `public-validation.json`, `execution-summary.json`, `responsive.json`, `network-*.json`, `cleanup.json`, `static-evidence-reuse.json`, 64개 실행 산출물 지문 `evidence-manifest.json`에 보존한다. 이 원문은 Git 밖에 있어 다른 Mac에서 자동 제공되지 않는다. 담당자 이름/전화/이메일·첨부명·파일 내용·비밀 URL·인증 header/body/query는 수집하지 않았다. 화면은 안전한 상단 또는 실패 section만 캡처했다. 초기/누적 `truncated=true` Network는 완전한 관찰로 세지 않으며 새 관찰 구간의 실제404·retry Fetch200·최종 Document200과 구분한다.
+
+### 기존 case별 최신 결과
+
+| Case | 결과 | 이번 실제 확인 | 남은 차단·재개 조건 |
+| --- | --- | --- | --- |
+| DETAIL-01 | 차단 | 공사1002223의 목록 번호/제목 모두 동일 상세 ID로 이동, 분류 null을 유지. `construction-number-entry`/`construction-title-entry` | 복수 분류0. 실제 선택 변경·non-null 분류 URL/요청 기대값을 갖춘 fixture 필요 |
+| DETAIL-02 | 차단 | 공사1002223/1002795·용역1001370/1005216/1004792의 일정/금액·수요/공고기관 역할·HAS_ROWS/NO_ROWS·상호시장진출·예가·참조번호 대조. 기초금액 null→정보 없음·순공사비 null→—, 원/숫자 왕복 확인 | 물품0, 기관/연락처/null·미확정 제한·일정 경계의 비식별 fixture 미확보. 담당자 원문 검증은 이번 범위에서 제외 |
+| DETAIL-03 | 차단 | 공사/용역에 품목정보가 없고 purchase-items 요청0 | 물품0. 품목11개 이상·소수 수량/단가·합계/빈 품목·페이지/복귀 fixture 필요 |
+| DETAIL-04 | 차단 | MODIFIED1005216에서 정정 사유, REBID1004792에서 재입찰만 표시. NORMAL에 임의 정정/이력 없음. 시각/사유 null을 생성하지 않음 | 공개 ALL의 CANCELLED0, 선택 fixture의 변경시각 null. 취소 및 실제 변경시각/사유 양성 경계 필요 |
+| DETAIL-05 | 차단 | 선택 상세의 bid-results200/results0·NOT_EVALUATED에서 임의 결과/참여업체 표시 없음. RESULT0 | 다회차·낙찰/유찰·미발표 확정·참여업체21개 이상/상위3 유지·분류/페이지 fixture 필요 |
+| DETAIL-06 | 차단 | 첨부 메타데이터의 NONE/PDF/HWPX/SPREADSHEET와 PDF만 미리보기 제공을 대조. 공사1002223은 다운로드 링크5·PDF 미리보기1. 파일 클릭/다운로드0 | 승인된 합성 PDF/이미지/HWPX·첨부 없는 공고 및 파일 열람/저장/삭제 범위 미확보. 메타데이터 성공을 스트리밍/다운로드 성공으로 세지 않음 |
+| DETAIL-07 | 통과 | source1002223의 INDUSTRY 관련 API page0/size3와 화면3개 ID/분류 null·제목/지역/날짜/금액 순서 일치. target1006050/1006052/1005593의 공개 상세를 추가 대조해 모두 정확한 공통 업종 코드 확인. 첫 카드 Enter→1006050·history 복귀. 1004792/1002795 관련0·빈 UI, 가짜 카드 없음 | 이 case의 관련3/빈 목록·target ID/nullable 분류 기준 충족. 물품/복수 분류·다른 경계는 DETAIL-01/03 등에 차단 유지 |
+| DETAIL-08 | 차단 | 실제 API404/C003 및 Next Document404. 소유 Next에서 본문·첨부·관련·결과 4개 target의 outbound 전 연결 실패/해제. 본문 Enter retry→새 GET200/Fetch200, section 실패 격리·reload 후200/정상 UI, fallback 없음 | 실제 backend HTTP 오류 응답·물품 section 실패 조건 없음. 로컬 본문 실패에 따른 프론트 Document500은 backend500 증거가 아님 |
+| DETAIL-09 | 차단 | 두 유형 금액 원/숫자 왕복·키보드 공유 성공 toast. 나라장터 HTTPS/www.g2b.go.kr·target/rel 확인. 1440/390/320에서 8개 카드 경계 및 document 가로 넘침 없음 | session clipboard empty로 실제 복사 내용 미확인. 복수 분류 공유·물품/참여업체 표의 좁은 화면 미실행. 외부 원문 본문은 접근하지 않음 |
+
+차단 해소에는 공개 공고/첨부 fixture 담당·백엔드 배포 담당·프론트 QA 실행자 역할이 필요하다. 개인 배정은 미확인이다. 위 차단의 마지막 확인일은 2026-11-02 KST이며, 현재 backend 실행 버전 대응 근거도 잔여 공통 한계다. 조건이 확보되면 같은 case ID와 원래 기준으로 재개한다. 새 fixture/DB·정책·업무 mutation을 임의로 만들지 않았다.
+
+### 오류 재현·정리·도구 한계
+
+- 연결 실패는 이번 소유 Next의 공개 fetch에만 적용했다. 본문 실패 시 오류 화면·재시도 버튼, 독립 section 실패 시 본문/다른 section 유지가 관찰됐다. 제어 제거 후 실제 각 endpoint200을 확인했다. 물품·backend HTTP 오류·공유 서비스 장애 주입은 미실행이다.
+- 소유 supervisor2450/group2451 종료0, group 잔여0, 3000/3001 리스너0, 실패 제어 없음. Network 해제·viewport reset·두 소유 탭 닫기 확인. 처음 연결되지 않은 빈 탭은 management의 닫기 기능으로 정리했다. API 업무 변경/수동 인증 조작·파일 내용 열람/다운로드·외부 원문 이동0. AuthSessionProvider의 자동 트래픽은 인증 QA로 판정/전수 수집하지 않았다.
+- 첫 빈 탭 debugger 미연결, 출력 축약 helper의 문자열 코드 생성 거부, breadcrumb 복귀 중 table wait timeout은 제품 결함으로 세지 않았다. 새 소유 탭·명시적 DOM collector·fresh AX 후 보이는 제목 링크로 이어갔다. 초기/누적 Network의 truncated 구간을 보존했고 재활성화한 새 구간에서404/복구/정상 응답을 확보했다.
+- API/UI 자동 대조 helper의 첫 실행은 UI `/bids`를 API `/api/v1/bids`로 잘못 매핑해 실패했다. `public-validation-attempt1.json` 보존 후 `/api/v1/bid-notices`로 한 번 교정, 23상태/독립 검증 PASS. 제품 자동 수정은0/3이다.
+- 문서/범위/보존 검증과 read-only verifier·AI Review 및 검토 후 freshness 결과는 [검토 기록](../development/figma-v01/reviews/QA-03.md)과 최종 원문에 남긴다. 실제 전체 통합은 **차단**이며, 정확한 결과 기록·정리·잔여 추적/문서 Gate와 Git 전달은 별도로 판정한다.
