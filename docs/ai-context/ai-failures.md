@@ -4,6 +4,19 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 
 ## Current Known Failures
 
+<a id="qa-05-auth-log-output"></a>
+
+## 2026-11-02 - 로컬 서버 종료 원문 출력에 인증 거래 query 포함
+
+- Task: QA-05 회사 조회 한정 실제 QA의 로컬 HTTPS 서버 정리.
+- Expected behavior: 서버 실행/종료 결과는 비식별 경로·상태와 exit/소유 PID·포트 반환만 출력하고 인증 query 원문을 도구 출력에도 남기지 않는다.
+- Actual failure: 브라우저 관측은 인증 query를 읽지 않았지만, 종료를 위해 `write_stdin` 결과를 원문 그대로 출력하면서 누적 Next 요청 로그의 callback 거래 식별자가 도구 결과에 포함됐다. 원문 값은 이 기록에 재출력하지 않는다. QA-04의 별도 관측 출력 사건도 이미 공개 기록돼 있어 반복 방지가 필요하다.
+- Root cause: 자격 증명을 직접 읽는 호출뿐 아니라 프로세스 누적 로그도 민감값 출처라는 점을 종료 경로의 출력 필터에 반영하지 않았다.
+- Detection command or review step: 서버 종료 도구 출력 확인 직후 사용자에게 사건을 알리고 QA-05/my-company/auth 기록과 Review Gate의 잔여 한계로 공개했다.
+- Fix: 해당 값 원문을 문서/QA 증거/PR에 복사하지 않고 추가 인증을 반복하지 않았다. QA-A 로그아웃 200·두 회사 경로 refresh 401, 소유 프로세스 종료 0/잔여 없음·포트 반환을 확인했다. 이 정리는 과거 출력의 삭제나 해당 거래/모든 인증 값의 무효화 검증을 뜻하지 않는다. 서버 설정·계정/거래 회수 작업은 임의 수행하지 않았다.
+- Prevention rule: 인증 전에 서버 로그 수집/출력에 query 제거를 적용한다. 시작·대기·종료 결과를 도구에 넘기기 전 안전한 요약으로 제한하고 `write_stdin` 등의 누적 stdout/stderr를 그대로 `text()`/도구 결과에 출력하지 않는다. 종료는 확인한 소유 PID/group·exit·포트 반환으로 검증한다. 읽기 전용 검토도 원문 인증 로그를 다시 열거나 인용하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/QA-05.md`, `docs/qa/my-company.md`, `docs/qa/auth.md`. 런타임/하네스 설정 변경은 없다.
+
 ## 2026-09-29 - 테스트 배포 브랜치 대신 main으로 OAuth 오류 분석
 
 - Task: 테스트 서버의 Google OAuth 시작 요청 `OAUTH_REQUEST_INVALID` 진단.
