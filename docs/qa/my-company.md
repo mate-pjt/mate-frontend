@@ -5,15 +5,16 @@
 - Figma: [미연결 3162:51271](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-51271), [두 선택지 3162:51281](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-51281), [신청 대기 3162:52364](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-52364), [연결 회사 3134:64574](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3134-64574)
 - 경로: `/my` → `/my/company` → `/my/company/start`; 기존 `/auth/company/register`, `/auth/company/search`
 - API: `POST /api/v1/auth/token/refresh`, `GET /api/v1/company-membership-requests/me`, `GET /api/v1/companies/{companyId}`
-- 이번 범위: 회사 기본 정보·소속 신청 조회만. 신청 취소·제출, 회사 수정, 시공능력·인증·희망 금액 카드는 제외한다.
+- 기존 구현 범위: 회사 기본 정보·소속 신청 조회. 2026-11-02 QA-05는 기존 QA-A/QA-B의 조회만 허용하며 회사 검색을 함께 확인한다. 신청 취소·제출/상태 생성, 회사 수정, 시공능력·인증·희망 금액 카드는 제외한다.
 - 정적 검증: 2026-09-29, Node 22.20.0에서 `pnpm lint`, `pnpm build`, `git diff --check` 통과.
-- 실제 API 통합 판정: **대기**. 승인된 연결 계정과 신청 대기 계정 없이 전체 통합 PASS로 표시하지 않는다.
+- 실제 API 통합 판정: **차단**. 2026-11-02 MCO 4통과·6차단. 승인된 연결·상태별 계정과 필수 사례 없이 전체 통합 PASS로 표시하지 않는다. [최신 실행](#qa-05-20261102)에서 과거 시뮬레이션과 구분한다.
 
 ## 실행 환경 기록
 
 | 실행일시 | 프론트 URL·commit | 백엔드 URL·배포 | 브라우저·화면 크기 | 테스트 계정/데이터 별칭 | 수행자 |
 | --- | --- | --- | --- | --- | --- |
-| 미실행 | 미정 | 미정 | 미정 | 비밀값 대신 별칭만 | 미정 |
+| 2026-09-29 이력: 미실행 | 미정 | 미정 | 미정 | 비밀값 대신 별칭만 | 미정 |
+| 2026-11-02 14:16~14:22 KST | `https://local.mate-bid.com:3000` · source `80c4282df7a65652829e5f7e58ba7c39e64ae063` / `qa/qa-05-company-live`（문서 변경만） | `https://api-test.mate-bid.com` · 현재 실행 버전 대응 근거 미확인（사용자 확인） | Chrome 156.0.8078.79 · desktop 1471×687 DOM client, mobile viewport 390×844/320×700 | 사용자 직접 로그인 QA-A. QA-B 미사용, 상태별 회사 자원 미준비 | Codex + 사용자 인증 인계 |
 
 ## 선행 조건·증거 구분
 
@@ -35,7 +36,7 @@
 - 경로/API: `/my/company`, `/my/company/start`; `POST /api/v1/auth/token/refresh`
 - 준비 데이터/조작: 비로그인 세션에서 두 URL에 직접 진입하고 로그인 링크를 누른다.
 - 기대 결과: 회사 API를 호출하지 않고 각각의 `next` 경로를 보존해 로그인으로 이동한다.
-- 상태: `대기`; 증거: 미실행
+- 상태: `통과`（2026-11-02）; 증거: [QA-05 최신 실행](#qa-05-20261102)의 `MCO-01`. 과거 대기 이력은 아래 요약에 보존.
 
 ### MCO-02 — 미연결·신청 없음
 
@@ -43,7 +44,7 @@
 - 경로/API: `/my/company`; refresh 200, `GET /api/v1/company-membership-requests/me` 404/`CR001`
 - 준비 데이터/조작: 연결 회사·신청이 없는 승인 계정으로 진입한다.
 - 기대 결과: Figma 빈 화면과 ‘우리 회사 등록 · 통합하기’가 표시된다. 다른 404나 오류를 빈 상태로 취급하지 않는다.
-- 상태: `대기`; 증거: 미실행
+- 상태: `통과`（2026-11-02）; 증거: [QA-05 최신 실행](#qa-05-20261102)의 `MCO-02`. 과거 대기 이력은 아래 요약에 보존.
 
 ### MCO-03 — 두 선택지와 기존 경로
 
@@ -51,7 +52,7 @@
 - 경로/API: `/my/company/start`; refresh 및 신청 조회, 각 카드 클릭 후 `/auth/company/register`, `/auth/company/search`
 - 준비 데이터/조작: MCO-02 계정으로 CTA와 두 카드를 각각 누른다.
 - 기대 결과: 두 카드가 정확히 기존 회사 등록·찾기 경로로 이동한다. 기존 온보딩 화면 내부의 뒤로 가기 동작은 유지된다.
-- 상태: `대기`; 증거: 미실행
+- 상태: `통과`（2026-11-02）; 증거: [QA-05 최신 실행](#qa-05-20261102)의 `MCO-03`. 과거 대기 이력은 아래 요약에 보존.
 
 ### MCO-04 — 신청 대기와 직접 URL 진입
 
@@ -99,7 +100,7 @@
 - 경로/API: `/my/company`; refresh, 신청 GET, 회사 GET 중 해당 단계 요청 차단
 - 준비 데이터/조작: 승인 계정에서 브라우저 요청 하나를 차단·복원하고 다시 시도한다.
 - 기대 결과: 빈 상태나 이전 값을 성공처럼 보여주지 않고 오류 안내 후 재시도에서 최신 상태를 복원한다.
-- 상태: `대기`; 증거: 미실행
+- 상태: `통과`（2026-11-02）; 증거: [QA-05 최신 실행](#qa-05-20261102)의 `MCO-09`. 과거 대기 이력은 아래 요약에 보존.
 
 ### MCO-10 — 모바일·키보드
 
@@ -107,10 +108,49 @@
 - 경로/API: `/my/company`, `/my/company/start`; API는 각 상태와 동일
 - 준비 데이터/조작: 390×844, 320×700에서 메뉴·카드·정보 배치를 확인하고 Tab·Enter로 이동한다.
 - 기대 결과: 가로 넘침이 없고 읽기 순서·초점이 자연스러우며 카드와 재시도를 키보드로 조작할 수 있다.
-- 상태: `대기`; 증거: 미실행
+- 상태: `차단`（2026-11-02）; 미연결/선택의 모바일·키보드만 확인. 신청 대기/연결의 승인 자원 미준비; 담당: 회사/계정 fixture 준비 역할（개인 배정 미확인）. [최신 실행](#qa-05-20261102) 참조.
 
 ## 실행 결과 요약
 
-- 실제 API 통합 항목: 통과 0 / 실패 0 / 차단 5 / 대기 5
+- 2026-09-29 실제 API 이력: 통과 0 / 실패 0 / 차단 5 / 대기 5
+- 2026-11-02 실제 API 통합 항목: **통과 4 / 실패 0 / 차단 6 / 대기 0**
 - 화면 시뮬레이션 결과: 27개 점검 통과 (요청 가로채기, 실제 API 통합 결과와 분리)
-- 최종 판정: 승인된 계정과 실제 API 검증이 준비될 때까지 **통합 대기**
+- 최종 판정: 상태별 승인 자원과 필수 검증이 준비될 때까지 **전체 통합 차단**. 신청 취소 상태 조회를 취소 명령/회사 간 통합 완료로 세지 않는다.
+
+<a id="qa-05-20261102"></a>
+
+## QA-05 조회 한정 실제 실행 · 2026-11-02
+
+- 사용자 결정: 기존 QA-A/QA-B만 사용 가능·나머지 상태는 차단, 조회만 실행·신청 제출/상태 생성 차단, backend 실행 버전 자료 없음·미확인 유지. 사용자가 Chrome에서 QA-A 직접 로그인 완료를 확인했다. QA-04의 인증/로컬 HTTPS·브라우저 한정 오류 재현/정리 승인을 같은 범위로 재사용했다. 회사 변경 승인으로 확대하지 않았다.
+- 환경: Node 22.20.0 / pnpm 11.3.0 / Next 16.2.9. 명시한 API/local 실행과 실제 test API 응답을 확인했다. backend 소스/Swagger/과거 배포 SHA를 현재 실행 버전으로 대체하지 않았다.
+- 증거 루트（이 Mac 로컬, Git 미포함）: `/Users/jisung/.codex/visualizations/2026/11/02/01a19aad-a443-7753-aa21-507c86771e09/qa-05/`. 아래 파일에는 허용한 경로·method/status/code·시각·UI 결과만 보존한다. 원문 response headers/cookie/token·계정·번호·인증 query는 복사하지 않는다.
+
+| 기존 case | 이번 판정 | 수행·현재 증거 | 미충족/한계 |
+| --- | --- | --- | --- |
+| MCO-01 | 통과 | 두 URL 직접 진입/새로고침 뒤 각각 refresh POST 401, 회사 API 0건, 로그인 안내. 링크 클릭이 각각 `/auth?mode=login&next=%2Fmy%2Fcompany`, `...next=%2Fmy%2Fcompany%2Fstart`로 이동. `mco-01-company-final.json`, `mco-01-start-final.json`, `mco-01-returns.json` 및 `*-return-final.png` | 현재 실행 버전 대응 근거는 별도 미확인 |
+| MCO-02 | 통과 | QA-A refresh 200 → 신청 GET 404/`CR001` → 미연결 heading/CTA. `mco-02-qa-a-complete.json/.png` | 다른 404를 합성 주입한 실제 서버 검증은 하지 않음. 404/CR001만 빈 상태인 소스/계약 조건은 구분 |
+| MCO-03 | 통과 | CTA Enter → 두 선택지. 뒤로가기 Tab→등록, 등록 Tab→검색, 각 Enter가 기존 `/auth/company/register`, `/auth/company/search`로 이동. `mco-03-qa-a-start.json/.png`, `mco-03-no-request-code.json`, `mco-03-register-destination.json/.png`, `mco-03-search-destination.png`, `mco-10-layout.json` | 등록/검색 화면 도착까지만. 등록·소속 신청 제출/내부 정책 변경 없음 |
+| MCO-04 | 차단 | `PENDING` 자원 없음 | 승인된 대기 계정/회사와 두 직접 URL 재현 필요 |
+| MCO-05 | 차단 | `REJECTED`/`CANCELED` 자원 없음 | 종료 상태별 계정·거절 사유/다시 선택 확인 필요. 취소 명령 실행은 제외 |
+| MCO-06 | 차단 | `APPROVED`지만 미연결인 실제 자원/재현 조건 없음 | 승인 직후 refresh 반영·미반영 및 재시도 조건 필요. 상태를 임의 생성하지 않음 |
+| MCO-07 | 차단 | 승인된 연결 계정/회사 기대값 없음 | 기본 프로필 8개 표시·null·설립 연도 대조 필요. 실적/인증 확장 개발 아님 |
+| MCO-08 | 차단 | 실제 제한 권한 계정 없음 | 실제 회사 GET 403과 권한 안내/재시도 필요. 브라우저 오류를 서버 403으로 세지 않음 |
+| MCO-09 | 통과 | QA-A의 신청 GET 하나만 브라우저 `Network.setBlockedURLs`로 차단 → refresh 200 후 연결 실패 안내/재시도 → finally 해제 → 재시도 Enter → refresh 200/신청 404·빈 상태 복구. `mco-09-membership-error.json/.png`, `mco-09-recovered.json/.png` | 원래 사례의 “요청 하나”를 신청 GET으로 실행. 연결 회사 GET/실제 backend HTTP 오류는 미실행이며 MCO-07/08 차단과 분리 |
+| MCO-10 | 차단（부분 확인） | 미연결/선택의 390×844/320×700 viewport·Tab/Enter·재시도. client/scroll 폭 각각 375/375, 305/305로 가로 넘침 없음. 모바일 세로 스크롤/카드 배치 캡처 육안 확인. `mco-10-layout.json`, `mco-10-{empty,start}-{390,320}.png` 및 `mco-10-empty-390-full.png` | pending/connected 두 상태의 모바일·키보드 미확보. 전체 4상태 통과 아님 |
+
+### 회사 검색/신청 연결
+
+- [AUTH-07~08의 QA-05 기록](auth.md#qa-05-20261102)에 검색의 실제 GET 200·빈 결과·등록 링크·브라우저 한정 실패/복구를 연결했다. 결과 있는 승인 합성 회사·번호/페이지 기대값이 없어 AUTH-07 전체는 차단이다. AUTH-08의 대표/팀원 입력·성공/PENDING·중복/기존 소속/권한 분기는 전용 회사/계정·변경/복구 범위가 없고 제출도 승인 밖이므로 차단이다.
+- 실제 backend 오류나 상태를 만들기 위해 DB/fixture/회사·신청 API를 변경하지 않았다. UI/응답의 이름·이메일·사업자번호·주소 같은 개인정보를 관찰/캡처하지 않았다. GET 응답 본문은 개인정보가 없는 404의 공개 code만 추출했고 refresh 본문/인증 headers를 열람하지 않았다.
+
+### 관측 한계와 수행 사건
+
+- 최초 로그인 귀환/직접 이동의 Network buffer가 truncated여서 완전 증거로 세지 않았다. 현재 문서에서 Network를 활성화한 뒤 동작별 온전한 이벤트로 재수집했다. 초기 미수집 JSON은 한계를 남긴 기록이며 성공 증거를 대체하지 않는다. 재시도 locator 문구 불일치는 실제 UI에서 정정했으며 소스 변경/제품 오류로 판정하지 않았다.
+- **서버 종료 도구 출력에 callback의 인증 거래 식별자가 포함되는 수행 사건이 발생했다.** 사용자에게 바로 알렸으며 값 원문을 이 문서·QA 증거에 재출력/복사하지 않는다. token/cookie 유출이나 전체 인증 값 무효화를 확인한 것으로 주장하지 않는다. 앞선 브라우저 관측에서 query를 읽지 않았다는 사실과 이 후속 출력 사건을 구분한다. [재발 방지 기록](../ai-context/ai-failures.md#qa-05-auth-log-output)을 추가했다. 과거 QA-04의 별도 사건/교정도 그대로 보존한다.
+
+### 정리·남은 첫 행동
+
+- QA-A logout POST 200 → 두 직접 경로 refresh 401/비로그인 UI 확인. 브라우저 차단 URL `[]`, Network 비활성, viewport reset, 소유 Chrome 탭 종료. 인증 cookies/header 원문은 수집하지 않았다. 신규 계정·회사/신청 mutation 없음. `logout.json`, `browser-cleanup.json` 참조.
+- 소유 Next 세션 14432/group 17789는 종료 코드 0, 관련 3 PID 잔여 없음, 3000/3001 비청취. 다른 프로세스·서비스/설정·배포는 조작하지 않았다. `process-cleanup.json` 참조.
+- 상태별 자원 담당 역할: 회사/계정 fixture 담당, 회사 API 담당, backend 실행 버전 담당, 개발자 승인자. 개인 배정은 미확인이다. 재개에는 별칭/상태·승인된 합성 회사 기대값/검색 페이지·필요한 신청 변경/복구 책임과 방법·실행 버전 대응 근거가 필요하다.
+- **다음 Task는 QA-05 재개**다. P0·PREP-01/QA-04 선행은 main에 반영됐지만 본 작업의 필수 검증이 남고 다음 기능 진행 예외는 승인되지 않았다. 다음 첫 행동은 main/Git 확인 후 이 결과와 PREP 준비표에서 남은 자원/승인/실행 버전 공백이 해소됐는지 확인하는 것이다. QA-06은 자동 시작하지 않는다.

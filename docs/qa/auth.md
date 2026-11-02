@@ -324,3 +324,22 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 이 표는 QA-04가 맡은 인증/시작 범위의 최신 판정 근거다. 앞선 날짜별 0/17 등 과거 기록과 회사 업무 여정 전체 완료를 구분한다. 기존 실패/미실행 기록, 두 관측 출력 사건·교정과 현재 VM 설정/Clock/과거 만료 세부 원인 미확보는 유지한다. 현재 source·실제 API 성공·별도 mock UI·계약 검사·원격 CI 결과는 각각 별도로 기록한다.
 
 14차 read-only verifier와 최종 AI Review를 거쳐 **QA-04 정의 범위의 검증·정리·문서 Gate PASS**로 판정했다. 현재 열린 Blocker/Major는 없으며 위 미수집 한계·과거 수행 사건·Minor는 유지한다. 회사 업무 여정 전체 17개 통과나 Git 전달 완료를 뜻하지 않는다. 다음 Task는 QA-01의 요구사항 Gate이며 이번 대화에서 자동 실행하지 않는다.
+
+<a id="qa-05-20261102"></a>
+
+## QA-05 회사 검색·소속 신청 조회 한정 · 2026-11-02
+
+- 범위/승인: 사용자 답변으로 기존 QA-A/QA-B만 사용·나머지 상태 차단, 조회만 실행·신청 제출/상태 생성 차단, backend 실행 버전 자료 없음·미확인 유지를 확정했다. 실제 사용은 사용자가 직접 Google에서 선택한 QA-A다. 신규 가입/QA-B 로그인·회사/신청 변경은 실행하지 않았다. QA-04의 인증 완료를 회사 업무 사례 통과로 확대하지 않는다.
+- 환경: source `80c4282df7a65652829e5f7e58ba7c39e64ae063` + QA 문서 편집만, `qa/qa-05-company-live`, Node 22.20.0/Next 16.2.9/Chrome 156.0.8078.79, `https://local.mate-bid.com:3000` → `https://api-test.mate-bid.com`, 2026-11-02 14:16~14:22 KST. desktop DOM client 1471×687, 회사 미연결/선택만 mobile viewport 390×844/320×700. 테스트 API의 현재 실행 버전 대응 근거는 미확인이다.
+
+| 기존 사례 | 이번 결과 | 실제 수행·증거 | 남은 조건 |
+| --- | --- | --- | --- |
+| AUTH-07 회사 검색 | 차단（부분 확인） | QA-A에서 synthetic `QA05-NO-MATCH-20261102` 입력→회사 검색 GET 200→빈 화면/`회사 등록하기`의 `/auth/company/register` 링크. 입력 변경 뒤 같은 검색 GET만 브라우저 차단→연결 실패 안내→차단 해제/조회→GET 200·빈 결과 복구. 외부 증거 `auth-07-empty-search.json/.png`, `auth-07-browser-error.json/.png`, `auth-07-recovered.json/.png` | 승인 합성 회사의 결과 있는 이름/번호·페이지 기대값이 없음. 오류는 브라우저 한정 연결 실패이며 실제 backend HTTP 오류와 구분. 빈 검색의 관찰만으로 전체 통과 아님 |
+| AUTH-08 대표/팀원 소속 신청 | 차단（미실행） | 입력 context·역할별 제출·성공/PENDING·중복/기존 소속/권한 분기 미실행. 신청 POST 0회. 회사 간 통합 완료로 세지 않음 | 전용 회사/계정·상태와 변경/복구 담당·방법 미확보, 제출은 이번 승인 범위 밖. 임의 회사 선택/상태 생성·복구 API 추정 없음 |
+
+- 회사 정보의 미연결/신청 상태/기본 프로필·모바일·실패/복구 결과는 [my-company QA-05](my-company.md#qa-05-20261102)의 MCO-01~10（4통과·6차단）을 따른다. AUTH-01~06/인증 한정 AUTH-17의 과거 PASS와 AUTH-09~16의 다른 업무 대기 이력은 변경하지 않았다.
+- 검색 복구 JSON의 `alertVisible: true`는 role 존재/가시성만 기록한 값으로 오류 메시지 소멸의 증거로 쓰지 않는다. 실제 GET 200·빈 결과 복구 캡처만 확인했고 AUTH-07 전체는 차단으로 유지한다. read-only verifier의 지적에 따라 한계를 명시했으며 원본 증거는 수정하지 않았다.
+- 증거 루트（이 Mac 로컬, Git 미포함）: `/Users/jisung/.codex/visualizations/2026/11/02/01a19aad-a443-7753-aa21-507c86771e09/qa-05/`. 저장 파일은 허용한 비식별 요청 요약/UI만 포함하며 개인정보·cookie/token·원문 인증 query를 복사하지 않는다.
+- 수행 사건: 서버 종료의 도구 출력에 callback 인증 거래 식별자가 포함됐다. 사용자에게 바로 알렸으며 원문을 여기나 증거 파일에 재출력/보관하지 않는다. 전체 인증 값 무효화 여부를 확인한 것으로 주장하지 않는다. [실패 예방 기록](../ai-context/ai-failures.md#qa-05-auth-log-output)과 my-company의 사건/한계를 따른다. 기존 QA-04 두 관측 사건/교정 기록은 별도로 보존한다.
+- 정리: QA-A logout POST 200, 두 회사 직접 경로의 refresh 401과 비로그인 안내·각 next 복귀 확인. 차단 URL 해제/Network 비활성/viewport reset/소유 Chrome 탭 종료 및 Next 세션 14432/group 17789 종료 0·잔여 PID 없음·3000/3001 비청취. `logout.json`, `browser-cleanup.json`, `process-cleanup.json` 참조.
+- 다음 Task는 **QA-05 재개**다. 상태별 자원·AUTH-07 합성 검색 fixture·AUTH-08 변경/복구 범위·현재 backend 실행 식별자 공백을 확인하는 것이 다음 첫 행동이다. QA-05 전체 통합과 다음 기능 진행 예외는 승인되지 않았으므로 QA-06을 자동 실행하지 않는다.
