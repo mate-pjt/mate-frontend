@@ -401,3 +401,29 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 ### 2026-11-02 15:50 KST · 다음 작업 선정의 후속 승인
 
 사용자는 **“QA-07의 남은 항목은 차단으로 유지하고 QA-08을 다음 작업으로 선정하는 예외”**를 승인하고 QA-08은 새 대화에서 시작한다고 명시했다. 위 종료 시점의 ‘다음 QA-07 재개/QA-08 예외 없음’은 당시 이력으로 보존하며 현재 다음 작업은 [WBS](../development/figma-v01/README.md)의 **QA-08**을 따른다. [승인/인계 기록](../development/figma-v01/tasks/QA-07.md#qa-07-next-qa-08-exception) 참조. AUTH-09~13 0통과·5차단·문서 AUTH-17 미실행과 자원/변경·잔존·복구/실행 대응 공백은 불변이다. 이번 후속의 실제 API/QA-08 실행은 없으며 초대/계정·Origin/실행 근거와 preview/resume/acceptance/decline의 사용·초대 소비·membership 변경/잔존/정리 담당·방법은 다음 QA-08 Gate에서 확인한다. 초대 발송 승인이나 QA-07 통합 PASS, QA-08 실제 실행 승인으로 확대하지 않는다.
+
+
+<a id="qa-08-20261102"></a>
+
+## QA-08 · 초대 수신 사전 점검 · 2026-11-02 KST
+
+[작업/재개 조건](../development/figma-v01/tasks/QA-08.md#qa-08-resume) · [검토 기록](../development/figma-v01/reviews/QA-08.md). 사용자는 자원 미준비로 **소스·문서 사전 점검만** 선택하고 **실제 API·초대 소비·회사 변경은 승인하지 않음**을 확인했다. 이번 AUTH-16은 **실제 0통과·1차단**이며 초대 화면 AUTH-17도 미실행이다. 아래는 새 case ID가 아닌 AUTH-16의 하위 확인 조건이다. 기존 17개 case 정의와 QA-04 인증 한정 PASS·다른 회사 QA/과거 이력은 보존한다.
+
+- 소스 환경: `qa/qa-08-invitations`, 시작/프론트 소스 HEAD `c07f03f3b530e0529bf898bf688dea168efd9c7a`, 시작 main=origin/main·clean, 이후 이번 Markdown5개만 변경. PREP-01/QA-04/QA-07 선정 예외의 main 반영을 확인했다.
+- 점검 도구: Python/Git·소스 심볼/직접 대조. 기본 셸 Node26.5.0·pnpm11.3.0, 프로젝트/CI pin22.20.0과 설치된 Node22.20.0 확인. 이번 `pnpm test/lint/build/build-storybook`은 실행하지 않았다. 문서만 바꾸고 앱/빌드 영향이 없어 링크·ID/상태·보호/이력·diff-check로 검증한다.
+- 문서상 환경은 local HTTPS→api-test이나 **현재 실행하지 않았다**. 실제 frontend snapshot/서버·backend 배포/메일 링크 Origin·브라우저 버전/viewport·UI 캡처/Network는 미확보/미실행(사전 점검만 승인). 실제 링크·token/cookie·계정/이메일·인증값·환경파일은 읽거나 기록하지 않았다.
+
+| AUTH-16 하위 조건 | 현행 소유 소스에서 확인한 사실 | 실제 QA 결과/남은 근거 |
+| --- | --- | --- |
+| 링크 preview·URL 제거 | [invitation-client:26](../../src/app/auth/company/invitations/invitation-client.tsx:26)는 fragment의 초대값을 읽고 `history.replaceState`로 hash를 지운 뒤 preview를 호출. [HTTP:26](../../src/data/company/http-repository.ts:26)은 `POST /api/v1/company-membership-invitations/preview` body로 전달 | **차단·미실행**. 실제 메일 링크 Origin/형식·preview 쿠키/CORS·URL 잔존 여부 미확보 |
+| preview 실패·이전 handoff 미재개 | 같은 UI는 preview 실패를 `failed`로 두며 resume effect는 `ready`와 authenticated 상태에서만 실행. fragment 없는 재방문은 ready 후 resume | **차단·미실행**. 유효한 이전 쿠키+실패 초대용 독립 fixture로 실제 미재개 확인 필요. 서버의 쿠키 삭제/잔존은 코드만으로 판정하지 않음 |
+| 로그인/신규 가입 뒤 복귀 | [auth client:18](../../src/data/auth/client.ts:18)은 내부 경로 검증·현재 Origin을 전달. [signup-form:94](../../src/app/auth/signup/signup-form.tsx:94)는 초대 경로를 직접 복귀하는 분기, callback은 검증한 returnTo로 이동 | **차단·미실행**. 승인된 기존/신규 수신 계정·가입/잔존 범위·동일 브라우저 handoff/OAuth 귀환 필요 |
+| 계정 불일치·교체 | UI는 `emailMatched=false`일 때 수락/거절 대신 다른 계정 로그인 표시. logout 뒤 초대 경로로 OAuth를 시작. [계약](../../src/data/company/contracts.ts:36)은 emailMatched/canAccept/version을 제공 | **차단·미실행**. 불일치/정상 계정 별칭·기대 membership과 교체 후 resume/이전 문맥 분리 확인 필요 |
+| 수락·중복 클릭·membership | [HTTP:34](../../src/data/company/http-repository.ts:34)는 acceptance에 `expectedVersion` 전송 후 postCommit refresh. UI의 busy/수락 가능 상태로 버튼을 제한 | **차단·미실행**. 수락용 disposable 초대·변경/잔존/복구 승인·단일 요청 및 서버 membership/권한 확인 필요. UI 코드만으로 서버 멱등성을 보장하지 않음 |
+| 거절·만료·재사용·버전 | [HTTP:39](../../src/data/company/http-repository.ts:39)는 decline에 `expectedVersion` 전달. UI는 Repository 오류를 표시. 실제 API 모드의 만료/소비/충돌 판정은 서버 오류 응답에 의존 | **차단·미실행**. 거절/만료/사용된 독립 초대·버전과 안전한 기대 오류·정리 계획 필요. 실제 오류 code/status는 미확인 |
+| 성공 뒤 refresh 실패·완료/복귀 | [postCommit:172](../../src/data/company/http-repository.ts:172)는 refresh 실패 시 결과+sessionWarning 반환. UI는 완료 화면·경고를 유지하며 수락/거절 모두 `/bids`, 뒤로 `/auth/start` | **차단·미실행**. 수락 성공 후 갱신 실패를 안전하게 재현/해제하고 재수락 없이 최종 membership/세션을 확인해야 함. 팀원 화면 개발은 POL-15/DEV-33 별도 |
+| 기존 mock/HTTP 대역 경계 | [company test:19](../../tests/company.test.ts:19)는 mock 초대 문맥 유지·불일치403·버전409·계정별 회사 상태를 검사하는 코드. 같은 파일 refresh 실패/401/403 사례는 번호 등록 호출을 통한 공통 helper 증거 | 이번 mock/HTTP 대역/브라우저 **재실행 없음**. 기존 테스트 존재·과거62건 PASS를 초대 endpoint 또는 실제 API PASS로 세지 않음 |
+
+필요 자원은 승인된 회사/발신자/정상·불일치·신규 계정 별칭, 유효/만료/사용된 초대와 수락/거절용 disposable fixture, 메일 링크 Origin, preview/resume/acceptance/decline·계정/초대 소비/membership·잔존/복구의 담당/방법, 현재 실행 대응이다. 담당 역할은 회사/초대 fixture·인증/메일/API·배포 담당과 개발자 승인자/프론트 QA 실행자이며 실제 개인은 미확인이다. 초대 발송은 별도 명시 승인 전 미실행하고 링크/값을 채팅/문서에 받지 않는다.
+
+실제 API·OAuth·브라우저·초대/회사 변경·서비스 운영/배포 **0회**, 새 잔존/복구 대상 없음. 이전 자원을 삭제하거나 logout을 초대/membership 복구로 주장하지 않는다. 마지막 확인일2026-11-02. 다음 Task는 **QA-08 재개**이며 main/Git·재개표·AUTH-16과 위 자원/승인·실행 근거부터 확보한다. QA-08→QA-09 예외가 없어 자동 이동하지 않는다. 사전 점검 문서의 검증/리뷰·Git 전달과 실제 QA 차단은 구분한다.
