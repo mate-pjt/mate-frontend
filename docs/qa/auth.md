@@ -343,3 +343,7 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 - 수행 사건: 서버 종료의 도구 출력에 callback 인증 거래 식별자가 포함됐다. 사용자에게 바로 알렸으며 원문을 여기나 증거 파일에 재출력/보관하지 않는다. 전체 인증 값 무효화 여부를 확인한 것으로 주장하지 않는다. [실패 예방 기록](../ai-context/ai-failures.md#qa-05-auth-log-output)과 my-company의 사건/한계를 따른다. 기존 QA-04 두 관측 사건/교정 기록은 별도로 보존한다.
 - 정리: QA-A logout POST 200, 두 회사 직접 경로의 refresh 401과 비로그인 안내·각 next 복귀 확인. 차단 URL 해제/Network 비활성/viewport reset/소유 Chrome 탭 종료 및 Next 세션 14432/group 17789 종료 0·잔여 PID 없음·3000/3001 비청취. `logout.json`, `browser-cleanup.json`, `process-cleanup.json` 참조.
 - 다음 Task는 **QA-05 재개**다. 상태별 자원·AUTH-07 합성 검색 fixture·AUTH-08 변경/복구 범위·현재 backend 실행 식별자 공백을 확인하는 것이 다음 첫 행동이다. QA-05 전체 통합과 다음 기능 진행 예외는 승인되지 않았으므로 QA-06을 자동 실행하지 않는다.
+
+### 2026-11-02 14:38 KST · 다음 작업 선정의 후속 승인
+
+사용자는 “QA-05의 남은 항목은 차단으로 유지하고 QA-06을 다음 작업으로 선정하는 예외”를 승인하고 QA-06은 새 대화에서 시작한다고 명시했다. 따라서 위 실행 종료 시점의 ‘다음 QA-05 재개/진행 예외 없음’은 과거 이력으로 보존하고, 현재 다음 작업은 [WBS](../development/figma-v01/README.md)의 **QA-06**을 따른다. [승인/인계 기록](../development/figma-v01/tasks/QA-05.md#qa-05-next-qa-06-exception) 참조. MCO 4통과·6차단/AUTH-07·08 차단, 미확보 자원/실행 버전·수행 사건 한계는 불변이다. 이번 후속의 실제 API/QA-06 실행은 없으며 QA-06의 자원·변경/복구 범위는 다음 요구사항 Gate에서 확인한다.
