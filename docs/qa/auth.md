@@ -347,3 +347,24 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 ### 2026-11-02 14:38 KST · 다음 작업 선정의 후속 승인
 
 사용자는 “QA-05의 남은 항목은 차단으로 유지하고 QA-06을 다음 작업으로 선정하는 예외”를 승인하고 QA-06은 새 대화에서 시작한다고 명시했다. 따라서 위 실행 종료 시점의 ‘다음 QA-05 재개/진행 예외 없음’은 과거 이력으로 보존하고, 현재 다음 작업은 [WBS](../development/figma-v01/README.md)의 **QA-06**을 따른다. [승인/인계 기록](../development/figma-v01/tasks/QA-05.md#qa-05-next-qa-06-exception) 참조. MCO 4통과·6차단/AUTH-07·08 차단, 미확보 자원/실행 버전·수행 사건 한계는 불변이다. 이번 후속의 실제 API/QA-06 실행은 없으며 QA-06의 자원·변경/복구 범위는 다음 요구사항 Gate에서 확인한다.
+
+<a id="qa-06-20261102"></a>
+
+## QA-06 사전 점검 · 2026-11-02 KST
+
+[작업/재개 기록](../development/figma-v01/tasks/QA-06.md) · [검토 기록](../development/figma-v01/reviews/QA-06.md). 기존 17개 case 정의·과거 부분 실행·QA-04 인증 한정 PASS·QA-05 결과를 보존하며 이번 번호 등록 관찰을 구분한다.
+
+- 사용자 결정: **“미준비 — 사전 점검 후 차단·재개 조건 기록 (추천)”**. 계정/번호/회사 fixture·조회 연결/등록의 변경·잔존·복구 범위가 준비되지 않아 실제 로그인·API 요청（GET 포함）·등록/복구·브라우저 QA는 실행하지 않았다. 과거 QA-A/B 사용 승인은 이번 번호 등록 허가가 아니다.
+- 점검 식별자: `qa/qa-06-business-number-readiness`, 시작 HEAD/main/origin/main/직접 원격 `55196d3f06cd7fe012cd43ddc093340c3f150b56`, 시작 clean. Node 22.20.0/pnpm 11.3.0, Next 16.2.9. 문서상 대상은 local HTTPS → 테스트 API이며 현재 프론트 실행 snapshot·backend 배포/실행 SHA·image 대응은 **미확인**이다. 소스 branch·Swagger·과거 실행을 현재 배포 증거로 대신하지 않는다.
+- 15:12 KST 계약 테스트: `pnpm test` **8파일·62건 PASS**, Vitest 4.1.11/Node. 기존 mock 번호 처리/등록 멱등성과 HTTP fetch 대역의 등록 성공→refresh 실패/401/403 경고·성공 결과 보존을 포함한다. 실제 번호 조회/등록·브라우저 통과가 아니다. 새 mock 브라우저 QA도 실행하지 않았다.
+
+| 기존 사례 | 이번 판정 | 소스/계약에서 확인한 사실（실제 API 실행 아님） | 미실행·재개 조건 |
+| --- | --- | --- | --- |
+| AUTH-14 번호 조회·처리 | **차단（미실행）** | client의 숫자 10자리 검사·초기 current GET 복원/404 구분·처리 polling/수동 재조회, 번호 변경 시 `DELETE /api/v1/account-business-connections/current` → 연결 POST, 인증 회사 오류의 기존 회사 찾기 분기. HTTP Repository에 연결 POST/GET/DELETE 존재 | 정상·미등록/조회 불가·인증/미인증 중복·지연/실패 fixture와 계정별 기존 연결 기준, 변경 허용 횟수·DELETE 복구 범위 필요. 실제 preflight·재시도·새로고침·계정 교체 미검증 |
+| AUTH-15 번호로 회사 등록 | **차단（미실행）** | 공통 패널의 회사 기본 정보/null·실적·대표면허/3종 인증, 대표/팀원 직급·여섯 금액대. client의 busy/필수 입력·payload별 멱등 키·완료 화면과 warning, Repository의 등록 POST 후 refresh. `AccountScope`의 계정 변경 초기화/만료 시 완료 유지 | 승인된 등록 대상·역할/희망 금액 기대값, 잔존 company/membership·권한/미인증 상태 기준과 정리 담당/방법, 안전한 refresh 실패 재현·해제 필요. 실제 서버의 중복 제출/등록 성공/세션 경고/계정 교체/null 표시·번호 경로 모바일/키보드는 미검증 |
+
+- 이번 AUTH-14/15 합계: **0통과·0실패·2차단·0대기**. 과거 9자리 입력 UI 부분 관찰은 이력으로만 유지한다. AUTH-17의 번호 등록 화면 범위도 미실행이며 QA-04의 인증 화면 통과를 확대하지 않는다. O08의 가입 후 회사 대시보드 재사용은 별도 POL-06/DEV-08 범위다.
+- 필요한 역할: 회사/번호 fixture·계정 담당, 등록 API/데이터 정리 담당, 테스트 배포 담당, 개발자 승인자, 프론트 QA 실행자. 실제 담당자 배정·테스트 별칭/기대값·mutation 허용 횟수와 복구 방법은 미확보다. `DELETE current`는 조회 연결 삭제 계약이며 회사/membership 전체 복구로 가정하지 않는다. 임의 복구 endpoint·DB 변경·fixture 생성은 없다.
+- 환경/복구: 기본 셸 Node 26.5.0과 프로젝트 pin 22.20.0을 구분해 테스트에 pin 사용. 3000/3001 TCP 리스너 없음·전용 HTTPS 인증서/키 파일은 존재만 확인했고 내용·신뢰/유효성은 검사하지 않았다. 서버/브라우저/세션·회사 데이터를 만들거나 바꾸지 않아 이번 복구 대상 없음. 브라우저 버전/viewport·UI 캡처·Network·실제 API 시각은 미실행으로 해당 없음이며 과거 값을 재사용하지 않는다.
+- 로컬 증거（Git 미포함）: `/Users/jisung/.codex/visualizations/2026/11/02/01a19ae1-401c-7c63-bc38-660380565208/qa-06/`의 `start-manifest.json`, `preflight.json`, `pnpm-test.log`, `document-check.json`과 두 리뷰. 환경파일·실제 번호/계정 원문·개인 키·인증 로그는 읽거나 출력하지 않는다.
+- 다음 선택은 **QA-06 재개**. 자원·현재 사용 승인/변경·잔존·복구·실행 식별자를 확보하고 요구사항 Gate를 다시 확인한 뒤 실제 AUTH-14/15를 수행한다. QA-05 진행 예외는 QA-07 진행 예외가 아니며 이번 대화에서 다른 Task를 시작하지 않는다.
