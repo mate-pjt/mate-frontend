@@ -126,3 +126,40 @@
 - 통과/실패/차단/대기 수: 0/0/0/8
 - 남은 결함과 담당자: 미정
 - 최종 판정과 날짜: 미실행
+
+<a id="qa-09-20261103"></a>
+
+## QA-09 · 2026-11-03 사전 점검
+
+[작업 기록/재개표](../development/figma-v01/tasks/QA-09.md#qa-09-resume) · [WBS](../development/figma-v01/README.md) · [검토 기록](../development/figma-v01/reviews/QA-09.md).
+
+- 사용자 결정: **“자원 미준비 — 사전 점검·차단 기록·Git 전달만 진행”**. 실제 로그인/API GET/PUT/DELETE·구독 변경·fixture 생성·알림 발송·운영/배포는 미실행이다. QA-04의 인증 승인·QA-08 선정 예외는 이번 구독 사용/변경 승인으로 확대하지 않는다.
+- 과거 위8개 case 정의와 **0/0/0/8** 요약은 당시 이력으로 보존한다. 아래는 이번 준비 조건 확인에 따른 **통과/실패/차단/대기 = 0/0/8/0**, 실제 실행0건이다. 실제 통합 PASS나 제품 결함 판정이 아니다.
+
+| 환경/식별 | 이번에 확인한 사실·한계 |
+| --- | --- |
+| 시각/실행자·소스 | 2026-11-03 16:20 KST / Codex 사전 점검. 시작 main=origin/main `57325e08f6a4d4fc4597fca3c0a8ec713020e3e6`, clean → `docs/qa-09-bid-alert-preflight` + Markdown5개. 실제 실행 build 식별자가 아닌 소스 근거 |
+| 문서상 대상 | 프론트 `https://local.mate-bid.com:3000`, API `https://api-test.mate-bid.com`. 도달성·실행 snapshot·backend 배포/실행 버전 대응·현재 Origin/CORS/쿠키는 미확인. dev 사이트를 동등한 인증 환경으로 세지 않음 |
+| 도구/브라우저·증거 | 기본 셸 Node26.5.0, pin/CI 및 설치 실행 파일22.20.0·pnpm11.3.0 확인. 앱 미시작. 브라우저/viewport·UI 캡처·Network 증거는 사전 점검에 해당 없음. 실제 QA 미실행 |
+| 테스트 자원/복구 | 두 계정/두 공고·복수 분류·active true/false·오류/만료 fixture, 사용/변경/종료값·생성 알림/등록 이력 잔존·복구 담당/방법 모두 미확보. 별칭/실제 담당자 배정 미확인. 새 데이터/프로세스 변경 없어 이번 복구 대상 없음 |
+
+### 이번 case별 준비 판정
+
+| case | 이번 판정·실제 실행 | 현재 소스에서만 확인한 근거 | 차단 원인·재개 조건 |
+| --- | --- | --- | --- |
+| ALERT-01 | 차단·미실행 | 익명 카드에서 pathname/search→next, 인증 후 별도 조회. 로그인만으로 활성화하는 호출 없음 | 공개 공고·분류와 승인된 계정·로그인/세션 사용 범위/현재 실행 대응 확보 후 로그인 전 요청0·복귀 URL·GET 확인 |
+| ALERT-02 | 차단·미실행 | 응답 ID/active/registeredAt 타입 검사, 카드 상태는 active 기준 | 회사 미가입 포함 두 계정/공고의 초기 true/false 기대값·조회 승인/실행 증거 확보 후 reload와 계정별 상태 대조 |
+| ALERT-03 | 차단·미실행 | draft와 active 분리, 열기/토글/취소 시 변경 호출 없음, 동일 값 확인 비활성 | 승인된 false 공고/로그인 자원과 UI/Network 증거 확보 후 닫기·다음에 하기·Escape 각 변경0 확인 |
+| ALERT-04 | 차단·미실행 | 확정 시 정확한 ID에 본문 없는 PUT, 기대 active 성공 후만 카드/토스트 반영 | false→true 변경 대상·허용 범위/종료값·생성 알림/등록 이력 잔존/복구 합의 후 PUT1회·reload GET 확인 |
+| ALERT-05 | 차단·미실행 | DELETE 응답 active 기준 반영, registeredAt 값은 카드 판정에 사용하지 않음 | true→false 변경/종료값·잔존/복구 합의 후 DELETE1회·reload 확인. 생성 알림/과거 이력 전체 삭제로 해석하지 않음 |
+| ALERT-06 | 차단·미실행 | 조회 오류/재시도, 변경 실패 시 팝업 오류와 기존 카드 유지, savingRef, 공통 401 refresh1회·계정 교체 거부 | 안전한 실제 조회/변경 오류·권한/만료 및 재현/해제 담당·방법·기간 확보. 브라우저 요청 차단·대역은 backend 오류 증거와 분리 |
+| ALERT-07 | 차단·미실행 | account ID+bidId key, 이전 GET abort와 HTTP 계정 변경 검사. 구독은 분류 query가 아닌 공고 ID 단위 | 복수 분류 공고 A·다른 B·두 계정의 기대값과 변경/복구 범위·지연 응답 조건 확보 후 분류/공고/계정 전환·늦은 응답 확인 |
+| ALERT-08 | 차단·미실행 | native dialog·showModal/Escape/바깥 클릭, max-height/width·스크롤·취소/확인 비활성 경로 | 승인된 로그인/공고 자원과 데스크톱·390/320px 브라우저 확보 후 포커스·키보드·잘림/스크롤·취소 시 변경0 확인 |
+
+### 증거 경계와 인계
+
+- 구현 점검: [카드](../../src/components/bids/bid-detail-alert-card.tsx) → [client](../../src/data/bid-alerts/client.ts)/[contracts](../../src/data/bid-alerts/contracts.ts) → [HTTP](../../src/data/bid-alerts/http-repository.ts)와 [공통 인증 요청](../../src/data/shared/http.ts)을 읽기 전용으로 대조했다. 현재 실행/브라우저 동작 증거는 아니다.
+- mock/HTTP 대역: [계약 테스트](../../tests/http-contracts.test.ts)의 구독 변경/재조회, [mock 계정 테스트](../../tests/account-repositories.test.ts)의 탭 복원/계정 격리·abort/실패 코드를 확인했다. 이번 재실행 없음. 대역은 해제 시 registeredAt을 null로 만드는 합성 응답이므로 실제 등록 이력 잔존이나 retained timestamp 검증으로 세지 않는다.
+- 단건 PUT 성공은 구독 상태 저장이다. 실제 정정/마감/개찰 알림 전달·`/alarms` 검증, 등록 공고 관리 목록·일괄 해제는 별도 범위다. DELETE를 생성 알림·등록 이력까지 지우는 복구로 가정하지 않는다.
+- 재개 역할: 테스트 계정/공고 fixture 담당·구독/인증 API 담당·배포 담당·프론트 QA 실행자·개발자 승인자. 실제 배정은 미확인이다. 비밀값/개인정보/인증 로그 원문은 받거나 기록하지 않는다.
+- 다음 Task는 **QA-09 재개**. P0·선행 main/QA-08 선정 예외는 충족하지만 실제8건 차단과 QA-10 진행 예외 없음으로 유지한다. 다음 첫 행동은 task 재개표와 PREP 준비표를 현재 main/Git에 대조하고 자원/사용·변경/잔존·복구·실행 대응을 확보해 Gate를 다시 작성하는 것이다. 다음 Task 자동 착수 없음.
