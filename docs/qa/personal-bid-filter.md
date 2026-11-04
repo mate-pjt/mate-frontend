@@ -95,3 +95,10 @@
 실제 실행 전 disposable 계정별 시작 source/version/filter와 종료 기대값, PUT/reset·409 허용 범위, 빈 SAVED 잔존/폐기 또는 담당자 fixture 재생성·원복 절차와 검증을 정한다. **reset은 최초 EMPTY_DEFAULT 또는 COMPANY_DEFAULT 복구 수단이 아니다.** 서버에 원상복구 API가 있다고 추정하지 않는다. 회사 기본값 GET과 명시적 저장, 현재 목록 초기화와 계정 reset을 각각 구분한다.
 
 다음 Task는 **QA-10 재개**다. 최신 main/Git·위 조건·현재 프론트/백엔드 실행 대응과 reset 대역 차이부터 확인해 실제 QA Gate를 다시 작성한다. QA-11은 P0 다음 행이나 자체 fixture 차단·QA-10 미검증/진행 예외 없음으로 이번에 선정/착수하지 않는다. import-company·고급 편집·별도 맞춤 목록·실제 이메일 검증은 계속 제외한다. 로컬 앱 test/lint/build/Storybook·mock/HTTP 대역 실행은 Markdown만 변경해 미실행이며, 문서 검사·두 리뷰·원격 head CI 결과는 검토 기록/PR에 구분한다.
+
+
+<a id="qa-10-next-qa-11"></a>
+
+### 2026-11-04 16:58 KST · 후속 선정 예외
+
+사용자 [명시 승인](../development/figma-v01/tasks/QA-10.md#qa-10-next-qa-11-exception)으로 위 종료 시점의 ‘다음 QA-10 재개/QA-11 예외 없음’ 중 **다음 작업 선정만 QA-11로 대체**한다. PBF-01~12 실제0통과·12차단과 과거0통과12대기, reset 기대 빈 SAVED 대비 mock/HTTP 대역 EMPTY_DEFAULT의 미해결 Major/context-audit FAIL·재개/복구 조건은 그대로다. 이번 후속은4문서 인계 설명·검증/두 리뷰·Git 전달만 수행한다. QA-11은 새 대화에서 main/Git·해당 task/PREP·ALARM-01~10·승인 계정/알림/읽음 PATCH·시작 건수/정렬/페이지·사용/변경/읽음 잔존/종료/복구·오류/실행 대응부터 확보해 Gate를 작성하며, 실제 fixture 차단·ALARM-04 삭제 API 차단/ALARM-05 7일 안내 보류는 해소되지 않았다. 이번 QA-11 실행·제품 API/데이터/서비스 변경은 없고 QA-10 통합 PASS나 reset 수정, QA-11 실제 실행/운영 승인으로 확대하지 않는다. 검증/리뷰 결과는 [후속 검토](../development/figma-v01/reviews/QA-10.md#qa-10-next-qa-11-review)에 보존한다.
