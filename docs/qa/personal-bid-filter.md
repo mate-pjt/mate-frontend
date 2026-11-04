@@ -53,3 +53,45 @@
 ## 판정
 
 **0건 통과·12건 대기.** PBF-01~08의 9/28 조회·저장·적용·초기화·충돌 관찰은 공통 QA 증거가 부족해 정식 통과로 기록하지 않는다. 9/29 오전 OAuth 시작 오류를 수정하고 가입·재로그인까지 확인했지만 PBF-02~08 필터 조작은 재실행하지 않았다. PBF-09~12의 회사 기본값·공고 데이터 매칭·오류·모바일은 미실행이다. 재검증 시 백엔드 배포 식별자와 현재 프론트 상태를 특정하고, 화면 캡처 및 비식별 Network 요약을 남긴다.
+
+<a id="qa-10-20261104"></a>
+
+## QA-10 · 2026-11-04 사전 점검(실제 API 실행 아님)
+
+[작업 기록/재개 조건](../development/figma-v01/tasks/QA-10.md#qa-10-resume) · [검증·검토](../development/figma-v01/reviews/QA-10.md) · [현재/다음/상태는 WBS](../development/figma-v01/README.md).
+
+- 사용자 승인 원문: **“자원 미준비 — 사전 점검·차단 기록·Git 전달만 진행 (추천)”**. 이번 실제 QA는 **0통과·12차단**이다. 위 9월 관찰/0통과·12대기·case ID/예상 결과를 보존한다. QA-04의 인증 승인/결과나 QA-09→QA-10 선정 예외를 실제 필터 변경 승인으로 사용하지 않는다.
+- 점검 환경: 2026-11-04 16:38 KST 시작, `qa/qa-10-personal-filter`, source HEAD `345dd87a56224eef234af68cae85ac9b6ed11a7b`(main=origin/main, clean에서 분기). 최종 변경은 사전 점검5문서와 출력 사건 예방 ai-failures를 합한 Markdown6개뿐. Node pin/설치 실행 파일22.20.0·기본 셸26.5.0·pnpm11.3.0, 3000/6006 TCP 리스너 없음. 로컬 HTTPS crt/key는 존재만 확인하고 내용은 읽지 않았다.
+- 프론트 실행 snapshot/배포·백엔드 실행 대응은 **미확보**다. 문서상의 대상은 `https://local.mate-bid.com:3000`/`https://api-test.mate-bid.com`이지만 이번에는 접속하지 않았다. 브라우저/화면·캡처·Network·복구 실행은 **해당 없음(앱/실제 API 미실행)**이다. 소스 SHA·과거 인증 PASS·backend 소스 브랜치를 실행 식별자로 대체하지 않는다.
+- `src/`·tests·패키지/설정·baseline/coverage/PREP·다른 QA와 기존 QA prefix는 변경하지 않는다. 새 로그인·GET/PUT/reset·fixture 생성·메일·서비스/배포·외부 메시지0회, 새 잔존/복구 대상 없음. 자원 미준비를 현재 공고0건 또는 서비스 장애로 단정하지 않는다.
+
+### 이번 12개 사례의 차단 근거와 재개 조건
+
+화면/Figma·method/endpoint·조작·예상 결과는 위 원래 사례와 기준을 따른다. 아래 표는 **실제 미실행의 준비 판정**이며 소스 대조를 UI/API PASS로 세지 않는다. 담당 역할은 필요한 책임 구분이고 개인 배정은 전부 미확인이다.
+
+| ID | 이번 결과 | 부족한 자원·승인·증거 / 재개 조건 | 필요한 담당 역할 |
+| --- | --- | --- | --- |
+| PBF-01 | 차단·미실행 | 승인된 로그아웃 브라우저/정확한 HTTPS Origin·현재 프론트 실행 대응과 `/bids`→next 복귀 캡처. 사전 점검 승인으로 새 브라우저/로그인을 시작하지 않음 | 프론트 QA 실행자 |
+| PBF-02 | 차단·미실행 | disposable EMPTY_DEFAULT 계정 별칭·최초 snapshot/source/version·로그인/GET 허용·세션 종료 범위. 과거 빈 SAVED 계정을 최초 상태로 취급하지 않음 | 계정 fixture 담당·승인자 |
+| PBF-03 | 차단·미실행 | 승인 계정·시작 version·공사 저장 PUT/reload GET 기대값·변경/잔존/종료/복구 범위. 저장 성공과 실제 이메일 반영을 구분 | 필터 API/fixture 담당 |
+| PBF-04 | 차단·미실행 | 저장 snapshot·수동 적용 query·ALL 조회 기대 목록/캡처·비식별 Network. 조회의 자동 적용/쓰기 없음과 클릭 적용을 구분 | 필터/공개 공고 fixture 담당 |
+| PBF-05 | 차단·미실행 | 승인 계정의 공사 SAVED·팝업 용역 변경·PUT 없이 URL만 변경/다시 공사 적용 기대값. 계정 PUT과 팝업의 현재 목록 ‘저장’ 구분 | 프론트 QA 실행자·필터 fixture 담당 |
+| PBF-06 | 차단·미실행 | 두 유형/두 지역·정확한 금액 범위/반복 query·PUT/GET/URL 왕복 기대값과 변경·복구 승인. 과거 코드/금액 관찰을 현재 매칭 fixture로 쓰지 않음 | 필터/공개 공고 fixture 담당 |
+| PBF-07 | 차단·미실행 | 시작/종료 snapshot·POST reset/빈 SAVED 잔존 승인·현재 URL 유지 후 별도 초기화·복구 담당/방법. 아래 기존 mock/HTTP 대역 reset 차이도 재개 전 판단 | 필터 API/회사 fixture 담당·승인자 |
+| PBF-08 | 차단·미실행 | 승인 계정 두 탭·동일 시작 version·첫 PUT/stale PUT→실제409→최신 GET·덮어쓰기 없음·종료/복구 기대값 | 필터 API 담당·프론트 QA 실행자 |
+| PBF-09 | 차단·미실행 | 저장 이력 없는 COMPANY_DEFAULT 계정/회사 조건·GET 무쓰기/명시 PUT→SAVED·이후 잔존/원복 방법. 임의 회사 가입/기본값 생성은 제외 | 회사/필터 fixture 담당·승인자 |
+| PBF-10 | 차단·미실행 | 실제 공고 별칭과 유형·지역·업종·날짜·금액·regionOnly/jointContract 포함/제외·총건수/경계 기대값. 과거 공고0건이나 대역 매칭으로 통과 처리하지 않음 | 공개 공고 fixture 담당·백엔드 배포 담당 |
+| PBF-11 | 차단·미실행 | 개인 GET/PUT/reset 각각의 안전한 네트워크 실패/해제·실제401/refresh·재시도·오류 후 저장값 기대조건과 승인. 공유 서비스 장애 주입/응답 위조를 실행하지 않음 | 필터/인증 API 담당·프론트 QA 실행자 |
+| PBF-12 | 차단·미실행 | 승인 계정·저장 조건·390/320px/키보드와 dialog 포커스/Tab/Escape/복귀·가로 넘침의 캡처/브라우저 버전. 데스크톱 과거 관찰은 모바일 PASS 아님 | 프론트 QA 실행자 |
+
+### reset 계약과 기존 대역의 차이
+
+기존 이 문서의 ADR-0014 인용 정책/예상 결과는 **빈 SAVED**다. 반면 현재 [mock reset](../../src/data/personal-filters/mock-repository.ts)은 `source: "EMPTY_DEFAULT"`·`canImportCompany: false`·증가한 version을 저장하고 [HTTP fetch 대역](../../tests/http-contracts.test.ts)도 reset source를 EMPTY_DEFAULT로 만든다. [mock 계약 테스트](../../tests/account-repositories.test.ts)와 HTTP/mock 공통 테스트는 빈 `filter`만 assert하므로 source·회사 기본값 재적용 방지의 증거가 아니다. 실제 [HTTP 구현](../../src/data/personal-filters/http-repository.ts)은 서버 snapshot을 파싱하며 source를 고쳐 만들지 않는다.
+
+이 차이는 시작 HEAD부터 존재한 **Major 정합성/검증 공백**으로 제한 context-audit **FAIL**에 기록했다. 이번에 mock/대역/실제 API를 재실행하거나 현재 백엔드 정책/응답의 원인을 확정한 것은 아니다. 사전 점검 범위에서 코드/테스트를 바꾸지 않는다. 재개 시 필터 API/정책 소유 역할·개발자가 현재 권위 계약/실제 응답과 수정 범위를 확인하고 source/version/canImportCompany·회사 기본값 억제 검증을 확정해야 한다.
+
+### 잔존·복구와 인계
+
+실제 실행 전 disposable 계정별 시작 source/version/filter와 종료 기대값, PUT/reset·409 허용 범위, 빈 SAVED 잔존/폐기 또는 담당자 fixture 재생성·원복 절차와 검증을 정한다. **reset은 최초 EMPTY_DEFAULT 또는 COMPANY_DEFAULT 복구 수단이 아니다.** 서버에 원상복구 API가 있다고 추정하지 않는다. 회사 기본값 GET과 명시적 저장, 현재 목록 초기화와 계정 reset을 각각 구분한다.
+
+다음 Task는 **QA-10 재개**다. 최신 main/Git·위 조건·현재 프론트/백엔드 실행 대응과 reset 대역 차이부터 확인해 실제 QA Gate를 다시 작성한다. QA-11은 P0 다음 행이나 자체 fixture 차단·QA-10 미검증/진행 예외 없음으로 이번에 선정/착수하지 않는다. import-company·고급 편집·별도 맞춤 목록·실제 이메일 검증은 계속 제외한다. 로컬 앱 test/lint/build/Storybook·mock/HTTP 대역 실행은 Markdown만 변경해 미실행이며, 문서 검사·두 리뷰·원격 head CI 결과는 검토 기록/PR에 구분한다.
