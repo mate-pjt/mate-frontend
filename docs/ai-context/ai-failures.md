@@ -92,3 +92,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 정적 PASS의 확대 해석: `docs/qa/repositories.md`에서 mock 브라우저/HTTP 대역/실제 API 검증을 분리하고 이전 통합 대기를 보존한다.
 - 계정 경쟁·완료 표시: 중간 verifier가 발견한 늦은 upload descriptor의 계정 오염과 등록 성공 뒤 refresh 401/403에 대한 회귀 테스트 및 완료 화면 검사를 추가한다. 계약·세션·UI를 함께 확인한다.
 - 운영 guard: Next instrumentation의 throw만으로 서버 프로세스가 종료되지 않는 것을 실제 시작 검사에서 확인했다. 운영 mock 거부 시 종료 코드 1까지 검사한다.
+
+## 2026-11-04 - GitHub 상태 조회에서 불필요한 작성자 메타데이터 출력
+
+- Task: QA-10 개인 필터 사전 점검의 Git 전달 조건 확인.
+- Expected behavior: 저장소 merge 허용 방식·main SHA/protected/필수 checks·ruleset 등 필요한 필드만 출력한다. 공개 Git 응답의 작성자 정보도 현재 작업에 필요하지 않으면 표시하지 않는다.
+- Actual failure: GitHub branch 조회의 `structuredContent.content`와 중첩 응답을 그대로 도구 출력에 넘겨 공개 커밋 작성자 이름·noreply 주소·프로필 링크가 포함됐다. 실제 값은 이 기록에 복사하지 않는다. 인증정보·환경파일·API 사용자 응답을 조회한 사건과 구분한다.
+- Root cause: `.env`/인증 로그만 차단하면 충분하다고 여기고, GitHub의 구조화 응답에도 불필요한 개인 식별 메타데이터가 중첩될 수 있음을 출력 경계에 적용하지 않았다.
+- Detection command or review step: primary의 GitHub get_repo/main branch/rulesets 병렬 조회 결과 출력 직후 확인. 사용자와 read-only verifier에 알리고 후속 문서/검증 범위를 다시 제시했다.
+- Fix: 이후 GitHub 응답을 파싱해 SHA·merge 허용·보호/checks·CI job·PR 상태 등의 허용 필드로만 투영한다. 저장용 receipt도 같은 요약만 보존하고 원문 응답은 추가 출력/재인용하지 않는다. 이 교정으로 이미 발생한 도구 출력이 삭제된 것으로 주장하지 않는다.
+- Prevention rule: MCP 응답 전체, `structuredContent`, `.content` 문자열 또는 중첩 JSON을 그대로 `text()`/`notify()`/파일에 쓰지 않는다. 먼저 필요한 필드를 명시해 추출하고 오류도 안전한 상태/요약만 표시한다. 공개 작성자 메타데이터·commit signature/payload·프로필 링크를 CI/병합 검사에 함께 기록하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/QA-10.md`, `docs/development/figma-v01/reviews/QA-10.md`. 런타임·API·하네스 설정 변경 없음.
