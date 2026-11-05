@@ -120,3 +120,34 @@ Page/UI/URL 모델·개인 필터 client와 server-only bids 경계가 일치한
 - 2026-11-05 13:41 KST: 사용자3결정·소스 대조와 OpenAPI403을 기록하고 8문서만 변경 중이다. 정책/계약 차단·QA-10 Major·공개 Git 메타데이터 출력 사건을 분리했다. 다음은 무결성 검사·ai-review·독립 verifier다.
 - 문서31/31·diff-check/자체 ai-review 1차 PASS. 이 결과 문구까지 포함해 문서 검사를 다시 수행하고 read-only verifier에 넘긴다. verifier 결과 뒤 문서가 바뀌면 영향 검증과 두 리뷰 freshness를 확인한다. 정책/계약 차단은 유지한다.
 - 독립 verifier 1차 PASS 수신 후 WBS 현재 없음/행 차단·다음 POL-02 재개, task 완료 체크와 결과 메타데이터만 정리했다. 정책/실제 QA/범위 변경은 없다. 종료 기록을 포함한 문서 검사·자체 ai-review와 독립 verifier 재검토를 수행하고, 이후 저장소 문서는 변경하지 않은 채 목적별 문서 커밋/승인된 PR·CI·main 동기화로 전달한다. 원격 결과/최종 SHA/clean은 PR과 최종 보고에서 확인한다.
+
+<a id="pol-02-next-pol-04-review"></a>
+
+## 2026-11-05 13:55 KST · POL-04 선정 예외 후속 검토
+
+- 원본 승인과 적용 범위: [POL-02 후속 예외](../tasks/POL-02.md#pol-02-next-pol-04-exception). 계약 차단·기존 reset Major·정책3결정/재개 조건·QA 이력을 유지하며 다음 Gate 선정만 POL-04로 대체한다. 이전의 ‘다음 POL-02 재개’는 당시 이력으로 보존한다.
+- 시작/대상: main=origin/main `4b0e9aea9d606e5a96484bc6e86fc40ee8ded57d`, clean·DOC-001/PR #43 반영, `docs/pol-02-next-pol-04-exception`. WBS·POL-02 task/review의3개 Markdown만 변경한다. POL-04 후보 파일/소유 소스는 수정하지 않고 다음 Task 조사/정책/API/개발은 시작하지 않는다.
+- 검증 계획: 로컬 `/tmp/mate-pol-02-20261105/next-pol-04/validate_exception.py`로 링크/anchor·79/99 매핑·선행/다음/상태·타98행·기존2문서 전체 prefix·정책3결정/완료 체크/재개3조건·기준선5파일·POL-04/시작451파일 지문·허용3문서/민감 패턴/diff-check를 확인한다. 이전 검증 receipt/리뷰 원문도 별도 보존한다.
+- 미실행/문서 점검: Markdown 전용으로 로컬 앱 scripts·mock/HTTP 대역·실제 API/브라우저 미실행, 신규 실제 통과0건. QA/공통 context/하네스/실행 설정 변경 없음. 기존 context-audit FAIL/reset Major는 그대로이며, 이 후속에서 새 전체 감사를 수행한 것으로 쓰지 않는다. 새 출력/실패 사건도 없다.
+- Task/Git 구분: POL-02 전체 계약 Gate 차단과 이번 인계 문서의 검증/리뷰·Git 전달 판정을 분리한다. 실제 원격 head CI·병합 조건과 최종 main SHA/clean은 Git 전달 단계의 PR/최종 보고에 남긴다.
+- 현재 체크포인트: 문서화 후 무결성 검사·ai-review와 read-only verifier 예정. 결과를 받은 뒤 종료 기록을 추가하고 영향 검증/두 리뷰 freshness를 다시 확인한다.
+
+### 후속 검증 결과
+
+`validate_exception.py` **26/26 PASS**, 링크299/anchor25·보호448파일·고정5파일·타98행·POL-04/모든 QA 불변·기존 task/review 전체 prefix 보존. `git diff --check` PASS. 자동 수정0/3이며 앱/실제 QA 미실행·신규 통과0건이다.
+
+### 후속 AI Review
+
+1. **리뷰 요약:** PASS (3문서 인계 범위). 사용자 승인 원문·성공 기준·실제 status/stat/diff·WBS 순서/선행·후속 기록·package scripts·26검사 증거를 대조했다. POL-02 계약 차단과 다음 POL-04 선정만을 분리한다.
+2. **발견된 문제:** 이번 diff의 미해결 Blocker/Major/Minor 없음. 기존 reset Major/context-audit FAIL과 원래 정책/계약 미완료·실제 QA 차단/과거 출력 사건은 모두 유지한다.
+3. **누락된 검증:** 로컬 앱 test/lint/build/Storybook·mock/HTTP 대역·실제 API/브라우저는 Markdown-only로 미실행이 타당하다. 원격 CI는 새 실제 PR head에서 확인해야 하며 과거 PR #43 결과로 대체하지 않는다. POL-04 실제 검증은 시작하지 않았다.
+4. **문서 갱신 필요 여부:** WBS/task/review3문서의 예외 원문·선정/인계·검토 근거를 반영했다. QA/공통 context·하네스/ai-failures·baseline/coverage는 새 실행/규칙/사건·매핑 변경이 없어 보존한다.
+5. **개발자 확인 필요:** 이번 예외/Git 전달은 명시 승인돼 재질문하지 않는다. POL-04의 정책/서버 계약·안전 경로/읽음 실패 처리와 필요한 자원은 새 대화의 자체 Gate에서 확인하며, 이번 선정으로 승인된 것으로 세지 않는다.
+6. **추천 수정 방향:** 3문서만 전달하고 POL-02/기존 reset 차단을 보존한다. 다음 POL-04는 최신 main·후보 정의·N03/data-access·소유 근거/검증 범위 확인부터 시작한다.
+
+### 후속 독립 verifier / freshness
+
+26검사·자체 ai-review 이후 read-only verifier에 검토를 요청한다. 결과 수신 후 종료 기록을 반영하고 최종 재검토를 요청하며, 실제 원문은 후속 로컬 증거 폴더의 `verifier-initial.txt`/`verifier-final.txt`와 최종 보고로 보존한다.
+
+- 후속 독립 verifier 1차 **PASS**, 신규 Blocker/Major/Minor 없음. 요청/원문·WBS 순서/선행·실제 diff·26검사·prefix/receipt 지문을 독립 대조했고, POL-04 준비/활성0·POL-02 차단과 실제 QA/기존 Major 보존을 확인했다.
+- 결과를 수신한 뒤 WBS 현재 없음·task/review 종료 메타데이터만 반영했다. 이 최종3문서도26검사·자체 ai-review·read-only verifier로 다시 확인한다. 이후 문서 내용 변경 없이 한 목적의 docs 커밋과 새 PR/CI·정상 merge/로컬 main FF로 전달하며, 최종 결과는 로컬 `verifier-final.txt`·PR·최종 보고에서 확인한다. Git 전달은 POL-02 계약 완료나 POL-04 착수/정책 승인·실제 QA PASS가 아니다.

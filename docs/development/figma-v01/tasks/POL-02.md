@@ -143,3 +143,21 @@
 - Review Gate: 문서31검사 후 ai-review·read-only verifier 1차 PASS. [검토 기록](../reviews/POL-02.md)에 근거를 보존했다. WBS 차단/종료 메타데이터 반영 후 문서 검사·두 리뷰를 다시 확인하며, 최종 read-only 원문은 로컬 `verifier-final.txt`와 최종 보고에 남긴다. 전체 정책/계약 Task 차단은 유지한다.
 - 커밋/PR 전달 계획: 개인 필터 정책/DEV-03·QA 인계, WBS/검증·검토 근거, 출력 재발 예방 기록을 목적별 작은 docs 커밋으로 분리한다. 영어 type/한국어 설명, 작업 브랜치 push·template/라벨 PR·실제 head CI/최신 main/리뷰·병합 조건 확인 후 merge commit/로컬 main FF. 실제 PR/CI/최종 SHA는 PR과 최종 보고에 남기며 Git 전달을 정책/계약 완료나 배포로 세지 않는다.
 - 다음 작업 인계: POL-02 재개 하나. 위 재개 표의 배포 계약/실행 대응부터 확인한다. DEV-03/다른 Task를 이번 대화에서 시작하지 않는다.
+
+<a id="pol-02-next-pol-04-exception"></a>
+
+## 2026-11-05 13:55 KST · 계약 차단 유지와 POL-04 다음 Gate 선정 예외
+
+- 승인 원문: 사용자 **“POL-02의 계약 차단과 기존 reset Major는 유지하고, 선행 조건을 충족하는 다음 Task 하나를 선정하는 예외를 승인할게. WBS·작업 기록 갱신과 검증·리뷰·Git 전달까지 마무리해줘. 다음 Task는 새 대화에서 시작할게.”**
+- 적용 범위: 위 배포 OpenAPI/version/schema·실행 대응 미확보, QA-10 reset Major/context-audit FAIL, RBD-01~09 실제0통과·9차단과 기존 QA/재개 조건을 유지한다. 위 ‘다음 POL-02 재개’·‘신규 진행 예외 없음’은 당시 이력이며 **다음 선정만 POL-04로 대체**한다. POL-02 완료/계약 차단 해소·reset 수정·POL-04 정책/API 승인이나 자원 준비 완료로 확대하지 않는다.
+- 시작 기준: main=origin/main `4b0e9aea9d606e5a96484bc6e86fc40ee8ded57d` clean, 기존 변경0. fetch/FF와 DOC-001 `9eae9c0`·POL-02 PR #43/목적별3커밋의 main 반영을 확인한 뒤 `docs/pol-02-next-pol-04-exception`에서 진행한다.
+- 요구사항/성공 기준: 이번 명시적 예외·선정 이유·다음 첫 행동을 기록하고 WBS의 다음 작업/준비 행을 일치시킨다. POL-02 차단·정책3결정·기존 QA/다른 작업과 기준선을 보존한다. 문서 무결성·diff-check·Documentation Update Check·read-only verifier·ai-review를 완료하고 목적별 commit/push·template/라벨 PR·실제 head CI/정상 merge/로컬 main FF까지 전달한다.
+- 수정 파일/단계: WBS·이 task·POL-02 review의 3개 Markdown만 수정한다. 원문/선정·인계 기록 → 링크/anchor·79원본99Task·선행/상태·다른98개 WBS행·기존 task/review 전체 prefix·계약 완료 체크/재개3조건·정책3결정/QA·기준선5파일·POL-04 파일/시작451파일 지문·범위/민감 패턴·diff-check → 두 리뷰 → 종료 기록 재검증/재검토 → Git 전달. 편집 전에 이 계획을 제시했으며 문서 범위의 blocking ambiguity는 없다.
+- 제외: src/tests/package/설정/하네스/라이브러리·기존 QA/다른 Task 파일 수정, POL-04 소스/API/Figma 조사·정책 결정·설계/구현, 실제 로그인/브라우저/업무 API·fixture/mutation/reset·서비스 제어·운영·배포·외부 메시지. Git 전달 승인을 이 행위들의 승인으로 사용하지 않는다.
+- 선정 이유: P0의 미완료 QA/POL-01은 기존 차단, DEV-01/02·QA-16은 선행 미충족이다. P1 순서에서 DEV-03은 POL-02, POL-03은 알려진 전체 조회 계약 차단, DEV-04는 POL-03, DEV-05는 DEV-04 선행 미충족이다. **POL-04 · 받은 알림 actionPath·이동/읽음 정책 확정**은 이들 뒤의 첫 선행 충족 후보이며 DOC-001 완료/main 반영이다. 기존 차단을 해소하거나 순서를 임의 변경하지 않고 이번 예외로 다음 요구사항 Gate 대상으로만 선정한다.
+- 다음 첫 행동: 새 대화에서 최신 main/Git·[POL-04 후보 정의](POL-04.md)·DOC-001/기준선 N03·data-access를 대조한다. 현행 알림 DTO의 actionPath→화면 모델 누락·읽음/이동의 소유 소스와 서버 계약/중앙 정책 version을 확인하고, 안전한 내부 목적지·외부/인코딩 우회·미구현/삭제 대상·읽음 실패 처리의 승인 근거와 검증 범위를 확인해 Gate를 작성한다. 미확정 정책은 최대3질문/추천안으로 확인한다. 이번 후속에서는 이 조사/결정을 시작하지 않는다.
+- 검증/미실행: 현재 package 8 scripts 확인. Markdown 전용·실행 코드/패키지/빌드 영향이 없어 로컬 앱 test/lint/build/Storybook·mock/HTTP 대역·실제 API/브라우저는 미실행이며 신규 실제 통과0건이다. POL-04 준비는 실제 자원/승인 준비 완료가 아니다. 기존 QA-11 실제 QA 차단·ALARM-04 삭제 API/ALARM-05 7일 정책 보류도 그대로다.
+- Documentation Update Check: WBS/이 기록/review만 갱신. QA는 실제 실행/기대값 변경 없이 보존, base/architecture/data-access는 scripts/구조/API/mock 불변, plan은 WBS 위임/과거 이력 유지, harness/Skill/agent·ai-failures는 새 변경/사건이 없어 유지, baseline/coverage 매핑도 보존한다. 이번에는 새 정합성 의심 근거가 없어 context-audit를 재실행하지 않고 위 기존 FAIL/Major를 유지한다.
+- 체크포인트: 승인/범위·브랜치/시작451파일 지문 확보, 다음 POL-04 선정 근거 문서화 중. 현재 수정은3문서뿐이며 POL-04 미착수다. 다음은 후속 문서 검사·두 리뷰다. 자동 수정0/3으로 시작하고 이전 작업의 검사/사건 이력은 보존한다.
+- 후속 검증 체크포인트: `validate_exception.py` 26/26·`git diff --check` PASS. 링크299/anchor25·보호448파일·고정5파일·POL-04/기존 QA·다른98행·기존 task/review 전체 prefix·승인3결정/재개3조건·계약 완료 미체크를 보존했다. 자동 수정0/3. 실제 diff 기반 자체 ai-review PASS, 다음은 read-only verifier이며 결과 후 종료 기록을 포함해 영향 검증/두 리뷰 freshness를 재확인한다.
+- 후속 Review Gate/종료 체크포인트: ai-review와 read-only verifier 1차 PASS, 신규 Blocker/Major/Minor 없음. WBS 현재 없음·POL-02 차단 유지·다음 POL-04 준비로 정리했다. 이 종료 기록도26검사·두 리뷰 freshness를 다시 확인한 뒤 단일 목적의 문서 커밋/push·template/라벨 PR·새 실제 head CI/병합 조건 확인·merge commit/로컬 main FF로 전달한다. 최종 read-only 원문은 후속 로컬 증거의 `verifier-final.txt`, 실제 PR/CI/main SHA/clean은 PR과 최종 보고에 남긴다. POL-04 소스 조사·정책 결정·실행은 다음 대화의 Gate에서만 시작한다.
