@@ -175,3 +175,31 @@ Safari 웹 인스펙터의 네트워크 목록에서 테스트 API 서버로 세
 ### 2026-11-05 09:12 KST · 다음 Gate 선정에 한정한 후속 예외
 
 사용자가 **QA-11 실제 QA 차단을 유지하고 QA-12를 다음 요구사항 Gate 대상으로만 선정하는 진행 예외**를 명시 승인했다. [승인 원문·범위·다음 첫 행동](../development/figma-v01/tasks/QA-11.md#qa-11-next-qa-12-exception)에 따라 앞선 ‘다음 QA-11 재개/QA-12 진행 예외 없음’은 당시 이력으로 보존하고 다음 선정만 대체한다. 실제 실행0건·신규 통과0·재검증8차단, ALARM-04 삭제 API 차단/ALARM-05 정책 보류, 기존3통과·1차단·6대기와 QA-11 재개 조건은 그대로다. 이번 후속도 앱/제품 API·설정 변경·알림 생성·서비스 운영/배포·QA-12 실행은 없다. QA-12의 실제 서버 오류·사용/변경/원복·실행 대응은 새 대화 Gate에서 확인하며 현재 준비 완료로 세지 않는다. 현재/다음/상태의 단일 기준은 WBS다.
+
+<a id="pol-04-navigation-qa"></a>
+
+## 2026-11-05 · POL-04 v1의 대상 화면 이동 QA 계획
+
+[사용자3결정](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)과 [DEV-06 인계](../development/figma-v01/tasks/DEV-06.md#pol-04-handoff)에 따른 **신규 ANAV-01~10 계획**이다. 이번에는 정책 문서만 작성했고 앱/브라우저·mock/HTTP 대역·실제 업무 API 실행0건, 신규 실제 통과0건이다. 10건 모두 **대기 — DEV-06 미구현·실제 자원/승인/실행 대응 미확보**이며 통과로 세지 않는다. 위 ALARM-01~10과 QA-11의 기존3통과·1차단·6대기/재검증8차단·04차단/05보류는 그대로다. 특히 ALARM-03의 ‘목록 유지’는 과거 읽음 구현의 기대값이고 새 허용 경로 이동의 PASS가 아니다.
+
+아래 공통 기준은 모든 ANAV case에 적용한다.
+
+- Figma node: [10_알림, 2304:29131](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2304-29131), [읽음, 2304:89716](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2304-89716). 경로/읽음 정책은 Figma만으로 추정하지 않고 POL-04 v1을 따른다.
+- 출발 화면 `/alarms`; API N=`GET /api/v1/me/notifications`, C=`GET /api/v1/me/notifications/unread-count`, R=`PATCH /api/v1/me/notifications/{notificationId}/read`. 각 case의 N/C는 전후 상태 대조, R은 지정한 disposable 합성 알림에만 적용한다. 목적지 조회는 기존 공고 상세/회사 Repository를 사용하고 새 이동/권한 endpoint는 추정하지 않는다.
+- 준비: 합성 전용 계정·알림/공고/분류/회사 별칭, 시작/종료 readAt·unreadCount/total/정렬/세션과 이동 기대값, 사용/변경·읽음 잔존 허용·복구 담당/방법, 안전한 오류/해제와 frontend/backend 실행 대응. 사용자 승인을 확보하기 전 실제 로그인/N/C/R·알림 생성/서비스 제어를 실행하지 않는다. 준비용 ID/경로 예시는 합성 값이며 실제 fixture 생성 증거가 아니다.
+- 실행 시 기록: KST 시각·프론트 HEAD/공급원 snapshot/Origin·backend 배포 run/artifact와 실행 SHA 대응·브라우저/viewport·키보드·UI 캡처·비식별 method/path/status·시작/종료/복구. query/인증정보/알림 본문 원문은 저장하지 않는다. 서버 부재/장애를 조작하지 않고 승인된 오류 fixture를 사용한다.
+
+| case | 화면·API | 준비 데이터·조작 | 예상 결과 | 이번 판정 |
+| --- | --- | --- | --- | --- |
+| ANAV-01 | `/alarms` → `/bids/{id}`(+선택 `bidClsfcNo`), N/C/R | 미읽음·공개 합성 공고와 복수 분류. 분류 없음/있음 알림을 각각 클릭하고 재진입 | R 성공 뒤 읽음/점·건수 반영 후 현재 탭 이동. 서버 snapshot의 대상/분류 유지·다른 ID 추정 없음. total/정렬 유지 | 대기·미실행 |
+| ANAV-02 | `/alarms` → `/my/company`, N/C/R·기존 회사 조회 | 미읽음 회사 목적지, 연결/미연결·소속 변경된 계정별 fixture. 클릭 | query/hash 없는 정확한 경로, 현재 계정의 기존 회사/빈/권한 상태 표시. resourceId의 회사를 자동 열거나 가입하지 않음 | 대기·미실행 |
+| ANAV-03 | 읽은 알림 → 허용 목적지, N/C·R 호출 없음 | 이미 읽은 공고/회사 알림을 클릭하고 목록 복귀 | PATCH 없이 검증 후 이동, 읽음 시각·건수 추가 감소 없음 | 대기·미실행 |
+| ANAV-04 | `/alarms` 유지, N/C/R | null/빈/무효 타입·소식/회사 통합 등 미지원 경로, 읽음/미읽음 조합 클릭 | 미읽음은 R 성공 뒤만 반영. 모두 목록/본문 유지·안내, 원문 경로 출력/다른 목적지 추정 없음 | 대기·미실행 |
+| ANAV-05 | `/alarms` 유지, N/C/R | 외부 및 같은 origin 절대 URL·scheme·`//`·역슬래시·공백/제어문자·경로 separator/이중 인코딩/dot segment·깨진 encoding의 합성 대역 입력 클릭 | 모든 우회 경로 거절. 외부/인증/API/변경 경로 이동0건. 허용된 N/C/R 외에 actionPath 위험 목적지로 보내는 요청0건. R 자체는 기존 읽음 성공 규칙 유지 | 대기·미실행 |
+| ANAV-06 | `/alarms` → 허용 경로 또는 유지, N/C/R | 정상 분류 직렬화와 미지원/중복/빈 query·hash·잘못된/과대 ID, `/my/company?companyId=...`를 대조 | 정상 단일 분류만 유지, 현행 ID/분류 계약 외 값은 폴백. URL 파서 보정/반복 decode로 위험 입력을 허용하지 않음 | 대기·미실행 |
+| ANAV-07 | `/alarms`, N/C/R | 읽음 네트워크·서버4xx/5xx·무효 응답 fixture, 실패 후 명시적 재시도/재조회 | 실패 시 이동/낙관 갱신 없음·기존 UI값과 오류 안내. 통신 실패의 서버 반영은 미확정으로 두고 재조회/멱등 재시도 후 맞춤. 중복 건수 감소/읽음 취소 추정 없음 | 대기·미실행 |
+| ANAV-08 | `/alarms`, N/C/R·기존 세션 흐름 | 지연 응답·같은 항목 연속 클릭/서로 다른 항목 경쟁·해제·계정 교체·로그아웃·refresh 성공/최종401 | 중복 PATCH/이동 방지·늦은 응답의 새 계정/화면 이동0건. 기존 refresh1회/로그인 안내·`/alarms` 복귀, 로그인 후 자동 PATCH/이동0건 | 대기·미실행 |
+| ANAV-09 | 허용 공고/회사 목적지·기존 조회·N/C/R | 정상 형식이나 삭제/공개 전/권한 거절/서버 오류인 합성 대상 클릭·복귀 | 허용 route의 기존 오류/빈/권한 UI. 읽음 성공 유지·다른 자원 우회/되돌림/추가 mutation 없음 | 대기·미실행 |
+| ANAV-10 | `/alarms`와 허용 목적지·N/C/R | 위 정상/폴백/오류 fixture, 데스크톱·390/320px·Tab/Enter/Space·보조기술 상태 확인 | 포커스/버튼·로딩/오류/안내 접근성, 중복 행동 방지와 키보드 이동, 레이아웃/본문/순번 배경 유지 | 대기·미실행 |
+
+backend source의 삭제 계약 관찰은 배포 완료가 아니며 ALARM-04의 날짜별 이력을 통과로 바꾸지 않는다. 삭제/보존은 POL-20/관련 개발, 변경 신호는 POL-05/DEV-07 범위다. 이 계획은 기존 QA 예외·실제 자원 준비·mutation 승인을 확대하지 않는다.
