@@ -121,3 +121,51 @@
 
 - 통과/실패/차단/대기: `3/0/0/6`.
 - 최종 판정: 정적 검증, 발송 시작까지의 실제 API 브라우저 확인, 인증 전 모바일·키보드 검증은 통과했다. 인증 완료·주소 전환·재전송·확인/PATCH 오류·코드 단계 모바일 검증은 대기한다. 현재 수신 주소는 가입 이메일 상태로 유지됐다 (2026-09-28). 개발자 승인에 따라 환경 의존 항목을 대기시킨 채 다음 기능의 요구사항 조사로 넘어간다. 이는 이 기능의 최종 PASS 판정이 아니다.
+
+<a id="qa-13-20261105"></a>
+
+## 2026-11-05 · QA-13 비실행 사전 점검
+
+[작업·재개 조건](../development/figma-v01/tasks/QA-13.md#qa-13-resume) · [검토 근거](../development/figma-v01/reviews/QA-13.md) · [현재 상태·다음 작업의 단일 기준](../development/figma-v01/README.md).
+
+- 이번 판정: **실제 실행0건·신규 통과0·6차단**. 대상은 NREC-03/04/05/06/07/09다. 위 2026-09-28의 3통과·6대기와 NREC-01/02/08의 통과 범위는 그대로 보존하며 현재 배포에서 재통과한 것으로 표시하지 않는다.
+- 사용자 제공 경로: [Mailpit](https://mailpit.mate-bid.com/). 비인증 `HEAD /` 1회는302와 Cloudflare Access 로그인 이동·인증 challenge 존재를 반환했다. 응답 body/cookie 값·메일 목록/본문/API는 읽지 않았고 인증 리다이렉트를 따라가지 않았다. 이 관찰은 로그인 후 메일함 사용 가능/불가나 실제 메일 부재의 판정이 아니다.
+- 사용자 확인: **“접근 가능 — 사용자 직접 로그인·주소/코드 입력 가능”**. 사용자 보고상 이번 QA 메일을 구분해 접근할 수 있다. 실제 브라우저 로그인·메일 제한 열람·인증번호 입력은 이번에 실행하지 않았다.
+- 사용/변경/복구 결정: **“아직 미준비 — 차단·재개 조건 문서화와 Git 전달 진행 (추천)”**. disposable 계정/새 수신처·시작/종료 값·발송/변경/잔존·복구 담당/방법·오류/만료/한도와 실행 대응이 미확보라 실제 QA는 차단한다. 공개 경로 제공을 인증 발송·수신처 변경 승인으로 확대하지 않는다.
+
+### 이번 환경·증거 경계
+
+| 항목 | 확인한 사실·미실행 이유 |
+| --- | --- |
+| 소스/Git | main=origin/main `1256bf39b9c4c4914a45efca8ee38016e59cbe08` clean에서 fetch/FF 후 `qa/qa-13-email-recipient`. PREP-01/QA-04·QA-12→QA-13 선정 변경의 main 조상 확인 |
+| 도구 | 기본 셸 Node26.5.0·pnpm11.3.0, `.nvmrc`/CI22.20.0. Python/Git 문서 검사이며 Node 앱 실행은 없음 |
+| 프론트/백엔드 | 문서상 대상은 기존 공통 환경 기준을 참고한다. 현재 실행 Origin·auth/notificationSettings api snapshot·프론트 실행 지문·백엔드 배포/실행 버전 대응은 미확인. 저장소 HEAD나 Mailpit 주소로 실행 버전을 추정하지 않음 |
+| 브라우저/viewport·Network | 해당 없음: 앱/메일 브라우저·로그인·제품 API 미실행. Mailpit 비인증 HEAD의 상태/인증 경계만 별도 관찰. UI 캡처/제품 Network 증거 없음 |
+| 계정/수신처·복구 | 실제 계정/주소/코드/인증 ID 원문을 요청·수집하지 않음. 계정·수신 설정·인증·메일·서버/프로세스 변경0회로 새 복구 대상 없음 |
+| 실행 증거 | 저장소 밖 `qa-13-preflight/`의 시작 manifest·준비 결정 요약·문서 검사·diff/리뷰 지문. 코드/주소/인증 ID·인증 로그 원문은 보존하지 않음 |
+
+### 현재 소스와 과거 검증의 구분
+
+- [HTTP Repository](../../src/data/notification-settings/http-repository.ts)는 수신처 GET/PATCH, 인증 시작/resend/confirm POST를 제공한다. PATCH body는 recipientType만 포함하고 확인 성공은 ALTERNATE_EMAIL을 검증한다. 대체 주소 삭제·메일/인증 이력 원복을 위한 공개 계약은 확인되지 않았다. 가입 주소 복귀와 원래 데이터 전체 복구를 구분해야 한다.
+- [설정 화면](../../src/components/my/notification-settings-page-client.tsx)은 인증된 대체 주소가 없을 때 인증 창을 열고, 수신처 PATCH 성공 후에만 선택을 반영한다. 화면 진입은 수신처 GET과 맞춤 이메일 ON/OFF GET을 함께 호출하므로 두 조회의 사용 범위를 준비한다. ON/OFF PATCH는 이번 QA-13의 수신처 변경과 별도이며 자동 실행하지 않는다.
+- [인증 창](../../src/components/my/notification-email-verification-dialog.tsx)은 반환 expiresAt/resendAvailableAt으로 대기·만료를 계산한다. confirm의 NE005는 새 요청 안내, NE006는 확인 차단, resend 성공은 반환 verification·타이머/입력·차단 상태를 갱신한다. 이 코드를 읽은 것이 실제 서버의 오류/이전 코드 무효화/복구 검증은 아니다.
+- [mock](../../src/data/notification-settings/mock-repository.ts)과 기존 [HTTP fetch 대역](../../tests/http-contracts.test.ts)은 10분/30초·고정 가상 코드 기반이다. mock resend는 같은 ID를 유지하고 고정 코드를 재사용하므로 live 이전 코드 무효화 증거로 쓸 수 없다. 기존 [Node 계약 테스트](../../tests/account-repositories.test.ts)의 가짜 Clock/Storage 결과도 실제 Mailpit·브라우저 결과와 구분한다. 이번에 이 검사들을 재실행하지 않았다. 기준선의 시간 차이/POL-19·DEV-41은 해결하거나 정책을 확정하지 않았다.
+
+### 사례별 차단·재개 조건
+
+| 기존 case | 이번 결과 | 필요한 자원·실제 증거 |
+| --- | --- | --- |
+| NREC-03 | 차단·미실행 | 새 인증 요청용 disposable 계정/수신처·사용/발송/인증·잔존 허용, 사용자 직접 Mailpit 로그인/해당 메일만 열람·주소/코드 입력. POST/confirm/GET·자동 전환/reload와 서버 반환 타이머 증거 |
+| NREC-04 | 차단·미실행 | NREC-03 실제 인증 완료 후 가입→대체→가입 PATCH/GET/reload. 재인증 불필요·대체 주소 보존·시작/종료 상태 및 잔존/복구 승인. 초기 alternateEmail=null은 선택 복귀만으로 복원되지 않음 |
+| NREC-05 | 차단·미실행 | 새 요청/재전송 메일 두 건을 안전하게 구분할 권한·발송 범위. 서버 반환 대기 전/후·응답의 ID/만료 갱신·이전 코드 거절/새 코드 성공을 원문 없이 검증. 과거 만료 코드는 재사용하지 않음 |
+| NREC-06 | 차단·미실행 | 별도 인증 요청과 오입력/만료/한도·실제 서버 오류의 안전한 순서/횟수·해제 담당/방법. 화면 타이머00:00만으로 서버 만료 응답을 통과시키지 않고 실제 오류/새 요청 복구를 구분 |
+| NREC-07 | 차단·미실행 | 발송/확인/PATCH별 안전한 실패/해제·기존 수신 설정 유지·정상 재시도/GET 증거. 과거 브라우저 차단·이번 HEAD302·mock/route fulfill은 실제 backend4xx/5xx 증거가 아님 |
+| NREC-09 | 차단·미실행 | 새 요청/오류 재현 범위와390px/320px 코드 단계·타이머/오류/재전송·Tab/Enter/Escape 증거. NREC-08은 인증 전 검증이므로 코드 단계 전체 PASS로 확대하지 않음 |
+
+### 잔존·종료와 다음 첫 행동
+
+1. 시작/종료 recipientType과 대체 주소 유무·이메일 ON/OFF를 비식별 값으로 확인할 승인된 disposable 자원을 정한다. 인증 성공 후 가입 주소로 돌아가도 대체 주소·발송/인증 이력이 남을 수 있다. 공개 DELETE/원상복구 API는 추정하지 않으며, 허용할 잔존 상태 또는 담당자가 수행할 복구/계정 폐기 방법을 먼저 정한다.
+2. 사용자 직접 Cloudflare Access 로그인·이번 QA 수신처/시각에 해당하는 메일만 제한 열람·주소/코드 화면 입력을 준비한다. 전체 메일함 열람/다운로드·메일 삭제·release/relay·다른 사용자 메일 접근은 이 확인 범위에 포함하지 않는다. 코드/주소/인증 ID·auth query/header/cookie/응답 원문은 수집하지 않는다.
+3. 로그인/refresh/logout·두 GET·인증 시작/resend/confirm POST·수신처 PATCH의 대상/사용/발송/변경·잔존 허용/복구와 안전한 오류/만료/한도 재현·해제·현재 프론트/백엔드 실행 대응을 확보해 QA-13 요구사항 Gate를 다시 작성한다. 오류 해제→정상 재시도/GET→합의한 종료 상태→세션/소유 탭/프로세스 정리까지 계획한다.
+
+다음 Task는 **QA-13 재개** 하나다. P0와 main 선행 조건은 충족했으나 필수 실제 QA 자원/승인이 남는다. 과거 Mailpit 환경 의존 검증 보류 예외와 QA-12→QA-13 선정 예외는 다른 Task 검증 면제나 이번 실제 QA 승인으로 확대하지 않는다. 문서 검사·두 리뷰·원격 CI/Git 전달과 실제 QA 차단을 분리한다.
