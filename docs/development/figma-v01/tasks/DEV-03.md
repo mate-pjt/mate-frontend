@@ -72,3 +72,14 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-05 · POL-02 정책 인계 (DEV-03 미착수)
+
+- 선행 정책: [POL-02 사용자3결정](POL-02.md#pol-02-approved-decisions). recommended는 진입/reload 시 현재 계정의 개인 필터 snapshot을 읽어 기존 공개 ALL 목록을 자동 조회한다. 기존 ALL의 수동 ‘내 맞춤’과 책임을 구분하고 AI 점수·이메일 발송일 추천은 추가하지 않는다.
+- SAVED는 회사 유무와 무관하게 우선한다. 미저장 시 COMPANY_DEFAULT, 회사/저장 조건이 없으면 EMPTY_DEFAULT를 구분한다. 모든 조건이 비어 있으면 설정 안내와 전체 공고 이동을 제공하며 빈 SAVED를 회사 값으로 되돌리지 않는다. 유효한 조건의 매칭0건은 별도 빈 상태다.
+- 마감 빠른 순·canonical 행 identity/서버 count/page(UI1/API0), 기존 크기10/20/30·검색 URL 상태를 사용한다. query/page/size는 계정에 저장하지 않고 GET은 개인/회사 데이터를 쓰지 않는다. 필터 편집/저장 동선은 기존 ALL을 사용한다.
+- 홈 CTA/내부 next의 recommended 복귀, 오류 재시도/401 기존 세션 처리·계정 전환의 조건/행/늦은 응답 격리가 완료 기준이다. 오류를 빈 조건으로 취급하거나 mock/무조건 전체로 대체하지 않는다.
+- 기존 `bids/server.ts`는 server-only이고 snapshot은 personal-filters/client 책임이다. 구현 Gate에서 이 경계를 유지하는 연결·취소/경쟁·reload/URL 설계를 먼저 제시한다. UI에서 concrete HTTP/DTO import, 서버 전역/props의 계정 상태·인증정보 저장, 새 BFF/공급원 그룹/추측 endpoint는 이 인계로 승인되지 않는다.
+- **착수 차단:** POL-02 배포 OpenAPI/version·실행 SHA 대응 미확보(비인증 GET403), [QA-10 reset Major](QA-10.md#qa-10-resume)와 실제 QA 준비 조건 유지. 소스 commit/사용자 정책 승인만으로 배포 계약/기능 통합 PASS를 만들지 않는다.
+- 검증 인계: [RBD-01~09](../../../qa/bid-list.md#pol-02-recommended-qa), 기존 HOME-09/BID-15/PBF 이력을 분리한다. 실제 package의 test/lint/build·영향 시 Storybook, mock/HTTP 대역·실제 Next/브라우저·API/오류·계정 교체/모바일을 각각 기록한다. mutation은 계정/변경/잔존/복구 승인 확보 후에만 수행한다.
+- 이 문단은 후속 범위/완료 기준/차단의 갱신이며 DEV-03 Implementation Brief 또는 구현 승인이 아니다. 다음 Task는 WBS의 POL-02 재개 하나다.

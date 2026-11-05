@@ -102,3 +102,11 @@
 ### 2026-11-04 16:58 KST · 후속 선정 예외
 
 사용자 [명시 승인](../development/figma-v01/tasks/QA-10.md#qa-10-next-qa-11-exception)으로 위 종료 시점의 ‘다음 QA-10 재개/QA-11 예외 없음’ 중 **다음 작업 선정만 QA-11로 대체**한다. PBF-01~12 실제0통과·12차단과 과거0통과12대기, reset 기대 빈 SAVED 대비 mock/HTTP 대역 EMPTY_DEFAULT의 미해결 Major/context-audit FAIL·재개/복구 조건은 그대로다. 이번 후속은4문서 인계 설명·검증/두 리뷰·Git 전달만 수행한다. QA-11은 새 대화에서 main/Git·해당 task/PREP·ALARM-01~10·승인 계정/알림/읽음 PATCH·시작 건수/정렬/페이지·사용/변경/읽음 잔존/종료/복구·오류/실행 대응부터 확보해 Gate를 작성하며, 실제 fixture 차단·ALARM-04 삭제 API 차단/ALARM-05 7일 안내 보류는 해소되지 않았다. 이번 QA-11 실행·제품 API/데이터/서비스 변경은 없고 QA-10 통합 PASS나 reset 수정, QA-11 실제 실행/운영 승인으로 확대하지 않는다. 검증/리뷰 결과는 [후속 검토](../development/figma-v01/reviews/QA-10.md#qa-10-next-qa-11-review)에 보존한다.
+
+
+## 2026-11-05 · POL-02 개인 필터와 맞춤 목록의 책임
+
+- [사용자3결정](../development/figma-v01/tasks/POL-02.md#pol-02-approved-decisions): 기존 ALL의 ‘내 맞춤’은 수동 적용을 유지하고, 별도 recommended 진입/reload는 현재 snapshot을 읽어 ALL 자동 조회로 정의한다. 조회 자체로 저장/reset/import·회사 변경을 하지 않는다. query/page/size는 계정 저장 대상이 아니다.
+- SAVED > COMPANY_DEFAULT > EMPTY_DEFAULT와 빈 SAVED 보존은 중앙 Accepted ADR-0014를 유지한다. 회사 미연결이어도 유효한 SAVED는 우선하고, 조건이 모두 비면 설정 안내/전체 공고 이동을 제공한다. 빈 조건과 조건은 있으나 매칭0건을 구분한다.
+- QA-10 실제0통과·12차단/기존0통과·12대기와 reset 기대 빈 SAVED 대비 mock/HTTP 대역 EMPTY_DEFAULT의 기존 Major/context-audit FAIL은 그대로다. 이번에 코드·테스트·계정·PUT/reset/import 또는 브라우저/업무 API를 실행하지 않았고 새 실제 통과0건이다. 정책 결정으로 reset 차이가 수정된 것은 아니다.
+- 후속 [RBD-01~09](bid-list.md#pol-02-recommended-qa)는 DEV-03 이후 검증할 맞춤 목록 사례다. PBF ID/기존 증거와 합치지 않는다. 배포 계약/실행 대응과 차이 처리 범위는 [POL-02 재개 표](../development/figma-v01/tasks/POL-02.md#pol-02-resume), 실제 필터 자원·사용/변경·잔존/복구는 [QA-10 재개 표](../development/figma-v01/tasks/QA-10.md#qa-10-resume)를 따른다.
