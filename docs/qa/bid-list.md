@@ -306,3 +306,30 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 - QA-A logout200/보호 진입의 로그인 복귀·소유 Next 종료0·소유 PID/group 소멸/3000·3001 비청취·실패 제어 제거·화면 override reset·Network disable·소유 Chrome 탭 닫힘 완료. `cleanup.json`, `process-exit.json` 참조. Google 일반 로그인/무관한 탭·공유 서버 데이터는 정리 대상으로 삼지 않았다.
 - 남은6사례는 공개 테스트 데이터/배포 담당이 물품·결과 상태/금액·분류 쌍·기관/지역/추정가격/결과 null·정확한 날짜/기초금액 경계 및 현재 실행 식별자를 준비하면 같은 BID ID로 재개한다. 실제 계약상 발생하지 않는 조건은 담당자 합의 전 임의로 면제하지 않는다. 기존 QA-02 전용 제한 진행/Git 예외만 유지하고 다음 Task의 검증 면제로 확대하지 않는다.
 - 다음 후보는 QA-03 재개다. P0 표 순서·PREP-01/QA-04 main 선행·기존 QA-02 진행 예외를 근거로 별도 Gate를 준비하며, 이번 대화에서 상세 QA를 실행하지 않는다.
+
+<a id="pol-02-recommended-qa"></a>
+
+## 2026-11-05 · POL-02 정책과 DEV-03 맞춤 목록 QA 인계
+
+이번에는 정책/소스만 대조했고 앱·mock/HTTP 대역·브라우저·업무 API를 실행하지 않았다. 기존 BID-01~16 및 2026-11-02의 통과/차단·예외는 그대로다. BID-15의 통과는 **인증 후 준비 안내**의 과거 증거이며 새 맞춤 결과의 통과가 아니다.
+
+- 정책/계약 근거: [POL-02 승인3결정](../development/figma-v01/tasks/POL-02.md#pol-02-approved-decisions)·[배포 계약 재개 표](../development/figma-v01/tasks/POL-02.md#pol-02-resume). 기존 개인 필터 GET/current + 공개 GET/bid-notices?view=ALL 조합으로 정의했지만, 배포 OpenAPI 비인증 GET403/version·실행 대응 미확보와 QA-10 reset Major를 유지한다.
+- 공통 Figma: [맞춤 목록 3003:47410](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3003-47410), [홈 CTA 2016:57355](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2016-57355). 이번에 디자인을 다시 조회하거나 UI 설계를 시작하지 않았다.
+- 공통 화면: `/bids?view=recommended` 및 `/`의 CTA·내부 로그인 복귀. 필요한 API는 `GET /api/v1/bid-notice-filters/current`, `GET /api/v1/bid-notices?view=ALL`, 인증의 기존 세션 처리다. 조회 검증에 PUT/reset/import를 암묵적으로 포함하지 않는다.
+- 공통 차단/담당 역할: POL-02 배포 계약·실행 대응과 reset 차이 처리 범위 미확보, DEV-03 미구현. 백엔드 계약/배포·fixture 담당과 프론트 QA 실행자가 비식별 계정 별칭·시작 snapshot/source/version·매칭 행/총건수/정렬·오류/401·종료/잔존/복구·현재 실행 식별자를 준비한다. 개인 배정은 미확인이다.
+
+아래 9사례는 **신규 실제0통과·9차단/미실행**이며 개발 완료 뒤 실행할 수용 기준이다. 기존 BID/PBF의 case ID·판정/집계와 합치지 않는다.
+
+| ID | 준비 데이터·조작 | 예상 UI/API 결과 | 상태·증거 |
+| --- | --- | --- | --- |
+| RBD-01 | 비식별 SAVED 비어 있지 않은 계정(회사 연결/미연결), 홈 CTA·익명 직접 진입→로그인→복귀 | 내부 next/recommended 유지, 현재 snapshot→ALL 자동 조회. 회사 미연결이어도 유효 SAVED 우선, 예전 계정 URL 조건을 저장값으로 사용 안 함 | 차단·미실행, 공통 선행 미충족 |
+| RBD-02 | 미저장·활성 회사/비어 있지 않은 COMPANY_DEFAULT, recommended 진입/reload | 회사 projection 출처 구분·자동 조회, GET으로 개인 row/version/회사 값 변경 없음 | 차단·미실행, 공통 선행 미충족 |
+| RBD-03 | 미저장/회사 없음 EMPTY_DEFAULT, recommended 진입 | 조건 설정 안내와 전체 공고 이동. 전체 결과를 맞춤 결과로 대체하지 않음 | 차단·미실행, 공통 선행 미충족 |
+| RBD-04 | 기존 빈 SAVED와 빈 COMPANY_DEFAULT fixture, 진입/reload | 조건 설정 안내, SAVED 우선/회사 기본값 자동 재적용 없음. reset을 실행해 fixture를 만들지 않음 | 차단·미실행, reset 대역 차이 유지 |
+| RBD-05 | 조건별 포함/제외·null·경계와 물품/용역 복수 분류, 2page 이상 | 마감 빠른 stable 서버 순서, canonical 행/count·UI1/API0·크기10/20/30, ID/분류 상세 이동. 조건의 빈 bidTypes를 UI 기본 공사로 몰래 제한하지 않음 | 차단·미실행, 공통 선행 미충족 |
+| RBD-06 | 유효 조건의 매칭0건·키워드/페이지/크기 변경·hard reload | 조건 없음과 매칭0건 구분. 검색/page/size 비저장, 조회만으로 snapshot/회사 변경 없음, reload는 현재 계정 snapshot 재조회 | 차단·미실행, 공통 선행 미충족 |
+| RBD-07 | snapshot GET/ALL 각각 안전한 네트워크 실패·실서버 오류/해제 조건 | 오류/재시도, 필수 응답 오류를 EMPTY_DEFAULT나0건으로 숨기지 않음, 전체/mock 자동 fallback 없음. 대역과 실제 오류 결과 분리 | 차단·미실행, 안전한 재현/해제 승인·자원 미확보 |
+| RBD-08 | 승인된 두 계정·세션401/refresh 조건·지연 응답·로그아웃/교체 | 기존401 동일 계정 갱신1회·재로그인 복귀, 이전 계정 snapshot/행/늦은 응답 제거·비노출 | 차단·미실행, 계정/세션 사용·종료/복구 범위 미확보 |
+| RBD-09 | 위 상태별390/320px·키보드·reload·기존 ALL 내 맞춤 회귀 | 안내/전체 이동·페이지/재시도 조작 가능. ALL 수동 적용/명시적 저장은 그대로, recommended 조회로 저장/reset/import 없음 | 차단·미실행, DEV-03/QA Gate 후 실행 |
+
+기존 HOME-09/PBF-01~12와의 연결은 각 QA의 이번 인계 절에 남긴다. 현재 소스 commit·정책 문서 검증·원격 CI 성공은 이 9사례의 실제 API 통합 PASS를 의미하지 않는다.

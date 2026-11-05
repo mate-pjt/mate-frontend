@@ -213,3 +213,10 @@
 - QA-A 로그아웃 200 및 이후 refresh 401·비로그인 UI를 확인했고, 실패 제어 파일 제거·화면 override reset·Network disable·소유 Chrome/IAB 탭 닫힘·소유 Next 종료 0·소유 PID 소멸·3000/3001 비청취를 확인했다. `cleanup.json`·`process-exit.json` 참조. 인증서/키체인·공유 서버·데이터는 변경하지 않았다.
 - 다음 재개에 필요한 역할은 공개 공고 테스트 데이터/배포 담당과 프론트 QA 실행자다. 홈 첫 9행에 3종·두 분류 쌍·기관 세 분기·각 null·1~8/0행 조건 및 실행 버전 대응이 준비되면 동일 HOME-02~06을 다시 실행한다. 담당 개인은 임의 지정하지 않는다.
 - 2026-10-30의 QA-01 전용 잔여 검증 보류/다음 진행 예외는 해당 범위로 보존한다. 이번에는 추가로 확인한 결과와 미해소 5사례를 남기며, 문서/검토/Git 전달 성공을 전체 통합 PASS나 다른 Task 검증 면제로 바꾸지 않는다. 후속 후보는 WBS의 QA-02 재개이며 이번 대화에서 실행하지 않는다.
+
+
+## 2026-11-05 · POL-02 홈 CTA 정책 인계
+
+- [사용자3결정](../development/figma-v01/tasks/POL-02.md#pol-02-approved-decisions)으로 홈 CTA와 로그인 후 recommended 복귀를 유지하고, 후속 DEV-03에서 개인 필터 snapshot + 공개 ALL 자동 조회를 연결한다. 이번에는 정책 문서만 갱신했으며 앱·로그인/refresh/업무 API·브라우저 재실행이 없다.
+- 2026-11-02 HOME-09의 기존 세션 복원·CTA 두 분기/준비 안내 통과와 한계는 그대로다. 새 맞춤 목록 결과까지 통과한 것으로 바꾸지 않는다. 미연결/미저장 또는 빈 저장 조건의 설정 안내·전체 공고 이동, 현재 계정 snapshot·401/교체/reload는 [RBD-01~09](bid-list.md#pol-02-recommended-qa)로 분리해 DEV-03 이후 검증한다.
+- 배포 OpenAPI/version·실행 대응과 QA-10 reset 차이는 [POL-02 재개 표](../development/figma-v01/tasks/POL-02.md#pol-02-resume)대로 차단 유지한다. 신규 실제 통과0건이며 다음 Task는 POL-02 재개, DEV-03/다른 Task는 이번에 시작하지 않는다.

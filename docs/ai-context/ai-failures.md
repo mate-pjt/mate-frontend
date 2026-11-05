@@ -103,3 +103,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 GitHub 응답을 파싱해 SHA·merge 허용·보호/checks·CI job·PR 상태 등의 허용 필드로만 투영한다. 저장용 receipt도 같은 요약만 보존하고 원문 응답은 추가 출력/재인용하지 않는다. 이 교정으로 이미 발생한 도구 출력이 삭제된 것으로 주장하지 않는다.
 - Prevention rule: MCP 응답 전체, `structuredContent`, `.content` 문자열 또는 중첩 JSON을 그대로 `text()`/`notify()`/파일에 쓰지 않는다. 먼저 필요한 필드를 명시해 추출하고 오류도 안전한 상태/요약만 표시한다. 공개 작성자 메타데이터·commit signature/payload·프로필 링크를 CI/병합 검사에 함께 기록하지 않는다.
 - Related files: `docs/development/figma-v01/tasks/QA-10.md`, `docs/development/figma-v01/reviews/QA-10.md`. 런타임·API·하네스 설정 변경 없음.
+
+## 2026-11-05 - POL-02 GitHub 원문 출력 방지 규칙 미적용 재발
+
+- Task: POL-02 정책 근거의 중앙 문서/Backend main·dev ref 확인.
+- Expected behavior: branch 응답은 이름·commit SHA·필요한 상태만 추출해 표시한다. 기존 2026-11-04 예방 규칙을 첫 GitHub 호출부터 적용한다.
+- Actual failure: 초기 branch 조회3건의 응답 객체와 중첩 content를 원문 출력해 작업에 불필요한 공개 커밋 작성자 메타데이터·서명/payload가 포함됐다. 실제 값은 재인용하지 않는다. 환경파일·인증정보·업무 API 개인정보를 읽은 사건과 구분한다.
+- Root cause: feature 작업의 ai-failures 사전 읽기보다 원격 근거 조회를 먼저 수행했고, connector 출력에 allowlist를 적용하지 않았다. 기존 예방 규칙이 있는 같은 유형의 재발이다.
+- Detection command or review step: 원문 출력 직후 기존 실패 기록을 확인하고 사용자에게 사건·교정·기록 범위를 공개했다. verifier에도 이 한계를 전달한다.
+- Fix: 이후 branch 응답을 파싱해 SHA만 출력하고, tree는 필요한 파일 경로만, 파일 조회는 관련 정책/코드 본문만 표시했다. Git/CI/PR receipt도 필요한 필드만 보존한다. 이미 출력된 내용이 삭제되거나 무효화됐다고 주장하지 않는다.
+- Prevention rule: 외부 호출 전에 ai-failures의 해당 출력 경계 규칙부터 확인한다. `structuredContent.content`를 먼저 해석하고 명시적 필드 투영 후 출력한다. 전체 MCP 응답·중첩 원문·Git 작성자/서명/payload는 `text`/`notify`/증거 파일에 넘기지 않는다. 오류는 상태/안전한 요약만 표시한다.
+- Related files: `docs/development/figma-v01/tasks/POL-02.md`, `docs/development/figma-v01/reviews/POL-02.md`. 런타임·API·하네스 설정 변경은 없다.
