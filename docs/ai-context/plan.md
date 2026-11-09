@@ -12,6 +12,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-09 POL-05는 사용자3답변에 따라 [소스 기준 변경 신호/REST 정책 v1](../development/figma-v01/tasks/POL-05.md#pol-05-contract)을 기록한다. 정기 polling 없이 신호/복귀 재동기화·간격·펼친 목록 보존을 정했으며 제품 구현은 하지 않는다. 배포 확인/실제 통합 자원 미준비는 [DEV-07의 필수 Gate 차단](../development/figma-v01/tasks/DEV-07.md#dev-07-pol-05-handoff)으로 보존한다. 현재/다음/상태는 WBS가 소유하며 날짜별 로컬/실제 QA 이력을 대체하지 않는다.
 
+2026-11-09 POL-06은 사용자3답변에 따라 [가입 후 회사 조회 소스 정책 v1](../development/figma-v01/tasks/POL-06.md#pol-06-contract)을 기록한다. 업종별 시공능력/인증3종·저장 실적6연도/희망금액과 결측·provenance·실제 leaf 권한 차이를 정했으며 제품 구현은 하지 않는다. 배포/합성 자원 미준비는 [DEV-08의 필수 Gate 차단](../development/figma-v01/tasks/DEV-08.md#dev-08-pol-06-handoff)으로 보존하고 로컬 구현 선행 예외는 없다. 현재/다음/상태는 WBS가 소유하며 기존 QA 판정·승인 예외를 대체하지 않는다.
+
 ## Required Flow
 
 1. Structure requirements.

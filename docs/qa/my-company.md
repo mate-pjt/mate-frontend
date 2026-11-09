@@ -158,3 +158,30 @@
 ### 2026-11-02 14:38 KST · 다음 작업 선정의 후속 승인
 
 사용자는 “QA-05의 남은 항목은 차단으로 유지하고 QA-06을 다음 작업으로 선정하는 예외”를 승인하고 QA-06은 새 대화에서 시작한다고 명시했다. 따라서 위 실행 종료 시점의 ‘다음 QA-05 재개/진행 예외 없음’은 과거 이력으로 보존하고, 현재 다음 작업은 [WBS](../development/figma-v01/README.md)의 **QA-06**을 따른다. [승인/인계 기록](../development/figma-v01/tasks/QA-05.md#qa-05-next-qa-06-exception) 참조. MCO 4통과·6차단/AUTH-07·08 차단, 미확보 자원/실행 버전·수행 사건 한계는 불변이다. 이번 후속의 실제 API/QA-06 실행은 없으며 QA-06의 자원·변경/복구 범위는 다음 요구사항 Gate에서 확인한다.
+
+
+<a id="pol-06-company-dashboard-qa"></a>
+
+## POL-06 소스 정책 / DEV-08 가입 후 대시보드 QA 계획 · 2026-11-09
+
+- 근거: [POL-06 사용자3결정·고정 소유 소스](../development/figma-v01/tasks/POL-06.md#pol-06-sources), [조회 정책 v1](../development/figma-v01/tasks/POL-06.md#pol-06-contract), [DEV-08 인계/재개 조건](../development/figma-v01/tasks/DEV-08.md#dev-08-pol-06-handoff). 원본 M04/연결 화면 Figma `3134:64574`, `3134:66829`는 과거 기준선이며 이번에 새 화면을 검증하지 않았다.
+- 실행 범위: 정책·QA 계획 문서화만. 사용자 배포/schema·실행 대응·합성 자원/사용·잔존·복구 미준비 확인에 따라 DEV-08은 구현 미착수·실제 통합 차단이며 로컬 구현 선행 예외 없음. 신규 CDASH는 **실제0통과·12차단·실행0건**이다. 로컬 mock/HTTP 대역/브라우저도 미실행이다.
+- 기존 MCO4통과·6차단 및 AUTH-07·08/QA-06·07의 당시 판정·차단/승인 예외는 위 이력대로 보존한다. 새 source GET의 존재를 배포 준비·기존 사례 PASS로 대체하지 않는다.
+- 후속 API 후보(모두 소스 관찰): 현재 회사 기본 GET, `construction-capability-assessments`, `public-certifications`, `public-procurement-performances`, `bid-notice-preferences`, `memberships/me`·권한 catalog GET. 인증 refresh POST를 포함한 실제 사용도 후속 Gate에서 범위를 확인한다. 외부 재수집/등록/수정 mutation은 별도 승인 필요다.
+
+| 사례 | 준비 데이터/단계 | 기대 결과 | 이번 판정/차단 |
+| --- | --- | --- | --- |
+| CDASH-01 | 승인된 등록/저장 기대값·현재 연결 회사/기본8개 값·직접 진입/새로고침. 등록→조회 검증에 mutation이 필요하면 별도 범위/복구 확보 | 현재 회사 저장값을 재조회. 가입 임시 선택/단일 capability를 현재 확정값으로 복사하지 않음. 기본 overview/미연결·신청 상태 회귀 분리 | 차단 — 구현/배포·합성 자원·실행 대응 미준비 |
+| CDASH-02 | 복수 업종/세부 공종·대표 SELECTED/NONE/UNDETERMINED·빈 평가/미매칭 관측 | 개별 금액/대표 서버 결과 보존. 합산·최대 금액/첫 행을 대표로 선택·가짜 평가액 생성 없음 | 차단 — 구현/해당 fixture 미준비 |
+| CDASH-03 | 평가연도/기준일 null·0원·대표면허 true/false/null·자동/승인외부/수기 source·관리자 확정시각 | 0과 자료 없음 구분. 연도/기준일 추정·‘최근’ 제목 금지. 외부 기준일/관리자 시각/수기 근거를 구분 | 차단 — 구현/경계 fixture 미준비 |
+| CDASH-04 | 여성/장애인/사회적기업 YES/NO/UNKNOWN, row 부재(version0/source null)·관측 UNKNOWN·회사 VERIFIED/UNVERIFIED | 인증3종의 해당/비해당/확인 불가 및 provenance 구분. 회사 문서 인증 배지·증명서 유효기간과 혼동 없음 | 차단 — 구현/인증 fixture 미준비 |
+| CDASH-05 | 서버 기본6연도·연도 경계·CURRENT_YTD/COMPLETED_YEAR·누락 연도/전체 빈값·성공0·관측 시각/출처 | 반환 fromYear/toYear/실제 period·원값 표시. 실시간/완료연도로 오인하거나 누락을 0/NO_DATA/실패로 추정하지 않음. GET이 외부 수집을 시작하지 않음 | 차단 — 구현/실적 fixture·서울 연도 경계 재현 미준비 |
+| CDASH-06 | 전체 희망 enum과 정확한 경계·null·ANY, 회사 선호와 다른 개인 필터 | 회사 저장 선호·추정가격 구간(최소 포함/최대 미포함) 표시. null 미설정/ANY 제한 없음 구분·개인 필터 변경/가져오기 없음 | 차단 — 구현/전체 leaf 합성 fixture 미준비 |
+| CDASH-07 | 정보조회 leaf만 보유/전체 leaf/회사 합치기 read-only·동일 role이나 다른 leaf 집합 | 실제 권한으로 일반 조회·희망금액 제한을 구분. 희망금액 권한/잠금 안내가 나머지 section을 막지 않음. UI role 기반 우회/자료 노출 없음 | 차단 — 구현/권한별 합성 자원/실제 403·잠금 재현 미준비 |
+| CDASH-08 | 최종401·타 회사/소속 해제·403·기본/section404 및 기존 신청404/CR001 구분 | 최종 인증/소속 종료 자료 제거. 기본 상태와 section 오류를 구분하며 권한/오류를 미설정/빈 성공으로 바꾸지 않음. 기존 신청없음 조건 보존 | 차단 — 구현/안전한 실제 오류·해제 미준비 |
+| CDASH-09 | 한 section 지연/연결·서버 실패와 재시도, 나머지 정상 | 독립 loading/error/명시 재시도. 동일 회사의 정상 결과 보존·실패를 0/NO/UNKNOWN 성공으로 만들지 않음. 자동 mock fallback 없음 | 차단 — 구현/오류 재현·복구 범위 미준비 |
+| CDASH-10 | 요청 중 계정/회사 교체·로그아웃·소속 해제·하드 리로드, API/mock/hybrid·탭 저장소 | 이전 응답 폐기·자료/오류/재시도를 새 계정에 재사용하지 않음. source snapshot·guard·계정 격리/업로드 경계 유지 | 차단 — 구현/합성 계정 경쟁·변경/복구 범위 미준비 |
+| CDASH-11 | 0·경계값·JS 안전 정수 초과의 원화금액/건수, 기본 wire/잘못된 DTO | 원 단위/건수 정밀도 보존, 억 단위 반올림을 원값으로 쓰지 않음. 미지원/비정상 응답을 무검증 number·절삭·0으로 바꾸지 않음 | 차단 — 구현/실제 wire·대형 정수 fixture 미준비 |
+| CDASH-12 | 연결/미연결/권한·부분 오류 상태, desktop/390px/320px·Tab/Enter/재시도 | 기존 기본정보/가입 동선 회귀 보존·가로 넘침 없음·읽기 순서/초점/상태 안내/재시도 조작 확인 | 차단 — 구현/승인 상태별 자원 미준비 |
+
+실제 재개에는 [POL-06 필수6조건](../development/figma-v01/tasks/POL-06.md#pol-06-handoff)의 배포/실행 대응·합성 회사/권한/경계 기대값·사용/잔존/종료/복구·안전한 오류/해제와 DEV-08 자체 Brief가 필요하다. 담당은 API/배포·fixture·프론트 QA·승인자 역할이며 개인 배정은 미확인이다. 실행 후 이 표에 시각/실행 ID·비식별 Network/화면·정리 증거를 추가하고, mock/HTTP 대역/실제 결과를 각각 기록한다. 이번에 API/로그인/회사·권한 변경·운영/배포는 실행하지 않았다.
