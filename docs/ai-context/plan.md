@@ -10,6 +10,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-09 DEV-06에서는 POL-04 v1의 actionPath 경계·읽음/이동·계정 수명 조합을 로컬 구현/검증한다. 사용자 답변에 따라 실제 API 통합 차단을 보존하며 현재/다음/판정과 최종 증거는 [WBS](../development/figma-v01/README.md) 및 [Task](../development/figma-v01/tasks/DEV-06.md)에서만 관리한다.
 
+2026-11-09 POL-05는 사용자3답변에 따라 [소스 기준 변경 신호/REST 정책 v1](../development/figma-v01/tasks/POL-05.md#pol-05-contract)을 기록한다. 정기 polling 없이 신호/복귀 재동기화·간격·펼친 목록 보존을 정했으며 제품 구현은 하지 않는다. 배포 확인/실제 통합 자원 미준비는 [DEV-07의 필수 Gate 차단](../development/figma-v01/tasks/DEV-07.md#dev-07-pol-05-handoff)으로 보존한다. 현재/다음/상태는 WBS가 소유하며 날짜별 로컬/실제 QA 이력을 대체하지 않는다.
+
 ## Required Flow
 
 1. Structure requirements.
