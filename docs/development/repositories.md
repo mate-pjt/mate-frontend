@@ -46,6 +46,12 @@ pnpm dev
 - 다른 공급원의 후속 효과를 동기화하지 않는다. mock 회사 등록이 실제 회사 소속이나 API 인증 응답을 바꾸지는 않는다.
 - Q&A는 모든 프로필에서 static이다. API가 없는 콘텐츠에 endpoint를 만들지 않는다.
 
+### 받은 알림 목적지 검증
+
+기본 notifications mock은 25건 중 공고 `/bids/10001`, 분류2의 `/bids/10002?bidClsfcNo=2`, 현재 계정 `/my/company`, 목적지 없는 소식을 순환한다. 미읽음 성공 뒤 이동하고 이미 읽은 항목은 다시 PATCH하지 않는다. 오래된 탭 데이터에 actionPath가 없으면 목록/읽음 이력은 유지하고 안내한다. 새 목적지 fixture를 보려면 개발 Mock 표시의 현재 공간 초기화를 사용한다.
+
+hybrid에서 목적지 공급원이 다르더라도 ID/분류를 치환하지 않는다. 합성 알림의 공개 공고가 API에 존재하지 않으면 기존404 화면이 표시될 수 있다. 합성 ID가 실제 공고임을 뜻하지 않으며, mock 화면 결과는 실제 통합 QA가 아니다. [DEV-06 QA](../qa/alarms.md#dev-06-local-qa)를 확인한다.
+
 ## 3. 재시작·재빌드와 API 복귀
 
 next.config.ts가 설정을 한 번 확정해 서버와 브라우저에 동일 snapshot을 주입한다. `NEXT_PUBLIC_MATE_DATA_CONFIG`를 직접 설정하지 않는다. dev는 설정 변경 후 서버를 재시작하고, build/start·Preview는 **재빌드**한다. 시작 시 profile을 바꾸는 것만으로 기존 빌드의 공급원이 바뀌지 않는다.

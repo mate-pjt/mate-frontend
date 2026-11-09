@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { UpArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
+import { createNotificationActivationController } from "@/features/notifications/activation-controller";
+import type { AlarmNotification } from "@/types/alarm";
 import {
   getNotifications,
   markNotificationRead,
@@ -58,25 +61,54 @@ export function AlarmPageClient() {
 }
 
 function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: AuthAccess) {
+  const router = useRouter();
   const [page, setPage] = useState<NotificationPage | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [moreError, setMoreError] = useState<string | null>(null);
-  const [readError, setReadError] = useState<string | null>(null);
+  const [readError, setReadError] = useState<{ message: string; alarm: AlarmNotification } | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [readingIds, setReadingIds] = useState<readonly string[]>([]);
   const [retry, setRetry] = useState(0);
-  const pendingReadIds = useRef(new Set<string>());
+  const activation = useRef<ReturnType<typeof createNotificationActivationController> | null>(null);
+  const lifetime = useRef<AbortController | null>(null);
+  const readVersion = useRef(0);
+
+  useEffect(() => {
+    const controller = createNotificationActivationController({
+      getAccountKey,
+      markRead: (id) => markNotificationRead({ getAccessToken, refresh, getAccountKey }, id),
+      onRead: (updated) => {
+        readVersion.current += 1;
+        setPage((current) => current && {
+          ...current,
+          unreadCount: Math.max(0, current.unreadCount - (current.items.some((item) => item.id === updated.id && item.unread) ? 1 : 0)),
+          items: current.items.map((item) => item.id === updated.id ? updated : item),
+        });
+        window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED_EVENT));
+      },
+      onPending: setReadingIds,
+      onNotice: setNotice,
+      onError: (error, alarm) => setReadError({ message: errorMessage(error), alarm }),
+      clearError: () => setReadError(null),
+      navigate: (path) => router.push(path),
+    });
+    activation.current = controller;
+    return () => { controller.dispose(); activation.current = null; };
+  }, [getAccountKey, getAccessToken, refresh, router]);
 
   useEffect(() => {
     const controller = new AbortController();
+    lifetime.current = controller;
+    const account = getAccountKey();
     const access = { getAccessToken, refresh, getAccountKey };
 
     void getNotifications(access, 0, controller.signal).then(
       (result) => {
-        if (!controller.signal.aborted) setPage(result);
+        if (!controller.signal.aborted && getAccountKey() === account) setPage(result);
       },
       (error: unknown) => {
-        if (!controller.signal.aborted) setLoadError(errorMessage(error));
+        if (!controller.signal.aborted && getAccountKey() === account) setLoadError(errorMessage(error));
       },
     );
 
@@ -91,45 +123,28 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
 
   async function loadMore() {
     if (!page || loadingMore || page.page + 1 >= page.totalPages) return;
+    const scope = lifetime.current;
+    const account = getAccountKey();
+    const version = readVersion.current;
+    const currentAccount = () => scope && !scope.signal.aborted && getAccountKey() === account;
     setLoadingMore(true);
     setMoreError(null);
     try {
-      const next = await getNotifications({ getAccessToken, refresh, getAccountKey }, page.page + 1);
+      const next = await getNotifications({ getAccessToken, refresh, getAccountKey }, page.page + 1, scope?.signal);
+      if (!currentAccount()) return;
       setPage((current) => {
         if (!current || current.page + 1 !== next.page) return current;
         const ids = new Set(current.items.map((item) => item.id));
         return {
           ...next,
+          unreadCount: version === readVersion.current ? next.unreadCount : current.unreadCount,
           items: [...current.items, ...next.items.filter((item) => !ids.has(item.id))],
         };
       });
     } catch (error) {
-      setMoreError(errorMessage(error));
+      if (currentAccount()) setMoreError(errorMessage(error));
     } finally {
-      setLoadingMore(false);
-    }
-  }
-
-  async function markAsRead(id: string) {
-    const alarm = page?.items.find((item) => item.id === id);
-    if (!alarm?.unread || pendingReadIds.current.has(id)) return;
-
-    pendingReadIds.current.add(id);
-    setReadingIds((current) => [...current, id]);
-    setReadError(null);
-    try {
-      const updated = await markNotificationRead({ getAccessToken, refresh, getAccountKey }, id);
-      setPage((current) => current && {
-        ...current,
-        unreadCount: Math.max(0, current.unreadCount - 1),
-        items: current.items.map((item) => item.id === id ? updated : item),
-      });
-      window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED_EVENT));
-    } catch (error) {
-      setReadError(errorMessage(error));
-    } finally {
-      pendingReadIds.current.delete(id);
-      setReadingIds((current) => current.filter((pendingId) => pendingId !== id));
+      if (currentAccount()) setLoadingMore(false);
     }
   }
 
@@ -171,14 +186,20 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
           <Button disabled title="알림 삭제 API 준비 중" variant="tertiary">편집 (준비 중)</Button>
         </div>
 
-        {readError && <p className="type-body-7 text-danger" role="alert">{readError}</p>}
+        {notice && <p className="type-body-7 text-grayscale-600" role="status">{notice}</p>}
+        {readError && (
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="type-body-7 text-danger" role="alert">{readError.message}</p>
+            <Button onClick={() => void activation.current?.activate(readError.alarm)} variant="outline">다시 시도하기</Button>
+          </div>
+        )}
         <ul aria-label="받은 소식" className="flex flex-col">
           {page.items.map((alarm, index) => (
             <li key={alarm.id}>
               <AlarmListItem
                 alarm={alarm}
                 index={index}
-                onRead={(id) => void markAsRead(id)}
+                onActivate={(alarm) => void activation.current?.activate(alarm)}
                 pending={readingIds.includes(alarm.id)}
               />
             </li>
