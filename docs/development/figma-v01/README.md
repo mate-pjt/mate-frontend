@@ -5,7 +5,7 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-09 KST |
-| 현재 작업 | 없음 — POL-07 정책 v1·문서21검사·두 리뷰1차 PASS. 종료 diff freshness와 최종 Git 전달은 [검토 기록](reviews/POL-07.md)·로컬 receipt·PR/최종 보고에서 확인. 제품 구현·실제 필터 통합 PASS가 아님 |
+| 현재 작업 | 없음 — POL-07 정책 문서 단위 PASS. Git 전달은 [PR #49](https://github.com/mate-pjt/mate-frontend/pull/49)의 Chromatic 월간 한도/미실행 UI 검사에 대한 결정 대기. 앱 test/lint·프로필 빌드는 통과했고 제품 구현/실제 필터 통합 PASS와 구분. 최종 검토·Git 결과는 [검토 기록](reviews/POL-07.md)·receipt·PR/최종 보고에서 확인 |
 | 다음 작업 | [DEV-09 · 고급 지역·업체·공동도급 조건 연결](tasks/DEV-09.md) — POL-07 선행 충족 후 P2 표 순서상 첫 후보. 기존 P0/P1 차단은 보존. 새 요구사항 Gate 선정이며 구현/실제 QA 자동 착수나 승인 예외가 아님 |
 | 다음 첫 행동 | 새 대화에서 최신 main/Git·POL-07 마지막 체크포인트·DEV-09 인계와 L07 기준선 확인. 현행 지역 metadata/공개 옵션·URL/ALL 저장·공동도급 의미와 source/배포 drift를 직접 조사하고 경계 공고·계정/오류/변경·복구 준비를 확인해 DEV-09 Brief 제시 |
 | 이번 승인 범위 | 2026-11-09 POL-07 하나와 Git 전체 전달. 사용자 D1 고급 조건 추천 정책 채택·D2 낙찰금액 계약 전 보류·D3 배포 OpenAPI/GitHub 직접 조사 요청. D3는 자원 미준비 또는 로컬 구현 선행 예외 승인이 아님. 실제 업무 API·mutation·서비스 운영/배포·다른 Task 구현은 포함하지 않음 |

@@ -99,3 +99,16 @@ read-only verifier1은 실제 status/stat/diff·새 검토 파일·관련 fronte
 그 이후 종료 Task/WBS·다음 DEV-09 준비 선정과 검토 기록이 바뀌므로 문서 검사·primary ai-review 여섯 섹션과 독립 verifier freshness를 다시 확인한다. 최종 수행 전 재검토 PASS를 선기록하지 않는다. 자기 commit/최종 리뷰 hash를 문서에 재기록하는 순환을 피하고 로컬 `review-input-final.json`·verifier 최종 보고·`review-freshness.json`·Git receipt와 PR/최종 보고에서 마지막 검토 대상과 Git 전달을 확인한다.
 
 로컬 근거: [검사 스크립트](/Users/jisung/.codex/visualizations/2026/11/09/01a1bf04-a281-77e1-ba91-437d96d89c5e/pol-07/validate_docs.py), 같은 폴더의 `initial.json`, `source-contract.json`, `source-region.json`, `source-integrity.json`, `deployed-openapi-check.json`, `deployed-openapi-summary.json`, `github-deployment-check.json`, `document-check.json`과 verifier/Git receipt. 원문/일부 실행 산출물은 이 Mac의 근거이며 저장소 문서 자체에는 결정·재개 범위를 남긴다.
+
+## 2026-11-09 · 외부 CI 한도와 Git 전달 후속
+
+[PR #49](https://github.com/mate-pjt/mate-frontend/pull/49)의 head `f0d8fd2`에서 test/lint·api/mock/hybrid 빌드6개·Publish job/Storybook Publish·Vercel PASS를 확인했다. [Chromatic Build103](https://www.chromatic.com/build?appId=6a3dd824dd80645d61f69b82&number=103)은 월간 한도 때문에 Paused/미실행이며 UI Tests·UI Review가 pending이다. 이 실제 외부 조건을 문서 PASS·Publish 성공으로 숨기지 않는다. 사용자 예외 결정 전 병합하지 않았고 결제/설정/보호/검사 상태 변경도 없다. 예외 또는 대기 결정을 기록한 뒤 이 세 문서의 추가 변경을 재검증·ai-review·verifier로 확인한다. 정확한 최종 head/CI·병합·로컬 main 상태는 PR/로컬 receipt/최종 보고에 남긴다.
+
+### Git 전달 기록 추가에 대한 ai-review
+
+1. **리뷰 요약:** Git 전달 중 새로 확인한 외부 CI 한도를 Task/WBS/검토 기록3개에 추가했다. 문서22검사·diff-check와 실제 추가 diff를 재확인했고 정책/후속 구현 범위 변경은 없다.
+2. **발견된 문제:** 추가 문서 diff의 새 Blocker/Major/Minor는 없다. Git 병합은 Chromatic 미실행과 사용자 예외 결정 대기로 차단이며, 기존 reset Major/context FAIL은 별도 보존한다.
+3. **누락된 검증:** 앱 test/lint·프로필 빌드는 원격에서 통과했다. Chromatic UI Tests/Review는 quota로 미실행/pending이며 UI 통과로 기록하지 않았다. 실제 필터 업무 API/제품 QA는 계속 미실행이다.
+4. **문서 갱신 필요 여부:** Git 차단을 Task/WBS/PR/검토 기록에 반영했다. 실행 소스·공통 context·기존 QA/기준선에는 변화가 없어 유지한다. 이 추가 diff도 verifier freshness를 확인한다.
+5. **개발자 확인 필요:** 이번 문서 PR에 한정한 Chromatic 미실행 예외 또는 한도 해소까지 병합 대기 결정. 기존 Git 전달 승인 반복 질문이 아니라 새 외부 CI 차단에 대한 질문이며 답변을 추정하지 않는다.
+6. **추천 수정 방향:** 차단 기록을 검증·리뷰해 push하고 PR을 리뷰 가능한 상태로 보존한다. 명시적 예외 또는 실제 한도 해소 전 병합/검사 상태 변경은 하지 않는다.
