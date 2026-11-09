@@ -66,3 +66,10 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-09 · POL-07 날짜 정책 인계 · 구현 미착수
+
+- [정책 v1](POL-07.md#pol-07-contract)·[공통 Gate](POL-07.md#pol-07-handoff)를 따른다. ALL의 BID_BEGIN/PARTICIPATION_DEADLINE/BID_CLOSE·직접 기간과 RESULT의 고정 개찰기간을 조회 URL에 연결하고 ALL만 명시적 계정 저장한다. CLOSING_SOON 날짜 UI/query는 제공하지 않는다.
+- 추가 완료 기준: 실제 달력 날짜/윤년·KST 시작일00:00 이상/종료 다음날00:00 미만·열린 범위/동일일·역전 오류, 양쪽 빈 값일 때 종류 해제, 기존 preset 범위와 선택 종류 유지/월말 clamp·절대 날짜 저장, 초기화/취소·URL/reload·모바일/키보드를 확인한다. RESULT dateType 무전송·날짜 범위 계정 비저장, 서버 count/page/정렬을 [ADV-05~08/12](../../../qa/bid-list.md#pol-07-advanced-qa)·[ADVP](../../../qa/personal-bid-filter.md#pol-07-advanced-personal-qa)로 검증한다.
+- 현재 URL 모델은 실제 달력/역전/타입-경계 결합 검증이 부족하고 personal 조건은 ALL에서만 읽는다. 기존 관대한 파서를 신규 정책 구현 완료로 취급하지 않는다. 후속 Brief에서 공개/개인 URL 경계를 설계한다. DEV-09를 임의의 새 선행 코드 의존성으로 추가하지 않는다.
+- POL-07에서 OpenAPI와 GitHub 배포 기록상 대응은 확인했지만 실제 날짜 경계 공고/실행 식별자·저장 계정/변경·복구·안전한 오류는 미확인이다. 사용자 미준비/로컬 예외 승인을 추정하지 않는다. 다음 첫 행동은 최신 소유 계약·배포/자료 점검과 자체 Gate이며 제품 구현/실제 실행은 없다.
