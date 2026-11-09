@@ -8,6 +8,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 아래 Status는 기존 구현/QA·승인 예외의 **날짜별 이력**으로 보존한다. 이를 새 WBS의 현재 상태와 별도 최신 목록으로 중복 관리하지 않는다. `구현 완료` 이력이 실제 API 통합 완료를 의미하지 않으며 기존 QA의 대기/차단은 유지한다. 최초 다음 작업은 `PREP-01`의 읽기 전용 QA 사전 점검이고 앱 코드 수정·실제 API 실행은 이번 문서화 범위에 포함되지 않는다.
 
+2026-11-09 DEV-06에서는 POL-04 v1의 actionPath 경계·읽음/이동·계정 수명 조합을 로컬 구현/검증한다. 사용자 답변에 따라 실제 API 통합 차단을 보존하며 현재/다음/판정과 최종 증거는 [WBS](../development/figma-v01/README.md) 및 [Task](../development/figma-v01/tasks/DEV-06.md)에서만 관리한다.
+
 ## Required Flow
 
 1. Structure requirements.

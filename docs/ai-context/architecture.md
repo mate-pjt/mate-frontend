@@ -29,6 +29,7 @@ src/
   features/
     auth/session.tsx   # 세션 Provider와 사용자 행동 조합
     bid-notice-filters/model.ts # URL 왕복과 필터 UI 조합
+    notifications/activation-controller.ts # 읽음/이동·중복/계정 수명 조합
   lib/                 # 복귀 경로·상세 URL·사이트·metadata
   types/               # 프론트 표시 모델
   instrumentation.ts   # 운영 mock 실행 차단
@@ -69,7 +70,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `src/data/mock/store.ts`는 schema·설정·API 환경·auth 공급원·계정별 sessionStorage 공간을 관리한다. 손상 공간만 초기화하고 사용 불가/용량 초과 시 메모리와 개발 표시로 전환한다. API 응답·실제 token·cookie·서명 URL을 복사하지 않는다.
 - `src/components/dev/mock-status.tsx`는 mock이 있을 때 활성 그룹·현재 공간 초기화와 저장소 제한을 표시한다. 화면별 공급원 선택은 제공하지 않는다.
 - `src/features/bid-notice-filters/model.ts`는 URL 상태·순수 필터 조합을 담당한다. 내부 enum은 personal-filters 계약이다. ALL 목록에서 수동 적용, 저장/초기화에 expectedVersion, 409에 최신값 재조회라는 기존 동작을 유지한다.
-- `src/components/alarms`는 20건 페이지·읽음 성공 후 상태와 미확인 점을 조합한다. 회색/흰색 표면은 순번을 따르며 읽음과 독립적이다. 받은 알림 삭제·편집은 준비 중이다.
+- `src/components/alarms`는 20건 페이지·읽음 성공 후 상태와 미확인 점을 조합한다. `features/notifications/activation-controller.ts`가 같은 항목 중복/최신 클릭·계정/화면 수명을 검사하고, 미읽음 성공 뒤 또는 이미 읽은 항목에서 허용 목적지로 이동한다. HTTP/mock 경계와 이동 직전에 `lib/notification-path.ts`의 POL-04 allowlist를 적용한다. null/위험/미지원은 목록/본문 유지·안내, 읽음 실패는 명시적 재시도다. 회색/흰색 표면은 순번을 따르며 읽음과 독립적이다. 받은 알림 삭제·편집은 준비 중이다.
 - `src/components/my`는 기존 메뉴·회사·수신 설정 UI를 유지한다. 수신처와 맞춤 이메일 ON/OFF는 하나의 공급원이고 각 요청의 성공/실패 처리는 독립적이다. 미구현 메뉴는 준비 중이다.
 - `src/components/bids`는 URL을 검색·필터·페이지 상태로 사용하고 Repository 결과를 props로 받는다. 알림 카드는 계정별 bidAlerts 공급원을 사용한다. 맞춤공고 목록·기관 단독·결과 낙찰금액 필터 등 기존 준비 중 기능은 이번 전환으로 활성화하지 않는다.
 - `src/components/qna`는 native details/summary로 구조화된 static 답변을 렌더링한다. API endpoint·관리자 CRUD는 추측하지 않는다.

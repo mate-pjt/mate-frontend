@@ -203,3 +203,64 @@ Safari 웹 인스펙터의 네트워크 목록에서 테스트 API 서버로 세
 | ANAV-10 | `/alarms`와 허용 목적지·N/C/R | 위 정상/폴백/오류 fixture, 데스크톱·390/320px·Tab/Enter/Space·보조기술 상태 확인 | 포커스/버튼·로딩/오류/안내 접근성, 중복 행동 방지와 키보드 이동, 레이아웃/본문/순번 배경 유지 | 대기·미실행 |
 
 backend source의 삭제 계약 관찰은 배포 완료가 아니며 ALARM-04의 날짜별 이력을 통과로 바꾸지 않는다. 삭제/보존은 POL-20/관련 개발, 변경 신호는 POL-05/DEV-07 범위다. 이 계획은 기존 QA 예외·실제 자원 준비·mutation 승인을 확대하지 않는다.
+
+<a id="dev-06-local-qa"></a>
+
+## 2026-11-09 · DEV-06 로컬 구현 검증
+
+실행 ID `DEV06-20261109-local-01`. 기준 HEAD `8165cb9`의 `feat/dev-06-notification-navigation` + DEV-06 diff. 사용자가 **“미준비 — 로컬 구현·검증 진행, 실제 통합 차단 보존 (추천)”**을 선택했다. 아래는 Node 계약·mock/HTTP 대역·로컬 Chrome 결과다. **실제 로그인/업무 API 실행0건, ANAV-01~10 실제 통합 0통과·10차단**이다. 위 2026-11-05 계획/기존 ALARM-01~10·QA-11의 과거 판정과 예외는 그대로 보존한다.
+
+### 환경과 실행 경계
+
+- Node22.20.0 / pnpm11.3.0 / Next16.2.9. localhost `http://127.0.0.1:4306`, Chrome 전용 임시 탭. Aside profile은 연결되지 않아 CUA로 검증했다. mock 브라우저 기본 desktop 및 viewport390×844/320×844. 기본 desktop 크기를 별도 고정하지 않았다.
+- full mock snapshot: preview / 7그룹 mock / 기본 시나리오. API 공개 주소는 별도 localhost4399 대역으로 명시했다. HTTP 대역 snapshot: hybrid / auth·notifications만 api, bids·company·bidAlerts·personalFilters·notificationSettings는 mock. 그룹/제약을 추가하거나 실제 ID를 합성 ID로 치환하지 않았다.
+- 4399는 프로세스 메모리 안의 합성 응답 서버다. 실제 API·계정·cookie·메일·공고/회사 변경이 없고 입력/출력에는 합성 데이터만 사용했다. 이 환경은 실제 배포/CORS·backend 계약 검증이 아니다.
+- full mock 브라우저 관측129요청 중 외부 HTTP0 / API·OAuth·upload0. 별도 origin 없는 cursor 이미지2요청은 브라우저 제어 자산으로 구분했다. mock build/start의 Node fetch guard가 Next telemetry12시도를 차단했으며 업무 API/OAuth/첨부·업로드 시도는0이었다. 따라서 전체 fetch **시도**0이라고 쓰지 않는다. HTTP 대역 관측101요청은4306/4399 안에 한정, 외부 HTTP0·이벤트 누락/잘림 없음.
+- 비밀값·실제 환경파일·실제 인증 query/응답 원문은 기록하지 않았다. 로컬 실행 과정의 자동 환경 로딩과 환경파일을 직접 읽는 행위를 구분한다.
+
+### ANAV별 로컬 증거와 미실행 실제 통합
+
+| case | Node / mock / HTTP 대역 확인 | 실제 통합 |
+| --- | --- | --- |
+| ANAV-01 | mock 알림1 → `/bids/10001`,22→21; 알림2 → `/bids/10002?bidClsfcNo=2`,21→20·분류2 표시. 상세 hard reload도 유지. HTTP 응답 목적지 snapshot을 사용하고 resourceId99999로 추정하지 않는 계약 테스트 | 차단 — 실제 합성 공고/복수 분류·배포 대응 미확보 |
+| ANAV-02 | mock 알림3 Space → 정확한 `/my/company`·현재 계정 미연결 화면,20→19. HTTP 알림8도 같은 화면. 임의 회사 ID/query 없음 | 차단 — 실제 연결/미연결·소속 변경/권한 fixture 미확보. 로컬 확인도 미연결 분기에 한정 |
+| ANAV-03 | mock 알림1 재클릭/Enter 시21유지. HTTP 이미 읽음 알림3 → 분류2,17유지·PATCH 기록 없음. Node PATCH/읽음 반영 spy0 | 차단 — 실제 읽은 알림 fixture 미확보 |
+| ANAV-04 | mock null/미지원 알림4/5 각각 읽음 뒤 목록/본문·안내,19→18→17. 이미 읽은4 재클릭 건수 유지. 옛 탭의 누락/위험 경로는 null로 보완하며 이력 보존 테스트 | 차단 — 실제 null/미지원 fixture 미확보 |
+| ANAV-05 | Node 외부/같은origin 절대URL·scheme·역슬래시·dot segment·중복 인코딩·깨진 UTF-8·C0/C1/Unicode format 거절. HTTP 알림5의 외부 경로도 경계에서 null, 목록/안내·추가 이동 없음 | 차단 — 실제 경계 fixture/사용 승인 미확보 |
+| ANAV-06 | Node safe integer·50자·단일 query·한글/정상 `%26/%3D/%2B` 직렬화, 무효ID/중복/빈/미지원 query·hash 거절. mock/HTTP 분류2 URL 확인 | 차단 — 실제 분류 계약/실행 대응 미확보 |
+| ANAV-07 | HTTP 알림6 첫503:미읽음/21유지·오류, 명시 재시도 성공 뒤20·폴백. 알림9의 무효 read 응답은19유지·오류. Node에서 서버 반영 뒤 연결 단절 → UI 무갱신/무이동 → 명시 멱등 재시도 후1회 반영·이동 | 차단 — 실제 안전한 실패/잔존·복구 fixture/승인 미확보 |
+| ANAV-08 | HTTP 알림7 double click:aria-busy true/disabled·PATCH1회. 이어8 클릭 시8의 회사만 이동,7의 늦은 완료 뒤 회사 URL 유지. 알림10은 PATCH401→refresh1회→PATCH성공.11은 최종401 뒤 `/alarms` 로그인 안내·복귀next=/alarms·재인증 뒤11자동PATCH0. 지연7 처리 중 로그아웃 뒤 늦은 이동0/익명 유지. Node 계정 교체/해제·오래된 실패/이동 경쟁 검증. mock 계정1의17건·계정2의22건 격리/복원 | 차단 — 실제 계정/401·안전한 해제와 실행 대응 미확보 |
+| ANAV-09 | HTTP 알림12 → mock `/bids/99999`의 기존404,16건·읽음 유지 후 목록 복귀. 목적지 선행 GET/다른 ID 우회·읽음 rollback 없음 | 차단 — 실제 삭제/공개 전/권한/서버 오류 fixture 미확보. 로컬 목적지 검증은404·회사 미연결 분기에 한정 |
+| ANAV-10 | 390/320px 가로 넘침 없음, 순번 배경/본문 유지. Enter·Space 이동, Tab 다음 항목의 focus outline, button/busy/disabled·status/alert AX 확인. VoiceOver 실기는 미실행 | 차단 — 실제 통합 자원 미확보. AX 확인을 실제 보조기술 사용으로 확대하지 않음 |
+
+HTTP 대역 종료 전 total25·unread21→15, PATCH 시도:50005=1/50006=2(503+명시 재시도)/50007=1/50008=1/50009=1(무효 응답)/50010=2(401+refresh)/50011=1(최종401)/50012=1. 이미 읽은50003의 PATCH0. 전체 refresh3회(시작1·동일계정 재시도1·최종만료1). reset 후 재인증으로50011 자동 재생0을 확인했다. 별도 지연 로그아웃 검증에서 서버는 읽음을 뒤늦게 반영(unread20)했으나 UI는 익명/목록 유지했다. 통신 실패나 로그아웃이 서버 반영 취소를 보장한다고 주장하지 않는다.
+
+### 실행 명령과 종료
+
+| 검사 | 결과 |
+| --- | --- |
+| `pnpm test` | 11파일167건 PASS. 최초 fixture 기본 인자 때문에1건 실패 후 재통과. 리뷰의 늦은 실패2case/증거 확장자 보완 포함 자동 수정2/3 |
+| `pnpm lint` | PASS·경고/오류0. 최초 fixture 미사용 변수 경고는 정리 후 재통과 |
+| `MATE_APP_ENV=preview MATE_DATA_PROFILE=api pnpm build` | 최신 코드 PASS. API 주소를 localhost 대역으로 명시, 실제 API 통합 검증 아님 |
+| `MATE_APP_ENV=preview MATE_DATA_PROFILE=mock pnpm build` | 최신 코드 PASS·7그룹 mock. Next telemetry 차단과 업무 요청0을 구분 |
+| `MATE_APP_ENV=preview MATE_DATA_PROFILE=hybrid pnpm build` | PASS·위 auth/notifications HTTP 대역 + 나머지 mock 구성 |
+| `pnpm build-storybook` | PASS. 큰 chunk 관련 비차단 안내만 있음 |
+| hybrid Preview 산출물을 production으로 `pnpm start --port 4308` | 예상 거절 PASS: 실제 exit1·운영 mock 거절 문구, 서버 지속 실행 없음 |
+| `git diff --check` / 문서 링크·79 ID·99 Task·상태/선행·기준선 무결성 | 최종 결과는 [DEV-06 검토 기록](../development/figma-v01/reviews/DEV-06.md) 참조 |
+
+실행 로그·비식별 Network 요약은 이 Mac의 `/tmp/mate-dev-06-qa/` 및 `/tmp/dev-06-*.log`에 임시 보존한다. 다른 환경의 영구 재현 근거는 이 문서·테스트·스크린샷과 PR의 실제 CI다. 브라우저는 로그아웃 후 임시 탭 종료·viewport reset. 소유 localhost 프로세스 종료/포트 반환은 Task 종료 체크포인트에서 확인한다.
+
+![DEV-06 mock 320px](dev-06-mobile-320.jpg)
+
+![DEV-06 mock fallback](dev-06-fallback-desktop.jpg)
+
+![DEV-06 HTTP double read error](dev-06-read-error.jpg)
+
+### 실제 통합 재개 조건
+
+backend 계약/배포 담당과 합성 자원·복구 담당 역할이 다음을 제공해야 한다. 개인 담당자는 미지정이다.
+
+1. 비밀값 없는 배포 OpenAPI/schema snapshot·version/내용 지문, frontend/backend 실행 SHA 또는 run/artifact 대응.
+2. disposable 합성 계정·알림/공고/분류/회사와 null/위험/미지원/없는·권한 대상, 시작/종료 readAt·unread/total/정렬·세션 기대값.
+3. 로그인/N/C/R 사용·변경·읽음 잔존 허용과 복구 담당/방법, 안전한 실패/401 재현·해제 범위의 명시 승인.
+4. 최신 소스/Git/공급원 snapshot을 확인한 뒤 ANAV-01~10 실제 실행·두 리뷰. 기존 QA-11/ALARM 차단과 타 Task 예외를 이 로컬 검증으로 해소하지 않는다.

@@ -98,7 +98,7 @@ src/data/
 ### 현재 도메인 동작
 
 - 입찰: 유효한 숫자 ID·분류번호·별도 코드/라벨, 검색/필터/페이지, 금액/날짜/nullable, 부분 실패, 로컬 첨부, 개찰 참여업체·물품 페이지. 홈은 동일 목록의 첫 9개 행이다. 과거 `Bid[]` 계약/fixture는 제거했다.
-- 받은 알림: 25건(첫 20건/다음 5건), 읽음과 미확인 건수 공유, 빈/오류 시나리오. 구독은 계정·공고별 설정/해제/복원.
+- 받은 알림: 25건(첫 20건/다음 5건), 읽음과 미확인 건수 공유, 빈/오류 시나리오. 합성 공고/분류·현재 계정 회사·목적지 없는 알림을 제공한다. HTTP와 mock 복원 경계는 actionPath를 허용 경로 또는 null로 전달하며 이전 탭 snapshot의 누락/위험 경로만 null로 보완해 읽음 이력을 유지한다. 구독은 계정·공고별 설정/해제/복원.
 - 개인 필터: 전체 내부 모델 저장/URL 왕복, expectedVersion 충돌과 초기화. 화면은 사용자가 ‘내 맞춤’을 누를 때만 목록에 수동 적용한다.
 - 이메일: 인증번호 `1234`, 인증 만료·재전송 대기·오류 횟수, 인증 후 수신 주소, 독립 ON/OFF 유지. 실제 메일은 발송하지 않는다.
 - 회사: empty/connected/pending/terminated/approved-stale/denied, 검색·신청, 초대 수락/거절/계정 불일치, 사업자번호 처리·등록, 문서 processing/failure/retry/replacement/proposal/registration과 나의 회사 상태 공유.
@@ -117,7 +117,7 @@ src/data/
 ## 8. 유지하는 제품/API 정책
 
 - 맞춤공고 목록, 받은 알림 편집·삭제, import-company/직접 범위 편집, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다.
-- 받은 알림 읽음은 성공 응답 뒤에만 반영한다. 구독 해제는 받은 알림 삭제와 다르다. 7일 보존·카카오톡/SMS는 미확정/미구현 정책을 유지한다. actionPath 이동은 2026-11-05 사용자 승인 [POL-04 v1](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)로 정책만 확정했다. 공고 상세(선택 bidClsfcNo)·`/my/company`만 허용, 위험/미지원 경로는 목록 유지·안내, 읽음 성공 뒤 이동/실패 시 목록 유지, 이미 읽음은 PATCH 없이 이동한다. 구현·mock/HTTP 대역/실제 통합은 DEV-06의 별도 Gate와 검증 대상이며 현재 UI는 읽음만 처리한다.
+- 받은 알림 읽음은 성공 응답 뒤에만 반영한다. 구독 해제는 받은 알림 삭제와 다르다. 7일 보존·카카오톡/SMS는 미확정/미구현 정책을 유지한다. actionPath 이동은 2026-11-05 사용자 승인 [POL-04 v1](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)을 따른다. 공고 상세(선택 bidClsfcNo)·`/my/company`만 허용, 위험/미지원 경로는 목록 유지·안내, 읽음 성공 뒤 이동/실패 시 목록 유지, 이미 읽음은 PATCH 없이 이동한다. 경계 및 이동 직전 allowlist를 적용하고 최종401/로그아웃·계정 교체/해제 뒤 사용자 행동을 자동 재생하지 않는다. hybrid에서도 목적지 ID 치환·자동 fallback·새 공급원 제약은 없다. 로컬 구현/대역/브라우저와 미실행 실제 통합의 증거는 [DEV-06](../development/figma-v01/tasks/DEV-06.md), [ANAV QA](../qa/alarms.md#dev-06-local-qa)를 구분해 확인한다.
 - 공개 목록의 UI page는 1부터, API page는 0부터다. 조회 metadata에서 코드/라벨을 변환하고 KST를 표시한다. 기관 역할·nullable 금액과 결과 값을 그대로 구분한다.
 - 공개 상세 본문 404와 section 실패는 별도다. 실제 첨부는 backend 스트리밍 URL이고 mock 첨부는 `/mock/bid-attachment.txt`다. 명세 없는 정정 이력·지시사항을 만들지 않는다.
 - 수신 주소와 맞춤 이메일 ON/OFF endpoint는 독립적이다. 매일 08:30 이메일·공고별 서비스 내부 알림·야간 옵션 없음의 기존 정책을 유지한다.
