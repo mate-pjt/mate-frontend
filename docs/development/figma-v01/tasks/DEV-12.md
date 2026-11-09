@@ -66,3 +66,10 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-09 · POL-07 D2 인계 · 낙찰금액 보류
+
+- 사용자 원문: **“계약 확보까지 DEV-12 보류 (추천)”**. [결정/이유](POL-07.md#pol-07-decisions)·[L10 정책](POL-07.md#pol-07-contract)을 따른다. 현재/다음/상태는 WBS에서 확인한다.
+- 현재 중앙 문서·Backend main/dev·배포 OpenAPI의 amountType은 BASE_PRICE/ESTIMATED_PRICE뿐이다. RESULT 응답의 successfulBidAmount는 필터 query 계약이 아니다. 낙찰금액을 기초/추정가격으로 바꾸거나 임의 enum/endpoint·개인 저장 필드를 추가하지 않는다. 기존 ‘준비 중’ 비활성/무전송을 유지한다.
+- 재개 조건: 서버 소유자의 필드/enum·단위/정수/소수·분류/최신 회차·null/결과 상태·포함 경계·정렬/count/page·오류·URL/개인 저장 의미 명세, 개발자 정책 승인과 배포 대응, 안전한 합성 공고/계정·검증/변경·복구 범위를 확보한다. [ADV-11/12](../../../qa/bid-list.md#pol-07-advanced-qa) 중 비활성 보존만 정의했으며 기능 자체 QA는 미실행이다.
+- 다음 첫 행동: 확장 계약 원문/버전·승인 근거를 받은 뒤 최신 main·API/URL 모델과 비교해 요구사항 Gate부터 재개한다. 보류는 구현 완료/실제 통합 PASS가 아니다.

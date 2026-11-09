@@ -66,3 +66,14 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-09-pol-07-handoff"></a>
+
+## 2026-11-09 · POL-07 정책 인계 · 구현 미착수
+
+- 근거: [승인 D1/D2 및 D3 직접 조사 요청](POL-07.md#pol-07-decisions)·[정책 v1](POL-07.md#pol-07-contract)·[공통 Gate](POL-07.md#pol-07-handoff). 현재/다음/상태는 WBS만 관리한다.
+- 범위: 공개 ALL/CLOSING_SOON/RESULT의 지역 code·시도/시군구·지역 업체만·공동도급을 기존 URL/Repository 패턴으로 연결한다. ALL에서만 명시적 개인 저장을 제공한다. 계정 회사 값 자동 반영·recommended·날짜/금액·낙찰금액·회사 import·reset Major 수정은 이 Task에 섞지 않는다.
+- 선행 설계: 현재 HTTP DTO의 `parentCode/depth`가 mapper의 공개 옵션에서 사라진다. 기존 metadata로 관계를 보존하고 코드/표시 라벨을 분리한다. 새 endpoint나 라벨/코드 자릿수 기반 하위 지역 추정은 하지 않는다.
+- 추가 완료 기준: 지역0+regionOnly 오류/지역 해제 시 flag 해제, 최대50 code/활성 reference·다중 선택/왕복, NO_ROWS와 미확인/실패 차이, 공동도급 REQUIRED/AVAILABLE 배타·지역 없이 공동도급, 조건 AND/지역 OR·서버 canonical count/page·정렬, URL 적용의 계정 무쓰기·명시 저장/계정 교체·401/409, 모바일/키보드를 검증한다. [ADV-01~04/12](../../../qa/bid-list.md#pol-07-advanced-qa)·[ADVP](../../../qa/personal-bid-filter.md#pol-07-advanced-personal-qa)를 보완한다.
+- 배포 확인: POL-07에서 관련 OpenAPI3.1.0/v1 schema와 GitHub test 배포 success/dev SHA 대응을 확보했다. 실행 프로세스 SHA 직접 증명·합성 경계 공고/disposable 계정/사용·변경·잔존·복구/안전한 오류 준비는 미확인이다. 사용자 미준비 답변이나 로컬 구현 선행 예외가 있는 것으로 기록하지 않는다.
+- 재개 첫 행동: 최신 main/Git·POL-07 마지막 체크포인트와 source/OpenAPI/배포 drift를 재확인하고, 지역 공고·계정/오류/복구 자원을 읽기 전용 점검해 자체 Brief를 제시한다. 미확보가 확인되면 구체적인 차단 조건을 기록한다. 이 정책 Task에서 구현/실제 API 저장·QA는 실행하지 않았다.

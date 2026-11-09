@@ -333,3 +333,31 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 | RBD-09 | 위 상태별390/320px·키보드·reload·기존 ALL 내 맞춤 회귀 | 안내/전체 이동·페이지/재시도 조작 가능. ALL 수동 적용/명시적 저장은 그대로, recommended 조회로 저장/reset/import 없음 | 차단·미실행, DEV-03/QA Gate 후 실행 |
 
 기존 HOME-09/PBF-01~12와의 연결은 각 QA의 이번 인계 절에 남긴다. 현재 소스 commit·정책 문서 검증·원격 CI 성공은 이 9사례의 실제 API 통합 PASS를 의미하지 않는다.
+
+
+<a id="pol-07-advanced-qa"></a>
+
+## 2026-11-09 · POL-07 고급 필터 정책·후속 QA
+
+- 근거: [승인 D1/D2·D3 직접 조사 요청](../development/figma-v01/tasks/POL-07.md#pol-07-decisions)·[정책 v1](../development/figma-v01/tasks/POL-07.md#pol-07-contract)·[후속 Gate](../development/figma-v01/tasks/POL-07.md#pol-07-handoff). DEV-09~11 구현은 미착수, DEV-12는 낙찰금액 계약 전 보류다.
+- 이번 근거 확인은 소유 소스·현재 브라우저 OpenAPI3.1.0/v1 schema·GitHub test 배포 success/dev SHA 기록이다. 업무 목록/개인 필터 API·mutation·mock/HTTP 대역·제품 브라우저 QA는 **실행0건·신규 통과0건**이다. 아래 ADV12개는 대기이며 배포 문서 열람을 기능 통과로 세지 않는다.
+- 기존 BID-01~16/QA-02·POL-02 추천 목록/QA-10 reset Major와 타 Task의 차단·승인 예외를 유지한다. 특히 BID-08 경계와 BID-09 결과 낙찰금액 이력을 이 정책으로 해소하지 않는다.
+- 공통 준비: 각 DEV의 자체 Brief/실행 코드 식별자·백엔드 실행 대응, 지역 계층/제한 없음/미확인/공동도급·날짜/금액 경계·공사/물품/용역/복수 분류·null 기대 행/count/page/정렬, 안전한 오류/해제, 실제 조회·개인 저장이 필요하면 합성 계정/시작 snapshot·사용/변경·잔존·복구 범위. 자원 준비는 **미확인**이며 사용자 미준비 답변으로 기록하지 않는다. 필요한 역할은 백엔드 계약/배포·fixture 담당과 프론트 QA 실행자, 개인 배정은 미확인이다.
+- 화면/API 공통: `/bids`의 해당 view, 공개 `GET /api/v1/regions`와 `GET /api/v1/bid-notices?view=ALL|CLOSING_SOON|RESULT`. 실제 실행 시 기존 공통 양식의 시각/브라우저·크기/캡처·비식별 Network 요약을 추가한다. Authorize/Try it out으로 업무 요청을 실행한 것이 아니다.
+
+| ID | Figma / 후속 | 준비·조작 | 기대 UI/API 결과 | 상태·근거 |
+| --- | --- | --- | --- | --- |
+| ADV-01 | 2080:64254·64609 / DEV-09 | 지역 metadata의 시도/시군구·복수 code 선택→적용→URL/reload | parentCode/depth 기반 선택, 반복 code와 표시 라벨 분리·왕복; 라벨/코드 자릿수 추정 없음 | 대기·구현/fixture/실행 대응 확인 전 |
+| ADV-02 | 동일 / DEV-09 | 지역 선택 후 지역 업체만 OFF/ON·해제, 제한 없음/UNKNOWN/실패 공고 비교 | OFF는 실제 제한 일치+확인된 NO_ROWS, ON은 제한 일치만; 미확인을 제한 없음으로 대체하지 않음 | 대기·기대 행/상태 fixture 필요 |
+| ADV-03 | 동일 / DEV-09 | 지역 유무 각각 공동도급 ALL/REQUIRED/AVAILABLE 선택 | ALL 무제한; REQUIRED 지역의무, AVAILABLE은 REQUIRED 제외; 공개3view 동일 의미 | 대기·의무/가능/불가 합성 공고 필요 |
+| ADV-04 | 동일 / DEV-09 | 지역0+only, 50개/초과·invalid code, 종속 flag 해제·잘못된 URL 입력 | 잘못된 조합 적용/저장 오류 안내, 조용한 무시/임의 code 보정 없음; 지역 제거 시 only 해제 | 대기·입력/URL·서버 오류 계획 필요 |
+| ADV-05 | 2081:61968·62097 / DEV-10 | ALL의 날짜3종·단일일/양쪽/한쪽 열린 기간 적용 | 종류별 실제 날짜, KST 양끝 날짜 포함·선택 종류/범위 URL 왕복, 서버 count 일치 | 대기·종류별 경계 공고 필요 |
+| ADV-06 | 동일 / DEV-10 | 윤년/월말·존재하지 않는 날짜·역전·KST00:00 직전/직후 비교 | 실제 달력 검증·역전 오류; 시작00:00 포함/종료 다음날00:00 제외, 자동 보정 없음 | 대기·정확한 경계 fixture 필요 |
+| ADV-07 | 동일 / DEV-10 | 선택 종류에서 1/3/6개월·1년 preset→직접 입력→취소/초기화→reload | 선택 종류 유지·기존 KST/월말 clamp·절대 날짜; 양쪽 빈 값이면 종류 해제; 팝업 적용은 계정 무쓰기 | 대기·UI/URL 구현 및 실행 계획 필요 |
+| ADV-08 | 동일 / DEV-10 | closing 날짜 경로와 RESULT 직접 기간·preset 확인 | closing 날짜 UI/query 없음; RESULT 개찰일 고정/dateType 무전송·openAt desc, 개인 저장 없음 | 대기·현행 query 수용과 실제 적용 차이를 구분 |
+| ADV-09 | 2083:61727·2085:67295 / DEV-11 | ALL/closing에서 기초/추정가격과 분류별 금액·null 비교 | BASE_PRICE 행 기준/ESTIMATED_PRICE 공고 기준·null 제외, 다른 값 대체 없음 | 대기·복수 분류/누락 금액 fixture 필요 |
+| ADV-10 | 동일 / DEV-11 | 0·같은 값·열린 범위·preset 경계±1원·역전/음수/소수/안전정수 초과와 표시 단위 왕복 | 양끝 포함·0/null 구별·정확한 정수 원(최대9,007,199,254,740,991); 반올림/교환/overflow 없음 | 대기·금액 경계·입력/URL/서버 오류 필요 |
+| ADV-11 | 동일 및 2134:10709 / DEV-11·DEV-12 | 선택 금액 종류에서 preset/직접 범위/해제, RESULT 금액 버튼/URL 확인 | preset 종류 유지·양쪽 빈 값이면 종류 해제; RESULT 낙찰금액 준비 중·미지원 query/저장 필드 없음 | 대기·낙찰금액 자체 기능은 계약 전 보류 |
+| ADV-12 | 위 필터 node / DEV-09~11 | 지역/공동/날짜/금액/검색 조합·페이지/정렬·오류/재시도·320/390px/키보드 | 그룹 AND/지역 OR·canonical 서버 count/page·기존 정렬·조건변경 page1·오류를 빈 결과로 숨기지 않음; 접근성/취소/표시 정상 | 대기·통합 조합/오류·모바일 자료 필요 |
+
+재개 첫 행동: 해당 DEV의 최신 main·정책·source/배포 drift와 실제 검증 자료/승인 범위를 먼저 확인한다. GitHub 배포 기록은 실행 프로세스 SHA 직접 증명이 아니며 OpenAPI의 required 누락/`success` wrapper 설명을 근거로 frontend 검증·`isSuccess` wire 처리를 완화하지 않는다.

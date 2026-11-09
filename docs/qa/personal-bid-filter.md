@@ -110,3 +110,22 @@
 - SAVED > COMPANY_DEFAULT > EMPTY_DEFAULT와 빈 SAVED 보존은 중앙 Accepted ADR-0014를 유지한다. 회사 미연결이어도 유효한 SAVED는 우선하고, 조건이 모두 비면 설정 안내/전체 공고 이동을 제공한다. 빈 조건과 조건은 있으나 매칭0건을 구분한다.
 - QA-10 실제0통과·12차단/기존0통과·12대기와 reset 기대 빈 SAVED 대비 mock/HTTP 대역 EMPTY_DEFAULT의 기존 Major/context-audit FAIL은 그대로다. 이번에 코드·테스트·계정·PUT/reset/import 또는 브라우저/업무 API를 실행하지 않았고 새 실제 통과0건이다. 정책 결정으로 reset 차이가 수정된 것은 아니다.
 - 후속 [RBD-01~09](bid-list.md#pol-02-recommended-qa)는 DEV-03 이후 검증할 맞춤 목록 사례다. PBF ID/기존 증거와 합치지 않는다. 배포 계약/실행 대응과 차이 처리 범위는 [POL-02 재개 표](../development/figma-v01/tasks/POL-02.md#pol-02-resume), 실제 필터 자원·사용/변경·잔존/복구는 [QA-10 재개 표](../development/figma-v01/tasks/QA-10.md#qa-10-resume)를 따른다.
+
+
+<a id="pol-07-advanced-personal-qa"></a>
+
+## 2026-11-09 · POL-07 고급 조건 저장·재조회 QA 인계
+
+- [정책 v1](../development/figma-v01/tasks/POL-07.md#pol-07-contract)·[공통 Gate](../development/figma-v01/tasks/POL-07.md#pol-07-handoff)를 따른다. ALL의 명시적 ‘내 맞춤에 저장’만 계정 snapshot을 바꾸며 팝업 적용은 URL/조회만 변경한다. closing/result 조회와 RESULT 개찰기간·검색어/view/page/size는 계정 저장 대상이 아니다.
+- API: 공개 `GET /api/v1/bid-notices?view=ALL`, 보호 `GET|PUT /api/v1/bid-notice-filters/current`, 초기화 회귀 시 `POST /api/v1/bid-notice-filters/current/reset`. POL-07에서 업무 API/로그인/저장/reset은 **실행0건·신규 통과0건**, ADVP4개는 대기다. OpenAPI 열람과 GitHub 배포 기록을 실제 저장/매칭 통과로 세지 않는다.
+- 기존 PBF01~12/QA-10의 실제0통과·12차단/기존 대기·reset=EMPTY_DEFAULT Major, POL-02 배포·실제 QA 차단 및 승인 예외는 보존한다. 이번에 새로 확인한 관련 schema/배포 기록을 다른 Task의 전체 재개 조건 충족으로 확대하지 않는다. reset 코드/대역 수정은 별도 범위다.
+- 공통 준비: disposable 합성 계정·SAVED/COMPANY_DEFAULT/EMPTY_DEFAULT 초기값/version, 매칭 공고·경계/오류/401/409와 두 계정 경쟁, 사용·PUT/reset 변경·빈 SAVED/이력 잔존·종료/복구 담당/방법, frontend/backend 실행 식별자와 캡처/비식별 Network. 준비는 미확인이고 개인 담당은 지정하지 않았다.
+
+| ID | Figma / 화면 | 조작과 API | 기대 결과 | 상태·근거 |
+| --- | --- | --- | --- | --- |
+| ADVP-01 | 2991:111897·L07~09 popover / `/bids?view=all` | 고급 조건 팝업 적용→명시적 계정 저장 PUT→GET·재적용 | 적용은 계정 무쓰기; 명시 저장만 expectedVersion과 전체 조건을 보내고 SAVED/source/version 유지 | 대기·미구현/합성 계정/사용·변경·복구 미확인 |
+| ADVP-02 | 동일 | 다중 지역·지역Only·공동도급·날짜 종류/절대 범위·정확한 원 금액을 저장·reload | 전체 필드 무손실 왕복·다음 날에도 저장 날짜 고정; closing/result/RESULT 개찰기간·query/view/page/size는 저장되지 않음 | 대기·경계 공고/계정과 실행 대응 필요 |
+| ADVP-03 | 동일 | 빈 현재 조건 저장/조회·회사 기본값 비교, 별도 승인된 reset 회귀 | 빈 SAVED는 회사 값으로 되살아나지 않음·GET 무쓰기; URL 전체 해제와 계정 reset은 독립 | 대기·기존 reset Major 미해결, 이번 범위에서 고치거나 PASS로 표시하지 않음 |
+| ADVP-04 | 동일 | 잘못된 날짜/금액/지역 결합, 실패/401/409, 로그아웃·계정 교체/늦은 응답 | 오류 입력은 적용/저장 차단·조용한 무시 없음; 충돌 최신값 재조회·무단 덮어쓰기/회사 merge 없음; 타 계정 조건/응답 격리 | 대기·안전한 오류·두 계정·복구 범위 필요 |
+
+다음 첫 행동: DEV-09 Gate에서 공개 지역/공동도급 계약·관련 자료부터 확인하고, 이후 날짜/금액 Task의 검증 범위를 각각 구체화한다. 이 기록은 개발 착수·실제 mutation 승인이나 기존 QA 면제가 아니다.

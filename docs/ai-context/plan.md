@@ -14,6 +14,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-09 POL-06은 사용자3답변에 따라 [가입 후 회사 조회 소스 정책 v1](../development/figma-v01/tasks/POL-06.md#pol-06-contract)을 기록한다. 업종별 시공능력/인증3종·저장 실적6연도/희망금액과 결측·provenance·실제 leaf 권한 차이를 정했으며 제품 구현은 하지 않는다. 배포/합성 자원 미준비는 [DEV-08의 필수 Gate 차단](../development/figma-v01/tasks/DEV-08.md#dev-08-pol-06-handoff)으로 보존하고 로컬 구현 선행 예외는 없다. 현재/다음/상태는 WBS가 소유하며 기존 QA 판정·승인 예외를 대체하지 않는다.
 
+2026-11-09 POL-07은 사용자 승인 D1/D2에 따라 [고급 필터 정책 v1](../development/figma-v01/tasks/POL-07.md#pol-07-contract)을 기록한다. 공개3view/ALL 개인 저장·KST 직접 기간·정확한 정수 원 범위와 preset 의미를 정하고 낙찰금액 DEV-12를 계약 확보 전 보류한다. 사용자 직접 조사 요청으로 현재 배포 OpenAPI3.1.0/v1와 GitHub test 배포 성공/dev SHA 기록을 확인했다. 실행 프로세스 SHA 직접 증명·경계 공고/저장 계정/변경·복구 준비는 미확인이고, 미준비/DEV-09~11 차단 또는 로컬 선행 예외 승인으로 추정하지 않는다. 현재/다음/상태는 [WBS](../development/figma-v01/README.md)만 관리한다. 제품 구현·실제 필터 QA와 기존 POL-02/QA-10 reset Major/타 Task 차단은 그대로다.
+
 ## Required Flow
 
 1. Structure requirements.

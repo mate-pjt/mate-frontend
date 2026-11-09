@@ -66,3 +66,10 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-09 · POL-07 금액 정책 인계 · 구현 미착수
+
+- [정책 v1](POL-07.md#pol-07-contract)·[공통 Gate](POL-07.md#pol-07-handoff)를 따른다. BASE_PRICE=현재 canonical 행 기초금액/ESTIMATED_PRICE=공고 추정가격, ALL 조회·명시적 개인 저장과 CLOSING_SOON 조회 URL을 연결한다. RESULT 금액 편집·낙찰금액·reset Major 수정은 제외한다.
+- 추가 완료 기준: 0..9,007,199,254,740,991의 정확한 정수 원, null 무제한/0 구별, 양끝 포함·열린/동일 범위·음수/소수/초과/역전 오류, 양쪽 빈 값일 때 종류 해제, 만원/억원 표시의 무손실 변환, 기존 preset 경계/선택 종류 유지, 분류별 기초금액·null 행 제외를 검증한다. [ADV-09~12](../../../qa/bid-list.md#pol-07-advanced-qa)·[ADVP](../../../qa/personal-bid-filter.md#pol-07-advanced-personal-qa)로 URL/reload·저장/requery·모바일/키보드·서버 count/page를 확인한다.
+- 현행 personal adapter의 preset은 BASE_PRICE로 고정된다. 선택한 종류를 유지하는 승인 정책은 후속 구현/회귀 대상이며 현재 기능 PASS가 아니다. 기존 정확한 원 단위 URL을 표시 단위 반올림으로 손실시키지 않는다.
+- OpenAPI와 GitHub 배포 기록상 대응은 POL-07에서 확보했다. 실제 경계 공고·분류/누락 금액·저장 계정/사용·변경·잔존·복구·오류 준비는 미확인이다. 사용자 미준비/로컬 예외를 추정하지 않는다. 다음 첫 행동은 최신 계약·배포·자원 확인 후 자체 Gate이며 이번 제품 구현/실제 실행은 없다.
