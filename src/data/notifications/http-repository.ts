@@ -1,4 +1,5 @@
 import type { AlarmKind, AlarmNotification } from "@/types/alarm";
+import { safeNotificationPath } from "@/lib/notification-path";
 import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
 import type { NotificationPage, NotificationsRepository } from "./contracts";
@@ -81,6 +82,7 @@ export function createHttpNotificationsRepository(http: HttpClient): Notificatio
       receivedDate: formatKstDate(data.createdAt),
       messageLines,
       unread: data.readAt === null,
+      actionPath: safeNotificationPath(data.actionPath),
     };
   }
 

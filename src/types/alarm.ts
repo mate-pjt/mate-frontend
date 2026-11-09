@@ -8,4 +8,5 @@ export type AlarmNotification = {
   receivedDate: string;
   messageLines: readonly string[];
   unread: boolean;
+  actionPath: string | null;
 };

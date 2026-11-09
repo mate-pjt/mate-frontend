@@ -11,14 +11,14 @@ const alarmIconPaths: Record<AlarmKind, string> = {
 type AlarmListItemProps = {
   alarm: AlarmNotification;
   index: number;
-  onRead: (alarmId: string) => void;
+  onActivate: (alarm: AlarmNotification) => void;
   pending: boolean;
 };
 
 export function AlarmListItem({
   alarm,
   index,
-  onRead,
+  onActivate,
   pending,
 }: AlarmListItemProps) {
   const alternatingSurface = index % 2 === 0 ? "bg-grayscale-50" : "bg-basic-white";
@@ -67,7 +67,7 @@ export function AlarmListItem({
       aria-busy={pending}
       className={`w-full rounded-2xl p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${alternatingSurface}`}
       disabled={pending}
-      onClick={() => onRead(alarm.id)}
+      onClick={() => onActivate(alarm)}
       type="button"
     >
       <span className="sr-only">{alarm.unread ? "미확인 소식" : "확인한 소식"}</span>
