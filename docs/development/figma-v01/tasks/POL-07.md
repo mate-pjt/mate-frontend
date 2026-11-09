@@ -210,3 +210,12 @@ RESULT 응답에 `successfulBidAmount`가 있어도 필터 query/enum 지원을 
 - [Chromatic Build103](https://www.chromatic.com/build?appId=6a3dd824dd80645d61f69b82&number=103)의 실제 페이지는 Paused와 계정 월간 한도 초과로 build 미실행을 표시했다. UI Tests/UI Review는 pending이며 통과로 세지 않는다. 결제/계정/보호 규칙·검사 상태를 변경하지 않았다.
 - 정책 Task의 문서 PASS와 Git 병합 대기를 구분한다. 사용자에게 이 문서 전용 PR만 Chromatic 미실행을 명시하는 예외(추천)와 한도 해결까지 PR 유지 중 결정을 요청했다. 답변 전 예외 승인/병합 없음. 기존 실제 QA·타 Task 차단에는 이 질문을 적용하지 않는다.
 - 다음 첫 행동: 사용자 결정을 기록한 뒤 이 Git 전달 기록의 문서 검사·두 리뷰 freshness와 최종 PR head CI/병합 조건을 확인한다. 이번 추가는 외부 전달 상태의 문서 기록이며 제품/다른 Task 변경은 없다.
+
+<a id="pol-07-chromatic-exception"></a>
+
+### 2026-11-09 · PR #49 Chromatic 미실행 예외 승인
+
+- 사용자 답변 원문: **“이번 문서 PR만 예외로 병합 (추천)”**. 결정자는 이 대화 사용자다. 위 월간 한도 차단을 공개하고 구체적인 PR/문서 범위·통과 검사·미실행 검사를 제시한 뒤 확보한 신규 Git 전달 예외이며 D3 직접 조사 요청과 구분한다.
+- 적용 범위: **PR #49의 문서10개만**, 월간 한도로 실행하지 못한 Chromatic UI Tests/UI Review를 pending/미실행으로 명시하고 병합할 수 있다. UI 테스트 PASS·검사 상태 강제 변경·유료 결제/계정 변경·보호 규칙 우회가 아니다. 정책 v1/후속 범위와 실제 QA16대기·기존 reset Major/QA·정책 차단은 그대로다.
+- 나머지 조건: 최종 실제 PR head의 push/PR test·lint와 api/mock/hybrid 빌드, Publish/Storybook Publish·Vercel, 리뷰/충돌·보호/병합 허용 조건을 재확인한다. 앞선 head의 성공을 새 head에 재사용하지 않는다. 다른 CI·실제 업무 API/변경·복구·서비스/배포·DEV-09~12/다른 Task에는 이 예외를 확대하지 않는다.
+- 이 결정 기록을 문서 검사·ai-review·read-only verifier로 재검토한 뒤 별도 작은 문서 커밋으로 push한다. 다음 첫 행동은 최종 head CI/병합 조건 확인→merge commit→로컬 main fast-forward·SHA/clean 확인이다. 최종 commit/CI·병합 SHA는 PR/receipt/최종 보고에서 확인한다. 자동 수정0/3.

@@ -106,9 +106,13 @@ read-only verifier1은 실제 status/stat/diff·새 검토 파일·관련 fronte
 
 ### Git 전달 기록 추가에 대한 ai-review
 
-1. **리뷰 요약:** Git 전달 중 새로 확인한 외부 CI 한도를 Task/WBS/검토 기록3개에 추가했다. 문서22검사·diff-check와 실제 추가 diff를 재확인했고 정책/후속 구현 범위 변경은 없다.
-2. **발견된 문제:** 추가 문서 diff의 새 Blocker/Major/Minor는 없다. Git 병합은 Chromatic 미실행과 사용자 예외 결정 대기로 차단이며, 기존 reset Major/context FAIL은 별도 보존한다.
+1. **리뷰 요약:** Git 전달 중 새로 확인한 외부 CI 한도와 이후 사용자 승인 예외를 Task/WBS/검토 기록3개에 추가했다. 문서22검사·diff-check와 실제 추가 diff를 재확인했고 정책/후속 구현 범위 변경은 없다.
+2. **발견된 문제:** 추가 문서 diff의 새 Blocker/Major/Minor는 없다. Chromatic 미실행은 PR #49 문서 전용으로 명시 승인받았으며 UI PASS로 세지 않는다. 기존 reset Major/context FAIL은 별도 보존한다.
 3. **누락된 검증:** 앱 test/lint·프로필 빌드는 원격에서 통과했다. Chromatic UI Tests/Review는 quota로 미실행/pending이며 UI 통과로 기록하지 않았다. 실제 필터 업무 API/제품 QA는 계속 미실행이다.
 4. **문서 갱신 필요 여부:** Git 차단을 Task/WBS/PR/검토 기록에 반영했다. 실행 소스·공통 context·기존 QA/기준선에는 변화가 없어 유지한다. 이 추가 diff도 verifier freshness를 확인한다.
-5. **개발자 확인 필요:** 이번 문서 PR에 한정한 Chromatic 미실행 예외 또는 한도 해소까지 병합 대기 결정. 기존 Git 전달 승인 반복 질문이 아니라 새 외부 CI 차단에 대한 질문이며 답변을 추정하지 않는다.
-6. **추천 수정 방향:** 차단 기록을 검증·리뷰해 push하고 PR을 리뷰 가능한 상태로 보존한다. 명시적 예외 또는 실제 한도 해소 전 병합/검사 상태 변경은 하지 않는다.
+5. **개발자 확인 필요:** 예외 답변 ‘이번 문서 PR만 예외로 병합 (추천)’을 확보했다. 추가 승인을 반복 요청하지 않는다. 이 예외는 PR #49의 미실행 Chromatic UI 검사뿐이고 다른 CI/실제 QA·Task에는 적용하지 않는다.
+6. **추천 수정 방향:** 차단/승인 기록을 검증·재리뷰해 push하고 최종 실제 head의 나머지 CI와 병합 조건을 확인한 뒤 merge commit/main fast-forward를 수행한다. 검사 상태/보호 규칙은 변경하지 않는다.
+
+### 승인 예외와 최종 검토 범위
+
+사용자는 **‘이번 문서 PR만 예외로 병합 (추천)’**이라고 답했다. [Task의 정확한 적용 범위](../tasks/POL-07.md#pol-07-chromatic-exception)를 따른다. 첫 Git 차단 기록도 별도 verifier에서 PASS였고, 이번 승인 기록 추가 후 문서22검사·ai-review 여섯 항목을 재검토했다. 최종 read-only verifier와 실제 새 head CI·병합 결과는 로컬 `review-input-exception.json`·`verifier-exception.md`·`review-freshness.json`·`remote-ci.json`·Git receipt/PR/최종 보고에서 확인한다. 이 추가 메타데이터의 검토 전에 최종 verifier PASS나 Git 병합 완료를 선기록하지 않는다.
