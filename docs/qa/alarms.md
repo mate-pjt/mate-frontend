@@ -264,3 +264,27 @@ backend 계약/배포 담당과 합성 자원·복구 담당 역할이 다음을
 2. disposable 합성 계정·알림/공고/분류/회사와 null/위험/미지원/없는·권한 대상, 시작/종료 readAt·unread/total/정렬·세션 기대값.
 3. 로그인/N/C/R 사용·변경·읽음 잔존 허용과 복구 담당/방법, 안전한 실패/401 재현·해제 범위의 명시 승인.
 4. 최신 소스/Git/공급원 snapshot을 확인한 뒤 ANAV-01~10 실제 실행·두 리뷰. 기존 QA-11/ALARM 차단과 타 Task 예외를 이 로컬 검증으로 해소하지 않는다.
+
+<a id="pol-05-signal-qa"></a>
+## 2026-11-09 · POL-05 변경 신호/REST 재동기화 계획（미실행）
+
+정책: [POL-05 v1](../development/figma-v01/tasks/POL-05.md#pol-05-contract), 배포/자원/승인: [필수 재개 조건](../development/figma-v01/tasks/POL-05.md#pol-05-handoff). 사용자 답변은 **소스 정책 확정만** 승인했으며 실제 자원은 미준비다. 아래 신규12case는 **실제0통과·12차단·실행0건**인 계획이다. mock/HTTP/transport 대역 검증도 이번에는 실행하지 않았다. 기존 ALARM-01~10·QA-11·ANAV-01~10/DEV-06의 날짜별 통과/대기/차단·예외를 보존한다.
+
+공통 Figma node: [2304:29131](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2304-29131), 화면: 전역 Bell·`/alarms`. W=`/ws/v1/notifications` native WS handshake + STOMP CONNECT/`/user/queue/notification-changes` SUBSCRIBE, C=`GET /api/v1/me/notifications/unread-count`, N=`GET /api/v1/me/notifications?page=p&size=20&unreadOnly=false`, R=`PATCH /api/v1/me/notifications/{notificationId}/read`. 이 약어는 HTTP 실행의 증거가 아니다.
+
+| case | 경로/API·준비 데이터·조작 | 기대 UI/계약 결과 | 이번 실제 판정/차단 |
+| --- | --- | --- | --- |
+| NSIG-01 | Bell·목록 / W,C,N. 합성2계정·허용/거절 Origin, 배포 WS/REST version/실행 대응. 로그인 후 upgrade/CONNECT/구독 성립 확인, 다른 destination/SEND와 미인증 시도는 승인된 fixture에서만 수행 | 인증 계정의 단일 고정 queue만 허용. token/query/log·타계정 payload 노출 없음. 다른 화면 C만, 목록 진입 N; 구독 완료 뒤 REST 재동기화로 최초 GET→구독 사이 유실 보완 | 차단·미실행 — 배포/Origin·합성 계정·허용 시도/복구 미확보 |
+| NSIG-02 | Bell·목록 / W,C,N. 계정 A에 승인된 합성 알림1건 생성, B는 무관. 변경 전후 count/total·정렬 snapshot 확인 | type만 신호로 받고 C/필요 N 재조회. payload로 카드/건수 증감·알림 생성 없음. B와 비인증 탭에 A 상태를 적용하지 않음 | 차단·미실행 — 합성 생성/잔존·복구·기대값 미확보 |
+| NSIG-03 | Bell·목록 / W,C,N. fake Clock/transport와 실제 안전한 신호 fixture에서 동일/연속/무효 type·burst를 주입하고 요청 시각/동시성 관찰 | 첫 신호500ms 고정 창·같은 계정 시작 간 최소1초/동시1묶음. 진행 중 신호는 후속1묶음, 무제한 queue/계속 밀리는 debounce 없음. 무효 신호 무시·주기 polling0 | 차단·미실행 — 실제 신호 주입 범위·시각/복구 자원 미확보 |
+| NSIG-04 | `/alarms` / W,C,N. 합성25건 이상에서20→40건 범위까지 펼치고 스크롤/포커스 위치를 기록한 뒤 새 신호. 정지/동시 INSERT fixture를 분리 | 펼친 유효 page 범위 재조회·서버 순서/ID 중복 제거·스크롤 유지. 첫20/상단 강제 초기화 없음. 부분 page 실패는 기존 목록 보존. totalPages 축소·offset 경합/후속 수렴을 구분하고 원자적 snapshot/무누락을 과장하지 않음 | 차단·미실행 — 복수 페이지/변동 fixture·합성 상태 미확보 |
+| NSIG-05 | Bell·목록 / W,C,N. 읽지 않은 알림·시작 상태 준비 후 브라우저 offline/online, 숨김/복귀·focus/online 동시 발생·재연결 | 중단 중 소켓/진행 요청/예약 timer 정리·늦은 응답 무시. 다시 visible+online+인증일 때 연결/구독·REST 갱신. 중복 복귀는 합쳐 동일 간격, 기존 데이터 보존·정기 polling 없음 | 차단·미실행 — 계정/복귀 전후 기대값·승인된 관측 자원 미확보 |
+| NSIG-06 | Bell·목록 / W,C,N. fake Clock에서 연결 실패 반복, 실제는 승인된 연결 실패/해제 fixture | 기준1/2/4/8/16/30초 cap+지터·단일 재연결. 숨김/오프라인/비인증 예약0, 인증/구독 성공 후 초기화. WS 실패에도 REST/명시 재시도 가능·mock fallback 없음 | 차단·미실행 — 안전한 연결 실패/해제·배포 지원 미확보 |
+| NSIG-07 | Bell·목록 / W,C,N. 합성 계정의 token 갱신/만료·CONNECT 인증 거절·최종 실패/Origin 오류 fixture | 최신 token으로 연결 교체·재구독·동기화. 동일 계정 refresh 공유/한번 재시도 후 최종 인증 실패에 연결/예약 종료. 모든 ERROR를401로 추측하지 않음. 인증값·frame 원문 저장 없음 | 차단·미실행 — 인증/오류·세션 기대값·복구 범위 미확보 |
+| NSIG-08 | Bell·목록 / W,C,N. A의 늦은 CONNECT/신호/REST를 지연시켜 logout·B교체·동일 A재로그인·화면/shell 해제를 각각 수행 | 종료 수명 무효화가 우선. unsubscribe/disconnect/abort/timer/listener 정리, 새 계정/새 로그인에 옛 이벤트 적용0. 목록 해제는 소비자만 정리, 전역 수명 종료는 소켓 정리 | 차단·미실행 — 합성2계정·안전한 지연·잔존/복구 미확보 |
+| NSIG-09 | `/alarms` / W,C,N,R. 읽음/더 보기 진행 중 신호·중복 클릭·늦은 GET. 합성 알림 readAt/unread/total·목적지 준비 | 이전 GET로 읽음/건수 롤백 없음, 더 보기/재동기화가 이전 page를 혼합하지 않음. 로컬 이벤트와 원격 신호를 합치되 읽음 PATCH/이동은 재생하지 않음. 기존 POL-04·ANAV 회귀, C/N 별도 응답 시점·후속 동기화 확인 | 차단·미실행 — read 변경/잔존·목적지·경쟁 fixture 미확보 |
+| NSIG-10 | Bell·목록 / W,C,N. C만/N 한 page만 실패·5xx/지연·정상 복구 fixture와 listener만 degraded인 신호 유실 구간 | 성공 데이터 보존·오류/명시 재시도. 건수 실패를0으로 표시하지 않으며 실패만으로 즉시 무한 재조회 없음. listener 유실은 재연결/복귀/명시 재조회로 복구, polling 없는 동안 자동 최신성 SLA 보장 없음 | 차단·미실행 — 승인된 안전 오류·listener/복구 자원 미확보. 운영 장애 조작 없음 |
+| NSIG-11 | 같은/다른 계정2탭 / W,C,N,R. 한 탭에서 허용 합성 읽음 후 다른 보이는 탭과 숨김 탭 복귀 확인 | 같은 계정의 각 활성 연결이 신호→REST로 수렴, 다른 계정 격리. 이미 읽음 반복이 중복 사건/추가 감소를 만들지 않음. 숨김 탭은 복귀 때 수렴, 탭 간 leader election 요구 없음 | 차단·미실행 — 다중 탭·read 잔존/복구·실행 대응 미확보 |
+| NSIG-12 | Bell·`/alarms` / 공급원별 대역 및 W,C,N. mock/API/허용 hybrid, auth=api+notifications=mock·계정 교체/페이지 해제, 데스크톱·390/320px·키보드 재시도 | 동일 정책/정리·token/계정 격리. mock 알림은 실제 WS/REST/추가 token 요청0·실제 ID 치환 없음·공급원 runtime 전환 없음. 모바일/키보드 오류·재시도/포커스·스크롤 확인. 실제 통합과 대역 증거를 분리 | 차단·미실행 — DEV-07 미구현/실행 환경·자원 미준비 |
+
+실행 전 frontend HEAD/공급원 snapshot/Origin·backend 배포 run/artifact→실행 SHA·WS/STOMP/REST version·브라우저/viewport·시각·합성 기대값·사용/변경/이력 잔존/복구 승인·오류 해제를 확보한다. 증거는 요청 종류/경로·상태·상대 시각/요청 수·비식별 UI 결과로 제한하며 token/cookie/CONNECT frame·계정 ID·개인 알림 본문/목적지 원문·실제 `.env` 값은 기록하지 않는다. 서버 신호 생성/읽음 mutation은 별도 승인된 합성 범위에서만 수행한다. 각 case의 실제 결과는 DEV-07 재개 후 별도 실행 ID로 기록한다.

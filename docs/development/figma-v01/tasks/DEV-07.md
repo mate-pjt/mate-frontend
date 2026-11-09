@@ -66,3 +66,15 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-07-pol-05-handoff"></a>
+## 2026-11-09 · POL-05 v1 인계（이 Task 미착수）
+
+- 정책 선행: [소유 원문/버전](POL-05.md#pol-05-sources), [POL-05 v1](POL-05.md#pol-05-contract)과 [필수 재개 조건](POL-05.md#pol-05-handoff)을 확인한다. 이는 이 Task의 Implementation Brief·구현/실제 실행 승인이 아니다.
+- 확정 범위: native WS/STOMP `/ws/v1/notifications`, 메모리 token의 CONNECT Bearer header, 고정 `/user/queue/notification-changes`, `NOTIFICATION_CHANGED` → 기존 공개 notifications REST C/필요 N 재조회. 계정별 단일 연결/구독·수명 generation·숨김/오프라인 정리/복귀·token 갱신/만료 방어를 포함한다.
+- 사용자 결정: 신호500ms 고정 창·묶음 시작 간 최소1초/동시1묶음·진행 중 신호 후속1회, 재연결 기준1/2/4/8/16/30초+지터, 정기 polling 없음. 펼친20건 단위 범위·서버 순서/ID 중복 제거·스크롤을 유지한다. 전체 세부/실패/경쟁 계약은 v1 원문이 소유하며 이 요약을 별도 정책으로 관리하지 않는다.
+- 완료 기준 보완: [NSIG-01~12 계획](../../../qa/alarms.md#pol-05-signal-qa)을 Node fake Clock/transport·mock/HTTP 대역·실제 Next/browser/실제 WS+REST로 나누어 검증한다. handshake와 구독 성공 간 조회 경합, 신호 중복/진행 중/연속·계정/같은 계정 재로그인·token/401·해제·펼친 목록/읽음/더 보기 경쟁·실패 보존·공급원 격리 및 기존 ANAV 회귀를 포함한다. 실제 scripts와 필요한 profile별 build/Storybook·두 리뷰는 이 Task Gate에서 구체화한다.
+- **필수 차단 / 마지막 확인2026-11-09**: 사용자가 배포 계약/실행 대응·Origin·합성2계정/신호·안전한 오류/잔존·복구 자원 **미준비**를 확인했다. 소스 계약 확정과 배포/실제 통합을 분리하기로 했으며 **이 Task의 로컬 구현 선행 예외는 승인되지 않았다**. 기존 DEV-06 로컬 예외를 가져오지 않는다.
+- 필요한 역할: backend 계약/배포 담당, QA 자원/변경·복구 승인 담당, frontend 실행자. 개인 담당자 미확인. 비밀값 없는 schema/version·배포 run/artifact→실행 SHA·frontend snapshot/Origin, disposable 합성 상태·허용 CONNECT/GET/읽음/생성·이력 잔존/종료·오류 해제 범위를 [재개 조건](POL-05.md#pol-05-handoff)에 맞춰 확보한다.
+- 재개 첫 행동: 최신 main과 위 근거/승인·자원 준비를 확인한 뒤 요구사항 Gate를 제시한다. 자원 미준비이면 배포 확인·실제 통합 차단을 유지하고 로컬 구현 진행 여부도 별도 결정 없이 추정하지 않는다. 추가 라이브러리도 명시 승인 전 도입하지 않는다.
+- 이번 실행/신규 통과0건. 기존 체크리스트·ALARM/ANAV/QA-11 날짜별 이력은 보존하며 이 문서 인계로 통과 처리하지 않는다. POL-05 대화에서 이 Task의 구현/검증을 시작하지 않았다.
