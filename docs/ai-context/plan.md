@@ -18,6 +18,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-11 QA-17은 사용자 요청에 따라 기존 구현 20개 route를 Figma·중앙 정책·frontend/backend source·현재 개발 Swagger와 대조하고 [날짜별 감사](../development/figma-v01/audits/2026-11-11.md)와 연결 데이터를 작성한다. 화면 정합성, 현행 정책에 근거한 기능 차이, mock/계약 불일치, 기존 미구현/실제 QA 차단을 구분해14개 Task를 추가하고 기존 Task의 완료 기준을 보완한다. 제품·테스트·설정은 수정하지 않으며 기존 79개 기준선·QA 이력/승인 예외를 보존한다. 현재 상태는 WBS만 소유한다. 현재 Swagger 접근 가능/endpoint 존재를 실제 업무 응답·실행 SHA·자원 준비/통합 PASS로 확대하지 않는다.
 
+2026-11-11 POL-29는 [화면별 결정/보류](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)와 [추가 상태/후속 검증](../development/figma-v01/tasks/POL-29.md#pol-29-states)을 기록한다. 사용자 승인에 따라 Figma 알림3항목을 유지하되 미지원 전역/야간 제어는 disabled/사유 안내와 프런트 연결 경계만 준비하도록 후속 DEV-66을 정의했다. 이름+아이콘 목표/실제 이름 공급원과 홈 최종 문구의 후속 Gate를 구분하며 현재 제품 설명·실제 QA를 완료로 바꾸지 않는다. 원본79개·기존113Task와 이력을 보존해114Task가 되었고 현재/다음/상태는 WBS만 소유한다.
+
 ## Required Flow
 
 1. Structure requirements.

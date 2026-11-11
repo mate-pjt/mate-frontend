@@ -1,0 +1,258 @@
+{
+  "task": "POL-29",
+  "observedDate": "2026-11-11 KST",
+  "frontend": {
+    "commit": "f505421d6e5337ab3db4dac342d57bf18a948246",
+    "files": [
+      {
+        "path": "src/components/bids/bid-list-client.tsx",
+        "sha256": "2c3c38eaa4b91b66406a28050f189dfd7a2c5a4b6972cf56d468e4edb0d81edc",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/bids/bid-list-client.tsx"
+      },
+      {
+        "path": "src/components/bids/bid-filter-toolbar.tsx",
+        "sha256": "91b66ee6f92c793f5cd1e9f46425fcc8e7a852f62c6ec97fa25dd7607f541cde",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/bids/bid-filter-toolbar.tsx"
+      },
+      {
+        "path": "src/components/site-header.tsx",
+        "sha256": "3fb74a1d606e5b38053898baabfcf3159087d6ceeb770a9b5ec2cea7dac6f092",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/site-header.tsx"
+      },
+      {
+        "path": "src/data/auth/contracts.ts",
+        "sha256": "5513901ec1aefadf3a76ad58ab7ac0f754526445cbd86b040b40db63d09eb987",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/data/auth/contracts.ts"
+      },
+      {
+        "path": "src/data/company/contracts.ts",
+        "sha256": "a193149ee1aa4bd68e6f55f19ee1c6f15a7fef5abecd8a3ddc03c97ed02a6229",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/data/company/contracts.ts"
+      },
+      {
+        "path": "src/components/auth/auth-screen.tsx",
+        "sha256": "89b9d3a52a7f7fa83caf0bbe8380fb6b58696dca8671af51811b7c2187b5497c",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/auth/auth-screen.tsx"
+      },
+      {
+        "path": "src/app/auth/start/start-choices.tsx",
+        "sha256": "027be76b59a5c4ab15db083824e5b267f46149414aa9e46ebf9fa5502dfca8f0",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/app/auth/start/start-choices.tsx"
+      },
+      {
+        "path": "src/app/auth/signup/signup-form.tsx",
+        "sha256": "64c9f633ec280daa2028797b2121aa7304d5da312f976049774f894d3aee4086",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/app/auth/signup/signup-form.tsx"
+      },
+      {
+        "path": "src/app/page.tsx",
+        "sha256": "63c88c2181dad25cc0f67833dbc8d0833b26fd3efb5393e7578236c05fd0e309",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/app/page.tsx"
+      },
+      {
+        "path": "src/components/home/home-auth-cta.tsx",
+        "sha256": "015e0814f4df496760d854113b242cd317006e87d3526b1509e62ee7b23f99ba",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/home/home-auth-cta.tsx"
+      },
+      {
+        "path": "src/components/bids/bid-detail-content.tsx",
+        "sha256": "7874ce2eb457420ffc044078d4d47ba4e1a873d7cb65f6ba377726cad23720fd",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/bids/bid-detail-content.tsx"
+      },
+      {
+        "path": "src/components/bids/bid-detail-amounts.tsx",
+        "sha256": "b4ae0fd6601ea2d5bef52845f29e8a045f5e4fae8c3c30ebb22e96085cce15fe",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/bids/bid-detail-amounts.tsx"
+      },
+      {
+        "path": "src/components/bids/bid-detail-alert-card.tsx",
+        "sha256": "6dd4d43c4f28e2a11f83e8d9bdf5bc865233ad8ac68d3b4b6abd200337b8cf58",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/bids/bid-detail-alert-card.tsx"
+      },
+      {
+        "path": "src/components/my/notification-settings-page-client.tsx",
+        "sha256": "8557ba6780ef339ff5f5b3bab278c3bb6bfeb3e517914ff03fea2341c4df2337",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/my/notification-settings-page-client.tsx"
+      },
+      {
+        "path": "src/components/my/notification-email-verification-dialog.tsx",
+        "sha256": "00d1b6279d141c33b401f1b35bde58b34e9c4ca2994a6a5a10f374c8914d68e7",
+        "url": "https://github.com/mate-pjt/mate-frontend/blob/f505421d6e5337ab3db4dac342d57bf18a948246/src/components/my/notification-email-verification-dialog.tsx"
+      }
+    ]
+  },
+  "policy": {
+    "commit": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+    "files": [
+      {
+        "path": "docs/decisions/ADR-0014-separate-personal-bid-filter-from-company-profile.md",
+        "sha256": "521847f9eb02f0ed482b589e67728f6c55283b58cf81ee81667615aa0c54afba",
+        "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/decisions/ADR-0014-separate-personal-bid-filter-from-company-profile.md"
+      },
+      {
+        "path": "docs/decisions/ADR-0013-classification-row-query-identity-and-pagination.md",
+        "sha256": "63605af9611da742ebfa04be32a225e62bc304c82f1343a2039dd608ba1d97c6",
+        "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/decisions/ADR-0013-classification-row-query-identity-and-pagination.md"
+      },
+      {
+        "path": "docs/domain/auth/account-and-social-identity.md",
+        "sha256": "0d5f344db233f2e2809b9259feefb50c48993bffa794d0800e7a00ed153a5206",
+        "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/auth/account-and-social-identity.md"
+      },
+      {
+        "path": "docs/domain/notification/overview.md",
+        "sha256": "cd2c31772a35f5fa5baa822af4b27e3a99086a60e5fe6202f71c3deab33923c5",
+        "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md"
+      },
+      {
+        "path": "docs/domain/bid/matching-and-related-notices.md",
+        "sha256": "1fea72317542190b17fce6e373678bab0ff02970813118930daeb02ca3f77c5c",
+        "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/matching-and-related-notices.md"
+      }
+    ]
+  },
+  "backend": {
+    "dev": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+    "main": "8b36ca562d4a4a581b4175cb0d0f1ba15ad7e39d",
+    "authResponseBlob": "28334c299b38e2e1c28a538fcb417ebe1dc6ff5c",
+    "notificationSourceArtifacts": [
+      {
+        "localFile": "backend-notification-0.kt",
+        "sha256": "3317b889a6035051659e5a602881d68fc477723a60d6cb692c262feaeec504e0"
+      },
+      {
+        "localFile": "backend-notification-1.kt",
+        "sha256": "9c003737c3706a7a277c08f209a6cbc1416b167caf565de86914ba9c69cae6fb"
+      },
+      {
+        "localFile": "backend-notification-2.kt",
+        "sha256": "19ff1b1f8a65e05a357a2718f952147da89a9c01ff7e2cb2cb1097364c2d6b4f"
+      }
+    ],
+    "deploymentDocs": "not re-read",
+    "runningProcessSha": "not verified",
+    "businessApiExecutionCount": 0
+  },
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "pythonRequestHttp": 403,
+    "curlRequest": "valid OpenAPI JSON obtained; final HTTP status not captured",
+    "openapi": "3.1.0",
+    "version": "v1",
+    "paths": 183,
+    "sha256": "e65f29c77d3dfa0c29a336c29d7d33f3f54123e8736d81f2fd7a7c30788e1e63",
+    "schemas": {
+      "AuthenticatedAccountResponse": [
+        "id",
+        "email"
+      ],
+      "CompanyContextResponse": [
+        "companyId",
+        "role"
+      ],
+      "CompanyBasicProfileResponse": [
+        "companyId",
+        "companyName",
+        "businessNumber",
+        "representativeName",
+        "verificationStatus",
+        "address",
+        "telephoneNumber",
+        "establishedYear",
+        "primaryIndustry",
+        "primaryIndustries",
+        "updatedAt"
+      ]
+    }
+  },
+  "figma": {
+    "fileKey": "Eayi1SWD8Xq8tGBmlp5SV2",
+    "immutableVersion": "not provided; observed node XML/PNG hashes only",
+    "metadataNodes": [
+      "2048:58606",
+      "3139:52490",
+      "3140:119739",
+      "3140:120851",
+      "3140:121614",
+      "3140:117483",
+      "2306:88681",
+      "2016:57355",
+      "2113:19107",
+      "3139:52591",
+      "3139:56715"
+    ],
+    "screenshots": [
+      {
+        "node": "2048:58606",
+        "png": "2048_58606.png",
+        "bytes": 177011,
+        "pngSha256": "18677539c6a87a54f3b112b9f8c09b64b0a54667c18d9f5593300a6dda3fbad6",
+        "xml": "2048_58606.xml",
+        "xmlSha256": "f53883b4fcb2e16f3af93ec7288153a479c2d02ce3395f80a69b5c2e33f7eb08"
+      },
+      {
+        "node": "3139:52490",
+        "png": "3139_52490.png",
+        "bytes": 46954,
+        "pngSha256": "41d10936e7f2e10e9bc7e72d5e1d8e4d06b06daa0f4c1cf545c569fd1dc93369",
+        "xml": "3139_52490.xml",
+        "xmlSha256": "29c1de11ee8da0aa8aaee54510c14334d41868a752fd744246f3e411ed796729"
+      },
+      {
+        "node": "3140:119739",
+        "png": "3140_119739.png",
+        "bytes": 319113,
+        "pngSha256": "7e180008a9ed9fac789dbee383cc06e7025b6e3cb9a0a31080253f971bd3294c",
+        "xml": "3140_119739.xml",
+        "xmlSha256": "a5124e581134383f150bdd8268c7a50897b16b7c6a36c194ab0483c24c07219f"
+      },
+      {
+        "node": "3140:120851",
+        "png": "3140_120851.png",
+        "bytes": 414896,
+        "pngSha256": "ae06baa8557835fac7032f94f4c3db7c99b67e7cd6a52f82789698396dd22797",
+        "xml": "3140_120851.xml",
+        "xmlSha256": "5e2e6a0b98933604d70f83bdd2e438a28c09e7e8aefbbe82bcd247ada60259ab"
+      },
+      {
+        "node": "2016:57355",
+        "png": "2016_57355.png",
+        "bytes": 241001,
+        "pngSha256": "9037f335737bc8604358fe7fa9ef66911ab4e81894c49cfc26f7a4db94d6580c",
+        "xml": "2016_57355.xml",
+        "xmlSha256": "825322c9f32c9df3be21268374b81fd00a99fb0def13449dec8082f4f2f23416"
+      },
+      {
+        "node": "2113:19107",
+        "png": "2113_19107.png",
+        "bytes": 225037,
+        "pngSha256": "b896ef8f75e67bf77d3a0fb5c3c32b26e4cacde3bbeb15a767eff3aaf4f01548",
+        "xml": "2113_19107.xml",
+        "xmlSha256": "2ed0fbdcd5b4cf1f8001e6fbb7f1b98d5b70624b3067d41624387a7fe6e4d3e4"
+      },
+      {
+        "node": "3139:52591",
+        "png": "3139_52591.png",
+        "bytes": 96806,
+        "pngSha256": "f21a2ae3ecc1db3a9ab13f687d6b1c19bfe588c713a3c831995edd1213ca79f3",
+        "xml": "3139_52591.xml",
+        "xmlSha256": "402775ae2391c7a3ce524df87a473c1ee43208874deee7fafc8555b5a422bbd0"
+      },
+      {
+        "node": "3139:56715",
+        "png": "3139_56715.png",
+        "bytes": 99292,
+        "pngSha256": "5db4cd807eb13e4c0ef4d3167239419269d33ac0ee0610398084e2141d62dde9",
+        "xml": "3139_56715.xml",
+        "xmlSha256": "15c5502341f6106c6fb4919c00590d12f3a6ad7cd9ca5f26b1635e12000a40c7"
+      }
+    ]
+  },
+  "localArtifactsRoot": "/Users/jisung/.codex/visualizations/2026/11/11/mate-pol-29",
+  "limits": [
+    "Policy documents and selected source/schema review only; no product modification or live integration PASS",
+    "Eight representative Figma screenshots; not all states, breakpoints or pixel equality",
+    "No real environment values, credentials or short-lived image URLs recorded",
+    "Current/next/status belong only to WBS"
+  ]
+}
