@@ -16,6 +16,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-09 POL-07은 사용자 승인 D1/D2에 따라 [고급 필터 정책 v1](../development/figma-v01/tasks/POL-07.md#pol-07-contract)을 기록한다. 공개3view/ALL 개인 저장·KST 직접 기간·정확한 정수 원 범위와 preset 의미를 정하고 낙찰금액 DEV-12를 계약 확보 전 보류한다. 사용자 직접 조사 요청으로 현재 배포 OpenAPI3.1.0/v1와 GitHub test 배포 성공/dev SHA 기록을 확인했다. 실행 프로세스 SHA 직접 증명·경계 공고/저장 계정/변경·복구 준비는 미확인이고, 미준비/DEV-09~11 차단 또는 로컬 선행 예외 승인으로 추정하지 않는다. 현재/다음/상태는 [WBS](../development/figma-v01/README.md)만 관리한다. 제품 구현·실제 필터 QA와 기존 POL-02/QA-10 reset Major/타 Task 차단은 그대로다.
 
+2026-11-11 QA-17은 사용자 요청에 따라 기존 구현 20개 route를 Figma·중앙 정책·frontend/backend source·현재 개발 Swagger와 대조하고 [날짜별 감사](../development/figma-v01/audits/2026-11-11.md)와 연결 데이터를 작성한다. 화면 정합성, 현행 정책에 근거한 기능 차이, mock/계약 불일치, 기존 미구현/실제 QA 차단을 구분해14개 Task를 추가하고 기존 Task의 완료 기준을 보완한다. 제품·테스트·설정은 수정하지 않으며 기존 79개 기준선·QA 이력/승인 예외를 보존한다. 현재 상태는 WBS만 소유한다. 현재 Swagger 접근 가능/endpoint 존재를 실제 업무 응답·실행 SHA·자원 준비/통합 PASS로 확대하지 않는다.
+
 ## Required Flow
 
 1. Structure requirements.

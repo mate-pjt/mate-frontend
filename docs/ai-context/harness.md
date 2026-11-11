@@ -62,3 +62,7 @@ verifier는 `.codex/agents/verifier.toml`의 역할 정의를 따른다. verifie
 - 계약 테스트의 HTTP fetch 대역, mock 브라우저, 실제 API 통합의 결과·환경·증거·미실행 범위는 별도 기록한다. 이전 실서버 QA 대기는 그대로 유지한다.
 - 저장소의 새로고침·계정 전환·손상·quota·초기화, upload handle의 계정 경쟁, mutation 성공 뒤 세션 갱신 실패를 포함한다.
 - `docs/qa/repositories.md`를 이번 전환의 검증 기록으로 사용한다. 후속 기능의 실제 통합 펀치리스트는 `docs/qa/README.md`를 따른다.
+
+## 2026-11-11 · 화면·정책 정합성 근거 연결
+
+현재/다음 상태는 [WBS](../development/figma-v01/README.md), 구현 route와 state별 Figma·정책·source·브라우저/미실행 근거는 [전수 감사](../development/figma-v01/audits/2026-11-11.md)를 따른다. [workflow의 정합성 점검](../development/figma-v01/workflow.md#figma기획정책-정합성-점검)에 따라 정책상 필요한 기능 차이와 명시적 화면 예외 승인을 구별하고, 현재 GitHub/Swagger를 먼저 조회해 계약 가용성과 실제 통합 준비 상태를 나눈다. 도구/실행 script·Repository 구조 변경은 없다.

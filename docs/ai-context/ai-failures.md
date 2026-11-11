@@ -114,3 +114,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 branch 응답을 파싱해 SHA만 출력하고, tree는 필요한 파일 경로만, 파일 조회는 관련 정책/코드 본문만 표시했다. Git/CI/PR receipt도 필요한 필드만 보존한다. 이미 출력된 내용이 삭제되거나 무효화됐다고 주장하지 않는다.
 - Prevention rule: 외부 호출 전에 ai-failures의 해당 출력 경계 규칙부터 확인한다. `structuredContent.content`를 먼저 해석하고 명시적 필드 투영 후 출력한다. 전체 MCP 응답·중첩 원문·Git 작성자/서명/payload는 `text`/`notify`/증거 파일에 넘기지 않는다. 오류는 상태/안전한 요약만 표시한다.
 - Related files: `docs/development/figma-v01/tasks/POL-02.md`, `docs/development/figma-v01/reviews/POL-02.md`. 런타임·API·하네스 설정 변경은 없다.
+
+## 2026-11-11 - 생성한 Markdown에 patch 접두문자 잔존
+
+- Task: QA-17 전수 점검 보고서와 검토 기록 생성.
+- Expected behavior: 새 제목·개조식·빈 줄이 일반 Markdown으로 저장되고, 링크/ID/보존 검사뿐 아니라 실제 문서 형식도 확인한다.
+- Actual failure: CF-23 보고서 블록과 이후 독립 검토 요약 블록의 줄 앞에 literal `+`가 두 번 남아 제목/목록이 정상 렌더링되지 않았다. 링크·지문 검사는 이 형식 문제를 잡지 못했고 read-only verifier가 발견했다.
+- Root cause: patch용 접두문자를 문자열로 생성하는 문서 본문에도 포함했다. 내용/링크 검사와 Markdown 형식 검사를 분리하지 않았다.
+- Detection command or review step: verifier가 실제 파일의 해당 블록을 읽고 지적했다. 이후 이번에 변경한 Markdown 전체에서 잘못된 줄 시작 접두문자와 CF 제목 개수를 검사했다.
+- Fix: 문제가 있는 새 블록의 접두문자만 제거하고 내용·원본 이력을 유지했다. 문서 검사에 형식 검사를 추가하고 전체 재검사·같은 verifier의 freshness를 다시 수행한다.
+- Prevention rule: patch 자체와 파일에 저장할 문자열을 구분한다. 생성 후 새 제목/목록 블록을 직접 읽고, 링크/ID 검사와 함께 잘못된 patch 접두문자·발견 제목의 누락을 검사한다. 앞선 PASS 뒤 검토 요약을 붙인 경우도 같은 검사를 다시 실행한다.
+- Related files: `docs/development/figma-v01/audits/2026-11-11.md`, `docs/development/figma-v01/reviews/QA-17.md`. 제품 코드·설정·실제 업무 API 변경 없음. 검사 스크립트는 저장소 밖 감사 증거 디렉터리에 보존한다.
