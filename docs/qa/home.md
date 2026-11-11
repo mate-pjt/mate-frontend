@@ -220,3 +220,21 @@
 - [사용자3결정](../development/figma-v01/tasks/POL-02.md#pol-02-approved-decisions)으로 홈 CTA와 로그인 후 recommended 복귀를 유지하고, 후속 DEV-03에서 개인 필터 snapshot + 공개 ALL 자동 조회를 연결한다. 이번에는 정책 문서만 갱신했으며 앱·로그인/refresh/업무 API·브라우저 재실행이 없다.
 - 2026-11-02 HOME-09의 기존 세션 복원·CTA 두 분기/준비 안내 통과와 한계는 그대로다. 새 맞춤 목록 결과까지 통과한 것으로 바꾸지 않는다. 미연결/미저장 또는 빈 저장 조건의 설정 안내·전체 공고 이동, 현재 계정 snapshot·401/교체/reload는 [RBD-01~09](bid-list.md#pol-02-recommended-qa)로 분리해 DEV-03 이후 검증한다.
 - 배포 OpenAPI/version·실행 대응과 QA-10 reset 차이는 [POL-02 재개 표](../development/figma-v01/tasks/POL-02.md#pol-02-resume)대로 차단 유지한다. 신규 실제 통과0건이며 다음 Task는 POL-02 재개, DEV-03/다른 Task는 이번에 시작하지 않는다.
+
+
+<a id="dev-65-mock-qa"></a>
+
+## 2026-11-11 · DEV-65 공개 mock 교정 검증
+
+- 범위/근거: [DEV-65 Brief](../development/figma-v01/tasks/DEV-65.md#dev-65-brief)·[감사 CF-11](../development/figma-v01/audits/2026-11-11.md#cf-11). 홈 Figma 2016:57355/2036:59249의 카드 데이터 동작만 확인하며 화면 전체의 새 시각 예외 승인으로 세지 않는다.
+- 실행: frontend 시작 `4ecdfba` + DEV-65 diff, 환경파일 없는 격리 Next16.2.9 dev, Node22.20.0/pnpm11.3.0, all-mock, Aside Chrome154, 데스크톱1440×1000. 증거는 저장소 밖 `mate-dev-65/browser/`와 `server-public-reads.json`에 보존한다.
+- **실제 API 실행0건·신규 실제 통과0건.** 기존 HOME-01~09와 QA-01의 실제4통과/5차단·이전 이력/예외를 변경하지 않는다. HTTP 대역/175 Node tests와 아래 mock 브라우저 결과도 별도다.
+
+| 사례 | 조작/관찰 | 이번 mock 결과·증거 |
+| --- | --- | --- |
+| DEV65-H01 | 정적 Q&A→홈, 카드와 ALL 무조건 목록 선두 비교 | 카드9개 ID `10001/10005/10009/10013/10017/10021/10025/10029/10033`, ALL27행 선두9행과 순서/분류URL 일치. `home-desktop.json`, `all-first-page.json` |
+| DEV65-H02 | 마감/결과 fixture 제외·정렬·nullable | 마감10004/10016/10028 미노출, 공사/용역/물품과 nullable 추정가격 표시. 시간 경계는 고정 Clock Node 테스트로 별도 PASS |
+| DEV65-H03 | empty/error 시나리오로 재시작 | 빈 상태의 status와 오류 alert/‘다시 시도’를 구분. 오류 중 키보드 Enter 재시도는 오류를 유지. `home-empty.json`, `home-error.json` |
+| DEV65-H04 | default 복원 | 홈9개 정상 복원. 개발 서버 재시작/HMR 뒤 복원이며 오류 해제 후 성공한 재시도 버튼 클릭으로 주장하지 않음. `home-restored.json` |
+
+- 네트워크/복구: 브라우저 관측의 외부/업무API 요청0, 서버 상세 재계측의 업무 외부 fetch0. Next 개발 도구의 npm dist-tags 조회는 로컬 guard가 차단했다. 초기 generic 차단4건은 host 미기록이며 후속 상세 계측·Next 소스와 구분해 보존한다. 이는 업무 API 실응답 검증이 아니다. 소유 탭/서버/포트 정리는 Task 기록을 따른다.

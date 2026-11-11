@@ -119,3 +119,11 @@ pnpm build-storybook
 ```
 
 마지막 명령은 Storybook/공용 모델 영향 시 필요하다. Vitest는 Node 환경, HTTP는 주입한 fetch 대역이다. 실제 API mutation은 계정과 변경/복구 범위를 승인받은 뒤 수행하고, 기존 QA 대기는 mock PASS로 대체하지 않는다.
+
+## 8. 공개 입찰 mock의 검색·시간 기준
+
+공개 검색은 공고명·공고번호·공고기관·수요기관의 부분 일치이며 앞뒤 공백과 대소문자를 정규화한다. 기본36개 합성 공고 중 ALL은 시작 전/진행 중27개, CLOSING_SOON은 마감까지3일 이내9개, RESULT는 결과가 발표된9개다. 홈은 ALL 마감 오름차순의 첫9행을 그대로 사용한다. 시작 전 fixture도 ALL에 포함되며, 결과가 없는 공고가 마감됐다는 이유만으로 RESULT에 들어가지는 않는다.
+
+Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 시 같은 Clock의 현재 시각으로 마감 여부를 판단한다. 마감 시각은 활성 목록에서 제외하고 CLOSING_SOON의3일 상한은 포함한다. 실제 Next 공개 Repository는 요청마다 생성되므로 합성 일정은 요청의 실제 시각 기준이다. 테스트는 고정 Clock과 시간 이동으로 동일 fixture의 경계를 검증한다.
+
+새 mock 검증은 [DEV-65](figma-v01/tasks/DEV-65.md)와 [홈](../qa/home.md#dev-65-mock-qa)·[목록](../qa/bid-list.md#dev-65-mock-qa)에 연결하며 기존 실제 API 통과/차단을 대체하지 않는다. 고급 지역/공동도급과 관련 공고 predicate는 각각 DEV-09·DEV-61의 별도 범위다.

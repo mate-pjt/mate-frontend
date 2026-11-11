@@ -361,3 +361,24 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 | ADV-12 | 위 필터 node / DEV-09~11 | 지역/공동/날짜/금액/검색 조합·페이지/정렬·오류/재시도·320/390px/키보드 | 그룹 AND/지역 OR·canonical 서버 count/page·기존 정렬·조건변경 page1·오류를 빈 결과로 숨기지 않음; 접근성/취소/표시 정상 | 대기·통합 조합/오류·모바일 자료 필요 |
 
 재개 첫 행동: 해당 DEV의 최신 main·정책·source/배포 drift와 실제 검증 자료/승인 범위를 먼저 확인한다. GitHub 배포 기록은 실행 프로세스 SHA 직접 증명이 아니며 OpenAPI의 required 누락/`success` wrapper 설명을 근거로 frontend 검증·`isSuccess` wire 처리를 완화하지 않는다.
+
+
+<a id="dev-65-mock-qa"></a>
+
+## 2026-11-11 · DEV-65 검색·view mock 교정 검증
+
+- 범위/근거: [DEV-65 Brief](../development/figma-v01/tasks/DEV-65.md#dev-65-brief)·[CF-11](../development/figma-v01/audits/2026-11-11.md#cf-11). 목록 Figma2048:58606의 검색·3view·페이지/빈 상태에 연결한다. UI 구성/고급 필터/관련 공고를 변경하지 않는다.
+- 실행: frontend 시작 `4ecdfba` + DEV-65 diff, 환경파일 없는 격리 Next16.2.9 dev/all-mock, Node22.20.0/pnpm11.3.0·Aside Chrome154, 1440×1000/390×844/320×740. 로컬 증거 `mate-dev-65/browser/`·test/lint/3구성 build 로그·server 공개 읽기 요약.
+- **실제 API 실행0·신규 실제 통과0.** BID-01~16·QA-02의 실제10통과/6차단·ADV/RBD 대기·QA-10 reset Major·기존 정책/예외는 그대로다. 기존 HTTP fetch 대역은 실제 통합이 아니다.
+
+| 사례 | 조작/기대 | 이번 mock 관찰·증거 |
+| --- | --- | --- |
+| DEV65-L01 | 번호·기관·공고명 검색/trim·대소문자 | `  mock-10001-00  `→1행/trim URL, 발주기관/수요기관→기본 공사9행, ‘공고 13’→10013 한 행. `search-number`·`search-notice-agency`·`search-demand-agency`·`search-title` JSON |
+| DEV65-L02 | 없는 검색/조건 초기화 | 0건 안내, 초기화 뒤 기본 공사9행 복원. `search-empty.json`, `search-reset.json`. 공백만 입력은 Node 테스트에서 전체와 동일함 확인 |
+| DEV65-L03 | ALL/홈·정렬·페이지/reload | 공개 URL `personal=1`의 빈 조건으로 유형 제한 없는27행을 조회(저장/로그인/mutation 없음). 첫10행 중9행은 홈과 동일, 2페이지10행 중복 없음·hard reload 순서 유지, 검색 시 page1. `all-first-page`·`all-second-page`·`all-reload` JSON |
+| DEV65-L04 | closing/result 전환 | UI 기본 공사 조건에서 마감3행10001/10013/10025, 결과3행10004/10016/10028. 무유형 closing9/result9 및 3일 상한/마감 순간·결과 없는 마감·개찰 최신/ID 동률은 Node 계약 테스트로 검증. `closing-view.json`, `result-view.json` |
+| DEV65-L05 |390/320px·키보드 | 문서 scrollWidth는 각각390/320, 검색 입력→Tab의 ‘검색어 지우기’ 포커스, 번호 링크 Enter→10001/분류1 상세 h1 확인. `search-mobile-390.json`, `search-mobile-320.json`, `detail-keyboard.json`. 표 내부 가로 스크롤은 기존 방식 |
+| DEV65-L06 | empty/error·복원 | 빈 데이터와 오류 제목/재시도 버튼을 구분. default 재시작/HMR 뒤9행 복원이며 성공한 재시도 클릭으로 확대하지 않음. `list-empty.json`, `list-error.json`, `list-restored.json` |
+
+- 보호/네트워크: 권한/409·개인 저장/계정/업로드는 변경하지 않았고 기존 전체 계약 테스트로 회귀 확인했다. 브라우저 외부/업무 요청0, 서버 상세 재계측 업무 외부 fetch0. Next 자체 npm 버전 조회 차단과 초기 host 미기록4건을 Task에 따로 남긴다. 실제 API·배포/서버 실행 SHA를 확인한 것이 아니다.
+- 캡처 한계: fullPage PNG는 캡처 연결 중복 흔적이 있어 시각 판정에 사용하지 않는다. JSON 접근성/URL·행 관측과 후속 viewport 캡처를 근거로 구분한다. 모든 Figma frame/pixel을 재검토한 것은 아니다.
