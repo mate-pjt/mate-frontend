@@ -161,3 +161,10 @@
 - 체크포인트: 승인/범위·브랜치/시작451파일 지문 확보, 다음 POL-04 선정 근거 문서화 중. 현재 수정은3문서뿐이며 POL-04 미착수다. 다음은 후속 문서 검사·두 리뷰다. 자동 수정0/3으로 시작하고 이전 작업의 검사/사건 이력은 보존한다.
 - 후속 검증 체크포인트: `validate_exception.py` 26/26·`git diff --check` PASS. 링크299/anchor25·보호448파일·고정5파일·POL-04/기존 QA·다른98행·기존 task/review 전체 prefix·승인3결정/재개3조건·계약 완료 미체크를 보존했다. 자동 수정0/3. 실제 diff 기반 자체 ai-review PASS, 다음은 read-only verifier이며 결과 후 종료 기록을 포함해 영향 검증/두 리뷰 freshness를 재확인한다.
 - 후속 Review Gate/종료 체크포인트: ai-review와 read-only verifier 1차 PASS, 신규 Blocker/Major/Minor 없음. WBS 현재 없음·POL-02 차단 유지·다음 POL-04 준비로 정리했다. 이 종료 기록도26검사·두 리뷰 freshness를 다시 확인한 뒤 단일 목적의 문서 커밋/push·template/라벨 PR·새 실제 head CI/병합 조건 확인·merge commit/로컬 main FF로 전달한다. 최종 read-only 원문은 후속 로컬 증거의 `verifier-final.txt`, 실제 PR/CI/main SHA/clean은 PR과 최종 보고에 남긴다. POL-04 소스 조사·정책 결정·실행은 다음 대화의 Gate에서만 시작한다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-09](../audits/2026-11-11.md#cf-09) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 현재 개발 OpenAPI GET은 HTTP200이다. 과거403을 현재 접근 불가로 재사용하지 않는다. 기존 정책 선택/차단 이력은 보존한다.
+- 추가 완료/재개 기준: 문서 접근만 개선됐으며 reset source/version·실제 wire/실행 대응·QA 자원은 미확인이다. 기존 reset Major의 로컬 교정 소유 DEV-63과 시각 POL-29/DEV-55를 추가하며 이 Task 전체 완료/실제 QA 차단 해소로 바꾸지 않는다.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.

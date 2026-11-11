@@ -83,3 +83,10 @@
 - **착수 차단:** POL-02 배포 OpenAPI/version·실행 SHA 대응 미확보(비인증 GET403), [QA-10 reset Major](QA-10.md#qa-10-resume)와 실제 QA 준비 조건 유지. 소스 commit/사용자 정책 승인만으로 배포 계약/기능 통합 PASS를 만들지 않는다.
 - 검증 인계: [RBD-01~09](../../../qa/bid-list.md#pol-02-recommended-qa), 기존 HOME-09/BID-15/PBF 이력을 분리한다. 실제 package의 test/lint/build·영향 시 Storybook, mock/HTTP 대역·실제 Next/브라우저·API/오류·계정 교체/모바일을 각각 기록한다. mutation은 계정/변경/잔존/복구 승인 확보 후에만 수행한다.
 - 이 문단은 후속 범위/완료 기준/차단의 갱신이며 DEV-03 Implementation Brief 또는 구현 승인이 아니다. 다음 Task는 WBS의 POL-02 재개 하나다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-19](../audits/2026-11-11.md#cf-19) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 홈의 제공 기능 안내는 DEV-58에 분리했다. 추천 목록은 아직 placeholder이며 공개 ALL의 내 맞춤 적용/저장과 별개다.
+- 추가 완료/재개 기준: 빈 조건/빈 결과·인증 복귀·source/version을 기존 POL-02 Gate에 따라 검증한다. 이번 Swagger200은 실제 통합/자원/실행 대응 차단 해소가 아니다.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
