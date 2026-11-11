@@ -93,3 +93,10 @@
 - 재개 Gate: 배포 schema/version 및 실제 frontend/backend 실행 대응·Origin/인증/오류/권한 bootstrap·합성 권한별 계정/회사와 경계 기대값·사용/잔존/복구 범위·안전한 실패/해제 조건을 [POL-06 재개 표](POL-06.md#pol-06-handoff)대로 확보한다. source SHA만으로 대체하지 않는다. 필요한 등록 mutation은 별도 명시 승인/복구 범위가 필요하다.
 - 검증 계획: 새 Brief 뒤 현재 package scripts의 test/lint/build/diff-check, 영향 시 build-storybook, API/mock/hybrid·guard/계정 격리/대형 정수 계약 및 실제 Next/브라우저·실서버 통합·verifier/ai-review. 미실행/외부 차단을 PASS로 표시하지 않는다. 기존 MCO4통과·6차단/AUTH-07·08과 타 QA/정책 승인 예외는 보존한다.
 - 담당 역할: API/배포 담당, 합성 fixture 담당, 프론트 QA 실행자, 사용/잔존/복구 승인자. 개인 배정 미확인. 다음 첫 행동은 이 자원과 최신 main/Git·소유 계약/디자인 차이를 다시 확인한 후 DEV-08 요구사항 Gate를 제시하는 것이다. POL-06 문서/Git 전달은 구현 승인·검증 면제가 아니다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-06](../audits/2026-11-11.md#cf-06) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 현재 기본 정보의 복수 주력업종 누락은 DEV-60이 수정 소유한다. 이 대시보드 Task의 선행에 DEV-60을 추가한다. 시공능력/인증/희망금액/leaf권한은 DEV-08 소유로 유지한다.
+- 추가 완료/재개 기준: POL-06/DEV-08의 배포·합성 자원 Gate와 로컬 선행 예외 없음은 보존한다. DEV-60 추가를 이 Task의 구현 착수/실제 QA 승인으로 해석하지 않는다.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.

@@ -219,3 +219,10 @@ RESULT 응답에 `successfulBidAmount`가 있어도 필터 query/enum 지원을 
 - 적용 범위: **PR #49의 문서10개만**, 월간 한도로 실행하지 못한 Chromatic UI Tests/UI Review를 pending/미실행으로 명시하고 병합할 수 있다. UI 테스트 PASS·검사 상태 강제 변경·유료 결제/계정 변경·보호 규칙 우회가 아니다. 정책 v1/후속 범위와 실제 QA16대기·기존 reset Major/QA·정책 차단은 그대로다.
 - 나머지 조건: 최종 실제 PR head의 push/PR test·lint와 api/mock/hybrid 빌드, Publish/Storybook Publish·Vercel, 리뷰/충돌·보호/병합 허용 조건을 재확인한다. 앞선 head의 성공을 새 head에 재사용하지 않는다. 다른 CI·실제 업무 API/변경·복구·서비스/배포·DEV-09~12/다른 Task에는 이 예외를 확대하지 않는다.
 - 이 결정 기록을 문서 검사·ai-review·read-only verifier로 재검토한 뒤 별도 작은 문서 커밋으로 push한다. 다음 첫 행동은 최종 head CI/병합 조건 확인→merge commit→로컬 main fast-forward·SHA/clean 확인이다. 최종 commit/CI·병합 SHA는 PR/receipt/최종 보고에서 확인한다. 자동 수정0/3.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-12](../audits/2026-11-11.md#cf-12) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 고급 UI 미구현은 기존 DEV-09~11에 남기고 mock의 NO_ROWS/AVAILABLE semantics 검증을 추가했다.
+- 추가 완료/재개 기준: Swagger200/현재 source는 인덱스에 고정했다. 실제 고급 필터16사례·reset Major·DEV-12 낙찰금액 보류·기존 승인 범위를 보존한다.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.

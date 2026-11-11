@@ -66,3 +66,10 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-21](../audits/2026-11-11.md#cf-21) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 현재 Swagger에 DELETE /api/v1/company-membership-requests/{requestId}, required query expectedVersion이 있다. POL-10의 최신 source/body/권한·충돌 조사를 입력으로 삼는다.
+- 추가 완료/재개 기준: 미연결/대기/취소/승인지연·409/권한 오류·중복클릭·재조회/복구를 구분한다. API 문서 존재는 실행 성공/준비 완료가 아니며 실제 취소는 이번 미실행.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
