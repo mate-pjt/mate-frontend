@@ -118,3 +118,14 @@
 - Git 전달: 이번 사용자 명시 승인에 따라 UI/자산·QA/화면 기준·작업/검토/인계·실패 예방 문서를 목적별 작은 한국어 Conventional Commits로 나누고 push·PR/라벨·최종 head CI/리뷰 조건·허용 merge·로컬 main fast-forward를 확인한다. force push/직접 main push/보호 우회/check 강제 성공은 사용하지 않는다. 과거 PR49 예외는 적용하지 않는다.
 - 다음 선정은 **POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소** 하나다. 남은 P0는 실제 QA 자원·약관 정책/취합 선행 차단을 유지한다. POL-30은 WBS P1·QA-17 선행 완료이며 DEV-61의 정책 선행이므로, 같은 원문 내 기준/후보 공고 상태 충돌을 제품 수정 전에 구조화하는 다음 Gate로 선정했다. 다른 P1의 영구 우선순위/승인 변경은 아니다.
 - 다음 첫 행동: 새 대화에서 POL-30·CF-23의 고정 이력과 최신 중앙 정책 §6/§10/§11·backend dev의 RelatedBidNoticeQueryService/RelationPolicy·개발 Swagger를 대조해 기준 공고/후보의 상태표·남은 질문과 수정 문서/검증을 담은 Brief를 제시한다. 중앙 저장소 수정·실제 업무 요청은 별도 권한/범위 확인 대상이다. **이번 대화에서는 POL-30 상세 source/계약 조사·정책 선택/원문 수정·제품 구현/QA/Git 전달을 시작하지 않았다.**
+
+<a id="dev-55-pr54-ci-exception"></a>
+
+## 2026-11-12 · PR #54의 외부 CI 차단과 후속 승인
+
+- 전달 체크포인트: 목적별4커밋을 push하고 [PR #54](https://github.com/mate-pjt/mate-frontend/pull/54)를 생성했다. 최초 head `cd9c38adfce0c922b67842941182d05126e8eb39`, base/main `8d7d656de6e55190fc4320677462da136538f7fe`, clean 작업트리다. push/PR의 checks·API/mock/hybrid build, Storybook 게시와 Vercel은 SUCCESS였다.
+- 차단 근거: [Chromatic workflow](https://github.com/mate-pjt/mate-frontend/actions/runs/43120560736)의 `Billed snapshot limit reached`, [build115](https://www.chromatic.com/build?appId=6a3dd824dd80645d61f69b82&number=115)의 `UI Tests`/`UI Review`가 각각 testing/review 재개를 위한 plan 갱신 안내와 PENDING이다. 게시 SUCCESS를 두 검사 실행/PASS로 세지 않았다. 당시 이번 PR의 예외가 없어 main 병합을 보류했으며 과거 PR49 예외를 적용하지 않았다.
+- 결정자/날짜/원문: 2026-11-12 사용자 답변 **‘이번 PR만 예외 병합 (추천)’**. 질문은 PR #54(head cd9c38a)의 두 Chromatic 미실행 검사에 한해 예외를 기록하고 정상 merge하며, 제품 코드 고정·예외 기록 문서 변경만 허용하고 보호 우회/check 강제 성공을 하지 않는 범위였다.
+- 확정 범위: 본 PR의 위 두 검사만 미실행 예외로 명시한다. 제품 코드/기존 검증 산출물은 그대로 두고 WBS·이 Task·리뷰3문서에 승인 근거만 추가한다. 승인 기록 커밋을 포함한 **실제 최종 PR head**의 나머지 CI·리뷰/미해결 thread·최신 main과 저장소의 정상 merge 허용 조건을 다시 확인한 뒤 작은 커밋 이력을 보존해 병합한다. 다른 검사 실패/미실행·보호 규칙 우회·타 PR/Task·제품 QA 면제를 승인한 것은 아니다.
+- 재개 계획: 문서 링크/anchor·ID/상태/의존성·원문/제품 코드 보존·diff-check 및 primary6절 ai-review/read-only verifier freshness → 목적별 문서 커밋/push·PR 본문 반영 → 새 최종 head CI/승인 범위 대조 → 정상 merge/main fast-forward·SHA/clean 확인. 문서만 바뀌므로 앱 test/lint/build·브라우저를 반복하지 않으며 기존 교정 후 근거를 유지한다.
+- 남은 경계: 실제 QA-10의12차단·POL-02 미결, 다음 POL-30 선정/인계·미착수는 그대로다. 실제 최종 head/check·merge/main SHA/작업트리 결과는 외부 delivery receipt·PR·최종 보고에 기록해 검토한 파일을 다시 바꾸지 않는다.

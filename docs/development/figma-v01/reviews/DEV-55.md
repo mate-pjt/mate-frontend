@@ -87,3 +87,29 @@ QA/Task·review/context·ai-failures에 첫 실패와 교정·재검증을 반�
 ## 종료 metadata를 포함한 primary ai-review freshness
 
 위6절을 다시 수행했다. 리뷰 요약: 교정 코드/검증은 그대로이고 종료 체크리스트·WBS·POL-30 선정/인계·리뷰 보고만 추가했다. 발견된 문제: 미해결 Blocker/Major/Minor 없음, 첫 Major 이력 보존. 누락된 검증: 실제 QA/원격 최종 CI는 별도이며 문구만 바뀌어 앱 검사를 반복하지 않는다. 문서 갱신 필요 여부: 원본/단일 상태·14파일 범위·링크/ID/의존성·Markdown·diff를 재검사한다. 개발자 확인 필요: 새 승인/정책 결정 없음. 추천 수정 방향: 동일 verifier의 마지막 freshness 통과 후 목적별 commit·push/PR·실제 head CI/리뷰 조건·허용 merge·main fast-forward를 진행한다. 종료 문구 이후 runtime 변경은 없다.
+
+## 2026-11-12 · PR #54 CI 예외 승인 기록의 후속 AI Review
+
+### 1. 리뷰 요약
+
+[사용자 후속 승인](../tasks/DEV-55.md#dev-55-pr54-ci-exception)은 이번 PR의 한도 차단 Chromatic 두 검사에만 적용한다. WBS/Task/이 리뷰3문서의 기록과 제품 코드 고정·최종 head 재검증 계획을 대조한다. Git 전달과 제품/실제 통합 판정을 분리하며 문서 범위에 신규 Blocker/Major 없음.
+
+### 2. 발견된 문제
+
+제품 결함 추가 없음. `UI Tests`·`UI Review`는 미실행/PENDING 이력을 보존한다. 게시 성공을 테스트/리뷰 PASS로 바꾸거나 기존 PR49 예외를 재사용하지 않는다. 최초 팝오버 Major/교정 이력도 그대로다.
+
+### 3. 누락된 검증
+
+Chromatic 두 검사는 사용자 승인 예외이며 실제 QA-10의12차단·POL-02 미결은 별도 유지한다. 이번에는 문서만 바뀌어187 tests/lint·3구성 build/Storybook·실제 Next 브라우저를 재실행하지 않는다. 새 최종 head의 나머지 원격 CI/리뷰·병합 조건은 push 후 반드시 확인한다.
+
+### 4. 문서 갱신 필요 여부
+
+WBS·DEV-55 기록·이 리뷰에 이번 결정자/날짜·원문/사유·PR/head·두 검사와 제외 범위를 연결했다. package/scripts/구조/API/하네스·QA 결과 변화가 없어 다른 문서를 갱신하지 않는다. 원본79개/114Task/155의존성·기존 QA/정책 이력·제품 지문을 보존 검사한다.
+
+### 5. 개발자 확인 필요
+
+이번 예외와 Git 전달은 이미 승인됐으므로 같은 승인을 다시 묻지 않는다. 저장소 정상 병합 조건이 새로 차단되거나 두 검사 밖의 실패가 발생하면 그 원인/최소 재개 조건만 별도로 제시한다. 보호 우회·검사 강제 성공 권한은 없다.
+
+### 6. 추천 수정 방향
+
+문서/diff 검사와 동일 verifier의 후속 freshness를 마친 뒤 이 기록만 작은 docs 커밋으로 push한다. 실제 최종 head의 두 예외 및 나머지 CI/리뷰를 다시 대조하고 허용된 merge·로컬 main fast-forward를 수행한다. 이후 Git 결과는 외부 receipt/PR·최종 보고에 남겨 이 diff를 고정한다.

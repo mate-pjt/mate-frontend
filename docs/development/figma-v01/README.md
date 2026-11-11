@@ -9,6 +9,7 @@
 | 다음 작업 | [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) — P1·QA-17 선행 완료·DEV-61의 정책 선행. 선정/인계만, 상세 조사/정책 선택 미착수 |
 | 다음 첫 행동 | 새 대화에서 POL-30/CF-23과 최신 중앙 정책 §6/§10/§11·backend dev service/policy·개발 Swagger를 대조해 기준/후보 상태표·미결 질문·문서/검증 Brief 제시. 중앙 저장소 수정·실제 업무 요청은 별도 범위 확인 |
 | 이번 승인 범위 | 2026-11-12 사용자: DEV-55 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무·메일·문서 처리·운영/배포 제외. [이번 Brief](tasks/DEV-55.md#dev-55-brief) |
+| 이번 DEV-55 CI 예외 | 2026-11-12 사용자 원문 ‘이번 PR만 예외 병합 (추천)’. [PR #54](https://github.com/mate-pjt/mate-frontend/pull/54)의 Chromatic billed snapshot limit로 미실행인 `UI Tests`·`UI Review` 두 검사만 예외 승인. 제품 코드 `cd9c38a` 고정·승인 기록 문서 변경만 허용하며 최종 head의 나머지 CI/리뷰·저장소 정상 병합 조건 확인 후 merge/main 동기화. 검사 강제 성공·보호 우회·타 PR/검사·실제 QA 면제로 확대하지 않음. [승인·재개 기록](tasks/DEV-55.md#dev-55-pr54-ci-exception) |
 | 앞선 DEV-63 승인 범위 | 2026-11-11 사용자: DEV-63 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-63.md#dev-63-brief) |
 | 앞선 DEV-65 승인 범위 | 2026-11-11 사용자: DEV-65 개발/검증/리뷰·Git 전달. DEV-63은 당시 선정/인계만이었으며 이번 실행 승인과 구분. [당시 기록](tasks/DEV-65.md#dev-65-brief) |
 | DEV-63 교정 후 남은 경계 | 기존 QA-10/POL-02의 reset Major 기록은 당시 이력으로 보존한다. 2026-11-12 mock·HTTP 대역의 빈 SAVED/version/replay·회사 여부 차이는 [DEV-63](tasks/DEV-63.md#dev-63-verification)에서 교정·로컬 검증. 실제 reset wire/실행 대응·QA-10 실제12차단·POL-02 전체 계약 미결을 해소한 것은 아님 |
