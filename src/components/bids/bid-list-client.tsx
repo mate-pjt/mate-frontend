@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Select } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { BasicPopup } from "@/components/ui/popup";
 import type { BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
 import { ApiError, errorMessage } from "@/data/shared/errors";
@@ -310,56 +311,57 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         </div>
 
         <div className="mt-[18px]">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <BidFilterToolbar
-              filterLabels={personalDisplay?.labels}
-              filterOptions={filterOptions}
-              filters={filters}
-              onFilterChange={changeFilter}
-              personalMode={Boolean(personal)}
-              view={state.view}
-            />
-            {state.view === "all" && (
-              <div className="flex flex-wrap items-center gap-2">
-                {!personalApplied && (
-                  <button
-                    className="h-9 rounded-lg border border-primary-400 px-3 text-primary-400 type-body-5 disabled:cursor-not-allowed disabled:opacity-50"
-                    disabled={authState.status === "loading" || (authState.status === "authenticated" && (!snapshot || !hasPersonalConditions(snapshot.filter)))}
-                    onClick={applyPersonalFilter}
-                    title={snapshot && !hasPersonalConditions(snapshot.filter) ? "저장된 맞춤 조건이 없습니다." : undefined}
-                    type="button"
-                  >
-                    내 맞춤
-                  </button>
-                )}
-                {authState.status === "authenticated" && (
-                  <>
-                    <button
-                      className="h-9 rounded-lg bg-primary-400 px-3 text-white type-body-5 disabled:cursor-not-allowed disabled:opacity-50"
-                      disabled={!snapshot || saving || !currentFilter || !hasPersonalConditions(currentFilter) || (snapshot.source === "SAVED" && samePersonalFilter(currentFilter, snapshot.filter))}
-                      onClick={() => void saveToAccount()}
-                      type="button"
-                    >
-                      {saving ? "처리 중..." : "내 맞춤에 저장"}
-                    </button>
-                    {snapshot?.source === "SAVED" && hasPersonalConditions(snapshot.filter) && (
-                      <button className="h-9 rounded-lg px-2 text-grayscale-600 underline type-body-7" disabled={saving} onClick={() => setResetOpen(true)} type="button">
-                        계정 필터 초기화
-                      </button>
-                    )}
-                  </>
+          <BidFilterToolbar
+            filterLabels={personalDisplay?.labels}
+            filterOptions={filterOptions}
+            filters={filters}
+            renderLeadingAction={state.view === "all" && !personalApplied ? (closeFilters) => (
+              <>
+                <Button
+                  className="h-9 shrink-0 gap-1 bg-grayscale-800 enabled:hover:bg-grayscale-700 enabled:active:bg-grayscale-900"
+                  disabled={authState.status === "loading" || (authState.status === "authenticated" && (!snapshot || !hasPersonalConditions(snapshot.filter)))}
+                  onClick={() => {
+                    closeFilters();
+                    applyPersonalFilter();
+                  }}
+                  title={snapshot && !hasPersonalConditions(snapshot.filter) ? "저장된 맞춤 조건이 없습니다." : undefined}
+                  variant="text_white"
+                >
+                  <span aria-hidden="true" className="size-4 shrink-0 bg-[url('/icon/fit.svg')] bg-center bg-no-repeat" />
+                  내 맞춤
+                </Button>
+                <span aria-hidden="true" className="h-3 w-px shrink-0 rounded-full bg-grayscale-200" />
+              </>
+            ) : undefined}
+            onFilterChange={changeFilter}
+            personalMode={Boolean(personal)}
+            view={state.view}
+          />
+          {state.view === "all" && authState.status === "authenticated" && (
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 text-grayscale-600 type-body-7">
+                <p>목록 필터 변경은 계정에 자동 저장되지 않아요.</p>
+                {personalStatus === "loading" ? <p>계정의 맞춤 조건을 확인하고 있어요.</p> :
+                  personalStatus === "error" ? <button className="underline" onClick={() => void reloadPersonalFilter()} type="button">맞춤 조건 다시 불러오기</button> :
+                    snapshot?.source === "COMPANY_DEFAULT" ? <p>회사 기본 조건을 볼 수 있어요. 계정에 저장하려면 ‘내 맞춤에 저장’을 누르세요.</p> :
+                      snapshot?.source === "EMPTY_DEFAULT" ? <p>저장된 맞춤 조건이 없어요. 현재 조건을 계정에 저장할 수 있어요.</p> :
+                        snapshot?.source === "SAVED" && !hasPersonalConditions(snapshot.filter) ? <p>계정의 맞춤 조건을 비워뒀어요. 회사 기본 조건은 자동으로 적용되지 않아요.</p> : null}
+              </div>
+              <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                <Button
+                  className="h-9"
+                  disabled={!snapshot || saving || !currentFilter || !hasPersonalConditions(currentFilter) || (snapshot.source === "SAVED" && samePersonalFilter(currentFilter, snapshot.filter))}
+                  onClick={() => void saveToAccount()}
+                  size="xs"
+                >
+                  {saving ? "처리 중..." : "내 맞춤에 저장"}
+                </Button>
+                {snapshot?.source === "SAVED" && hasPersonalConditions(snapshot.filter) && (
+                  <Button className="h-9 underline" disabled={saving} onClick={() => setResetOpen(true)} size="xs" variant="text_gray">
+                    계정 필터 초기화
+                  </Button>
                 )}
               </div>
-            )}
-          </div>
-          {state.view === "all" && authState.status === "authenticated" && (
-            <div className="mt-2 text-grayscale-600 type-body-7">
-              {personalStatus === "loading" ? "계정의 맞춤 조건을 확인하고 있어요." :
-                personalStatus === "error" ? <button className="underline" onClick={() => void reloadPersonalFilter()} type="button">맞춤 조건 다시 불러오기</button> :
-                  snapshot?.source === "COMPANY_DEFAULT" ? "회사 기본 조건을 볼 수 있어요. 계정에 저장하려면 ‘내 맞춤에 저장’을 누르세요." :
-                    snapshot?.source === "EMPTY_DEFAULT" ? "저장된 맞춤 조건이 없어요. 현재 조건을 계정에 저장할 수 있어요." :
-                    snapshot?.source === "SAVED" && !hasPersonalConditions(snapshot.filter) ? "계정의 맞춤 조건을 비워뒀어요. 회사 기본 조건은 자동으로 적용되지 않아요." :
-                      "목록 필터 변경은 계정에 자동 저장되지 않아요."}
             </div>
           )}
           {state.view === "all" && authState.status === "error" && (
