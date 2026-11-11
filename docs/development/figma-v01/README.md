@@ -5,10 +5,11 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-12 KST |
-| 현재 작업 | 없음 — DEV-63 로컬 교정·187 tests/구성별 build·실제 Next mock/HTTP 대역·문서/1차 두 리뷰 PASS. 종료 메타데이터 freshness·최종 PR/head CI·병합/로컬 동기화는 [검토 기록](reviews/DEV-63.md)·외부 receipt/최종 보고에서 별도 확인. 실제 API 통합 PASS 아님 |
-| 다음 작업 | [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) — 남은 P0 자원/정책 차단을 유지하고 선행 POL-29 완료·reset 로컬 교정 뒤 같은 화면의 독립된 P1 목표로 다음 Gate만 선정. 구현 미착수 |
-| 다음 첫 행동 | 새 대화에서 DEV-55·POL-29/CF-01의 frame2048:58606·화면 예외/보류와 현행 도구막대를 대조해 Brief 제시. 저장/reset/source/version·실제 QA 차단은 유지하며 실제 mutation은 별도 자원/승인 확인 전 미실행 |
-| 이번 승인 범위 | 2026-11-11 사용자: DEV-63 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-63.md#dev-63-brief) |
+| 현재 작업 | 없음 — DEV-55 UI 배치·팝오버 Major 교정·187 tests/3구성 build·실제 Next mock/HTTP 대역 및 교정 후 두 리뷰 PASS. 종료 metadata freshness·최종 PR/head CI·병합/로컬 동기화는 [검토 기록](reviews/DEV-55.md)·외부 receipt/최종 보고에서 별도 확인. 실제 API 통합 PASS 아님 |
+| 다음 작업 | [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) — P1·QA-17 선행 완료·DEV-61의 정책 선행. 선정/인계만, 상세 조사/정책 선택 미착수 |
+| 다음 첫 행동 | 새 대화에서 POL-30/CF-23과 최신 중앙 정책 §6/§10/§11·backend dev service/policy·개발 Swagger를 대조해 기준/후보 상태표·미결 질문·문서/검증 Brief 제시. 중앙 저장소 수정·실제 업무 요청은 별도 범위 확인 |
+| 이번 승인 범위 | 2026-11-12 사용자: DEV-55 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무·메일·문서 처리·운영/배포 제외. [이번 Brief](tasks/DEV-55.md#dev-55-brief) |
+| 앞선 DEV-63 승인 범위 | 2026-11-11 사용자: DEV-63 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-63.md#dev-63-brief) |
 | 앞선 DEV-65 승인 범위 | 2026-11-11 사용자: DEV-65 개발/검증/리뷰·Git 전달. DEV-63은 당시 선정/인계만이었으며 이번 실행 승인과 구분. [당시 기록](tasks/DEV-65.md#dev-65-brief) |
 | DEV-63 교정 후 남은 경계 | 기존 QA-10/POL-02의 reset Major 기록은 당시 이력으로 보존한다. 2026-11-12 mock·HTTP 대역의 빈 SAVED/version/replay·회사 여부 차이는 [DEV-63](tasks/DEV-63.md#dev-63-verification)에서 교정·로컬 검증. 실제 reset wire/실행 대응·QA-10 실제12차단·POL-02 전체 계약 미결을 해소한 것은 아님 |
 | 앞선 POL-29 승인 범위 | 2026-11-11 사용자: POL-29 정책 조사/결정·문서 검증/리뷰·Git 전달. 다음 DEV-65는 당시 선정/인계만. 이번 DEV-65 실행 승인과 구분해 [당시 기록](tasks/POL-29.md)에 보존 |
@@ -204,8 +205,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
 | [POL-29 · 기존 구현의 화면별 Figma 기준·의도적 차이 결정](tasks/POL-29.md) | 정책 결정 | P1 | 완료 | L11, C01, O01, O04, H01, H03, D01, D02, S04, S06 | [QA-17](tasks/QA-17.md) |
-| [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) | 정책 결정 | P1 | 대기 | D09 | [QA-17](tasks/QA-17.md) |
-| [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) | 개발 | P1 | 준비 | L11, L05, C01 | [POL-29](tasks/POL-29.md) |
+| [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) | 정책 결정 | P1 | 준비 | D09 | [QA-17](tasks/QA-17.md) |
+| [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) | 개발 | P1 | 완료 | L11, L05, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-56 · 공통 헤더의 식별·상태 UI 정합성](tasks/DEV-56.md) | 개발 | P3 | 차단 | C01, S01, O01 | [POL-29](tasks/POL-29.md) |
 | [DEV-57 · 가입·시작 선택 화면의 프레임별 UI 정합성](tasks/DEV-57.md) | 개발 | P1 | 차단 | O01, O04, O05, O10, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-58 · 홈 소개·CTA와 기능 제공 범위 정합성](tasks/DEV-58.md) | 개발 | P1 | 차단 | H01, H03 | [POL-29](tasks/POL-29.md) |
@@ -236,6 +237,11 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [DEV-63 검증](tasks/DEV-63.md#dev-63-verification): reset 빈 SAVED·회사 여부·version/replay를 교정하고187 tests/lint·API/mock/hybrid build·실제 Next mock/브라우저 HTTP 대역·문서와1차 두 리뷰가 통과했다. 종료 문구 추가분까지 재검토하며 실제 Git 전달은 최종 PR/head·외부 receipt/최종 보고로 확인한다.
 - 다음 DEV-55 선정: 남은 P0 QA/약관/취합은 기존 자원·정책/선행 차단을 유지한다. P1 중 POL-29가 main에 반영됐고 같은 개인 필터 화면의 배치/시각 목표를 reset 계약 교정과 분리해 시작할 수 있어 Gate 후보로 택했다. 다른 P1보다 제품 우선순위가 영구 변경된다는 뜻은 아니다.
 - DEV-55는 새 대화에서 frame/상태별 정책·예외와 현재 source로 Brief를 확정한다. 이번에는 선정/인계만 했으며 구현·실제 API·다른 Task Git 전달을 시작하지 않았다. 기존 QA-10 실제12차단·POL-02 계약 미결과 Task별 예외·79원본/114Task/155의존성·baseline/coverage를 보존한다.
+
+## 2026-11-12 · DEV-55 교정·검증과 다음 Gate 인계
+
+- [DEV-55](tasks/DEV-55.md#dev-55-verification)의 왼쪽 수동 적용·아래 계정 도구를 정렬했다. 첫 verifier의 팝오버 Major를 실제 Next에서 재현/교정하고187 tests·lint·3구성 build·Storybook·mock6/HTTP13+2·3입력/키보드/계정/모바일 재검증과 교정 후 두 리뷰가 통과했다. 종료 metadata도 freshness 재검토하며 Git 결과는 최종 PR/head·외부 receipt/보고로 확인한다.
+- 다음 POL-30은 P1·QA-17 선행 완료·DEV-61의 정책 선행을 이유로 선정/인계만 한다. 이번에 최신 정책/source 조사·정책 선택·원문/제품 수정·실제 QA를 시작하지 않는다. 기존 P0/QA-10 실제12차단·POL-02 미결·Task별 승인 예외와79원본/114Task/155의존성·baseline/coverage를 보존한다.
 
 ## 갱신 규칙
 

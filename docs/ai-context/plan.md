@@ -22,6 +22,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-11 DEV-63은 기존 reset의 EMPTY_DEFAULT 차이를 빈 SAVED·회사 가져오기 가능 여부·reset replay 버전 보존으로 교정한다. [Task의 검증 근거](../development/figma-v01/tasks/DEV-63.md#dev-63-verification)는 자동 계약·실제 Next mock·HTTP 대역을 구분하며 기존 QA-10 실제12차단과 POL-02 실행 대응 미결을 보존한다. 현재/다음/상태는 WBS만 소유한다.
 
+2026-11-12 DEV-55는 POL-29 D1의 왼쪽 수동 적용·아래 계정 보조행을 구현하고 [검증 근거](../development/figma-v01/tasks/DEV-55.md#dev-55-verification)를 남긴다. 기존 표시/활성 조건·version/409/계정 경계를 유지하며 mock/로컬 HTTP 대역과 실제 QA-10의12차단을 구분한다. 현재/다음/상태와 Git 전달은 WBS·해당 Task/PR의 현행 근거를 따른다.
+
 ## Required Flow
 
 1. Structure requirements.
