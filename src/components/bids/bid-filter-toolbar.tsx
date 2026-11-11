@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { DownArrowIcon } from "@/components/icons";
 import {
@@ -21,12 +21,13 @@ type BidFilterToolbarProps = {
   readonly filterOptions: BidFilterOptions;
   readonly filters: BidFilters;
   readonly filterLabels?: Partial<Record<FilterKey, string>>;
+  readonly renderLeadingAction?: (closeFilters: () => void) => ReactNode;
   readonly onFilterChange: (key: keyof BidFilters, value?: string) => void;
   readonly personalMode?: boolean;
   readonly view: BidView;
 };
 
-export function BidFilterToolbar({ filterOptions, filters, filterLabels, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
+export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderLeadingAction, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [openFilter, setOpenFilter] = useState<FilterKey>();
   const [draftFilters, setDraftFilters] = useState<BidFilters>(filters);
@@ -70,7 +71,8 @@ export function BidFilterToolbar({ filterOptions, filters, filterLabels, onFilte
   };
 
   return (
-    <div className="flex flex-wrap gap-2" ref={rootRef}>
+    <div className="flex flex-wrap items-center gap-2" ref={rootRef}>
+      {renderLeadingAction?.(close)}
       <FilterSlot active label={filterLabels?.category ?? categoryLabels[filters.category ?? "construction"]} name="category" onOpen={open} open={openFilter}>
         <PublicCategoryPopover
           highlightedValue={personalMode && !filters.category ? "construction" : undefined}

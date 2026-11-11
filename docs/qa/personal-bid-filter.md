@@ -154,3 +154,29 @@
 - 자동 검증: 전체187 tests·lint·api/mock/hybrid Preview build PASS. 기존 config/guard·스토리지·계정/DTO/architecture 회귀를 포함한다. shared UI/stories 변경이 없어 build-storybook은 미실행. `git diff --check`와 문서 검사는 Task/검토 기록에서 별도 확인한다.
 - 수행 한계/교정: 최초 mirror의 pnpm 의존성 확인·외부 symlink 제한을 기존 의존성 복제로 해결했다. 브라우저 대역의 지역 fixture에 없는 busan query는 목록 오류를 만들어 잘못된 시험 입력임을 확인한 뒤 기본 URL로 바로잡았다. 제품 수정으로 처리하지 않으며 실패를 PASS로 감추지 않는다. Aside 요청 가로채기 미지원으로 오류/네트워크 검증은 Playwright로 전환했다.
 - 실제 QA 재개: [QA-10 재개 표](../development/figma-v01/tasks/QA-10.md#qa-10-resume)의 disposable 계정·시작 snapshot/version·매칭 기대값·오류/401/409·업무 API 사용/변경·빈 SAVED 잔존/종료/복구 및 현재 frontend/backend 실행 대응과 승인을 확보한 뒤 PBF-01~12를 별도로 실행한다. 이번 결과로 POL-02 전체/DEV-03·DEV-45를 시작하거나 실제 QA 차단을 면제하지 않는다.
+
+<a id="dev-55-local-qa"></a>
+
+## 2026-11-12 · DEV-55 도구막대 로컬 UI 회귀
+
+- 기준: [POL-29 D1/추가 상태](../development/figma-v01/tasks/POL-29.md#pol-29-decisions), Figma2048:58606/하위2098:65429를 이번에 다시 조회했다. 원본의 왼쪽 어두운 내 맞춤+구분선과 승인된 하단 보조행 예외를 구분한다. 미제공 모바일 frame의 pixel PASS나 헤더/표 등 다른 화면 차이 해소를 주장하지 않는다.
+- 실행: frontend 기준 `8d7d656` + DEV-55 미커밋 diff, Node22.20.0/pnpm11.3.0, 환경파일 없는 두 mirror의 runtime3파일 byte 일치. 실제 Next production mock3155/API3156 및 합성 loopback HTTP 대역4155를 사용했다. source commit/배포 문서/실행 프로세스/실제 업무 응답을 혼동하지 않으며 이번은 배포·실제 업무 API QA가 아니다.
+- 증거: 저장소 밖 `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev-55/`의 명령 로그·source manifest·mock-final/wire-states/capture-result JSON·PNG. [desktop 캡처](dev-55-toolbar-desktop.png), [320px 캡처](dev-55-toolbar-320.png), [검토 기록](../development/figma-v01/reviews/DEV-55.md).
+
+| 구분 | 조작/기대 | 관찰 결과 |
+| --- | --- | --- |
+| Figma/배치 | 왼쪽 적용·구분선·하단 오른쪽 저장/reset·안내 | PASS. 높이36px·반경8px·font16px/600·grayscale-800·아이콘16px·구분선1×12px·간격8px. Figma 벡터853bytes를 원래13.3333px 크기로16px slot 중앙 표시 |
+| 비로그인/기본값 | 로그인 복귀, EMPTY_DEFAULT·COMPANY_DEFAULT·빈 SAVED | PASS. 비로그인 next=/bids 보존·계정 동작 숨김, 빈 계정 조건 적용 불가·reset 없음, 빈 현재 조건 저장 금지. COMPANY_DEFAULT 비어 있지 않으면 적용/저장 가능하고 일반 조회/적용으로 회사/계정 쓰기 없음 |
+| 수동 적용/저장 | 목록 변경·내 맞춤과 명시적 저장을 분리 | PASS. 목록 편집/적용 뒤 저장 snapshot 불변, 명시적 저장 뒤 SAVED1·동일 조건 저장 비활성·dirty면 활성. 기존 적용 후 숨김 조건 유지 |
+| loading/busy | 인증/필터 조회 중·저장 중 | HTTP 대역 PASS. 적용/저장 비활성, 저장 중 중복 클릭1회 요청·expectedVersion=null→SAVED1, 기존 source와 안내 보존 |
+| 실패/권한/충돌 | GET503→명시 재조회, PUT503/409/401/403, reset409, auth503→명시 재확인 | HTTP 대역13상태+회사 적용/명시저장·403 추가2흐름 PASS. PUT503/409 각1시도·401은 refresh 뒤2시도, expectedVersion3·snapshot/URL 불변·자동 재저장 없음, 충돌 최신값 조회·reset dialog 종료, auth 오류에 계정 쓰기 숨김 |
+| reset/reload/계정 | 초기화 뒤 빈 SAVED·원본 계정 격리 | mock PASS. version2 빈 SAVED가 reload 후 유지·회사 기본값 자동 적용 없음, 계정2 EMPTY_DEFAULT/null과 계정1 SAVED2 분리. reset 자체 교정은 DEV-63의 소유 |
+| 모바일/키보드 | 320/390px 줄바꿈·도구 순서·Enter/Space·Tab/Shift+Tab·Escape | PASS. 최종 두 viewport 모두 page scrollWidth=viewport, 테이블은 내부 스크롤. dialog 초점 순환/닫기 뒤 초기화 trigger 복귀. 미제공 모바일 원본과1:1 시각 PASS는 아님 |
+| view/빈 목록·경계 | ALL 전용 도구·빈 결과·외부 요청 차단 | 최종 mock6흐름 PASS. closing/result에 계정 도구 없음, 빈 결과에도 ALL 도구 유지. 교정 후 브라우저219로컬 요청·업무 API0·외부0·pageerror0, server fetch0. 최종 캡처까지282로컬·외부0. HTTP13상태 종료 시 공통 브라우저 누적 로컬788/대역56·외부0·pageerror0. 추가2흐름도 외부/pageerror0이며 API 구성 서버 전체 fetch71/외부0 |
+| 자동 검사 | 실제 package scripts | 187 tests/11files·lint·API/mock/hybrid build·build-storybook·diff-check PASS. 공급원/config/DTO 변경 없음 |
+| 실제 API | 기존 PBF-01~12 | **미실행·실제0신규통과/12차단 유지.** 실행 대응·disposable 계정/공고 기대값·업무 변경/잔존/복구/안전한 오류 자원은 기존 QA-10 재개 Gate 필요 |
+
+- 검증 환경 한계/교정: 두 번째 mirror 의존성 복제 완료 전 build의 `next` 미발견은 완료 확인 후 재실행 PASS. 1차 mock 요청 관측 시점과 같은 mirror의 후속 구성 build가 겹쳤으므로 그 결과를 최종 근거로 쓰지 않았다. mock 프로세스를 중지하고 마지막 mock build→새 프로세스/외부 fetch guard→전체6흐름/캡처 순서로 다시 검증했으며 이후 artifact를 수정하지 않았다. 해당 환경 조치2회와 아래 제품 자동 수정1/3을 구분한다. Aside 화면/키보드 검증과 가로채기 미지원으로 보완한 Playwright 관측을 구분한다.
+- 기존 실제 QA case·원문·차단·POL-02 미결과 승인 예외는 그대로다. 이 새 로컬 표가 과거 실제 통과/대기/차단을 덮어쓰지 않는다. 소유 mock 공간/브라우저·검증 프로세스 정리는 Task 종료 기록에서 확인한다.
+
+- 1차 독립 verifier FAIL/Major1을 보존한다. 적용 버튼이 rootRef 안으로 이동해 바깥 클릭 닫기가 차단됐고, 실제 Next에서 지역 미저장 draft→내 맞춤 뒤 잔존을 재현했다. render callback으로 close→기존 apply 순서를 명시했다. 교정 후 pointer/Enter/Space3입력에서 닫힘·재개방 draft 폐기·계정 불변 PASS,187 tests/lint·API/mock/hybrid build·Storybook 및 기존 mock6/HTTP13+2/키보드·계정 격리/캡처도 다시 PASS했다. 최종 근거는 `*-corrected-result.json`, `popover-after-result.json`과 `*-corrected.log`/`test-final.log`/`lint-final.log`다. 제품 자동 수정1/3이며 이전 개별 동작 PASS를 이 회귀의 통과로 사용하지 않는다.
