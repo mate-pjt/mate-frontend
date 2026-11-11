@@ -178,3 +178,10 @@
 - 종료 diff 준비: 독립 verifier1 PASS·Blocker/Major/Minor0를 확보했다. WBS의 POL-06 완료/현재 없음·다음 POL-07 준비/선정 이유·첫 행동과 본 체크리스트를 기록했다. 기존 DEV-08 필수 차단/12미실행·타 Task 예외는 유지한다. 다음 첫 행동은 종료 diff의 문서 검사/primary ai-review·read-only verifier freshness 후 목적별 commit·PR/head CI·정상 merge·main FF다. 자동 수정1/3, 실제 앱/API/운영/배포0건.
 
 - 종료 문서 검증: `validate_docs.py --final` 19/19 PASS·diff-check PASS. primary가 WBS/체크리스트/다음 POL-07과 검토 문서 변경을 포함한6파일을 다시 검토해 ai-review 여섯 섹션 PASS를 기록했다. 최종 read-only verifier freshness 결과는 로컬 report/receipt와 PR/최종 보고에서 확인하며 수행 전 PASS를 선기록하지 않는다. 이후 내용이 바뀌면 해당 검증/리뷰를 재실행한다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-06](../audits/2026-11-11.md#cf-06) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 서버 기본 profile의 primaryIndustries와 중앙 다중 주력업종 정책을 확인했다. 프론트의 단일 필드 누락은 DEV-60으로 분리한다.
+- 추가 완료/재개 기준: 이 정책의 확정 v1·DEV-08의 leaf권한/결측/배포·합성 자원 Gate는 보존하며 이번 source/schema 접근을 실제 응답/통합 PASS로 세지 않는다.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
