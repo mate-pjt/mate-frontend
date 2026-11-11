@@ -15,9 +15,9 @@ function entries(now: number) {
     const id = String(10001 + index);
     const kind = (["construction", "service", "purchase"] as const)[index % 3];
     const closed = index % 4 === 3;
-    const close = now + (closed ? -2 : index % 4 === 0 ? 1 : 8) * 86400_000;
-    const begin = now - (index + 1) * 86400_000;
-    const published = begin - 86400_000;
+    const close = now + (closed ? -2 - index % 3 : index % 4 === 0 ? 1 : 8) * 86400_000;
+    const begin = now + (index % 4 === 1 ? 1 : -(index + 1)) * 86400_000;
+    const published = now - (index + 2) * 86400_000;
     const region = mockBidOptions.regionOptions[index % 2];
     const industry = mockBidOptions.industryOptions[index % 2];
     const contract = mockBidOptions.contractMethods[index % 4];
@@ -44,9 +44,12 @@ function entries(now: number) {
 }
 function matches(entry: ReturnType<typeof entries>[number], query: BidListQuery, now: number): boolean {
   const { item, bid } = entry;
+  const close = Date.parse(bid.schedule.bidCloseAt!);
   if (query.view === "result" && !entry.closed) return false;
-  if (query.view === "closing" && (entry.closed || Date.parse(bid.schedule.bidCloseAt!) > now + 3 * 86400_000)) return false;
-  if (!item.title.toLocaleLowerCase("ko-KR").includes(query.query.toLocaleLowerCase("ko-KR"))) return false;
+  if (query.view !== "result" && (entry.closed || close <= now)) return false;
+  if (query.view === "closing" && close > now + 3 * 86400_000) return false;
+  const keyword = query.query.trim().toLocaleLowerCase("ko-KR");
+  if (![item.title, item.noticeNumber, item.noticeAgencyName, item.demandAgencyName].some(value => value?.toLocaleLowerCase("ko-KR").includes(keyword))) return false;
   const filter = query.personalFilter;
   if (filter && query.view === "all") {
     const type = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" }[item.kind];
@@ -88,6 +91,7 @@ function matches(entry: ReturnType<typeof entries>[number], query: BidListQuery,
 }
 
 export function createMockBidRepository(now: () => number = Date.now, scenario = "default"): BidListRepository & BidDetailRepository {
+  const all = entries(now());
   async function available() { if (scenario === "slow") await new Promise(resolve => setTimeout(resolve, 250)); if (scenario === "error") throw new Error("개발 시나리오: 입찰공고를 불러오지 못했습니다."); }
   function section<T>(name: string, data: T): DetailSection<T> { return scenario === "partial-error" || scenario === `${name}-error` ? { status: "error", data: null } : { status: "ready", data }; }
   return {
@@ -97,13 +101,13 @@ export function createMockBidRepository(now: () => number = Date.now, scenario =
       if (query.view === "recommended") throw new Error("맞춤 입찰공고 목록 API는 준비 중입니다.");
       if (query.agency) throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       const time = now();
-      const filtered = scenario === "empty" ? [] : entries(time).filter(entry => matches(entry, query, time));
+      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time));
       filtered.sort((a, b) => query.view === "result" ? Date.parse(b.bid.schedule.openAt!) - Date.parse(a.bid.schedule.openAt!) : Date.parse(a.bid.schedule.bidCloseAt!) - Date.parse(b.bid.schedule.bidCloseAt!));
       return { items: filtered.slice((query.page - 1) * query.size, query.page * query.size).map(entry => entry.item), totalCount: filtered.length, page: query.page, size: query.size };
     },
     async getBidDetail(query): Promise<BidDetailPageData | null> {
       await available();
-      const all = entries(now()); const entry = scenario === "empty" ? null : all.find(entry => entry.item.id === query.id);
+      const entry = scenario === "empty" ? null : all.find(entry => entry.item.id === query.id);
       if (!entry || (query.classificationNo !== null && !entry.bid.classifications.includes(query.classificationNo))) return null;
       const bid = { ...entry.bid, classificationNo: query.classificationNo ?? "1" };
       const results = entry.closed ? [{ id: `${query.id}1`, classificationNo: bid.classificationNo, round: "1", status: "AWARDED", openedAt: bid.schedule.openAt, plannedOpenAt: bid.schedule.openAt, participantCount: 25, openingMessage: null, openingFirstPlaceName: "가상 낙찰회사", openingFirstPlaceAmount: entry.item.successfulBidAmount ?? null, openingFirstPlaceRate: 88.12, winnerName: "가상 낙찰회사", winningAmount: entry.item.successfulBidAmount ?? null, winningRate: 88.12, failingReason: null, rebidReason: null }] : [];

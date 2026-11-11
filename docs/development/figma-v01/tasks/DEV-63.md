@@ -45,3 +45,9 @@
 - 이 Task의 구현/자동·브라우저/실제 QA·Review Gate는 **미실행/미판정**이다. 감사 문서 검토를 구현 검증으로 대신하지 않는다.
 - 자동 수정 시도0/3. 실패 시 원인·최소 수정·재검증을 순서대로 기록한다.
 - 문서 갱신 여부와 프로세스/데이터 복구, 미커밋/Git 전달 범위는 실행 시 기록한다. 상태/다음 작업은 WBS에서만 갱신한다.
+
+## 2026-11-11 · DEV-65 종료의 다음 Gate 인계
+
+- 선정 근거: 남은 WBS P0·선행 QA-17 main 반영. DEV-65의 독립된 공개 mock 교정/검증 뒤 이 Task의 reset 빈 SAVED/source/version을 다음 Gate 후보로 선정했다. QA-10/POL-02의 Major·실제 자원 차단과 기존 예외를 면제하지 않는다.
+- 다음 첫 행동: 이 기록과 감사 CF-09·POL-02/QA-10의 승인/재개 조건을 읽고, 현행 소유 source/개발 Swagger의 reset source/version/빈 snapshot 계약과 mock·HTTP 대역·검증 자료를 비교해 Brief를 제시한다. 실제 reset은 disposable 계정/사용·변경·잔존·복구 조건과 승인 확인 후 별도로 수행한다.
+- 이번에는 선정/인계 문구만 추가했다. 이 Task의 현행 source 조사·구현/수정·테스트·실제 API/reset·Git 전달은 시작하지 않았으며 현재/다음/상태는 WBS만 관리한다.

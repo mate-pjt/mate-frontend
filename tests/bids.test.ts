@@ -25,6 +25,87 @@ describe("공개 입찰 Repository", () => {
     const next = await repo.getBidList({ ...query, size: 1, page: 2, personalFilter: filter }); expect(next.items[0].id).not.toBe(result.items[0].id);
     expect((await repo.getBidList({ ...query, personalFilter: { ...filter, dateFrom: "2099-01-01" } })).totalCount).toBe(0);
   });
+  it("공고명·공고번호·공고기관·수요기관을 부분 검색하고 공백·대소문자를 정규화한다", async () => {
+    const repo = createMockBidRepository(() => testNow);
+    const construction = await repo.getBidList({ ...query, query: "  시설 공사  ", size: 100 });
+    expect(construction.items.length).toBeGreaterThan(0);
+    expect(construction.items.every(item => item.kind === "construction")).toBe(true);
+    for (const keyword of ["MOCK-10001-00", "  mock-10001-00  ", "10001"]) {
+      expect((await repo.getBidList({ ...query, query: keyword })).items.map(item => item.id)).toEqual(["10001"]);
+    }
+    for (const keyword of ["발주기관", "수요기관", "   "]) {
+      expect(await repo.getBidList({ ...query, query: keyword, size: 100 })).toEqual(await repo.getBidList({ ...query, size: 100 }));
+    }
+    expect((await repo.getBidList({ ...query, query: "없는공고-99999" })).totalCount).toBe(0);
+  });
+  it("ALL은 시작 전·진행 중을 포함하고 결과·마감 행을 제외한다", async () => {
+    let time = testNow;
+    const repo = createMockBidRepository(() => time);
+    const all = await repo.getBidList({ ...query, size: 100 });
+    expect(all.totalCount).toBe(27);
+    expect(all.items.map(item => item.id)).toContain("10002");
+    expect((await repo.getBidDetail(detailQuery("10002")))?.bid.schedule.bidBeginAt).toBe("2030.06.02 10:00");
+    expect(all.items.map(item => item.id)).toContain("10001");
+    expect(all.items.every(item => item.winningCompany === null)).toBe(true);
+    for (const id of ["10004", "10016", "10028"]) expect(all.items.map(item => item.id)).not.toContain(id);
+    time += 86400_000;
+    const closedWithoutResult = await repo.getBidList({ ...query, query: "MOCK-10001-00" });
+    expect(closedWithoutResult.totalCount).toBe(0);
+    expect((await repo.getBidList({ ...query, view: "result", query: "MOCK-10001-00" })).totalCount).toBe(0);
+    expect((await repo.getBidDetail(detailQuery("10001")))?.bid.schedule.bidCloseAt).toBe("2030.06.02 10:00");
+    time = testNow + 8 * 86400_000;
+    expect((await repo.getBidList(query)).totalCount).toBe(0);
+  });
+  it("CLOSING_SOON은 now를 제외하고 3일 상한을 포함하며 시작 전도 허용한다", async () => {
+    let time = testNow;
+    const repo = createMockBidRepository(() => time);
+    const closingQuery = { ...query, view: "closing" as const, query: "MOCK-10001-00" };
+    expect((await repo.getBidList({ ...query, view: "closing", size: 100 })).items.map(item => item.id)).toEqual(["10001", "10005", "10009", "10013", "10017", "10021", "10025", "10029", "10033"]);
+    time = testNow - 2 * 86400_000 - 1;
+    expect((await repo.getBidList(closingQuery)).totalCount).toBe(0);
+    time += 1;
+    expect((await repo.getBidList(closingQuery)).totalCount).toBe(1);
+    time = testNow + 86400_000 - 1;
+    expect((await repo.getBidList(closingQuery)).totalCount).toBe(1);
+    time += 1;
+    expect((await repo.getBidList(closingQuery)).totalCount).toBe(0);
+    time += 1;
+    expect((await repo.getBidList(closingQuery)).totalCount).toBe(0);
+  });
+  it.each(["all", "closing", "result"] as const)("%s의 정렬·동률·count/page와 반복 조회가 일치한다", async view => {
+    const repo = createMockBidRepository(() => testNow);
+    const all = await repo.getBidList({ ...query, view, size: 100 });
+    const dates = all.items.map(item => view === "result" ? item.openedAt : item.closesAt);
+    expect(dates).toEqual([...dates].sort((a, b) => view === "result" ? b!.localeCompare(a!) : a!.localeCompare(b!)));
+    for (let i = 1; i < dates.length; i++) if (dates[i] === dates[i - 1]) expect(Number(all.items[i].id)).toBeGreaterThan(Number(all.items[i - 1].id));
+    const pages = await Promise.all(Array.from({ length: Math.ceil(all.totalCount / 5) }, (_, i) => repo.getBidList({ ...query, view, page: i + 1, size: 5 })));
+    expect(pages.flatMap(page => page.items)).toEqual(all.items);
+    expect(pages.every((page, i) => page.totalCount === all.totalCount && page.page === i + 1 && page.size === 5)).toBe(true);
+    expect(new Set(all.items.map(item => item.id)).size).toBe(all.totalCount);
+    expect((await repo.getBidList({ ...query, view, page: pages.length + 1, size: 5 })).items).toEqual([]);
+    expect(await repo.getBidList({ ...query, view, size: 100 })).toEqual(all);
+    if (view === "result") expect(all.items.map(item => item.id)).toEqual(["10004", "10016", "10028", "10008", "10020", "10032", "10012", "10024", "10036"]);
+    else expect(all.items.every(item => item.winningCompany === null)).toBe(true);
+  });
+  it("홈9행은 ALL 선두와 같고 공개 검색은 view·기본/개인 필터와 AND 결합한다", async () => {
+    const repo = createMockBidRepository(() => testNow);
+    expect((await repo.getBidList({ ...query, size: 9 })).items).toEqual((await repo.getBidList({ ...query, size: 100 })).items.slice(0, 9));
+    for (const view of ["all", "closing", "result"] as const) {
+      const all = await repo.getBidList({ ...query, view, size: 100 });
+      expect(await repo.getBidList({ ...query, view, query: "가상 발주기관", size: 100 })).toEqual(all);
+      expect((await repo.getBidList({ ...query, view, query: "MOCK-10004-00" })).totalCount).toBe(view === "result" ? 1 : 0);
+    }
+    expect((await repo.getBidList({ ...query, query: "MOCK-10001-00", category: "service" })).totalCount).toBe(0);
+    expect((await repo.getBidList({ ...query, query: "MOCK-10001-00", personalFilter: { ...emptyPersonalFilter(), bidTypes: ["SERVICE"] } })).totalCount).toBe(0);
+    expect((await repo.getBidList({ ...query, query: "MOCK-10001-00", personalFilter: emptyPersonalFilter() })).totalCount).toBe(1);
+  });
+  it("빈·오류 시나리오와 미지원 조회의 경계를 유지한다", async () => {
+    expect((await createMockBidRepository(() => testNow, "empty").getBidList(query)).items).toEqual([]);
+    await expect(createMockBidRepository(() => testNow, "error").getBidList(query)).rejects.toThrow("불러오지 못했습니다");
+    const repo = createMockBidRepository(() => testNow);
+    await expect(repo.getBidList({ ...query, view: "recommended" })).rejects.toThrow("준비 중");
+    await expect(repo.getBidList({ ...query, agency: "가상" })).rejects.toThrow("기관 단독");
+  });
   it("개찰 참여 업체 더 보기, 부분 실패, 빈 결과와 nullable 금액을 처리한다", async () => {
     const repo = createMockBidRepository(() => testNow); const results = await repo.getBidList({ ...query, view: "result" });
     const detail = await repo.getBidDetail({ ...detailQuery(results.items[0].id), participantsPage: 2 });
