@@ -56,9 +56,9 @@
 | **S01** · 설정 첫 화면·메뉴·로그아웃 | P2 | 구현 / 일부 구현 / 인증 연결 | 새 mock 메뉴 확인 | [DEV-56](tasks/DEV-56.md) | [QA-14](tasks/QA-14.md) | [POL-29](tasks/POL-29.md) |
 | **S02** · 계정 정보 조회/관리 | P2 | 카드만 / 미구현 / 관리 계약 없음 | 코드 대조 | [DEV-38](tasks/DEV-38.md) | — | [POL-17](tasks/POL-17.md) |
 | **S03** · 계정 탈퇴·확인·인증·철회 | P2 | 공용 팝업만 / 실제 계정 흐름 없음 / 탈퇴 계약 없음 | 코드 대조 | [DEV-39](tasks/DEV-39.md) / [DEV-40](tasks/DEV-40.md) | — | [POL-18](tasks/POL-18.md) |
-| **S04** · 맞춤 이메일 ON/OFF | P0 | 구현 / 구현 / API·mock | 기존 live 일부 통과·새 mock 확인 | [DEV-62](tasks/DEV-62.md) | [QA-12](tasks/QA-12.md) / [QA-16](tasks/QA-16.md) | [POL-29](tasks/POL-29.md) |
+| **S04** · 맞춤 이메일 ON/OFF | P0 | 구현 / 구현 / API·mock | 기존 live 일부 통과·새 mock 확인 | [DEV-62](tasks/DEV-62.md) / [DEV-66](tasks/DEV-66.md) | [QA-12](tasks/QA-12.md) / [QA-16](tasks/QA-16.md) | [POL-29](tasks/POL-29.md) |
 | **S05** · 대체 이메일 인증·재전송·전환 | P0 | 구현 / 구현 / API·mock | 계약 테스트·새 mock 확인 | — | [QA-13](tasks/QA-13.md) / [QA-16](tasks/QA-16.md) | — |
-| **S06** · 야간 수신·전역 공고 상세 알림 토글 | P2 | 현재 정책상 없음 / 정책 차이 / 정책에서 제외 | 현재 mate-docs 알림 정책 재확인 | — | — | [POL-19](tasks/POL-19.md) / [POL-29](tasks/POL-29.md) |
+| **S06** · 야간 수신·전역 공고 상세 알림 토글 | P2 | 현재 정책상 없음 / 정책 차이 / 정책에서 제외 | 현재 mate-docs 알림 정책 재확인 | [DEV-66](tasks/DEV-66.md) | — | [POL-19](tasks/POL-19.md) / [POL-29](tasks/POL-29.md) |
 | **S07** · 서비스 이용안내 진입 | P3 | 카드만 / 미연결 / 내용/경로 미정 | 코드 대조 | [DEV-49](tasks/DEV-49.md) | — | [POL-25](tasks/POL-25.md) |
 | **S08** · 의견 보내기·문의 경로 | P3 | 배너만 / 비활성 / 연결 없음 | 코드 대조 | [DEV-50](tasks/DEV-50.md) | — | [POL-26](tasks/POL-26.md) |
 | **S09** · mock 이메일 인증 시간 정책 | P2 | 구현 / 정책과 다름 / mock 10분/30초 | 현재 mate-docs §7 대조 | [DEV-41](tasks/DEV-41.md) | — | [POL-19](tasks/POL-19.md) |
@@ -80,7 +80,7 @@
 | **O09** · 가입 중 실적·인증 직접 수정 | P2 | 비활성 / 보류 / 프론트 수정 계약 없음 | 코드 대조 | [DEV-44](tasks/DEV-44.md) | — | [POL-21](tasks/POL-21.md) |
 | **O10** · 초대 preview·계정 불일치·수락/거절 | P0 | 구현 / 구현 / API·mock | 코드 대조 | [DEV-57](tasks/DEV-57.md) | [QA-08](tasks/QA-08.md) / [QA-16](tasks/QA-16.md) | — |
 | **O11** · 초대 수락 후 팀원 화면 이동 | P2 | 완료 화면 있음 / /bids로 대체 / 팀원 관리 미구현 | 코드 대조 | [DEV-33](tasks/DEV-33.md) | — | [POL-15](tasks/POL-15.md) |
-| **C01** · 색상·서체·버튼·입력·선택·체크·탭·카드·토스트 | P3 | 공용 기반 구현 / 대부분 소비됨 / 표시 컴포넌트 | 정적·대표 시각 비교 | [DOC-002](tasks/DOC-002.md) / [DEV-55](tasks/DEV-55.md) / [DEV-56](tasks/DEV-56.md) / [DEV-57](tasks/DEV-57.md) / [DEV-64](tasks/DEV-64.md) / [DEV-62](tasks/DEV-62.md) | [QA-15](tasks/QA-15.md) | [POL-29](tasks/POL-29.md) |
+| **C01** · 색상·서체·버튼·입력·선택·체크·탭·카드·토스트 | P3 | 공용 기반 구현 / 대부분 소비됨 / 표시 컴포넌트 | 정적·대표 시각 비교 | [DOC-002](tasks/DOC-002.md) / [DEV-55](tasks/DEV-55.md) / [DEV-56](tasks/DEV-56.md) / [DEV-57](tasks/DEV-57.md) / [DEV-64](tasks/DEV-64.md) / [DEV-62](tasks/DEV-62.md) / [DEV-66](tasks/DEV-66.md) | [QA-15](tasks/QA-15.md) | [POL-29](tasks/POL-29.md) |
 | **C02** · 정정·비밀번호·탈퇴·업로드 공용 팝업 | P2 | 컴포넌트 구현 / 일부 Storybook 전용 / 업무 API 없음 | 코드 대조 | [DEV-13](tasks/DEV-13.md) / [DEV-24](tasks/DEV-24.md) / [DEV-39](tasks/DEV-39.md) | — | [POL-08](tasks/POL-08.md) / [POL-17](tasks/POL-17.md) / [POL-18](tasks/POL-18.md) |
 | **C03** · OG 썸네일·브랜드 공유 메타데이터 | P3 | 기본 metadata / 시안 이미지 미연결 / 정적 | 코드 대조 | [DEV-53](tasks/DEV-53.md) | — | [POL-28](tasks/POL-28.md) |
 | **C04** · 상세 main 랜드마크 중첩 | P3 | 중첩됨 / 시각 동작은 가능 / 없음 | 브라우저 strict locator와 코드로 확인 | [DEV-54](tasks/DEV-54.md) | — | — |
@@ -120,3 +120,11 @@
 | [CF-23 · 관련 공고 기준 공고 상태 정책 충돌](audits/2026-11-11.md#cf-23) | [POL-30](tasks/POL-30.md) | [DEV-61](tasks/DEV-61.md) / [QA-03](tasks/QA-03.md) | D09 | 정책 원문 충돌 |
 
 QA-17은 원본 일부를 새로 구현하는 Task가 아니라 이번 전체 점검/계획 요구의 소유자다. POL-29는 시각 기준/예외 결정, POL-30은 관련 공고 정책 내부 충돌 해소, DEV-55~65는 좁게 분리한 수정 후보다. 기존 미구현·차단/보류를 새 Task로 중복 만들지 않았다. 감사/계획 검토는 원본 항목의 제품 PASS 또는 실제 QA 통과가 아니다.
+
+## 2026-11-11 · POL-29 최종 화면 결정 연결
+
+원본79개와 당시 UI/동작/데이터·검증 열은 그대로 보존한다. [POL-29 결정표](tasks/POL-29.md#pol-29-decisions)와 [상태/검증표](tasks/POL-29.md#pol-29-states)에 개별 승인·추천 철회·보류/재개를 연결했다.
+
+- CF-01/10: DEV-55/64의 정렬과 보조행/추가 분류 예외. CF-02/03: DEV-56/57의 Figma 이름·아이콘/프레임별 기준과 이름 계약 보류. CF-04: DEV-58의 기존 CTA/Figma 유지와 최종 문구 Gate.
+- CF-14/S04/S06/C01: Figma3설정 구성·미지원 스위치 disabled/tooltip과 프런트 연결 경계는 신규 DEV-66. POL-19는 도메인/활성화 계약, DEV-41은 인증시간, DEV-62는 기존 채널 안내를 유지한다. 기존113Task에 후보1개를 더한114개이며 제품/실제 QA 완료율로 세지 않는다.
+- 감사의 당시 ‘시각 승인 미확인’ 판정은 원본 이력으로 보존한다. 현재 선택과 남은 이름/문구/정책/API·실제 QA 한계는 POL-29·소유 Task에서 확인하고 상태는 WBS만 관리한다.
