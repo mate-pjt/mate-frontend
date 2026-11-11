@@ -115,6 +115,17 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Prevention rule: 외부 호출 전에 ai-failures의 해당 출력 경계 규칙부터 확인한다. `structuredContent.content`를 먼저 해석하고 명시적 필드 투영 후 출력한다. 전체 MCP 응답·중첩 원문·Git 작성자/서명/payload는 `text`/`notify`/증거 파일에 넘기지 않는다. 오류는 상태/안전한 요약만 표시한다.
 - Related files: `docs/development/figma-v01/tasks/POL-02.md`, `docs/development/figma-v01/reviews/POL-02.md`. 런타임·API·하네스 설정 변경은 없다.
 
+## 2026-11-11 - DEV-63 GitHub 작성자 메타데이터 원문 출력 재발
+
+- Task: DEV-63의 최신 backend dev ref 확인.
+- Expected behavior: 외부 조회 전 기존 출력 예방 규칙을 적용하고 SHA·경로·필요한 계약만 표시한다.
+- Actual failure: branch 응답 전체를 `text()`에 전달해 불필요한 공개 작성자 메타데이터·서명/payload가 도구 출력에 포함됐다. 실제 값은 복사하지 않는다. 환경파일·인증정보·실제 업무 응답을 읽은 사건과 구분한다.
+- Root cause: 독립 조회를 묶는 과정에서 중첩 connector 응답의 allowlist 투영을 빠뜨렸다. 기존 QA-10/POL-02와 같은 유형의 재발이다.
+- Detection command or review step: 원문 출력 직후 사용자에게 알리고 이후 응답을 필요한 필드로 투영했다. read-only verifier에도 한계를 전달한다.
+- Fix: GitHub branch/PR/CI 조회의 중첩 JSON을 내부에서 파싱한 뒤 SHA·병합 조건·check 상태만 출력한다. tree는 관련 경로, 파일은 필요한 코드/정책만 표시한다. 이미 발생한 출력이 삭제·무효화됐다고 주장하지 않는다.
+- Prevention rule: `Promise.allSettled` 결과도 응답 전체를 출력하지 않는다. 각 반환값에서 명시적 허용 필드를 먼저 추출한다. 오류 역시 상태/안전한 요약만 남긴다.
+- Related files: `docs/development/figma-v01/tasks/DEV-63.md`, `docs/development/figma-v01/reviews/DEV-63.md`. 제품·하네스 설정의 변경 사유로 확대하지 않는다.
+
 ## 2026-11-11 - 생성한 Markdown에 patch 접두문자 잔존
 
 - Task: QA-17 전수 점검 보고서와 검토 기록 생성.
