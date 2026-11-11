@@ -72,3 +72,10 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+## 2026-11-11 · QA-17 전수 점검 보완
+
+- 근거: [감사 CF-22](../audits/2026-11-11.md#cf-22) · [route/API·출처 인덱스](../audits/2026-11-11.json).
+- 범위/소유: 2026-11-11 Swagger의 등록 공고 목록은 category 필수 GENERAL/CORRECTED/CLOSED/RESULT_COMPLETED이며 ALL이 여전히 없다.
+- 추가 완료/재개 기준: counts.total/GENERAL/프론트 합산을 전체 서버 정렬·pagination의 대체로 쓰지 않는다. DEV-04/05의 기존 계약 차단 유지.
+- 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
