@@ -129,3 +129,28 @@
 | ADVP-04 | 동일 | 잘못된 날짜/금액/지역 결합, 실패/401/409, 로그아웃·계정 교체/늦은 응답 | 오류 입력은 적용/저장 차단·조용한 무시 없음; 충돌 최신값 재조회·무단 덮어쓰기/회사 merge 없음; 타 계정 조건/응답 격리 | 대기·안전한 오류·두 계정·복구 범위 필요 |
 
 다음 첫 행동: DEV-09 Gate에서 공개 지역/공동도급 계약·관련 자료부터 확인하고, 이후 날짜/금액 Task의 검증 범위를 각각 구체화한다. 이 기록은 개발 착수·실제 mutation 승인이나 기존 QA 면제가 아니다.
+
+
+<a id="dev-63-local-qa"></a>
+
+## DEV-63 · 2026-11-11 reset 로컬 교정과 검증
+
+[작업/계약](../development/figma-v01/tasks/DEV-63.md#dev-63-brief) · [검토](../development/figma-v01/reviews/DEV-63.md) · [WBS](../development/figma-v01/README.md).
+
+- 이전 QA-10의 **실제0통과·12차단**과 9월0통과·12대기·원래 case/승인 예외는 보존한다. 아래 PASS는 새 로컬 reset 교정의 증거이며 PBF 사례를 실제 API 통과로 전환하지 않는다. 과거 EMPTY_DEFAULT Major는 당시 기록이고 아래 교정 이후 mock/HTTP 대역 차이는 해소됐다. 실제 reset 응답·실행 SHA/fixture/사용·변경·잔존·복구 조건은 여전히 미확보다.
+- 실행 source: main `121ea30`에서 분기한 `fix/dev-63-personal-filter-reset`의 변경 source. 환경파일 없는 별도 mirror·Node22.20.0/pnpm11.3.0·Next16.2.9. localhost3163은 production mock build, 3164는 api profile Next dev + server/browser HTTP 대역이며 localhost4163 요청은 Playwright가 합성 응답으로 가로챘다. 실제 서버 mutation·OAuth·메일·문서 처리0건이다.
+- frame/상태: `/bids`의 [2048:58606](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2048-58606). 이번에는 기존 도구막대/대화상자의 저장/reset 동작만 검증했다. 새 시각 예외·pixel 정합성 승인이 아니며 화면 배치의 후속 소유는 DEV-55다. 새 정책 없이 ADR-0014·POL-02 D2의 빈 SAVED 의미를 교정했다.
+
+| 사례 | 실제 수행/결과 | 근거/한계 |
+| --- | --- | --- |
+| RESET-L01 | mock/HTTP 공통 저장→reset→재조회, SAVED/version2/빈값·같은 reset replay version 유지, 오래된 reset409 후 최신 저장값 보존 PASS | Node 계약 테스트. HTTP fetch 대역이며 실서버 아님 |
+| RESET-L02 | EMPTY_DEFAULT/COMPANY_DEFAULT에서 첫 reset은 SAVED/version1, canImportCompany false/true 보존·Repository 재생성/다른 계정 격리 PASS | 합성 회사 snapshot 주입. 회사 projection/import 구현을 새로 만들지 않음 |
+| RESET-L03 | mock409/503/401·reset 도중 계정 교체 및 HTTP401/409/503는 저장값 보존 PASS | HTTP POST/expectedVersion, 401 갱신 후1회 재시도 assertion 포함 |
+| RESET-B01 | 실제 Next mock 저장→reset→reload에서 빈 SAVED/version2 안내 유지, URL/목록 조건 유지 PASS | 새 합성 탭. 서버와 브라우저의 실제 API 통합 PASS가 아님 |
+| RESET-B02 | 합성 COMPANY_DEFAULT 주입→저장→reset→reload에서 SAVED/version2/canImportCompany=true·회사 기본값 미재적용, 계정2 전환에서 계정1 빈값 보존 PASS | UI에 실제 회사/API가 있다고 추정하지 않음 |
+| RESET-B03 | 기존 대화상자의 첫 포커스·Shift+Tab/Tab 순환·Escape/트리거 복귀 및390/320px 가로 넘침 없음 PASS | 실제 Next/Aside 화면. 도구막대 시각 차이의 DEV-55 범위는 그대로 |
+| RESET-W01 | 실제 Next + 브라우저 HTTP 대역503/409/401에서 저장 snapshot·URL·dirty 저장 버튼·공개 목록 보존 PASS | 409 재조회 안내, 401 reset2회(갱신 후1회 재시도), 실제 전송0/미정 endpoint0 |
+
+- 자동 검증: 전체187 tests·lint·api/mock/hybrid Preview build PASS. 기존 config/guard·스토리지·계정/DTO/architecture 회귀를 포함한다. shared UI/stories 변경이 없어 build-storybook은 미실행. `git diff --check`와 문서 검사는 Task/검토 기록에서 별도 확인한다.
+- 수행 한계/교정: 최초 mirror의 pnpm 의존성 확인·외부 symlink 제한을 기존 의존성 복제로 해결했다. 브라우저 대역의 지역 fixture에 없는 busan query는 목록 오류를 만들어 잘못된 시험 입력임을 확인한 뒤 기본 URL로 바로잡았다. 제품 수정으로 처리하지 않으며 실패를 PASS로 감추지 않는다. Aside 요청 가로채기 미지원으로 오류/네트워크 검증은 Playwright로 전환했다.
+- 실제 QA 재개: [QA-10 재개 표](../development/figma-v01/tasks/QA-10.md#qa-10-resume)의 disposable 계정·시작 snapshot/version·매칭 기대값·오류/401/409·업무 API 사용/변경·빈 SAVED 잔존/종료/복구 및 현재 frontend/backend 실행 대응과 승인을 확보한 뒤 PBF-01~12를 별도로 실행한다. 이번 결과로 POL-02 전체/DEV-03·DEV-45를 시작하거나 실제 QA 차단을 면제하지 않는다.

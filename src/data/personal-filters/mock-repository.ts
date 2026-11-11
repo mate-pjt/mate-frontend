@@ -1,4 +1,4 @@
-import { emptyPersonalFilter } from "@/features/bid-notice-filters/model";
+import { emptyPersonalFilter, samePersonalFilter } from "@/features/bid-notice-filters/model";
 import { ApiError } from "../shared/errors";
 import { mockAccount, type MockRuntime } from "../mock/runtime";
 import { isCount, isRecord } from "../mock/validation";
@@ -28,8 +28,11 @@ export function createMockPersonalFiltersRepository(runtime: MockRuntime): Perso
       runtime.store.write(account, "personal-filters", next); return next;
     },
     async resetPersonalFilter(access, expectedVersion) {
-      const account = await mockAccount(runtime, access, "personalFilters"); const current = read(account); checkVersion(current, expectedVersion);
-      const next: PersonalFilterSnapshot = { source: "EMPTY_DEFAULT", version: (current.version ?? 0) + 1, canImportCompany: false, filter: emptyPersonalFilter() };
+      const account = await mockAccount(runtime, access, "personalFilters"); const current = read(account);
+      const filter = emptyPersonalFilter();
+      if (runtime.scenario("personalFilters") !== "conflict" && current.source === "SAVED" && samePersonalFilter(current.filter, filter)) return current;
+      checkVersion(current, expectedVersion);
+      const next: PersonalFilterSnapshot = { source: "SAVED", version: (current.version ?? 0) + 1, canImportCompany: current.canImportCompany, filter };
       runtime.store.write(account, "personal-filters", next); return next;
     },
   };

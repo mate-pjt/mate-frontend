@@ -8,15 +8,15 @@ import { createHttpPersonalFiltersRepository } from "@/data/personal-filters/htt
 import { createMockPersonalFiltersRepository } from "@/data/personal-filters/mock-repository";
 import { createHttpNotificationSettingsRepository } from "@/data/notification-settings/http-repository";
 import { createMockNotificationSettingsRepository } from "@/data/notification-settings/mock-repository";
-import { emptyPersonalFilter } from "@/features/bid-notice-filters/model";
+import { emptyPersonalFilter, samePersonalFilter } from "@/features/bid-notice-filters/model";
 import type { PersonalFilterSnapshot } from "@/data/personal-filters/contracts";
 import { access, mockRuntime, ok, testNow } from "./helpers";
 
 // This emulates confirmed wire responses, and is not real backend integration.
-function wireServer(): typeof fetch {
+function wireServer(initialFilter?: PersonalFilterSnapshot): typeof fetch {
   const alerts: Record<string, { bidNoticeId: number; active: boolean; registeredAt: string | null }> = {};
   const notifications = Array.from({ length: 25 }, (_, i) => ({ notificationId: 50001+i, type: "ADMIN_DIRECT_NOTIFICATION", resourceId: 0, title: `가상 알림 ${i}`, body: "합성 응답", actionPath: null, createdAt: new Date(testNow).toISOString(), readAt: i < 22 ? null : new Date(testNow).toISOString() }));
-  let filter: PersonalFilterSnapshot = { source: "EMPTY_DEFAULT", version: null, canImportCompany: false, filter: emptyPersonalFilter() };
+  let filter: PersonalFilterSnapshot = structuredClone(initialFilter ?? { source: "EMPTY_DEFAULT", version: null, canImportCompany: false, filter: emptyPersonalFilter() });
   let email = { signupEmail: "demo1@example.test", alternateEmail: null as string | null, recipientType: "SIGNUP_EMAIL", recipientEmail: "demo1@example.test" }; let enabled = false; let pendingEmail = "";
   return async (input, init) => {
     const url = new URL(String(input)); const p = url.pathname; const method = init?.method ?? "GET"; const body = init?.body ? JSON.parse(String(init.body)) : {};
@@ -28,7 +28,13 @@ function wireServer(): typeof fetch {
     if (p.endsWith("/read")) { const value = notifications.find(n => String(n.notificationId) === p.split("/").at(-2))!; value.readAt = new Date(testNow).toISOString(); return ok(value); }
     if (p.endsWith("/notifications")) { const page = Number(url.searchParams.get("page")); return ok({ content: notifications.slice(page*20,(page+1)*20), page, size: 20, totalElements:25,totalPages:2,unreadCount:notifications.filter(n => n.readAt===null).length }); }
     if (p.includes("/bid-notice-filters/current")) {
-      if (method !== "GET") { if (filter.version !== body.expectedVersion) return ok(null,409); filter = { ...filter, source: p.endsWith("/reset") ? "EMPTY_DEFAULT" : "SAVED", version:(filter.version??0)+1,filter:p.endsWith("/reset") ? emptyPersonalFilter() : body.filter }; } return ok(filter);
+      if (method !== "GET") {
+        const reset = p.endsWith("/reset");
+        if (reset && filter.source === "SAVED" && samePersonalFilter(filter.filter, emptyPersonalFilter())) return ok(filter);
+        if (filter.version !== body.expectedVersion) return ok(null,409);
+        filter = { ...filter, source: "SAVED", version: (filter.version ?? 0) + 1, filter: reset ? emptyPersonalFilter() : body.filter };
+      }
+      return ok(filter);
     }
     if (p.endsWith("/matched-bid-notice-email-settings")) { if (method === "PATCH") enabled = body.enabled; return ok({ enabled }); }
     if (p.endsWith("/notification-email-settings")) { if (method === "PATCH") email = { ...email,recipientType:body.recipientType,recipientEmail:body.recipientType === "SIGNUP_EMAIL" ? email.signupEmail : email.alternateEmail! }; return ok(email); }
@@ -43,6 +49,49 @@ for (const source of ["mock","http"] as const) describe(`${source} 동일 Reposi
     : { alerts:createHttpBidAlertsRepository(http),notifications:createHttpNotificationsRepository(http),filters:createHttpPersonalFiltersRepository(http),email:createHttpNotificationSettingsRepository(http) }; };
   it("구독 변경 뒤 조회가 일치한다",async()=>{const{alerts}=repos();expect((await alerts.getBidNoticeAlert(access,"10001")).active).toBe(false);await alerts.activateBidNoticeAlert(access,"10001");expect((await alerts.getBidNoticeAlert(access,"10001")).active).toBe(true);await alerts.deactivateBidNoticeAlert(access,"10001");expect((await alerts.getBidNoticeAlert(access,"10001")).active).toBe(false);});
   it("읽음 변경 뒤 목록과 미확인 건수가 일치한다",async()=>{const{notifications}=repos();expect((await notifications.getNotifications(access,0)).items).toHaveLength(20);expect((await notifications.getNotifications(access,1)).items).toHaveLength(5);const count=await notifications.getUnreadNotificationCount(access);await notifications.markNotificationRead(access,"50001");expect(await notifications.getUnreadNotificationCount(access)).toBe(count-1);expect((await notifications.getNotifications(access,0)).items[0].unread).toBe(false);});
-  it("필터 저장·충돌·초기화 계약이 일치한다",async()=>{const{filters}=repos();const value={...emptyPersonalFilter(),regionCodes:["11"]};const saved=await filters.savePersonalFilter(access,null,value);expect((await filters.getPersonalFilter(access)).filter).toEqual(value);await expect(filters.savePersonalFilter(access,null,value)).rejects.toMatchObject({status:409});expect((await filters.resetPersonalFilter(access,saved.version)).filter).toEqual(emptyPersonalFilter());});
+  it("필터 저장·충돌·초기화 계약이 일치한다", async () => {
+    const { filters } = repos(); const value = { ...emptyPersonalFilter(), regionCodes: ["11"] };
+    const saved = await filters.savePersonalFilter(access, null, value);
+    expect(saved).toEqual({ source: "SAVED", version: 1, canImportCompany: false, filter: value });
+    await expect(filters.savePersonalFilter(access, null, value)).rejects.toMatchObject({ status: 409 });
+    expect(await filters.getPersonalFilter(access)).toEqual(saved);
+    const cleared = await filters.resetPersonalFilter(access, saved.version);
+    expect(cleared).toEqual({ source: "SAVED", version: 2, canImportCompany: false, filter: emptyPersonalFilter() });
+    expect(await filters.getPersonalFilter(access)).toEqual(cleared);
+    expect(await filters.resetPersonalFilter(access, saved.version)).toEqual(cleared);
+    const latest = await filters.savePersonalFilter(access, cleared.version, value);
+    await expect(filters.resetPersonalFilter(access, saved.version)).rejects.toMatchObject({ status: 409 });
+    expect(await filters.getPersonalFilter(access)).toEqual(latest);
+  });
   it("이메일 인증·주소 변경·ON/OFF 계약이 일치한다",async()=>{const{email}=repos();const verification=await email.startNotificationEmailVerification(access,"recipient@example.test");expect((await email.confirmNotificationEmailVerification(access,verification.verificationId,"1234")).recipientEmail).toBe("recipient@example.test");await email.changeMatchedBidEmailSetting(access,true);expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);await email.changeNotificationEmailRecipient(access,"SIGNUP_EMAIL");expect((await email.getNotificationEmailSetting(access)).recipientEmail).toBe("demo1@example.test");expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);});
+});
+
+describe("개인 필터 reset HTTP 대역 경계 (실제 API 아님)", () => {
+  it.each([false, true])("기본값에서 빈 SAVED version1과 회사 가져오기 가능 여부를 보존한다 (회사=%s)", async (company) => {
+    const server = wireServer({ source: company ? "COMPANY_DEFAULT" : "EMPTY_DEFAULT", version: null, canImportCompany: company, filter: { ...emptyPersonalFilter(), regionCodes: company ? ["11"] : [] } });
+    const repo = createHttpPersonalFiltersRepository(createHttpClient("https://synthetic-api.test", server));
+    const cleared = await repo.resetPersonalFilter(access, null);
+    expect(cleared).toEqual({ source: "SAVED", version: 1, canImportCompany: company, filter: emptyPersonalFilter() });
+    const restored = createHttpPersonalFiltersRepository(createHttpClient("https://synthetic-api.test", server));
+    expect(await restored.getPersonalFilter(access)).toEqual(cleared);
+    expect(await restored.resetPersonalFilter(access, null)).toEqual(cleared);
+  });
+  it.each([401, 409, 503])("reset HTTP %s 오류 뒤 서버 snapshot을 보존하고 요청 method/version을 확인한다", async (status) => {
+    const server = wireServer(); let failed = false; let resetCalls = 0;
+    const http = createHttpClient("https://synthetic-api.test", async (input, init) => {
+      if (String(input).endsWith("/reset")) {
+        resetCalls++;
+        expect(init?.method).toBe("POST");
+        expect(JSON.parse(String(init?.body))).toEqual({ expectedVersion: 1 });
+        if (failed) return ok(null, status);
+      }
+      return server(input, init);
+    });
+    const repo = createHttpPersonalFiltersRepository(http);
+    const saved = await repo.savePersonalFilter(access, null, { ...emptyPersonalFilter(), regionCodes: ["11"] });
+    failed = true;
+    await expect(repo.resetPersonalFilter(access, saved.version)).rejects.toMatchObject({ status });
+    expect(resetCalls).toBe(status === 401 ? 2 : 1);
+    expect(await repo.getPersonalFilter(access)).toEqual(saved);
+  });
 });

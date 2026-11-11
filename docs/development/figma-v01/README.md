@@ -4,11 +4,13 @@
 
 | 확인할 것 | 현재 값 |
 | --- | --- |
-| 갱신일 | 2026-11-11 KST |
-| 현재 작업 | 없음 — DEV-65 mock 교정·검증·문서/1차 Review Gate PASS. 종료 메타데이터 freshness와 실제 PR/head CI·병합/로컬 동기화는 [검토 기록](reviews/DEV-65.md)·delivery receipt/최종 보고로 확인. 실제 API 통합 PASS 아님 |
-| 다음 작업 | [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) — 남은 P0·QA-17 선행 반영을 근거로 다음 Gate만 선정, 구현 미착수. QA-10/POL-02 reset Major·실제 QA 차단과 DEV-09 대기/기존 예외 보존 |
-| 다음 첫 행동 | 새 대화에서 DEV-63·CF-09·POL-02/QA-10의 reset 계약/재개 조건을 읽고 현행 소유 source·현재 Swagger의 source/version/빈 snapshot을 비교하는 Brief 제시. 실제 reset은 합성 계정/사용·변경·잔존·복구 승인 전 미실행 |
-| 이번 승인 범위 | 2026-11-11 사용자: DEV-65 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-65.md#dev-65-brief) |
+| 갱신일 | 2026-11-12 KST |
+| 현재 작업 | 없음 — DEV-63 로컬 교정·187 tests/구성별 build·실제 Next mock/HTTP 대역·문서/1차 두 리뷰 PASS. 종료 메타데이터 freshness·최종 PR/head CI·병합/로컬 동기화는 [검토 기록](reviews/DEV-63.md)·외부 receipt/최종 보고에서 별도 확인. 실제 API 통합 PASS 아님 |
+| 다음 작업 | [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) — 남은 P0 자원/정책 차단을 유지하고 선행 POL-29 완료·reset 로컬 교정 뒤 같은 화면의 독립된 P1 목표로 다음 Gate만 선정. 구현 미착수 |
+| 다음 첫 행동 | 새 대화에서 DEV-55·POL-29/CF-01의 frame2048:58606·화면 예외/보류와 현행 도구막대를 대조해 Brief 제시. 저장/reset/source/version·실제 QA 차단은 유지하며 실제 mutation은 별도 자원/승인 확인 전 미실행 |
+| 이번 승인 범위 | 2026-11-11 사용자: DEV-63 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-63.md#dev-63-brief) |
+| 앞선 DEV-65 승인 범위 | 2026-11-11 사용자: DEV-65 개발/검증/리뷰·Git 전달. DEV-63은 당시 선정/인계만이었으며 이번 실행 승인과 구분. [당시 기록](tasks/DEV-65.md#dev-65-brief) |
+| DEV-63 교정 후 남은 경계 | 기존 QA-10/POL-02의 reset Major 기록은 당시 이력으로 보존한다. 2026-11-12 mock·HTTP 대역의 빈 SAVED/version/replay·회사 여부 차이는 [DEV-63](tasks/DEV-63.md#dev-63-verification)에서 교정·로컬 검증. 실제 reset wire/실행 대응·QA-10 실제12차단·POL-02 전체 계약 미결을 해소한 것은 아님 |
 | 앞선 POL-29 승인 범위 | 2026-11-11 사용자: POL-29 정책 조사/결정·문서 검증/리뷰·Git 전달. 다음 DEV-65는 당시 선정/인계만. 이번 DEV-65 실행 승인과 구분해 [당시 기록](tasks/POL-29.md)에 보존 |
 | 앞선 QA-17 전달 승인 | 2026-11-11 후속 사용자: QA-17 문서·공통 시작 프롬프트의 목적별 커밋·push·PR·CI 확인·main 병합·로컬 main 동기화. 당시 제품·실제 업무/운영/배포·POL-29 실행 제외. 후속 POL-29 및 이번 DEV-65 승인과 구분해 [QA-17 기록](tasks/QA-17.md)에 보존 |
 | 앞선 감사 승인 범위 | 기존 구현 전체 점검·차이 기록·Task/WBS/연결표만 정리. Git 제외·미커밋 종료는 당시 이력이며 위 QA-17 후속 승인으로 해당 문서 전달 범위만 추가 |
@@ -203,7 +205,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | --- | --- | --- | --- | --- | --- |
 | [POL-29 · 기존 구현의 화면별 Figma 기준·의도적 차이 결정](tasks/POL-29.md) | 정책 결정 | P1 | 완료 | L11, C01, O01, O04, H01, H03, D01, D02, S04, S06 | [QA-17](tasks/QA-17.md) |
 | [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) | 정책 결정 | P1 | 대기 | D09 | [QA-17](tasks/QA-17.md) |
-| [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) | 개발 | P1 | 대기 | L11, L05, C01 | [POL-29](tasks/POL-29.md) |
+| [DEV-55 · 개인 필터 도구막대의 Figma 정합성](tasks/DEV-55.md) | 개발 | P1 | 준비 | L11, L05, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-56 · 공통 헤더의 식별·상태 UI 정합성](tasks/DEV-56.md) | 개발 | P3 | 차단 | C01, S01, O01 | [POL-29](tasks/POL-29.md) |
 | [DEV-57 · 가입·시작 선택 화면의 프레임별 UI 정합성](tasks/DEV-57.md) | 개발 | P1 | 차단 | O01, O04, O05, O10, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-58 · 홈 소개·CTA와 기능 제공 범위 정합성](tasks/DEV-58.md) | 개발 | P1 | 차단 | H01, H03 | [POL-29](tasks/POL-29.md) |
@@ -211,7 +213,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-60 · 회사 기본 정보의 복수 주력업종 보존·표시](tasks/DEV-60.md) | 개발 | P1 | 대기 | M03 | [QA-17](tasks/QA-17.md) |
 | [DEV-61 · 관련 공고 mock의 동일 업종·품목 정책 정합성](tasks/DEV-61.md) | 개발 | P1 | 대기 | D09 | [POL-30](tasks/POL-30.md) |
 | [DEV-62 · 알림 채널·관리 기능 안내 문구 정합성](tasks/DEV-62.md) | 개발 | P1 | 대기 | D04, A01, N02, S04, C01 | [QA-17](tasks/QA-17.md) |
-| [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) | 개발 | P0 | 준비 | L11 | [QA-17](tasks/QA-17.md) |
+| [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) | 개발 | P0 | 완료 | L11 | [QA-17](tasks/QA-17.md) |
 | [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md) | 개발 | P2 | 대기 | D01, D02, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-65 · 공개 목록·홈 mock의 검색·view 정책 정합성](tasks/DEV-65.md) | 개발 | P0 | 완료 | H02, L01, L03, L12 | [QA-17](tasks/QA-17.md) |
 | [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md) | 개발 | P2 | 대기 | S04, S06, C01 | [POL-29](tasks/POL-29.md) |
@@ -228,6 +230,12 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [DEV-65](tasks/DEV-65.md#dev-65-verification)의 공개 mock 검색4필드/시간·view·홈/페이지 정합성을 교정했다.175 tests·lint·API/mock/hybrid build·실제 Next mock 브라우저·문서 검사·1차 두 리뷰 PASS. 최종 종료 메타데이터 freshness·Git 전달 결과는 [리뷰](reviews/DEV-65.md)·PR/receipt로 별도 확인한다.
 - 다음 DEV-63은 남은 P0이며 선행 QA-17이 main에 있다. DEV-65와 독립된 reset/source/version 교정을 자신의 Gate에서 다룬다. 실제 QA-10의 자원 차단이나 POL-02의 계약 미결을 생략하는 승인이 아니다.
 - 기존 실제 API QA/정책 차단·Task별 예외, 원본79개·114Task/155의존성/coverage를 보존한다. 다음 후보 정의/인계만 했으며 다른 Task의 source 조사/구현·업무 API 실행·Git 전달은 시작하지 않는다.
+
+## 2026-11-12 · DEV-63 로컬 교정과 다음 Gate 인계
+
+- [DEV-63 검증](tasks/DEV-63.md#dev-63-verification): reset 빈 SAVED·회사 여부·version/replay를 교정하고187 tests/lint·API/mock/hybrid build·실제 Next mock/브라우저 HTTP 대역·문서와1차 두 리뷰가 통과했다. 종료 문구 추가분까지 재검토하며 실제 Git 전달은 최종 PR/head·외부 receipt/최종 보고로 확인한다.
+- 다음 DEV-55 선정: 남은 P0 QA/약관/취합은 기존 자원·정책/선행 차단을 유지한다. P1 중 POL-29가 main에 반영됐고 같은 개인 필터 화면의 배치/시각 목표를 reset 계약 교정과 분리해 시작할 수 있어 Gate 후보로 택했다. 다른 P1보다 제품 우선순위가 영구 변경된다는 뜻은 아니다.
+- DEV-55는 새 대화에서 frame/상태별 정책·예외와 현재 source로 Brief를 확정한다. 이번에는 선정/인계만 했으며 구현·실제 API·다른 Task Git 전달을 시작하지 않았다. 기존 QA-10 실제12차단·POL-02 계약 미결과 Task별 예외·79원본/114Task/155의존성·baseline/coverage를 보존한다.
 
 ## 갱신 규칙
 

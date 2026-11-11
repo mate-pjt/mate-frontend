@@ -20,6 +20,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-11 POL-29는 [화면별 결정/보류](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)와 [추가 상태/후속 검증](../development/figma-v01/tasks/POL-29.md#pol-29-states)을 기록한다. 사용자 승인에 따라 Figma 알림3항목을 유지하되 미지원 전역/야간 제어는 disabled/사유 안내와 프런트 연결 경계만 준비하도록 후속 DEV-66을 정의했다. 이름+아이콘 목표/실제 이름 공급원과 홈 최종 문구의 후속 Gate를 구분하며 현재 제품 설명·실제 QA를 완료로 바꾸지 않는다. 원본79개·기존113Task와 이력을 보존해114Task가 되었고 현재/다음/상태는 WBS만 소유한다.
 
+2026-11-11 DEV-63은 기존 reset의 EMPTY_DEFAULT 차이를 빈 SAVED·회사 가져오기 가능 여부·reset replay 버전 보존으로 교정한다. [Task의 검증 근거](../development/figma-v01/tasks/DEV-63.md#dev-63-verification)는 자동 계약·실제 Next mock·HTTP 대역을 구분하며 기존 QA-10 실제12차단과 POL-02 실행 대응 미결을 보존한다. 현재/다음/상태는 WBS만 소유한다.
+
 ## Required Flow
 
 1. Structure requirements.

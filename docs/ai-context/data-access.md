@@ -99,7 +99,7 @@ src/data/
 
 - 입찰: 유효한 숫자 ID·분류번호·별도 코드/라벨, 검색/필터/페이지, 금액/날짜/nullable, 부분 실패, 로컬 첨부, 개찰 참여업체·물품 페이지. 홈은 동일 목록의 첫 9개 행이다. 과거 `Bid[]` 계약/fixture는 제거했다.
 - 받은 알림: 25건(첫 20건/다음 5건), 읽음과 미확인 건수 공유, 빈/오류 시나리오. 합성 공고/분류·현재 계정 회사·목적지 없는 알림을 제공한다. HTTP와 mock 복원 경계는 actionPath를 허용 경로 또는 null로 전달하며 이전 탭 snapshot의 누락/위험 경로만 null로 보완해 읽음 이력을 유지한다. 구독은 계정·공고별 설정/해제/복원.
-- 개인 필터: 전체 내부 모델 저장/URL 왕복, expectedVersion 충돌과 초기화. 화면은 사용자가 ‘내 맞춤’을 누를 때만 목록에 수동 적용한다.
+- 개인 필터: 전체 내부 모델 저장/URL 왕복, expectedVersion 충돌과 초기화. 명시적 reset은 회사 가져오기 가능 여부를 보존한 빈 `SAVED`를 남겨 회사 기본값 자동 재적용을 막는다. 첫 저장 version1·조건 변경 시 증가하며 이미 빈 `SAVED`의 reset replay는 version을 유지한다. [DEV-63 검증](../development/figma-v01/tasks/DEV-63.md#dev-63-verification)은 mock/HTTP 대역/실제 Next 결과이며 실제 API QA-10 차단은 별도다. 화면은 사용자가 ‘내 맞춤’을 누를 때만 목록에 수동 적용한다.
 - 이메일: 인증번호 `1234`, 인증 만료·재전송 대기·오류 횟수, 인증 후 수신 주소, 독립 ON/OFF 유지. 실제 메일은 발송하지 않는다.
 - 회사: empty/connected/pending/terminated/approved-stale/denied, 검색·신청, 초대 수락/거절/계정 불일치, 사업자번호 처리·등록, 문서 processing/failure/retry/replacement/proposal/registration과 나의 회사 상태 공유.
 
