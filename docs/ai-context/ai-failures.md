@@ -136,3 +136,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 문제가 있는 새 블록의 접두문자만 제거하고 내용·원본 이력을 유지했다. 문서 검사에 형식 검사를 추가하고 전체 재검사·같은 verifier의 freshness를 다시 수행한다.
 - Prevention rule: patch 자체와 파일에 저장할 문자열을 구분한다. 생성 후 새 제목/목록 블록을 직접 읽고, 링크/ID 검사와 함께 잘못된 patch 접두문자·발견 제목의 누락을 검사한다. 앞선 PASS 뒤 검토 요약을 붙인 경우도 같은 검사를 다시 실행한다.
 - Related files: `docs/development/figma-v01/audits/2026-11-11.md`, `docs/development/figma-v01/reviews/QA-17.md`. 제품 코드·설정·실제 업무 API 변경 없음. 검사 스크립트는 저장소 밖 감사 증거 디렉터리에 보존한다.
+
+## 2026-11-12 - 적용 버튼 이동으로 팝오버 닫기 경계 변경
+
+- Task: DEV-55 개인 필터 도구막대 배치 정렬.
+- Expected behavior: 열린 필터의 미저장 draft는 ‘내 맞춤’ 수동 적용 전에 닫히며 계정의 저장 조건만 URL에 적용된다.
+- Actual failure: 적용 버튼을 toolbar rootRef 내부로 옮기면서 기존 outside pointerdown의 contains 검사에 걸려 팝오버가 남았다. 실제 Next에서 미저장 서울 draft가 지역 없는 저장 조건 적용 뒤에도 남는 것을 재현했다. 첫187 tests·브라우저 개별 동작 검증과 primary ai-review는 이 조합을 놓쳤고 독립 verifier가 Major로 발견했다.
+- Root cause: 이벤트 핸들러 내용 보존만 확인하고 DOM 소속·ref/이벤트 경계의 변화가 기존 닫기 동작에 미치는 영향을 조합 검증하지 않았다.
+- Detection command or review step: read-only verifier의 source 대조와 SAVED 준비→지역 draft 변경→내 맞춤 적용→잔존 팝오버/URL 대조. Task에 교정 전 manifest·FAIL을 보존한다.
+- Fix: toolbar가 선행 action render callback에 close 함수를 제공하고 클릭/Enter/Space 모두 닫은 뒤 기존 적용 함수를 호출한다. 해당 세 입력과 재개방 draft·계정 불변을 실제 Next에서 재검증하고 두 리뷰를 다시 수행한다. 최종 결과는 DEV-55 검토 기록을 따른다.
+- Prevention rule: 버튼/팝오버 DOM을 옮길 때 기존 contains·바깥 클릭·focus/keyboard·전파 경계를 함께 확인한다. ‘미저장 draft가 열린 상태→새 적용 동작→닫힘→재개방은 현재 적용값’ 순서를 회귀에 포함하며 handler가 같다는 사실만으로 행동 보존을 주장하지 않는다.
+- Related files: `src/components/bids/bid-filter-toolbar.tsx`, `src/components/bids/bid-list-client.tsx`, `docs/development/figma-v01/tasks/DEV-55.md`, `docs/development/figma-v01/reviews/DEV-55.md`. 데이터 계약·별도 제품 정책 변경은 없다.
