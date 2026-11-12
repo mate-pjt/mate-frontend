@@ -1,6 +1,7 @@
 import type { BidFilterOptions, BidListQuery } from "@/data/bids/contracts";
 import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
 import { emptyPersonalFilter } from "@/features/bid-notice-filters/model";
+import { currentBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 
 const bidTypeCodes = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" } as const;
 const bidTypeLabels = { CONSTRUCTION: "공사", SERVICE: "용역", GOODS: "물품" } as const;
@@ -13,22 +14,6 @@ const amountRanges: Record<string, { min: number | null; max: number | null }> =
   "50억 ~ 100억 원 이하": { min: 5_000_000_001, max: 10_000_000_000 },
   "100억 원+": { min: 10_000_000_001, max: null },
 };
-
-function kstToday(): string {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
-  }).formatToParts(new Date());
-  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return `${values.year}-${values.month}-${values.day}`;
-}
-
-function monthsBefore(date: string, months: number): string {
-  const [year, month, day] = date.split("-").map(Number);
-  const firstDay = new Date(Date.UTC(year, month - 1 - months, 1));
-  const lastDay = new Date(Date.UTC(firstDay.getUTCFullYear(), firstDay.getUTCMonth() + 1, 0)).getUTCDate();
-  firstDay.setUTCDate(Math.min(day, lastDay));
-  return firstDay.toISOString().slice(0, 10);
-}
 
 export function currentPersonalFilter(state: BidListQuery, options: BidFilterOptions): PersonalFilterValues {
   if (state.personalFilter) return state.personalFilter;
@@ -45,15 +30,7 @@ export function currentPersonalFilter(state: BidListQuery, options: BidFilterOpt
   if (state.contract && state.contract in contractMethodCodes) {
     filter.contractMethods = [contractMethodCodes[state.contract as keyof typeof contractMethodCodes]];
   }
-  if (state.period) {
-    const months = { "1개월": 1, "3개월": 3, "6개월": 6, "1년": 12 }[state.period];
-    if (months) {
-      const today = kstToday();
-      filter.dateType = state.view === "result" ? null : "BID_BEGIN";
-      filter.dateFrom = monthsBefore(today, months);
-      filter.dateTo = state.view === "result" ? today : null;
-    }
-  }
+  Object.assign(filter, currentBidDateFilter(state));
   if (state.amount && amountRanges[state.amount]) {
     filter.amountType = "BASE_PRICE";
     filter.amountMin = amountRanges[state.amount].min;
@@ -82,10 +59,7 @@ export function changePersonalFilter(
     case "contract":
       return { ...filter, contractMethods: value && value in contractMethodCodes ? [contractMethodCodes[value as keyof typeof contractMethodCodes]] : [] };
     case "period": {
-      const months = value ? { "1개월": 1, "3개월": 3, "6개월": 6, "1년": 12 }[value] : undefined;
-      return months
-        ? { ...filter, dateType: "BID_BEGIN", dateFrom: monthsBefore(kstToday(), months), dateTo: null }
-        : { ...filter, dateType: null, dateFrom: null, dateTo: null };
+      return { ...filter, ...presetBidDateFilter(value ?? "", "all", filter.dateType) };
     }
     case "amount": {
       const range = value ? amountRanges[value] : undefined;
@@ -108,7 +82,7 @@ export function personalFilterDisplay(filter: PersonalFilterValues, options: Bid
   ];
   if (filter.dateType || filter.dateFrom || filter.dateTo) {
     const label = filter.dateType
-      ? { BID_BEGIN: "투찰 시작일", PARTICIPATION_DEADLINE: "참가등록 마감일", BID_CLOSE: "투찰 마감일" }[filter.dateType]
+      ? { BID_BEGIN: "투찰 시작일", PARTICIPATION_DEADLINE: "참가등록 마감일", BID_CLOSE: "투찰 마감일" }[filter.dateType] ?? "날짜"
       : "날짜";
     chips.push(`${label} ${filter.dateFrom ?? "처음"} ~ ${filter.dateTo ?? "이후"}`);
   }

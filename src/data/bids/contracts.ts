@@ -5,6 +5,8 @@ import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
 
 export type BidView = "all" | "closing" | "result" | "recommended";
 
+export type BidDateFilter = Pick<PersonalFilterValues, "dateType" | "dateFrom" | "dateTo">;
+
 export type BidFilters = {
   readonly category?: BidKind;
   readonly region?: string;
@@ -21,6 +23,8 @@ export type BidListQuery = BidFilters & {
   readonly page: number;
   readonly size: number;
   readonly personalFilter?: PersonalFilterValues;
+  readonly dateFilter?: BidDateFilter;
+  readonly dateError?: string;
 };
 
 export type BidListResult = {

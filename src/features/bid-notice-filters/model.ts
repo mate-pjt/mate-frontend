@@ -1,4 +1,5 @@
 import type { PersonalFilterValues } from "@/data/personal-filters/contracts";
+import { readBidDateParams } from "./date-filter";
 export type { PersonalFilterSnapshot, PersonalFilterValues } from "@/data/personal-filters/contracts";
 
 export const personalFilterUrlKeys = [
@@ -8,7 +9,6 @@ export const personalFilterUrlKeys = [
 
 const bidTypes = new Set(["CONSTRUCTION", "SERVICE", "GOODS"]);
 const contractMethods = new Set(["GENERAL", "LIMITED", "NOMINATION", "PRIVATE"]);
-const dateTypes = new Set(["BID_BEGIN", "PARTICIPATION_DEADLINE", "BID_CLOSE"]);
 const amountTypes = new Set(["BASE_PRICE", "ESTIMATED_PRICE"]);
 const jointContracts = new Set(["ALL", "REQUIRED", "AVAILABLE"]);
 
@@ -28,10 +28,7 @@ export function readPersonalFilterParams(params: URLSearchParams): PersonalFilte
     const value = params.get(key);
     return value && allowed.has(value) ? value as T : null;
   };
-  const readDate = (key: string) => {
-    const value = params.get(key);
-    return value && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) ? value : null;
-  };
+  const dates = readBidDateParams(params, "all").dateFilter;
   const readAmount = (key: string) => {
     const value = params.get(key);
     if (value === null || value === "") return null;
@@ -44,9 +41,9 @@ export function readPersonalFilterParams(params: URLSearchParams): PersonalFilte
     regionCodes: readArray("regionCodes"),
     industryCodes: readArray("industryCodes"),
     contractMethods: readArray("contractMethods").filter((value) => contractMethods.has(value)) as PersonalFilterValues["contractMethods"],
-    dateType: readEnum("dateType", dateTypes),
-    dateFrom: readDate("dateFrom"),
-    dateTo: readDate("dateTo"),
+    dateType: dates?.dateType ?? null,
+    dateFrom: dates?.dateFrom ?? null,
+    dateTo: dates?.dateTo ?? null,
     amountType: readEnum("amountType", amountTypes),
     amountMin: readAmount("amountMin"),
     amountMax: readAmount("amountMax"),
