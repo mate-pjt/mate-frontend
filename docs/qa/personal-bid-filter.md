@@ -257,3 +257,12 @@
 - [날짜 로컬 QA](bid-list.md#dev-10-local-qa)의 DTF-B12/17/18에서 SAVED의 날짜 종류/절대 범위 GET→URL·목록12건,500 오류 시 URL 유지·명시적 Space 재시도→최신 조건 적용/버튼 숨김을 확인했다. 날짜 편집/초기화·최신 GET의 계정 PUT/reset/import 관측0건이다. 실제 Next+loopback HTTP 대역이며 실제 서버 GET/저장 통합이 아니다.
 - 신규 Node 계약3사례는 기존 mock Repository에서 날짜3종·절대 범위를 저장→새 Repository 재조회→personal URL로 무손실 왕복함을 검증했다. 이는 현재 화면의 계정 저장 기능 제공이나 실제 계정 저장 실행을 뜻하지 않는다.
 - 기존 PBF-01~12/QA-10 실제0통과12차단·POL-02 미결, ADVP의 기존 이력·예외를 보존한다. 실제 날짜 경계 공고/실행 식별자·필요한 승인/복구가 확보되면 해당 실제 QA를 별도로 재개한다. DEV-10 로컬 선행 답변은 다른 Task의 구현/실제 QA 예외가 아니다.
+
+<a id="dev-11-amount-qa"></a>
+
+## 2026-11-12 · DEV-11 금액의 조회 전용 UI·Repository 경계
+
+- 이번 DEV-11 사용자는 ‘로컬 선행·실서버 QA 차단 보존 (추천)’을 승인했다. 최신 DEV-09 저장 UI 제거 결정을 유지한다. 금액 팝업의 ‘저장’은 현재 조회 URL 적용이며 계정 PUT/reset/import를 호출하지 않는다. 기존 Repository 저장/빈 SAVED·expectedVersion/409·SAVED 우선순위/계정 데이터는 유지한다.
+- [AMT-B13~18](bid-list.md#dev-11-local-qa)은 malformed 개인 금액 URL의 원문/오류/목록 호출0·타 조건 보존, 최신 SAVED GET→0~0 URL·열린 draft 폐기/동등성 숨김, 개인 URL 직접0~1억원 편집, GET500 실패/URL 유지·Space 명시 재시도 성공을 확인했다. 모든 API는 loopback HTTP 대역이며 실제 계정 GET/저장이 아니다.
+- 신규 Node 계약2사례는 금액2종·0~MAX_SAFE_INTEGER를 기존 mock Repository에 저장→새 Repository 재조회→personal URL로 정확히 왕복함을 확인했다. 누락 종류/음수/소수/역전/초과/중복 query 음성 사례와 API 요청 전 거절은 별도 tests에 있다. Repository 저장 계약 검증은 화면 저장 기능 제공/실제 저장 통합 PASS를 뜻하지 않는다.
+- 관측 wire137건에서 개인 필터 변경0건이며 최신 GET용 합성 SAVED/version은 QA control로만 준비했다. 실계정 변경/회사 merge·실제 서버 오류 유발은 없다. 실제 PBF-01~12/QA-10의0통과12차단·POL-02 미결과 ADV/ADVP의 이전 이력/예외는 그대로다. 실제 준비 자원을 확보한 별도 QA에서 기존 case ID로 재개한다.

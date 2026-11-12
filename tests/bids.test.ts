@@ -19,7 +19,7 @@ describe("공개 입찰 Repository", () => {
     expect(await repo.getBidDetail(detailQuery("not-an-id"))).toBeNull();
   });
   it("최신 개인 필터의 코드·금액·날짜·공동도급·페이지를 적용한다", async () => {
-    const repo = createMockBidRepository(() => testNow); const filter = { ...emptyPersonalFilter(), bidTypes: ["CONSTRUCTION" as const], regionCodes: ["11"], industryCodes: ["0001"], amountMin: 100_000_000, jointContract: "REQUIRED" as const };
+    const repo = createMockBidRepository(() => testNow); const filter = { ...emptyPersonalFilter(), bidTypes: ["CONSTRUCTION" as const], regionCodes: ["11"], industryCodes: ["0001"], amountType: "BASE_PRICE" as const, amountMin: 100_000_000, jointContract: "REQUIRED" as const };
     const result = await repo.getBidList({ ...query, size: 1, personalFilter: filter }); expect(result.totalCount).toBeGreaterThan(1); expect(result.items).toHaveLength(1);
     expect(result.items.every(item => item.kind === "construction" && item.region === "서울특별시" && item.baseAmount! >= 100_000_000)).toBe(true);
     const next = await repo.getBidList({ ...query, size: 1, page: 2, personalFilter: filter }); expect(next.items[0].id).not.toBe(result.items[0].id);
@@ -127,7 +127,7 @@ describe("공개 입찰 Repository", () => {
   it("HTTP는 개인 필터를 반복 query 값으로 보내고 0 기반 페이지를 변환한다", async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(ok({ items: [], page: 1, size: 20, totalElements: 0, totalPages: 0, hasNext: false }));
     const repo = createHttpBidListRepository("https://synthetic-api.test", fetcher);
-    const filter = { ...emptyPersonalFilter(), bidTypes: ["CONSTRUCTION" as const, "SERVICE" as const], regionCodes: ["11"], dateType: "BID_CLOSE" as const, dateFrom: "2030-06-01", amountMin: 100, regionOnly: true };
+    const filter = { ...emptyPersonalFilter(), bidTypes: ["CONSTRUCTION" as const, "SERVICE" as const], regionCodes: ["11"], dateType: "BID_CLOSE" as const, dateFrom: "2030-06-01", amountType: "BASE_PRICE" as const, amountMin: 100, regionOnly: true };
     const result = await repo.getBidList({ ...query, page: 2, size: 20, personalFilter: filter });
     const params = new URL(String(fetcher.mock.calls[0][0])).searchParams;
     expect(params.getAll("bidTypes")).toEqual(["CONSTRUCTION", "SERVICE"]); expect(params.get("page")).toBe("1"); expect(params.get("amountMin")).toBe("100"); expect(result.page).toBe(2);

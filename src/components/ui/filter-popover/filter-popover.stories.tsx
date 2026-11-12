@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
+import { bidAmountDraft, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 
 import {
     AgencyCategoryPopover,
@@ -96,6 +97,7 @@ export const PriceCategory: Story = {
     render: () => (
         <div className="flex flex-wrap gap-5">
             <PriceCategoryPopover />
+            <PriceInputExample />
             <PriceCategoryPopover
                 maxLabel="1억 원 이하"
                 selectedPreset="1억 원 이하"
@@ -108,6 +110,24 @@ export const PriceCategory: Story = {
         </div>
     ),
 };
+
+function PriceInputExample() {
+    const [draft, setDraft] = useState(bidAmountDraft(emptyBidAmountFilter()));
+    const { amountFilter, amountError } = parseBidAmountDraft(draft);
+    return <PriceCategoryPopover
+        activeType={draft.amountType === "ESTIMATED_PRICE" ? "estimated" : "base"}
+        errorMessage={amountError}
+        maxLabel={formatBidAmount(amountFilter.amountMax)}
+        minLabel={formatBidAmount(amountFilter.amountMin)}
+        maxValue={draft.amountMax}
+        minValue={draft.amountMin}
+        onMaxValueChange={value => setDraft(current => ({ ...current, amountType: current.amountType ?? "BASE_PRICE", amountMax: value }))}
+        onMinValueChange={value => setDraft(current => ({ ...current, amountType: current.amountType ?? "BASE_PRICE", amountMin: value }))}
+        onTypeSelect={value => setDraft(current => ({ ...current, amountType: value === "estimated" ? "ESTIMATED_PRICE" : "BASE_PRICE" }))}
+        onPresetSelect={value => setDraft(bidAmountDraft(presetBidAmountFilter(value, draft.amountType)))}
+        onReset={() => setDraft(bidAmountDraft(emptyBidAmountFilter()))}
+    />;
+}
 
 export const ContractAndAgencyCategory: Story = {
     render: () => (

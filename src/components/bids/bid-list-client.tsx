@@ -5,8 +5,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import type { BidDateFilter, BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
+import type { BidAmountFilter, BidDateFilter, BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
 import { currentBidDateFilter, writeBidDateParams } from "@/features/bid-notice-filters/date-filter";
+import { bidAmountUrlKeys, currentBidAmountFilter, writeBidAmountParams } from "@/features/bid-notice-filters/amount-filter";
 import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 import { createPersonalFilterApplyController } from "@/features/bid-notice-filters/apply-controller";
@@ -15,6 +16,7 @@ import {
   samePersonalFilter,
   writePersonalFilterParams,
   type PersonalFilterSnapshot,
+  type PersonalFilterValues,
 } from "@/features/bid-notice-filters/model";
 
 import { BidFilterToolbar } from "./bid-filter-toolbar";
@@ -127,12 +129,22 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   function changeFilter(key: keyof BidFilters, value?: string) {
     if (state.personalFilter && key !== "agency") {
       const next = new URLSearchParams(searchParams.toString());
-      writePersonalFilterParams(next, changePersonalFilter(state.personalFilter, key, value, filterOptions));
+      writeCurrentPersonalFilter(next, changePersonalFilter(state.personalFilter, key, value, filterOptions));
       next.delete("page");
       navigate(next);
       return;
     }
     updateParams({ [key]: key === "category" && value === "construction" ? undefined : value, page: undefined });
+  }
+
+  function writeCurrentPersonalFilter(next: URLSearchParams, filter: PersonalFilterValues) {
+    writePersonalFilterParams(next, filter);
+    if (state.amountError) {
+      bidAmountUrlKeys.forEach(key => {
+        next.delete(key);
+        searchParams.getAll(key).forEach(value => next.append(key, value));
+      });
+    }
   }
 
   function resetSearchAndFilters() {
@@ -144,9 +156,18 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
 
   function changeDateFilter(dates: BidDateFilter) {
     const next = new URLSearchParams(searchParams.toString());
-    if (state.personalFilter) writePersonalFilterParams(next, { ...state.personalFilter, ...dates });
+    if (state.personalFilter) writeCurrentPersonalFilter(next, { ...state.personalFilter, ...dates });
     else writeBidDateParams(next, dates);
     next.delete("period");
+    next.delete("page");
+    navigate(next);
+  }
+
+  function changeAmountFilter(amounts: BidAmountFilter) {
+    const next = new URLSearchParams(searchParams.toString());
+    if (state.personalFilter) writePersonalFilterParams(next, { ...state.personalFilter, ...amounts });
+    else writeBidAmountParams(next, amounts);
+    next.delete("amount");
     next.delete("page");
     navigate(next);
   }
@@ -195,8 +216,9 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
 
   const personal = state.personalFilter;
   const personalDisplay = personal ? personalFilterDisplay(personal, filterOptions) : null;
-  const currentFilter = state.view === "all" && !state.dateError ? currentPersonalFilter(state, filterOptions) : null;
+  const currentFilter = state.view === "all" && !state.dateError && !state.amountError ? currentPersonalFilter(state, filterOptions) : null;
   const dateFilter = state.dateFilter ?? currentBidDateFilter(state);
+  const amountFilter = state.amountFilter ?? currentBidAmountFilter(state);
   const personalApplied = Boolean(currentFilter && snapshot && samePersonalFilter(currentFilter, snapshot.filter));
   const filters: BidFilters = {
     category: personal?.bidTypes.length === 1
@@ -258,6 +280,9 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
 
         <div className="mt-[18px]">
           <BidFilterToolbar
+            amountDraft={state.amountDraft}
+            amountFilter={amountFilter}
+            amountQueryError={state.amountError}
             dateFilter={dateFilter}
             dateQueryError={state.dateError}
             filterLabels={personalDisplay?.labels}
@@ -283,6 +308,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
             ) : undefined}
             onFilterChange={changeFilter}
             onDateFilterChange={changeDateFilter}
+            onAmountFilterChange={changeAmountFilter}
             personalMode={Boolean(personal)}
             view={state.view}
           />
@@ -322,10 +348,11 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         </div>
 
         <div className="mt-6">
-          {state.dateError ? (
+          {state.dateError || state.amountError ? (
             <div className="rounded-lg border border-grayscale-200 p-6">
-              <p className="text-danger type-body-5" role="alert">{state.dateError}</p>
-              <p className="mt-2 text-grayscale-600 type-body-7">기간 필터에서 날짜 조건을 수정하거나 초기화해 주세요.</p>
+              {state.dateError && <p className="text-danger type-body-5" role="alert">{state.dateError}</p>}
+              {state.amountError && <p className="text-danger type-body-5" role="alert">{state.amountError}</p>}
+              <p className="mt-2 text-grayscale-600 type-body-7">위 필터에서 잘못된 조건을 수정하거나 초기화해 주세요.</p>
             </div>
           ) : result.items.length > 0 ? (
             <BidListTable

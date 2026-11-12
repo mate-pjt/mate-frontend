@@ -4,6 +4,7 @@ import { cache } from "react";
 
 import type { BidListRepository, BidListQuery } from "./contracts";
 import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
+import { bidAmountUrlKeys, currentBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 import {
   findContractMethodCode,
   findIndustryCode,
@@ -34,14 +35,6 @@ const bidTypeCodes: Record<NonNullable<BidListQuery["category"]>, BidTypeDto> = 
   purchase: "GOODS",
 };
 
-const amountRanges: Record<string, { min?: number; max?: number }> = {
-  "1억 원 이하": { max: 100_000_000 },
-  "1억 ~ 10억 원 이하": { min: 100_000_001, max: 1_000_000_000 },
-  "10억 ~ 50억 원 이하": { min: 1_000_000_001, max: 5_000_000_000 },
-  "50억 ~ 100억 원 이하": { min: 5_000_000_001, max: 10_000_000_000 },
-  "100억 원+": { min: 10_000_000_001 },
-};
-
 export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof fetch = (...args) => fetch(...args)): BidListRepository {
   const loadFilterMetadata = cache(async () => {
     const [regions, industries] = await Promise.all([
@@ -60,6 +53,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
         throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       }
       const dates = currentBidDateFilter(query);
+      const amounts = currentBidAmountFilter(query);
 
       const params = new URLSearchParams({
         view: viewCodes[query.view],
@@ -73,10 +67,6 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
         for (const key of ["bidTypes", "regionCodes", "industryCodes", "contractMethods"] as const) {
           filter[key].forEach((value) => params.append(key, value));
         }
-        for (const key of ["amountType", "amountMin", "amountMax"] as const) {
-          const value = filter[key];
-          if (value !== null) params.set(key, String(value));
-        }
         params.set("regionOnly", String(filter.regionOnly));
         params.set("jointContract", filter.jointContract);
       } else {
@@ -88,19 +78,13 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
           if (query.region) params.set("regionCodes", findRegionCode(query.region, regions));
           if (query.industry) params.set("industryCodes", findIndustryCode(query.industry, industries));
         }
-
-        if (query.amount && query.view !== "result") {
-          const range = amountRanges[query.amount];
-          if (range) {
-            params.set("amountType", "BASE_PRICE");
-            if (range.min !== undefined) params.set("amountMin", String(range.min));
-            if (range.max !== undefined) params.set("amountMax", String(range.max));
-          }
-        }
       }
 
       for (const key of ["dateType", "dateFrom", "dateTo"] as const) {
         if (dates[key] !== null) params.set(key, dates[key]);
+      }
+      for (const key of bidAmountUrlKeys) {
+        if (amounts[key] !== null) params.set(key, String(amounts[key]));
       }
 
       const result = await getData<BidNoticeListDto>(`/api/v1/bid-notices?${params}`);

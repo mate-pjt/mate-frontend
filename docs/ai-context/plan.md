@@ -40,6 +40,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 ## Required Flow
 
+2026-11-12 DEV-11은 [POL-07 금액 정책](../development/figma-v01/tasks/POL-07.md#pol-07-contract)의 기초/추정가격·정확한 정수 원·열린/동일 범위·안전 상한과 종류 유지 preset을 공개 ALL/closing HTTP/mock·controlled 입력에 연결한다. 최신 저장 UI 제거 결정을 유지하고 계정 무쓰기로 조회 URL을 적용한다. [Task/검증 근거](../development/figma-v01/tasks/DEV-11.md#dev-11-brief)는 사용자 승인 ‘로컬 선행·실서버 QA 차단 보존’ 범위로 실제 API 연결 구현과 mock/HTTP 대역/브라우저·미실행 실서버 통합을 구분한다. 기존 ADV/ADVP·QA-02/QA-10/POL-02·DEV-12 보류를 해소하지 않는다. 현재/다음/상태는 WBS만 관리한다.
+
 2026-11-12 DEV-62는 알림 채널·관리/편집 미지원 문구와 DESIGN AlarmList의 읽음 후 허용 경로 이동 설명을 현행 정책/source에 맞춘다. [문구/접근성 검증](../qa/notification-guidance.md)은 로컬 mock/HTTP 대역이며 삭제 정책/프론트 연결과 기존 QA-09/11/12/13·DEV-06 실제 차단을 해소하지 않는다. 현재/다음/상태는 WBS만 관리한다.
 
 1. Structure requirements.
