@@ -248,3 +248,12 @@
 - 실패/교정: 최초 Turbopack은 화면 렌더 전 manifest ENOENT/500으로 실패했다. 자체 dev artifact를 보존하고 webpack으로 재실행했다(환경 조치1, 제품 자동 수정0/3). 처음 대역 metadata에 부산26 라벨이 없어 숫자로 표시된 것은 시험 fixture 누락이며 대역에26을 추가한 뒤 Space/재개방·reload에서 부산 표시를 재확인했다. 제품 소스는 바꾸지 않았다.
 - [desktop 캡처](dev-09-ui-desktop.png) · [390px 캡처](dev-09-ui-390.png) · [320px 캡처](dev-09-ui-320.png). 합성 데이터/일반 목록 캡처이며 미제공 모바일 Figma와 pixel PASS를 주장하지 않는다. 현재 URL 조건 요약과 일반 팝오버의 ‘저장’은 계정 저장 UI와 구분해 유지한다.
 - 문서 검사·context-audit·두 리뷰·최종 Git/head·소유 검증 환경 정리는 [후속 검토](../development/figma-v01/reviews/DEV-09-ui-cleanup.md)를 따른다. 기존 PBF-01~12/QA-10·POL-02 실제 차단과 L07 Gate는 그대로이며 이번 실제 API 통합은 **미실행**이다.
+
+<a id="dev-10-date-qa"></a>
+
+## 2026-11-12 · DEV-10 날짜 조건의 조회 전용 UI 경계
+
+- [최신 DEV-09 화면 결정](../development/figma-v01/tasks/DEV-09.md#dev-09-ui-cleanup-brief)에 따라 과거 ADVP-01/02의 명시 저장 UI 계획을 이번 목록에 다시 연결하지 않는다. 기존 Repository 저장/빈 SAVED·expectedVersion/409와 계정 데이터는 유지한다.
+- [날짜 로컬 QA](bid-list.md#dev-10-local-qa)의 DTF-B12/17/18에서 SAVED의 날짜 종류/절대 범위 GET→URL·목록12건,500 오류 시 URL 유지·명시적 Space 재시도→최신 조건 적용/버튼 숨김을 확인했다. 날짜 편집/초기화·최신 GET의 계정 PUT/reset/import 관측0건이다. 실제 Next+loopback HTTP 대역이며 실제 서버 GET/저장 통합이 아니다.
+- 신규 Node 계약3사례는 기존 mock Repository에서 날짜3종·절대 범위를 저장→새 Repository 재조회→personal URL로 무손실 왕복함을 검증했다. 이는 현재 화면의 계정 저장 기능 제공이나 실제 계정 저장 실행을 뜻하지 않는다.
+- 기존 PBF-01~12/QA-10 실제0통과12차단·POL-02 미결, ADVP의 기존 이력·예외를 보존한다. 실제 날짜 경계 공고/실행 식별자·필요한 승인/복구가 확보되면 해당 실제 QA를 별도로 재개한다. DEV-10 로컬 선행 답변은 다른 Task의 구현/실제 QA 예외가 아니다.

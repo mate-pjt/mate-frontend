@@ -390,3 +390,38 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 
 - 보호/네트워크: 권한/409·개인 저장/계정/업로드는 변경하지 않았고 기존 전체 계약 테스트로 회귀 확인했다. 브라우저 외부/업무 요청0, 서버 상세 재계측 업무 외부 fetch0. Next 자체 npm 버전 조회 차단과 초기 host 미기록4건을 Task에 따로 남긴다. 실제 API·배포/서버 실행 SHA를 확인한 것이 아니다.
 - 캡처 한계: fullPage PNG는 캡처 연결 중복 흔적이 있어 시각 판정에 사용하지 않는다. JSON 접근성/URL·행 관측과 후속 viewport 캡처를 근거로 구분한다. 모든 Figma frame/pixel을 재검토한 것은 아니다.
+
+<a id="dev-10-local-qa"></a>
+
+## 2026-11-12 · DEV-10 날짜 필터 로컬 검증
+
+- 승인/범위: [DEV-10 Brief](../development/figma-v01/tasks/DEV-10.md#dev-10-brief). 사용자 **로컬 구현·검증 선행/실제 API 차단 보존** 답변에 따른 실제 HTTP 연결 구현과 로컬 검증이다. 실제 서버의 기대 공고·실행 식별자가 필요한 ADV-05~08/12 날짜 부분은 미실행/차단으로 보존한다. 기존 BID/QA-02의 실제 통과·차단·예외를 덮어쓰지 않는다.
+- 실행: Node22.20.0/pnpm11.3.0, 환경파일 없는 소유 mirror3개, 실제 Next production API/mock/hybrid와 Aside 브라우저. API/hybrid의 공개 조회는 loopback HTTP 대역이다. 소스 기준 `ed81b41` + DEV-10 diff이며 최종 runtime 파일 SHA256/빌드 식별자·로그는 `/tmp/mate-dev10-20261112/runtime-verification.json`과 `*-verified.log`에 보존했다. 세 mirror의 런타임 파일은 작업트리와 byte 일치한다. 이 식별자는 실제 backend 실행 SHA가 아니다.
+- 자동 검증: `pnpm test`16파일/350 tests, `pnpm lint`, API/mock/hybrid `pnpm build`, `pnpm build-storybook` PASS. 날짜 신규35사례는 실제 달력/윤년·KST 자정/월말 clamp·열린/동일/역전·URL 조합/반복 scalar·종류 유지·절대 날짜·HTTP 전송/오류·mock null 제외/건수/페이지/정렬·기존 Repository 저장/재조회 계약을 검증한다. Node HTTP fetch 대역을 실서버 통합으로 세지 않는다.
+
+| 사례 | 조작/기대 | 관찰 결과·한계 |
+| --- | --- | --- |
+| DTF-B01~03 | 없는 날짜·역전·Escape 취소/초점·재개방 draft 폐기 | PASS. 입력/오류를 유지하고 적용 차단, URL 불변·초점 복귀·draft 폐기 |
+| DTF-B04~06 | 동일일·종류 변경·Enter/Space 적용·page reset | HTTP 대역 PASS. 24행 중 KST 양끝 포함12건·2페이지2행, BID_BEGIN/BID_CLOSE query·정렬과 UI 표시 대응 |
+| DTF-B07~11 | 한쪽 열린 범위·양쪽 비움·preset·reload·초기화 | PASS. 종료일만16건, 양쪽 비우면 종류/범위 해제24건. 참가마감+1개월은 선택 종류와 절대 시작일을 유지하고 끝은 무제한, reload 불변 |
+| DTF-B12/17/18 | 최신 SAVED 날짜 GET 적용·500/명시적 Space 재시도 | HTTP 대역 PASS. 날짜 절대값·personal URL·12건, 오류 때 기존 URL 유지·재시도 후 최신 조건 적용/버튼 숨김. 계정 저장 UI/쓰기 없음 |
+| DTF-B13 | RESULT 고정 개찰일 | HTTP 대역 PASS. 종류 UI/dateType 전송 없음·12건·openAt 내림차순. 정책상 고정 기준이며 Figma 전체 화면 예외 승인이 아님 |
+| DTF-B14 | CLOSING_SOON URL에 남은 날짜 | HTTP 대역 PASS. 날짜 UI 없음·목록 request의 날짜3키 없음 |
+| DTF-B15 | 잘못된 직접 날짜 URL | HTTP 대역 PASS. 수정 가능한 오류, 실제 목록 HTTP0건·metadata만 조회. 관대한 parser/넓은 목록 fallback 없음 |
+| DTF-B16/21 | 1440/390/320px·선택/오류 접근성·Escape | 교정 후 PASS.320px 입력57/문자75px 잘림을77/77px로 교정·문구 줄바꿈 제거. aria-pressed/aria-invalid/describedby·오류/액션 비중첩·본문 overflow 없음. 최종 source로 오류/키보드를 재검증 |
+| DTF-B19 | 전체 mock preset/실제 Next 재조회 | PASS. BID_BEGIN 절대 시작일·9건. 관측 Resource Timing52개는 localhost3191만 사용 |
+| DTF-B20 | hybrid 공개 HTTP/계정 mock | PASS. 날짜 범위·12건 대응. 브라우저 리소스52개는 localhost3192, 공개 목록은 서버의 loopback HTTP 대역 |
+| 운영 guard | mock Preview artifact를 production에서 실행 | PASS. 거부/exit1·3199 listener 없음. 운영 서비스 변경/배포 실행 아님 |
+| 실제 API 통합 | 날짜 경계 공고/오류·현재 실행 식별자 | **미실행/차단**. 소스·OpenAPI200·연결 코드·대역 결과로 실서버 날짜/건수/페이지 PASS를 주장하지 않음 |
+
+- 네트워크 근거: `dev10-cases.json`의21개 사례/8개 리소스 관측 구간, `wire-requests.ndjson`·`server-fetch.ndjson`. 관측 구간의 브라우저 출처는 localhost/loopback뿐이며 서버 외부 시도0, 개인 필터 쓰기0. 초기에 제한 포트4190의 로컬 fetch3실패를 보존하고4198 변경 후 정상 동작을 확인했다. Aside 이벤트 callback 수집0을 네트워크0 근거로 사용하지 않는다.
+- 실패/교정: 복사본 동기화 누락의 오래된 fixture2실패는 절대경로 sync 후 해소했다. lint ref 접근1오류와320px 잘림은 제품 자동 수정2/3으로 최소 교정했다. 최종350 tests/lint/세 빌드/Storybook·영향 브라우저 사례를 재검증했다. UI 교정은 날짜 모델/HTTP 매칭을 바꾸지 않으며 최종 mobile/오류·GET 재시도/mock/hybrid를 다시 확인했다.
+- Figma `2081:61968` 기본/선택과 `2081:62097` 선택의 구조/스크린샷을 직접 조회했다. 기존380×320 패널·토큰·CalendarIcon·두 입력/종류/preset/초기화·저장 배치를 재사용한다. 저장은 팝오버의 목록 적용이며 계정 저장이 아니다. 직접 입력은 YYYY.MM.DD/하이픈을 지원하고 별도 달력 패널은 추가하지 않는다. 정책상 열린 범위·오류와 모바일 대응을 검증하며 미제공 모바일 frame이나 전체 페이지 pixel PASS를 주장하지 않는다.
+- 최종 캡처: [1440px](dev-10-date-desktop.png) · [390px](dev-10-date-390.png) · [320px](dev-10-date-320.png). 실제 backend 공고/개인정보가 없는 합성 화면이다.
+- 소유3190/3191/3192/4198 검증 프로세스와 브라우저3탭은 정리했다. 기존 다른 서비스/탭·실제 계정 데이터는 변경하지 않았다. 문서/두 리뷰·Git 전달 근거는 [검토 기록](../development/figma-v01/reviews/DEV-10.md)을 따른다.
+
+### DEV-10 · 독립 검토 Minor 교정 후 최종 재검증
+
+- verifier1차 PASS의 Minor1: 잘못된 개인 날짜 enum의 chip에 undefined가 표시됐다. 조회 차단은 유지됐다. 날짜 라벨 fallback1줄/음성 회귀1사례를 추가하고 최종16파일/351 tests·lint·API/mock/hybrid build를 다시 PASS했다. 로그는 `*-final-review.log`이며 기존350개/21사례는 앞선 결과로 보존한다. 제품 자동 수정3/3.
+- DTF-B22 실제 Next production mock: `personal=1&dateType=OPEN&dateFrom=2024-02-29`에서 ‘날짜 2024-02-29 ~ 이후’·날짜 기준 오류를 표시하고 undefined/목록 table은 없다. 관측 리소스는 localhost3191뿐이다. 추가 소유 서버/탭도 정리했다. 브라우저 근거는 최종22사례다.
+- 마지막 교정은 어댑터의 잘못된 enum 라벨 fallback만 바꿨다. 공용 UI/Storybook graph·레이아웃/날짜 전송은 그대로여서 직전 `storybook-verified.log`와1440/390/320 캡처의 해당 검증은 유효하다. 최종 세 빌드·351 tests·오류 화면을 다시 확인했으며 Storybook 로컬 재실행은 영향이 없어 생략했다. 원격 최종 head의 Storybook CI는 별도로 확인한다. 실제 API 통합 미실행/차단은 변하지 않는다.
