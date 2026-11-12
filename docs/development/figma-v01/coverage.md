@@ -123,6 +123,8 @@ QA-17은 원본 일부를 새로 구현하는 Task가 아니라 이번 전체 �
 
 2026-11-12 POL-30의 [사용자 결정/중앙 정정안](tasks/POL-30.md#pol-30-central-proposal)과 [REL-01~13](tasks/POL-30.md#pol-30-fixtures)을 D09/CF-07·CF-23의 후속 기준으로 연결한다. 원본79개/Task114개/의존성155개와 감사·기존 실제 QA의 이력은 유지한다. 중앙 원문 반영·DEV-61 구현·실제 통합 검증을 수행한 기록이 아니다. 현재/다음/상태는 WBS를 따른다.
 
+2026-11-12 [DEV-61 로컬 검증](tasks/DEV-61.md#dev-61-verification)은 D09/CF-07의 mock 교정과 POL-30 REL-01~13을 연결한다.255 Node tests·세구성 build·실제 Next mock/로컬 HTTP 대역의 범위이며 QA-03의 실제1통과8차단/DETAIL-07과 중앙 미반영·실행 SHA 미확인은 유지한다. 현재/다음/상태는 WBS만 소유한다.
+
 ## 2026-11-11 · POL-29 최종 화면 결정 연결
 
 원본79개와 당시 UI/동작/데이터·검증 열은 그대로 보존한다. [POL-29 결정표](tasks/POL-29.md#pol-29-decisions)와 [상태/검증표](tasks/POL-29.md#pol-29-states)에 개별 승인·추천 철회·보류/재개를 연결했다.

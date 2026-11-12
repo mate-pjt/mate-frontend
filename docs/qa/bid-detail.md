@@ -222,3 +222,14 @@
 - 실제 재개에 필요한 비식별 fixture: 공개 마감/취소 기준과 동일 사실의 진행 후보, 후보 미공개/삭제/취소·마감 이전/정각/이후/null, 물품/용역 선택/전체·없는 분류 및 정확 코드/target 분류, 금액/VAT·게시시각 결측과 동시각 안정 정렬. 실제 정각 경계는 제어 가능한 서버 Clock/결정적 재현과 실행 시각 근거를 확보해야 하며 로컬 가짜 Clock으로 실서버 경계를 통과 처리하지 않는다.
 - 실행 식별자·배포 schema/version와 실제 프로세스 SHA/이미지 대응, 기대 결과/대상 사용 승인·안전한 오류 재현/해제·잔존/복구 범위도 기존 재개 Gate로 유지한다. 공개 fixture/백엔드 배포·관련공고 소유 역할과 프론트 QA 역할이 준비하며 개인 담당자는 미확정이다. 중앙 원문 정정안은 별도 소유자 반영 전 상태다.
 - 기존 나머지 물품/결과/참여업체/첨부 스트리밍·HTTP 오류·clipboard·반응형 잔여 조건도 유지한다. 정책 결정이나 문서 검토·Git 전달로 해소하지 않는다.
+
+<a id="dev-61-local-qa"></a>
+
+## 2026-11-12 · DEV-61 관련 공고 로컬 교정 검증
+
+- 판정 범위: [DEV-61 검증/원문](../development/figma-v01/tasks/DEV-61.md#dev-61-verification). 새 실제 API 통과0·업무 요청0이다. 위 QA-03의2026-11-02 실제1통과8차단·DETAIL-07 관련/target 이동 통과·원래 제한 종료 승인을 보존한다. 아래 mock/대역을 새 실제 case PASS로 올리지 않는다.
+- DETAIL-07 로컬: 공개 정상/마감10004/취소10016 기준에서 같은 정확 업종의 진행 공사만 제공한다. 물품10003의 source분류1 카드를 클릭하면10006의 실제 target분류2로 이동하고 새로고침에도 유지한다. source분류2는 정상 빈 목록이고, 용역 업종 target은 null query다. 카드 결측 금액은 미제공이며 다른 기초금액으로 채우지 않는다.
+- DETAIL-01/04/08 로컬 연결: source 전체/선택·없는 분류/null404·형식400·손상 identity/target 분류 오류·정각/1ms 경계·우선순위/정렬/VAT는42개 새 Node 사례에 포함했다. 실제 브라우저는 정상/마감/취소·빈/related-error와 다른 section 유지, default 복구·1440/390/320px·Tab/Enter 이동을 확인했다. 총255tests와 API/mock/hybrid build가 통과했다.
+- 구성/네트워크: full mock과 auth HTTP 구현의 로컬 익명401 대역+bids mock hybrid를 별도 확인했다. 최종 ResourceTiming은 full mock28리소스/외부0/API0, hybrid30리소스/외부0·로컬 refresh만이다. 서버 업무 API 외부 시도0과 개발도구 registry 차단/초기 미분류 차단을 Task에 따로 기록했다. Preview의 production 승격은 실제 시작에서 exit1로 거부됐다.
+- 실행 식별: 2026-11-12 KST, `fix/dev-61-related-bids-mock`, 시작`1166f08`; Node22.20.0/pnpm11.3.0·Next16.2.9·Aside의 소유 loopback3061. 합성 fixture/비로그인만 사용했고 실제 로그인·알림 변경·첨부 내용/다운로드·메일·서비스 운영은0건이다. 원문 AX/PNG/명명16관찰·명령 로그는 `/tmp/mate-dev61-20261112`에 보존한다.
+- 정리: 소유 Next/대역 종료,3061/3062/3063 리스너0·소유 탭 닫기/viewport복구. 원시 page query 정규화·기존 상세 시각 정합성/중첩 main은 이번 변경 밖이다. backend 실행 SHA/실제 경계 fixture·Clock·오류/복구 등 [POL-30 후속 재개 조건](#pol-30-followup)과 다른8차단을 유지한다.
