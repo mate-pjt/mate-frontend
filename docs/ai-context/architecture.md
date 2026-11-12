@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-09-30
+Last updated: 2026-11-12
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -66,6 +66,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `src/features/auth/session.tsx`의 Provider는 순수 session-controller를 조합한다. API 인증은 메모리 token/refresh cookie, mock 인증은 탭의 합성 세션만 사용한다. `AuthAccess`에는 token·refresh·현재 계정 식별 함수가 있다. 동시 refresh와 계정 전환·로그아웃 중 늦은 응답을 방어한다.
 - `/my/company`는 회사 Repository의 현재 overview를 조회한다. UI가 인증 응답의 회사 상태로 화면을 판단하지 않는다. API 회사 변경 뒤 세션 갱신은 HTTP 구현, mock 회사 상태 갱신은 mock 구현 책임이다. 변경 성공 뒤 세션 실패는 완료 화면과 경고를 유지한다.
 - 등록 페이지의 `AccountScope`는 인증 계정 교체 시 화면 임시 상태를 초기화한다. 완료 결과는 AuthGate 밖에 두어 등록 성공 후 세션 만료에도 유지한다. 전체 mock 보호 요청은 가상 세션 만료를 검사하며, auth API와 업무 mock의 혼합에서는 실제 token/refresh를 추가로 요청하지 않는다.
+- 가입용 `SignupCompanyProfile`은 면허/인증의 YES/NO/UNKNOWN·정확한 인증3종·nullable 평가연도와 출처/자료 기준일을 보존한다. wire와 내부 모델이 같아 별도 mapper는 없다. 회사 mock의 `signupEvidenceVersion: 1`은 알려진 구형 프로필만 회사 영역 안에서 변환하며 전체 MockStore schema/계정 namespace를 바꾸지 않는다. [DEV-59](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)의 로컬 근거와 실제 QA-06/07 차단은 별개다.
 - 문서 업로드는 화면에 문서/버전 ID와 opaque handle만 전달한다. 서명 URL·header·checksum·직접 PUT은 HTTP 내부에 있고, mock은 외부 전송·파일 원본 저장 없이 처리 상태를 변경한다. 복원 키는 공급원별로 격리한다.
 - `src/data/mock/store.ts`는 schema·설정·API 환경·auth 공급원·계정별 sessionStorage 공간을 관리한다. 손상 공간만 초기화하고 사용 불가/용량 초과 시 메모리와 개발 표시로 전환한다. API 응답·실제 token·cookie·서명 URL을 복사하지 않는다.
 - `src/components/dev/mock-status.tsx`는 mock이 있을 때 활성 그룹·현재 공간 초기화와 저장소 제한을 표시한다. 화면별 공급원 선택은 제공하지 않는다.

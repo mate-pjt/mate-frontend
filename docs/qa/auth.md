@@ -451,3 +451,29 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 사용자는 **POL-01 정책 차단을 유지하고 선행 조건을 충족하는 다음 Task 하나를 선정하는 예외**를 승인했으며 다음 Task는 새 대화에서 시작한다고 명시했다. 위의 ‘다음 POL-01 재개/새 예외 없음’은 당시 이력으로 보존하고, [승인/선정 기록](../development/figma-v01/tasks/POL-01.md#pol-01-next-pol-02-exception)에 따라 다음 요구사항 Gate 대상은 **POL-02**다. P0 DEV-01/02·QA-16의 선행 미충족을 보존하며 P1 표의 첫 후보 POL-02는 DOC-001 완료/main 반영을 충족한다. 현재/다음/상태는 [WBS](../development/figma-v01/README.md)에서 관리한다.
 
 승인 원문/책임 역할·기존 동의 전환·푸터 공개 정보와 POL-01 재개5조건은 미확보/차단 그대로다. AUTH-02/03·QA-04~08의 이력·판정을 변경하지 않는다. 이번 실제 API/가입/동의 이력 변경·mock/HTTP 대역·브라우저 신규 실행0건/신규 실제 통과0건이며 정책 완료·정식 약관 공개·POL-02 착수/정책/API 승인으로 확대하지 않는다. 다음 첫 행동은 새 대화에서 최신 main과 POL-02 후보/선행 근거·data-access를 확인해 요구사항 Gate를 작성하는 것이다. 이번에는 해당 Task의 조사·결정·개발을 실행하지 않는다.
+
+<a id="dev-59-local-qa"></a>
+
+## 2026-11-12 · DEV-59 가입 회사 근거 로컬 검증
+
+- 실행 식별자: `DEV-59-20261112`, clean base `80445aa` 이후 전용 branch의 source/테스트4파일과 동일한 격리 사본. Node22.20.0/pnpm11.3.0·Next16.2.9·Aside Browser(Chromium), loopback3159, desktop1440×1000/mobile390·320×900. 실행 시각은 외부 build/test/server 로그에 보존한다.
+- 범위: Figma3140:123224의 기존 CompanyEvidencePanel에 공급되는 번호/문서 가입 프로필·저장 변환. 원래 구조/asset·직접 편집 비활성은 유지한다. Figma 예시 연도25를 데이터 근거로 쓰지 않으며 전체 화면/pixel 정합성 PASS는 주장하지 않는다.
+- 자동: `pnpm test` 14파일284건(신규29건), lint·API/mock/hybrid build·Storybook·운영 mock 시작 거부 PASS. HTTP fetch 대역은 출처4종·인증3종·금액/연도/null·개별 자료일 보존과401/403/409/503을 검증한다. 저장의 구형 연결/문서/proposal/revision·cached replay/계정·타 도메인·실제 문서키 보존, 새 형식의 잘못된 상태/출처/날짜 거부를 확인한다.
+
+| 로컬 case | 수행/관찰 | 결과/근거 |
+| --- | --- | --- |
+| CEV-01 | 번호 기본·5억/연도null·면허Y·인증Y/N/정보 없음·자료일 | PASS · default AX/PNG |
+| CEV-02 | Tab으로 직접 편집 disabled를 건너뛰고 다음·Enter로 preferences 이동 | PASS · 브라우저 관찰 |
+| CEV-03/04 | 390/320px 카드·가로 넘침0 | PASS · viewport/scroll 동일, PNG |
+| CEV-05 | 같은 탭 새로고침→identity→근거 복원 | PASS |
+| CEV-06 | 알려진 구형 탭의 합성2030년/ACTIVE/빈 인증을 null/UNKNOWN으로 변환·연결 유지 | PASS · legacy AX/저장 marker1 |
+| CEV-07 | 합성 파일 mock 처리→문서 제안→혼합 근거 카드 | PASS · document AX/PNG. 실제 업로드/OCR 아님 |
+| CEV-08/09 | 계정2의 빈 상태·계정1 복귀 시 기존 연결 복원 | PASS · account-2 AX/관찰 |
+| CEV-10 | evidence-empty의 금액/면허·인증4개 정보 없음·확인된 자료 없음 | PASS · empty AX/PNG |
+| CEV-11 | auth API 로컬 대역/company mock·근거 표시·추가 회사 HTTP0 | PASS · hybrid AX/대역 로그 |
+| CEV-12/13 | 회사 HTTP 대역503 오류→다시 확인하기→200 근거 복구 | PASS · http-503/recovered AX |
+| CEV-14/15/16 | HTTP 대역403/409/최종401이 오류로 남고 mock 성공으로 바뀌지 않음 | PASS · 상태별 AX·대역 로그 |
+
+- 네트워크: full mock 번호32/문서31 resource의 외부0, empty 외부0. hybrid30 resource 중 로컬 auth1/비loopback0·대역 로그 회사 요청0. HTTP 최종401 화면28 resource/로컬 대역6/비loopback0. 실제 OAuth·업무 API·storage 전송·메일0건이다. ResourceTiming과 대역의 method/path/status만 확인하며 헤더/토큰/원본 업무 데이터는 기록하지 않는다.
+- 실제 API 통합: **미실행**. QA-06 AUTH-14/15 0통과2차단, QA-07 AUTH-09~13 0통과5차단/기존 AUTH-17 미실행 및 변경·잔존·복구·실행 대응 재개 조건은 유지한다. 이 로컬 PASS로 실제 QA나 POL-06/DEV-08 Gate를 면제하지 않는다.
+- 증거: `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev-59`의 test/lint/build/Storybook·guard·server 로그, browser `cases.json`/AX/PNG·로컬 HTTP 대역. 초기 pnpm/Turbopack 환경 오류 발췌와 교정은 `environment-errors.md`로 구분한다. [Task](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)와 [Review](../development/figma-v01/reviews/DEV-59.md)에서 최종 Gate/freshness를 확인한다.

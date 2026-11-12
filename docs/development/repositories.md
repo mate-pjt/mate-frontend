@@ -88,13 +88,20 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, error |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
 | notificationSettings | default, slow, expired, blocked, error |
 
 목록은 `src/data/config.ts`의 mockScenarios가 기준이다. 오타·없는 그룹·API 공급원에 시나리오를 지정하면 설정 오류다. 실패는 무작위가 아니다. processing-failed는 최초 OCR 실패 후 재시도 성공, conflict는 기존 회사 처리 선택을 재현한다. 회사 초기 상태는 해당 공간에 저장 상태가 없을 때 적용한다.
+
+### 가입 회사 근거 확인 · DEV-59
+
+- 번호 조회와 합성 문서 제안의 기본 fixture는 금액5억 원/평가연도 `null`, 대표면허 `YES`, 여성기업 `YES`·장애인기업 `NO`·사회적기업 `UNKNOWN`이다. 공개 자료 기준일 `2025-12-31`은 고정 합성 보고서 날짜이며 평가연도나 실제 최신 보고서를 뜻하지 않는다. 화면의 Y/N/정보 없음과 자료 기준일을 함께 확인한다.
+- `MATE_MOCK_SCENARIOS='{"company":"evidence-empty"}'`로 재시작/재빌드하면 금액·연도·근거 출처/기준일이 `null`, 면허·인증3종은 `UNKNOWN`인 자료 없음 사례를 만든다. 회사 identity는 남으므로 가입 확인을 계속할 수 있다. 빈 값을 `NO`나0원으로 바꾸지 않는다.
+- 프로필은 입력/증명서/나라장터/보고서 출처를 구분한다. 알려진 구형 탭의 합성 평가연도·면허 ACTIVE·빈 인증 객체는 회사 영역의 `signupEvidenceVersion: 1` 변환으로 연도 null/UNKNOWN·근거 없음으로 바꾸고 연결·문서·proposal/revision·멱등 응답을 유지한다. 새 형식의 임의 enum/출처/없는 날짜는 해당 계정 company 공간만 초기화한다. 전체 namespace/schema와 다른 계정/도메인·실제 문서 UUID 키는 바꾸지 않는다.
+- [DEV-59 검증](figma-v01/tasks/DEV-59.md#dev-59-verification)은 로컬 mock/HTTP 대역이다. 실제 번호 등록·업로드/OCR QA-06/07 차단과 직접 편집 준비 중 상태를 유지한다.
 
 ### 관련 공고 합성 데이터 확인 · DEV-61
 
