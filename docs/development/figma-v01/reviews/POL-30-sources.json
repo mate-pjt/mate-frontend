@@ -1,0 +1,207 @@
+{
+  "taskId": "POL-30",
+  "observedDateKst": "2026-11-12",
+  "frontend": {
+    "base": "852fbe708cd11d7e3ec42be6914f36ee504bf743",
+    "branch": "docs/pol-30-related-source-policy",
+    "initialWorktree": "clean",
+    "prerequisite": "QA-17 dcd291d is ancestor of main"
+  },
+  "sources": [
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/RelatedBidNoticeQueryController.kt",
+      "blobSha": "7ea58a35e77eb2a23ba2d025e1e8932db4eca84a",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/RelatedBidNoticeQueryController.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticeCandidatePersistenceAdapter.kt",
+      "blobSha": "3e671cd1d69f150d0b0dbe07a8084a0c841e6dd8",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticeCandidatePersistenceAdapter.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionResolver.kt",
+      "blobSha": "d74e116d5d8cdec79b2c51b41f99857694f4fd56",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionResolver.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeQueryService.kt",
+      "blobSha": "7e4450e9d10d02dafd8a122442e4bd0de82602ea",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeQueryService.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeRelationPolicy.kt",
+      "blobSha": "e23a85916ba11250fc0665c4f24d991630d666d1",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeRelationPolicy.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeQueryServiceTest.kt",
+      "blobSha": "7cacd6b1e07ea699a4e464cb9aff41e09698fc62",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/test/java/kr/co/mate/mate_api/application/service/bid/relatednotice/RelatedBidNoticeQueryServiceTest.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/publication/BidNoticeUserPublicationGuard.kt",
+      "blobSha": "83d7c179316b9f2238ca43c0d535077aee1d3669",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/publication/BidNoticeUserPublicationGuard.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionPolicy.kt",
+      "blobSha": "c741af540ae12472c2dfcb2a54adb080f4de9903",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionPolicy.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/domain/bid/service/BidNoticeClassificationIdentityPolicy.kt",
+      "blobSha": "697239c6f67919846174847fcea3fbc094f227b3",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/domain/bid/service/BidNoticeClassificationIdentityPolicy.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/matching-and-related-notices.md",
+      "blobSha": "1edbb855844dfd49cc1130d91fb11000837156fb",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/matching-and-related-notices.md",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticeSourceFactsPersistenceAdapter.kt",
+      "blobSha": "9a77cf38b33f4951232cb3677dcac06e863dac10",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticeSourceFactsPersistenceAdapter.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticePersistenceAdapterTest.kt",
+      "blobSha": "35840d7a77ad3549e446670a256713cb94f8dfb8",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/relatednotice/RelatedBidNoticePersistenceAdapterTest.kt",
+      "evidence": "source-only; read, not executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "4c328d4a943eaa5dcbb0e8d9596b22389d154988",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeDisplayMetadataPolicy.kt",
+      "blobSha": "2d9cd054b7809bae01c9bf2f5ef95a6007395b24",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/4c328d4a943eaa5dcbb0e8d9596b22389d154988/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeDisplayMetadataPolicy.kt",
+      "evidence": "source-only; read, not executed"
+    }
+  ],
+  "comparison": {
+    "auditBackendRef": "1f3b8544dee49fa3936b3229114a58cd9eb7432c",
+    "relatedServiceBlobUnchanged": true,
+    "relationPolicyBlobUnchanged": true,
+    "centralPolicyRefUnchanged": true
+  },
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "observation": "read-only document GET via Aside; no business API requests",
+    "httpStatus": 200,
+    "openapi": "3.1.0",
+    "infoVersion": "v1",
+    "paths": 183,
+    "operations": 207,
+    "sha256": "8004dad674ed24e00c8a6205a190822d5125d5e144bbde0c6364950338192aff",
+    "path": "/api/v1/bid-notices/{bidNoticeId}/related-notices",
+    "method": "GET",
+    "query": {
+      "bidClsfcNo": "optional canonical decimal string, 0 or 1..50 digits without leading zero",
+      "page": "default 0, minimum 0",
+      "size": "default 20, 1..100"
+    },
+    "documentedResponseCodes": [
+      "400",
+      "404",
+      "500"
+    ],
+    "responseSchemas": [
+      "CommonResponseRelatedBidNoticeResponse",
+      "RelatedBidNoticeResponse",
+      "RelatedBidNoticeItemResponse"
+    ],
+    "relatedProperties": [
+      "relationType",
+      "items",
+      "page",
+      "size",
+      "hasNext"
+    ],
+    "cardProperties": [
+      "bidNoticeId",
+      "bidClsfcNo",
+      "knownClassificationCount",
+      "noticeName",
+      "bidType",
+      "participationRegionDisplayName",
+      "noticePublishedAt",
+      "projectAmount",
+      "projectAmountAvailability"
+    ],
+    "nullableFields": [
+      "relationType",
+      "bidClsfcNo",
+      "participationRegionDisplayName",
+      "noticePublishedAt",
+      "projectAmount"
+    ],
+    "declaredWrapperSuccessField": "success",
+    "limitations": [
+      "No explicit HTTP200 response entry in observed operation; schema existence is not a business response",
+      "info.version v1 and document hash do not identify running backend SHA",
+      "Existing frontend isSuccess wire policy is not redefined"
+    ]
+  },
+  "execution": {
+    "backendTestsRun": false,
+    "productBrowserQaRun": false,
+    "liveBusinessApiRequests": 0,
+    "backendRuntimeSha": "unverified",
+    "centralRepositoryWrites": 0,
+    "deploymentsRun": 0,
+    "ownedSwaggerTabClosed": true,
+    "localFrontendAppTestsRun": false
+  },
+  "historicalQa": {
+    "task": "QA-03",
+    "asOfKst": "2026-11-02",
+    "passed": 1,
+    "blocked": 8,
+    "relatedCase": "DETAIL-07 passed then; no current rerun",
+    "preserved": true
+  },
+  "refRecheckedAtKst": "2026-11-12 10:05",
+  "decision": {
+    "deciderRole": "이 대화의 사용자",
+    "dateKst": "2026-11-12",
+    "explicitApproval": "마감·취소된 공고 상세에서도 같은 업종·품목의 진행 중인 관련 공고를 보여주는 방향으로 확정",
+    "scope": "frontend POL-30 policy and DEV-61 handoff; central correction proposal stays in this repository",
+    "centralPolicyMerged": false,
+    "liveIntegrationPass": false
+  }
+}
