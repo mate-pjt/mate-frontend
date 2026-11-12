@@ -48,22 +48,39 @@ export type InvitationContext = {
   canAccept: boolean;
 };
 
+export type CompanyEvidenceStatus = "YES" | "NO" | "UNKNOWN";
+export type SignupCompanyProfileSource = "USER_INPUT" | "BUSINESS_REGISTRATION_CERTIFICATE" | "NARA_COMPANY" | "G2B_REPORT";
+export const signupCertificationTypes = ["WOMEN_OWNED", "DISABLED_OWNED", "SOCIAL_ENTERPRISE"] as const;
+export type SignupCompanyCertification = {
+  status: CompanyEvidenceStatus;
+  source: SignupCompanyProfileSource | null;
+  sourceSnapshotDate: string | null;
+};
+
 export type SignupCompanyProfile = {
   businessNumber: string;
+  businessNumberSource: SignupCompanyProfileSource;
   companyName: string | null;
   representativeName: string | null;
+  representativeNameSource: SignupCompanyProfileSource | null;
   openingDate: string | null;
+  openingDateSource: SignupCompanyProfileSource | null;
   baseAddress: string | null;
   detailAddress: string | null;
   telephoneNumber: string | null;
+  companyInformationSource: SignupCompanyProfileSource | null;
+  companyInformationCheckedAt: string | null;
+  telephoneNumberSource: SignupCompanyProfileSource | null;
   primaryIndustry: { code: string; name: string } | null;
+  primaryIndustrySource: SignupCompanyProfileSource | null;
   capability: {
     amountKrw: number | null;
     assessmentYear: number | null;
-    representativeLicenseStatus: string;
-    sourceSnapshotDate?: string | null;
+    representativeLicenseStatus: CompanyEvidenceStatus;
+    source: SignupCompanyProfileSource | null;
+    sourceSnapshotDate: string | null;
   };
-  certifications: Record<string, { status: string; sourceSnapshotDate?: string | null }>;
+  certifications: Record<typeof signupCertificationTypes[number], SignupCompanyCertification>;
 };
 
 export type BusinessConnection = {

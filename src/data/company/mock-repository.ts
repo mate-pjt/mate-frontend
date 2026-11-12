@@ -3,6 +3,7 @@ import { mockAccount, mockOperation, type MockRuntime } from "../mock/runtime";
 import { isCount, isDate, isRecord } from "../mock/validation";
 import type { AuthAccess } from "../shared/http";
 import type { BusinessConnection, CompanyBasicProfile, CompanyOverview, CompanyRegistrationProposal, CompanyRepository, CompanySearchItem, DocumentUpload, InvitationContext, MyMembershipRequest, RegistrationResult, SignupCompanyProfile } from "./contracts";
+import { signupCertificationTypes } from "./contracts";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -10,14 +11,24 @@ const companies: CompanySearchItem[] = [
   { companyId: 7001, companyName: "가상 메이트 건설", businessNumber: "1234567890", baseAddress: "서울특별시 가상로 1", verificationStatus: "VERIFIED" },
   { companyId: 7002, companyName: "가상 메이트 정보통신", businessNumber: "2345678901", baseAddress: "부산광역시 가상로 2", verificationStatus: "UNVERIFIED" },
 ];
-function signupProfile(number = companies[0].businessNumber, now = Date.now()): SignupCompanyProfile {
-  return { businessNumber: number, companyName: "가상 메이트 기업", representativeName: "가상 대표", openingDate: "2020-01-01", baseAddress: "서울특별시 가상로 1", detailAddress: null, telephoneNumber: null, primaryIndustry: industries[0], capability: { amountKrw: 500_000_000, assessmentYear: new Date(now).getFullYear(), representativeLicenseStatus: "ACTIVE" }, certifications: {} };
+function profileSources(document: boolean) {
+  const identitySource = document ? "BUSINESS_REGISTRATION_CERTIFICATE" as const : "NARA_COMPANY" as const;
+  return { businessNumberSource: document ? "BUSINESS_REGISTRATION_CERTIFICATE" as const : "USER_INPUT" as const, representativeNameSource: identitySource, openingDateSource: identitySource, companyInformationSource: identitySource, companyInformationCheckedAt: null, telephoneNumberSource: null, primaryIndustrySource: "NARA_COMPANY" as const };
+}
+function signupProfile(number = companies[0].businessNumber, empty = false, document = false): SignupCompanyProfile {
+  const observed = { source: "G2B_REPORT" as const, sourceSnapshotDate: "2025-12-31" };
+  const unknown = { status: "UNKNOWN" as const, source: null, sourceSnapshotDate: null };
+  return {
+    businessNumber: number, ...profileSources(document), companyName: "가상 메이트 기업", representativeName: "가상 대표", openingDate: "2020-01-01", baseAddress: "서울특별시 가상로 1", detailAddress: null, telephoneNumber: null, primaryIndustry: industries[0],
+    capability: { amountKrw: empty ? null : 500_000_000, assessmentYear: null, representativeLicenseStatus: empty ? "UNKNOWN" : "YES", ...(empty ? { source: null, sourceSnapshotDate: null } : observed) },
+    certifications: { WOMEN_OWNED: empty ? { ...unknown } : { status: "YES", ...observed }, DISABLED_OWNED: empty ? { ...unknown } : { status: "NO", ...observed }, SOCIAL_ENTERPRISE: { ...unknown } },
+  };
 }
 function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile["verificationStatus"] = "VERIFIED", number = companies[0].businessNumber): CompanyBasicProfile {
   return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustry: industries[0] };
 }
 type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null };
-type CompanyState = { overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
+type CompanyState = { signupEvidenceVersion: 1; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
 function searchItemValid(value: unknown): boolean {
@@ -26,7 +37,42 @@ function searchItemValid(value: unknown): boolean {
 function signupProfileValid(value: unknown): boolean {
   if (!isRecord(value) || typeof value.businessNumber !== "string" || !["companyName", "representativeName", "openingDate", "baseAddress", "detailAddress", "telephoneNumber"].every(key => textOrNull(value[key])) || !industryValid(value.primaryIndustry) || !isRecord(value.capability) || !isRecord(value.certifications)) return false;
   const c = value.capability;
-  return (c.amountKrw === null || isCount(c.amountKrw)) && (c.assessmentYear === null || isCount(c.assessmentYear)) && typeof c.representativeLicenseStatus === "string" && Object.values(value.certifications).every(item => isRecord(item) && typeof item.status === "string");
+  const certifications = value.certifications;
+  return profileSourceValid(value.businessNumberSource) && value.businessNumberSource !== null &&
+    ["representativeNameSource", "openingDateSource", "companyInformationSource", "telephoneNumberSource", "primaryIndustrySource"].every(key => profileSourceValid(value[key])) &&
+    (value.companyInformationCheckedAt === null || isDate(value.companyInformationCheckedAt)) &&
+    (c.amountKrw === null || (typeof c.amountKrw === "number" && Number.isFinite(c.amountKrw) && c.amountKrw >= 0)) &&
+    (c.assessmentYear === null || (isCount(c.assessmentYear) && c.assessmentYear > 0 && c.assessmentYear <= 9999)) &&
+    evidenceStatusValid(c.representativeLicenseStatus) && profileSourceValid(c.source) && snapshotDateValid(c.sourceSnapshotDate) &&
+    Object.keys(certifications).length === signupCertificationTypes.length && signupCertificationTypes.every(type => {
+      const item = certifications[type];
+      return isRecord(item) && evidenceStatusValid(item.status) && profileSourceValid(item.source) && snapshotDateValid(item.sourceSnapshotDate);
+    });
+}
+const evidenceStatusValid = (value: unknown) => value === "YES" || value === "NO" || value === "UNKNOWN";
+const profileSourceValid = (value: unknown) => value === null || value === "USER_INPUT" || value === "BUSINESS_REGISTRATION_CERTIFICATE" || value === "NARA_COMPANY" || value === "G2B_REPORT";
+const snapshotDateValid = (value: unknown) => value === null || (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && isDate(value) && new Date(value).toISOString().slice(0, 10) === value);
+
+function migrateLegacyProfile(value: unknown, document: boolean): boolean {
+  if (!isRecord(value) || "businessNumberSource" in value || !isRecord(value.capability) || !isRecord(value.certifications)) return false;
+  const c = value.capability;
+  if (Object.keys(c).length !== 3 || c.amountKrw !== 500_000_000 || !isCount(c.assessmentYear) || c.representativeLicenseStatus !== "ACTIVE" || Object.keys(value.certifications).length !== 0) return false;
+  // The old fixture generated a year and ACTIVE without evidence. Keep the flow, discard those claims.
+  Object.assign(value, profileSources(document));
+  value.capability = { amountKrw: c.amountKrw, assessmentYear: null, representativeLicenseStatus: "UNKNOWN", source: null, sourceSnapshotDate: null };
+  value.certifications = Object.fromEntries(signupCertificationTypes.map(type => [type, { status: "UNKNOWN", source: null, sourceSnapshotDate: null }]));
+  return signupProfileValid(value);
+}
+function migrateLegacyState(value: Record<string, unknown>): boolean {
+  if (!isRecord(value.proposals) || !isRecord(value.requests)) return false;
+  if (value.connection !== null && (!isRecord(value.connection) || !migrateLegacyProfile(value.connection.companyProfile, false))) return false;
+  for (const proposal of Object.values(value.proposals)) if (!isRecord(proposal) || !migrateLegacyProfile(proposal.companyProfile, true)) return false;
+  for (const request of Object.values(value.requests)) {
+    if (!isRecord(request) || !isRecord(request.result)) return false;
+    if ("connectionId" in request.result && !migrateLegacyProfile(request.result.companyProfile, false)) return false;
+  }
+  value.signupEvidenceVersion = 1;
+  return true;
 }
 function connectionValid(value: unknown): boolean {
   if (!isRecord(value) || typeof value.connectionId !== "string" || typeof value.businessNumber !== "string" || !["connectionStatus", "verificationStatus", "enrichmentStatus"].every(key => typeof value[key] === "string") || !signupProfileValid(value.companyProfile) || !isRecord(value.enrichmentRun)) return false;
@@ -48,7 +94,7 @@ function requestResultValid(value: unknown): boolean {
   return typeof value.status === "string";
 }
 function valid(value: unknown): value is CompanyState {
-  if (!isRecord(value) || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
+  if (!isRecord(value) || value.signupEvidenceVersion !== 1 || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
   const view = value.overview;
   if (view.status === "connected") {
     const p = view.profile; if (!isRecord(p) || !isCount(p.companyId) || typeof p.companyName !== "string" || typeof p.businessNumber !== "string" || !["LEGACY", "VERIFIED", "UNVERIFIED"].includes(String(p.verificationStatus)) || !textOrNull(p.representativeName) || !textOrNull(p.telephoneNumber) || !(p.establishedYear === null || isCount(p.establishedYear)) || !industryValid(p.primaryIndustry) || !(p.address === null || (isRecord(p.address) && ["zipCode", "baseAddress", "detailAddress"].every(key => textOrNull((p.address as Record<string, unknown>)[key]))))) return false;
@@ -84,9 +130,17 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       const request: MyMembershipRequest = { requestId: 8001, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt: new Date(runtime.now()).toISOString() };
       overview = { status: scenario === "pending" ? "pending" : scenario === "approved-stale" ? "approved-stale" : "terminated", request };
     }
-    return { overview, connection: null, documents: {}, proposals: {}, requests: {} };
+    return { signupEvidenceVersion: 1, overview, connection: null, documents: {}, proposals: {}, requests: {} };
   }
-  const read = (account: string) => runtime.store.read<CompanyState>(account, "company", initial, valid);
+  const read = (account: string) => {
+    let migrated = false;
+    const state = runtime.store.read<CompanyState>(account, "company", initial, (value): value is CompanyState => {
+      if (isRecord(value) && !Object.hasOwn(value, "signupEvidenceVersion")) migrated = migrateLegacyState(value);
+      return valid(value);
+    });
+    if (migrated) runtime.store.write(account, "company", state);
+    return state;
+  };
   const write = (account: string, state: CompanyState) => runtime.store.write(account, "company", state);
   function idempotent<T>(state: CompanyState, key: string, payload: unknown, create: () => T): T {
     const signature = fingerprint(payload); const previous = state.requests[key];
@@ -170,7 +224,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       const account = await mockAccount(runtime, access, "company"); const state = read(account);
       const connection = idempotent(state, key, { operation: "connection", number }, () => {
         if (!/^\d{10}$/.test(number)) throw new ApiError(400, "BUSINESS_NUMBER_INVALID", "사업자번호 10자리를 확인해 주세요.");
-        return { connectionId: crypto.randomUUID(), businessNumber: number, connectionStatus: "ACTIVE", verificationStatus: "UNVERIFIED", enrichmentStatus: "PROCESSING", primaryIndustry: { industryId: 1, ...industries[0] }, companyProfile: signupProfile(number, runtime.now()), enrichmentRun: { runId: crypto.randomUUID(), status: "PROCESSING", totalSteps: 3, completedSteps: 0 } };
+        return { connectionId: crypto.randomUUID(), businessNumber: number, connectionStatus: "ACTIVE", verificationStatus: "UNVERIFIED", enrichmentStatus: "PROCESSING", primaryIndustry: { industryId: 1, ...industries[0] }, companyProfile: signupProfile(number, runtime.scenario("company") === "evidence-empty"), enrichmentRun: { runId: crypto.randomUUID(), status: "PROCESSING", totalSteps: 3, completedSteps: 0 } };
       }); state.connection = connection; write(account, state); return connection;
     },
     async getBusinessConnection(access) {
@@ -210,7 +264,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
         if (version.polls >= 2) {
           if (runtime.scenario("company") === "processing-failed" && !version.retried) version.status = "OCR_FAILED";
           else {
-            version.status = "COMPANY_CONFIRMATION_REQUIRED"; version.proposalId = crypto.randomUUID(); const profile = signupProfile(undefined, runtime.now());
+            version.status = "COMPANY_CONFIRMATION_REQUIRED"; version.proposalId = crypto.randomUUID(); const profile = signupProfile(undefined, runtime.scenario("company") === "evidence-empty", true);
             state.proposals[version.proposalId] = { proposalId: version.proposalId, revision: 1, documentId, versionId: version.versionId, businessNumber: profile.businessNumber, representativeName: profile.representativeName!, openingDate: profile.openingDate!, companyName: profile.companyName!, baseAddress: profile.baseAddress!, detailAddress: null, telephoneNumber: null, primaryIndustry: profile.primaryIndustry, primaryIndustrySelectionRequired: false, companyProfile: profile,
               conflict: runtime.scenario("company") === "conflict" ? { existingCompanyId: 7001, existingCompanyName: companies[0].companyName, decisionRequired: true, allowedChoices: ["REUSE_EXISTING", "CREATE_NEW_VERIFIED"], reuseMode: "PROPOSE_MERGE" } : null, businessNumberCorrection: null };
           }
