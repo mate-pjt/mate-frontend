@@ -230,7 +230,7 @@ function AuthenticatedNotificationSettings({ getAccessToken, refresh, getAccount
               />
             </div>
             <div className="mt-4 rounded-lg bg-grayscale-50 p-4 type-body-7 text-grayscale-600">
-              개인 공고 필터에 맞는 새 공고를 모아 보내드려요. 공고별 변경 소식은 해당 공고의 알림 설정과 별개예요.
+              개인 공고 필터에 맞는 새 공고를 이메일로 모아 보내드려요. 공고별 변경 소식은 서비스 내부 알림으로 받아요. 맞춤 공고 이메일을 꺼도 공고별 알림 설정은 유지돼요.
             </div>
             {saving && <p className="mt-3 type-body-7 text-grayscale-600" role="status">설정을 저장하고 있어요.</p>}
             {saveError && <p className="mt-3 type-body-7 text-danger" role="alert">{saveError}</p>}

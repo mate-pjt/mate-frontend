@@ -50,7 +50,9 @@ export function MySideMenu({ value }: { value: "company" | "settings" }) {
         }}
         value={value}
       />
-      <p className="mt-3 px-3 text-xs leading-5 text-grayscale-600" id="my-menu-help">흐리게 표시된 메뉴는 준비 중이에요.</p>
+      <p className="mt-3 px-3 text-xs leading-5 text-grayscale-600" id="my-menu-help">
+        흐리게 표시된 메뉴는 준비 중이에요. 알림 설정 공고의 목록 관리는 준비 중이며, 개별 공고 상세에서 알림을 설정·해제할 수 있어요.
+      </p>
       {logoutError && <p className="mt-2 px-3 type-body-7 text-danger" role="alert">{logoutError}</p>}
     </div>
   );
