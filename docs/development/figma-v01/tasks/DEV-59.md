@@ -128,3 +128,8 @@
 - verifier targeted freshness와 primary ai-review 재검토 PASS. runtime/test4파일 불변, 문서14파일·링크447/anchor97·79원본/114Task/155의존·보호34/QA prefix·DEV-59 완료/DEV-60 준비/활성0을 재확인했다. 미해결 Blocker/Major/Minor 없음.
 - 이후 검토 요약·PR 번호/URL/실제 Git/CI 관찰값만 추가하면 source/범위/정책/검증 사례/다음 행동 불변을 전제로 독립 전체 리뷰 반복을 생략할 수 있다는 verifier 조건을 받았다. primary는 문서/diff·AI Review 영향 검사를 수행한다.
 - 다음 첫 행동은 승인된 목적별 commit/push·템플릿 PR/라벨·최종 head CI/정상 merge/main ff다. 실제 결과는 후속 Git 체크포인트 및 외부 `git-delivery.json`/PR/최종 보고를 따른다. 다음 DEV-60은 선정/인계만이며 미착수다.
+
+### Git 전달 체크포인트 · PR 생성
+
+- 목적별4커밋: `d67f03e` 런타임, `fbcf554` 테스트, `cd8f6dc` 개발/QA 가이드, `3140a7d` 검토/작업 기록. clean worktree에서 `origin/main=80445aa` 재확인·전용 branch push 후 [PR #58](https://github.com/mate-pjt/mate-frontend/pull/58)을 생성했다. 템플릿 본문과 type: bug/test/docs 라벨을 적용했다. PR 최초 head는 `3140a7d841c1b7a8e32773b615598d75c878ea9a`다.
+- 이 체크포인트는 실제 PR 생성 관찰이다. 최종 head의 원격 CI·리뷰/미해결 thread·정상 병합 조건과 main ff/로컬·원격 SHA는 아직 후속 확인 대상이며 결과를 외부 `git-delivery.json`·PR/최종 보고에 남긴다. 현재/다음 Task 판정은 WBS를 따른다. source/범위/검증/다음 행동은 불변이고 PR/결과 metadata만 추가하므로 verifier 허용 조건 아래 독립 전체 리뷰를 반복하지 않고 primary 문서/diff·AI Review 영향 검사를 수행한다.

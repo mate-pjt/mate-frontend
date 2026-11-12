@@ -49,3 +49,7 @@ architecture/data-access·개발 가이드/QA·날짜별 plan·Task/WBS·context
 - 동일 read-only verifier의 targeted 재검토도 PASS, Blocker/Major/Minor 없음. runtime/test4파일 지문은 1차와 동일하고14파일·링크447/anchor97·79원본·114Task/155의존·보호34/QA prefix·활성0/DEV-60 준비·인계만 수행을 직접 확인했다. 검토14파일 manifest digest `61532eeab42bcf340569c8e05ba019b5166da2828d75302a616ad65cc13f9c0d`. source 불변으로 앱 검증은 재실행하지 않았다.
 - primary AI Review도 종료 diff/WBS/DEV-60 인계를 다시 대조해 위 여섯 섹션 모두 PASS, 신규 문제/누락/정책 결정 없음. 검증/문서 갱신·실제 QA 한계와 다음 첫 행동은 동일하다.
 - verifier가 허용한 후속 경계: 검토 결과 요약·PR 번호/URL·실제 Git/CI 관찰 metadata만 추가하고 source·범위/정책/승인·검증 사례/판정·다음 행동이 불변이면 독립 전체 검토를 반복하지 않는다. primary는 문서/diff·AI Review 영향을 다시 검사하고 이유를 기록한다. 새 실패/차단이나 이 경계를 넘는 변경은 영향 검증/해당 리뷰를 다시 수행한다.
+
+## PR 연결 metadata 영향 확인
+
+[PR #58](https://github.com/mate-pjt/mate-frontend/pull/58)·최초 head `3140a7d`와 목적별 커밋/라벨 관찰만 Task에 추가했다. runtime/test4파일·범위/정책/승인·검증 사례/판정·다음 DEV-60 인계는 불변이다. 최종 verifier의 명시적 freshness 허용에 따라 독립 전체 검토를 생략하고 primary 문서 링크/보존·diff-check·AI Review 여섯 항목 영향을 재확인했다. 실제 최종 PR/head CI·Chromatic 예외/정상 병합/로컬 main 동기화는 원격 PR와 외부 `git-delivery.json`/최종 보고를 따른다.
