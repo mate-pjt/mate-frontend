@@ -103,6 +103,13 @@ pnpm dev
 - 프로필은 입력/증명서/나라장터/보고서 출처를 구분한다. 알려진 구형 탭의 합성 평가연도·면허 ACTIVE·빈 인증 객체는 회사 영역의 `signupEvidenceVersion: 1` 변환으로 연도 null/UNKNOWN·근거 없음으로 바꾸고 연결·문서·proposal/revision·멱등 응답을 유지한다. 새 형식의 임의 enum/출처/없는 날짜는 해당 계정 company 공간만 초기화한다. 전체 namespace/schema와 다른 계정/도메인·실제 문서 UUID 키는 바꾸지 않는다.
 - [DEV-59 검증](figma-v01/tasks/DEV-59.md#dev-59-verification)은 로컬 mock/HTTP 대역이다. 실제 번호 등록·업로드/OCR QA-06/07 차단과 직접 편집 준비 중 상태를 유지한다.
 
+### 기본정보 복수 주력업종 확인 · DEV-60
+
+- company `connected` 시나리오의 `/my/company`는 토목공사업·정보통신공사업을 같은 수준의 주력업종으로 표시한다. 새로고침 후 목록을 유지하며 가입 UI의 단일 업종 선택과 구분한다.
+- 내부 기본정보는 `primaryIndustries`만 사용한다. HTTP의 신형 배열(빈 배열 포함)이 우선이며 legacy 단일값은 배열 필드 누락 때만 호환한다. 배열 null/잘못된 행·코드별 이름 충돌은 조회 오류다.
+- 회사 영역 `basicProfileVersion: 1`이 알려진 구형 기본정보 단일값을 목록으로 변환한다. 문서/신청·가입 근거·멱등 replay와 계정/다른 영역·실제 문서 UUID 키는 보존한다. 잘못된 새 목록은 해당 계정 company 공간만 초기화한다. 새 전역 schema/시나리오/공급원은 없다.
+- [DEV-60 검증](figma-v01/tasks/DEV-60.md#dev-60-verification)은 로컬 mock/HTTP 대역이다. QA-05 기본정보/DEV-08 대시보드의 실제 통합 차단을 유지한다.
+
 ### 관련 공고 합성 데이터 확인 · DEV-61
 
 - 기본 mock의 공사 `/bids/10001`은 같은 최종 업종의 진행 공사만 최대3개를 보여 준다. `/bids/10004`는 마감, `/bids/10016`은 취소 기준이며 둘 모두 진행 후보를 조회할 수 있다. 업종 관계 target URL에는 가짜 분류1을 붙이지 않는다.
