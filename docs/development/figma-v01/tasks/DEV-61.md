@@ -121,3 +121,10 @@
 - 다음 Task 하나: **DEV-59**. 남은 P0 QA/약관/취합·이전 P1 정책/실제 자원/신원·문구 차단은 그대로다. QA-17 선행이 완료된 P1 DEV-59/60/62 중 WBS 기본 순서에 따라 DEV-59를 선정했다. 앞선 DEV-61 우선 선정의 직접 정책 후속 근거와 구분하며 영구 순위 변경은 아니다.
 - 다음 첫 행동: 새 대화에서 DEV-59/CF-05·data-access와 최신 main·현행 소유 계약/정책을 선별 확인해 YES/NO/UNKNOWN·평가연도null·인증3종/출처·snapshot의 수정 파일·검증 범위 Brief를 제시한다. 여기서는 후보 정의/선정·인계만 했으며 DEV-59 상세 소스/서버 조사·구현·검증·Git 전달을 시작하지 않는다.
 - 현재 사용자 승인 아래 목적별 runtime/test/docs commit·push·PR·최종 head CI/리뷰/정상 merge·로컬 main fast-forward를 이어간다. 원격 main은 재확인 시 시작 SHA와 같았다. 이번 PR의 Chromatic 월간 한도 문제만 예외이며 강제 성공·보호 우회·직접 main push·force push는 사용하지 않는다.
+
+## 2026-11-12 · PR 전달 체크포인트
+
+- [PR #57](https://github.com/mate-pjt/mate-frontend/pull/57)을 `fix/dev-61-related-bids-mock`→main으로 생성했다. 초기 head는 `dd4391ea599d488d74ac048b15ec24d480d96588`, base는 `1166f08f04ceb080b7c5f6886d32a8a2ee073f5d`이며 원격 main은 그대로였다. runtime `8e66a0f`·test `633e3ae`·사용법/QA `bef873b`·리뷰/인계 `dd4391e`로 목적별4커밋을 보존했다. 라벨은 `type: bug`·`type: test`·`type: docs`다.
+- 종료 metadata 추가 뒤 primary AI Review 여섯 섹션 재적용·같은 read-only verifier freshness **PASS**, Blocker/Major/Minor 없음. 독립 문서 검사15파일/문서10·79원본/114Task/155의존성·791링크/보존7파일과 runtime/test5파일 지문 불변을 확인했다. 실제 API/Git 전달 완료와 구분한다.
+- 초기 원격 관측: push/PR Data access checks·Chromatic은 진행, Vercel Preview는 pending이었다. 아직 CI PASS/병합을 주장하지 않는다. branch push로 발생하는 기존 자동 Preview/CI를 확인하는 것이며 직접 운영/배포 명령·production 승격은 수행하지 않았다.
+- 이 PR 연결/관측 기록만 추가했고 코드/테스트는 검증 지문과 같다. 문서 검사·primary/동일 verifier의 전달 metadata freshness 뒤 문서1커밋을 추가하고 **실제 최종 head**에서 모든 CI/리뷰·정상 병합 조건을 다시 확인한다. 이번 Chromatic 월간 한도 예외만 적용하며 그 밖의 실패/실제 QA 면제는 없다. 최종 head/CI·merge SHA/로컬-원격 main 일치는 외부 receipt/종료 보고에 남긴다. 다음 DEV-59는 여전히 선정/인계만이다.
