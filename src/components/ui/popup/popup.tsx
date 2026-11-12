@@ -313,8 +313,9 @@ export function AlarmPopup({
                                 </div>
                             </div>
                             <ul className="list-disc pl-5 text-grayscale-600 type-body-7">
-                                <li>알림이 오지 않는다면 마이페이지 &gt; 알림설정을 확인해 주세요.</li>
-                                <li>나의 알림에서 모든 알림 관리가 가능합니다.</li>
+                                <li>이 공고의 변경 소식은 상단 알림에서 확인할 수 있어요.</li>
+                                <li>공고별 알림은 해당 공고 상세에서 설정하거나 해제할 수 있어요.</li>
+                                <li>매일 오전 8시 30분 맞춤 공고 이메일은 별개이며, 마이페이지 &gt; 알림 설정에서 따로 설정해요.</li>
                             </ul>
                         </div>
                     </div>

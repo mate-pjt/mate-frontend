@@ -34,6 +34,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 ## Required Flow
 
+2026-11-12 DEV-62는 알림 채널·관리/편집 미지원 문구와 DESIGN AlarmList의 읽음 후 허용 경로 이동 설명을 현행 정책/source에 맞춘다. [문구/접근성 검증](../qa/notification-guidance.md)은 로컬 mock/HTTP 대역이며 삭제 정책/프론트 연결과 기존 QA-09/11/12/13·DEV-06 실제 차단을 해소하지 않는다. 현재/다음/상태는 WBS만 관리한다.
+
 1. Structure requirements.
 2. Design the change.
 3. Implement the smallest scoped change.

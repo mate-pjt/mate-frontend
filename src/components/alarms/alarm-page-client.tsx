@@ -39,7 +39,7 @@ export function AlarmPageClient() {
       <section aria-labelledby="alarm-login-title" className="grid flex-1 place-items-center px-4 py-20 text-center">
         <div className="flex max-w-[420px] flex-col items-center gap-5">
           <h1 className="type-heading-7 text-grayscale-800" id="alarm-login-title">내 회사에 딱 맞는 알림을 받아보세요!</h1>
-          <p className="type-body-3 text-grayscale-600">로그인하고 실시간 알림으로 확인해 보세요.</p>
+          <p className="type-body-3 text-grayscale-600">로그인하고 받은 알림을 확인해 보세요.</p>
           <ButtonLink href="/auth?mode=login&next=%2Falarms">로그인하고 알림 받기</ButtonLink>
         </div>
       </section>
@@ -181,9 +181,10 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
       </header>
 
       <div className="flex flex-col gap-6">
-        <div className="flex min-h-[38px] items-center justify-end">
-          {/* TODO: 사용자별 받은 알림 삭제 API가 제공되면 편집·삭제를 서버 상태에 연결한다. */}
-          <Button disabled title="알림 삭제 API 준비 중" variant="tertiary">편집 (준비 중)</Button>
+        <div className="flex min-h-[38px] flex-wrap items-center justify-end gap-3">
+          <p className="type-body-7 text-grayscale-600" id="alarm-edit-help">받은 알림의 편집·삭제는 아직 지원하지 않아요.</p>
+          {/* POL-20의 삭제 정책 확인 후 DEV-43에서 기존 삭제 API를 연결한다. */}
+          <Button aria-describedby="alarm-edit-help" disabled variant="tertiary">편집 (준비 중)</Button>
         </div>
 
         {notice && <p className="type-body-7 text-grayscale-600" role="status">{notice}</p>}

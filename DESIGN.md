@@ -73,13 +73,19 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 
 ### AlarmList
 
-- Structure: 페이지 제목과 설명, 비활성 `편집 (준비 중)` 버튼, 받은 알림 목록 또는 빈 상태, 20건 단위 `더 보기`
+- Structure: 페이지 제목과 설명, 비활성 `편집 (준비 중)` 버튼과 화면에 보이는 미지원 사유, 받은 알림 목록 또는 빈 상태, 20건 단위 `더 보기`
 - States: 로딩, 조회 오류/재시도, 빈 목록, 미확인/확인, 읽음 처리 중/오류, 다음 페이지 로딩/오류
 - Surface: 현재 표시 순번의 홀수 항목은 `grayscale-50`, 짝수 항목은 흰색을 사용하며 읽음 여부와 배경을 연결하지 않는다.
-- Interaction: 항목 선택은 읽음 요청의 성공 응답 뒤 해당 알림과 미확인 건수를 갱신하고 목록에 머문다. 편집·선택·삭제와 `actionPath` 목적지 이동은 현재 제품에 연결하지 않았다.
-- Feedback: 읽음 요청이 실패하면 기존 미확인 상태를 유지하고 오류를 표시한다. 현재 페이지에 삭제 완료 toast는 없다.
-- Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공한다. 항목은 키보드로 조작하는 버튼이며 읽음 요청 중 `aria-busy`와 비활성 상태를 제공한다.
-- Evidence: [현재 화면](src/components/alarms/alarm-page-client.tsx), [목록 항목](src/components/alarms/alarm-list-item.tsx), [실제 API QA와 미결 정책](docs/qa/alarms.md). 과거 편집·삭제 디자인 검증 이력은 현재 동작의 증거가 아니다.
+- Interaction: 미읽음 항목은 읽음 성공 뒤 해당 알림과 미확인 건수를 갱신하고 허용된 `actionPath`로 이동한다. 이미 읽은 항목은 읽음 요청 없이 이동한다. 허용 목적지는 공고 상세(`/bids/{양의 정수 ID}`, 선택 `bidClsfcNo`)와 `/my/company`다. 경로가 없거나 위험/미지원이면 목록을 유지하고 안내한다. 편집·선택·삭제는 아직 연결하지 않았다.
+- Feedback: 읽음 요청이 실패하면 기존 미확인 상태와 목록을 유지하고 재시도를 제공한다. 중복 요청·계정 교체/로그아웃·화면 해제 뒤 늦은 이동을 방어한다. 현재 페이지에 삭제 완료 toast는 없다.
+- Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공한다. 항목은 키보드로 조작하는 버튼이며 읽음 요청 중 `aria-busy`와 비활성 상태를 제공한다. 편집 미지원 사유는 화면 본문과 `aria-describedby`로 연결한다.
+- Evidence: [현재 화면](src/components/alarms/alarm-page-client.tsx), [목록 항목](src/components/alarms/alarm-list-item.tsx), [POL-04 v1](docs/development/figma-v01/tasks/POL-04.md#pol-04-decisions), [DEV-06 로컬 구현/검증](docs/development/figma-v01/tasks/DEV-06.md), [실제 API QA와 미결 정책](docs/qa/alarms.md#dev-06-local-qa). DEV-06의 로컬 검증은 실제 ANAV-01~10의 차단을 해소하지 않는다. 삭제 operation 존재와 POL-20 정책·DEV-43 프론트 미연결을 구분한다. 과거 편집·삭제 디자인 검증 이력은 현재 동작의 증거가 아니다.
+
+### Notification guidance
+
+- 공고별 변경 소식은 서비스 내부 알림이며 상단 알림(`/alarms`)에서 확인한다. 설정·해제는 해당 공고 상세에서 한다. 비활성 `알림 설정 공고` 메뉴를 전체 관리 목적지로 안내하지 않는다.
+- 매일 한국 시각 오전08:30 맞춤 공고 이메일과 공고별 내부 알림은 독립이다. 이메일은 마이페이지의 [알림 설정](src/components/my/notification-settings-page-client.tsx)(`/my/settings/notifications`)에서 따로 설정하며 이메일 OFF로 공고별 알림을 해제하지 않는다. 없는 전역/야간 토글을 안내하지 않는다.
+- [DEV-62의 문구/접근성 검증](docs/development/figma-v01/tasks/DEV-62.md#dev-62-brief)과 기존 QA-09/11/12/13의 실제 통합 대기·차단은 별개다. POL-29의 Figma3항목/미지원 disabled 화면 준비는 DEV-66 소유다.
 
 ### QnaAccordion
 

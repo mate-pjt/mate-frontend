@@ -288,3 +288,10 @@ backend 계약/배포 담당과 합성 자원·복구 담당 역할이 다음을
 | NSIG-12 | Bell·`/alarms` / 공급원별 대역 및 W,C,N. mock/API/허용 hybrid, auth=api+notifications=mock·계정 교체/페이지 해제, 데스크톱·390/320px·키보드 재시도 | 동일 정책/정리·token/계정 격리. mock 알림은 실제 WS/REST/추가 token 요청0·실제 ID 치환 없음·공급원 runtime 전환 없음. 모바일/키보드 오류·재시도/포커스·스크롤 확인. 실제 통합과 대역 증거를 분리 | 차단·미실행 — DEV-07 미구현/실행 환경·자원 미준비 |
 
 실행 전 frontend HEAD/공급원 snapshot/Origin·backend 배포 run/artifact→실행 SHA·WS/STOMP/REST version·브라우저/viewport·시각·합성 기대값·사용/변경/이력 잔존/복구 승인·오류 해제를 확보한다. 증거는 요청 종류/경로·상태·상대 시각/요청 수·비식별 UI 결과로 제한하며 token/cookie/CONNECT frame·계정 ID·개인 알림 본문/목적지 원문·실제 `.env` 값은 기록하지 않는다. 서버 신호 생성/읽음 mutation은 별도 승인된 합성 범위에서만 수행한다. 각 case의 실제 결과는 DEV-07 재개 후 별도 실행 ID로 기록한다.
+
+
+## 2026-11-12 · DEV-62 안내 교정
+
+- 상단의 삭제 API 부재·목록 유지 설명과 기존 case/상태는 당시 이력으로 보존한다. 현행 backend dev `4c328d4`에는 삭제 POST가 있으며 POL-20 정책·DEV-43 프론트 연결은 별개다. DEV-62에서는 API 부재 안내를 제거하고 편집 미지원 사유를 화면/ARIA에 표시했다.
+- POL-04/DEV-06의 읽음 성공 뒤 허용 경로 이동·null/위험 fallback을 DESIGN에 동기화했다. 이 문구 검증으로 기존 실제 재검증8차단·ALARM-04/05 이력이나 ANAV10차단을 통과로 바꾸지 않는다.
+- 이번 근거는 [알림 안내 로컬 검증](notification-guidance.md)과 [DEV-62](../development/figma-v01/tasks/DEV-62.md)에서 확인한다. 기존 실제 API 결과·미실행/차단을 보존한다.

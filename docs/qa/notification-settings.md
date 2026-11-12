@@ -144,3 +144,10 @@ Chrome 첫 접속에서는 로컬 인증서에 `ERR_CERT_AUTHORITY_INVALID` 경�
 - 사용자 [QA-12→QA-13 진행 예외](../development/figma-v01/tasks/QA-12.md#qa-12-next-qa-13-exception)로 QA-13을 다음 대화의 요구사항 Gate 대상으로만 선정했다. 위 ‘QA-12 재개만 선정/QA-13 예외 없음’은 승인 전 이력이다.
 - QA-12 실제 실행0·신규 통과0·NSET-07 1차단, 기존6통과·1대기·7case 원문/증거·[재개6조건](../development/figma-v01/tasks/QA-12.md#qa-12-resume)은 그대로다. 검증 면제나 실제 통합 PASS가 아니다.
 - QA-13의 기존3통과·6대기, Mailpit 제한 열람/테스트 수신처·사용/변경/잔존/종료/복구·현재 실행 대응 공백을 보존한다. 자원/실제 실행 승인으로 확대하지 않으며 QA-13 task/NREC QA를 수정하거나 이번 대화에서 착수하지 않았다. 다음 첫 행동은 위 승인 기록을 따른다.
+
+
+## 2026-11-12 · DEV-62 안내 교정
+
+- ‘공고별 변경 소식은 해당 공고의 알림 설정과 별개’라는 모호한 문구를 내부 알림/이메일의 독립 설명으로 교정했다. 맞춤 이메일OFF에도 공고별 설정이 유지됨을 mock에서 확인했다. 실제 설정 경로는 `/my/settings/notifications`다.
+- 수신처 인증·전역/야간 구성·설정 API 동작은 바꾸지 않았다. 기존 NSET-07 실제1차단과 QA-13 실제6차단은 유지한다.
+- 이번 근거는 [알림 안내 로컬 검증](notification-guidance.md)과 [DEV-62](../development/figma-v01/tasks/DEV-62.md)에서 확인한다. 기존 실제 API 결과·미실행/차단을 보존한다.
