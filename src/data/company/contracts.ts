@@ -198,7 +198,7 @@ export type CompanyBasicProfile = {
   } | null;
   telephoneNumber: string | null;
   establishedYear: number | null;
-  primaryIndustry: { code: string; name: string } | null;
+  primaryIndustries: Array<{ code: string; name: string }>;
 };
 
 import type { AuthAccess } from "../shared/http";

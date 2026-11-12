@@ -1,7 +1,8 @@
 import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
 import type { DocumentUploadDto } from "./api-types";
-import type { BidAmountRange, BusinessConnection, CompanyRegistrationProposal, CompanySearchPage, DocumentProcessing, DocumentUpload, InvitationContext, MembershipApplicationContext, MembershipRequest, RegistrationResult, CompanyRepository, CompanyBasicProfile, MyMembershipRequest, CompanyOverview } from "./contracts";
+import type { BidAmountRange, BusinessConnection, CompanyRegistrationProposal, CompanySearchPage, DocumentProcessing, DocumentUpload, InvitationContext, MembershipApplicationContext, MembershipRequest, RegistrationResult, CompanyRepository, MyMembershipRequest, CompanyOverview } from "./contracts";
+import { mapCompanyBasicProfile } from "./api-mapper";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -179,7 +180,7 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     signal?.throwIfAborted();
     if (!session) throw new ApiError(401, "SESSION_INVALID", "로그인이 필요합니다.");
     async function profile(companyId: number): Promise<CompanyOverview> {
-      const profile = await authorizedRequest<CompanyBasicProfile>(access, `/api/v1/companies/${companyId}`, { signal });
+      const profile = mapCompanyBasicProfile(await authorizedRequest<unknown>(access, `/api/v1/companies/${companyId}`, { signal }));
       if (profile.companyId !== companyId) throw new ApiError(0, "COMPANY_MISMATCH", "회사 정보를 확인하지 못했어요. 다시 시도해 주세요.");
       return { status: "connected", profile };
     }
