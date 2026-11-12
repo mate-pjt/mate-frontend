@@ -147,3 +147,45 @@
 - primary ai-review: 요구사항/범위·보존·구조·타입/실행 영향 없음·보안·검증/문서·다음 후보 경계를 여섯 섹션으로 재대조했다. 종료 문구/WBS 갱신 후 문서 검사·diff-check와 verifier freshness를 다시 실행한다. 최종 freshness receipt와 Git 결과는 `/tmp/mate-dev09-20261112/` 및 최종 PR/head·보고를 따른다.
 - 제품 Task의 원 완료 체크리스트는 미체크이고 WBS의 차단을 유지한다. 이번 로컬 선행 예외 질문에 답변이 오기 전 제품 편집/실제 업무 요청은 하지 않는다. 앱/업무 mutation·메일/문서 처리·서비스/배포0건. 자동 수정0/3.
 - 전달할 문서8개를 계약/QA 근거, WBS/다음 인계, 리뷰 근거라는 목적별 작은 한국어 Conventional Commits로 분리한다. 이번 PR의 실제 최종 head CI/리뷰·main 변화/병합 조건을 확인하고 Chromatic 월간 한도 원인만 승인된 예외로 표시한다. 정상 merge commit으로 작은 이력을 보존한 뒤 로컬 main을 fast-forward하고 SHA/clean을 확인한다.
+
+<a id="dev-09-ui-cleanup-brief"></a>
+
+## 2026-11-12 · 후속 사용자 교정: 저장 보조 UI 제거 Brief
+
+- 사용자 요청: Figma에 없는 `내 맞춤에 저장` 버튼과 자동 저장/빈 SAVED/저장값 없음 안내를 제거하는 방향으로 교정했다. 이 대화의 단일 실행 요구사항은 저장 보조 UI 정리이며 L07 고급 지역 연결·다음 DEV-10은 시작하지 않는다. 과거 POL-29의 저장 보조행 예외와 DEV-55 구현 기록은 당시 이력으로 보존하고 이번 UI 결정이 해당 부분을 대체한다.
+- 시작 Git: clean `main`/`origin/main`=`81516e92f3ccd682bc302ef806e4aaf7dbdffd22`, 선행 조사 PR #61 반영. `fix/dev-09-filter-ui-cleanup`을 생성했다. 선행/무관 미커밋 변경 없음. 기존 DEV-09의 목적별 commit/push/PR/최종 head CI·정상 병합/main 동기화와 이번 Chromatic 한도 예외 승인을 유지한다.
+- 성공 기준: ALL에서 계정 저장/계정 초기화·확인창·통상 저장 안내/성공/빈 조건 문구가 노출되지 않는다. 일반 필터·내 맞춤의 최신 GET/동등성·중복 방지·탐색 취소·계정 수명·URL/reload를 유지하고 목록의 계정 저장/reset 요청은0건이다. 빈 응답은 현재 목록 유지·일반 안내 없음, 통신 실패는 오류/명시 클릭 재시도를 유지한다. 320/390px·키보드와 실제 Next에서 확인한다.
+- 범위/파일: 런타임은 `src/components/bids/bid-list-client.tsx`의 저장/초기화 보조행·전용 상태/handler·불필요 import와 통상 안내만 제거한다. DESIGN·architecture/data-access·plan·Task/WBS·기존 QA에 현재 UI 경계/검증을 동기화하고 과거 승인/검증을 덮어쓰지 않는다. 수정 후 context-audit/ai-review/read-only verifier를 수행한다. 기존 Select/Button/toolbar/token 구조 유지·새 라이브러리 없음.
+- 제외/중요 경계: backend/중앙 정책·Repository/DTO/mock 저장 API와 실제 계정/DB는 변경하지 않는다. 현재 GET은 SAVED→COMPANY_DEFAULT→EMPTY_DEFAULT를 반환하므로 이번 UI 제거가 회사 전용 조회를 보장하지 않는다. 기존 개인값을 임의 삭제/빈값으로 reset하거나 회사 데이터로 덮지 않는다. 회사 전용 정책/조회 계약은 이 UI 요구와 별개 미결이며 실제 업무 API·메일/문서 처리·서비스/배포는 실행하지 않는다.
+- 확인 근거: Figma `2048:58606`/`2098:65429`의 구조/screenshot에 내 맞춤과 일반 필터만 있다. 고정 중앙 ADR-0014와 backend main/dev의 현재 조회/저장 계약을 직접 대조했다. 프론트 저장 버튼은 `c5953f2`에서 추가됐고 POL-29/DEV-55에서 보조행 예외로 유지됐던 경위를 확인했다. API 지원과 제품 화면 노출을 구분한다.
+- 정책/구현 출처: 중앙 main `c9e50ff`의 [Accepted ADR-0014](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/decisions/ADR-0014-separate-personal-bid-filter-from-company-profile.md), backend main `c32e3f1`/dev `4c328d4`의 `PersonalBidNoticeFilterService`·`CompanyBidNoticeFilterProjector`·controller를 대조했다. 저장값이 없으면 회사 지역/활성 업종/선호 금액을 투영하고, 개인 SAVED가 있으면 우선한다. 따라서 회사 기본 조건을 받는 구조라는 사용자 설명과 회사 전용이라는 가정은 구분해야 한다. 현재 backend 배포 문서/실행 process SHA·인증 응답은 이 source 관찰과 별개다. 화면은 [Figma 원본](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2048-58606)에 맞춰 저장 보조행만 제거한다.
+- 이후 재개 기준: 위 원래 완료 기준/2026-11-09 POL-07 인계의 ‘조회/개인 저장·ALL 명시 저장’은 당시 계획으로 보존한다. 이번 사용자 교정 이후에는 목록에 계정 저장 UI를 다시 연결하는 요구로 적용하지 않는다. L07 재개 시 공개 URL 적용·최신 GET 적용·계정 무쓰기 기준으로 자체 Brief를 다시 작성하고, 저장 UI 재도입이나 회사 전용 정책은 별도 명시 결정 없이는 추가하지 않는다. 다음 DEV-10의 Gate에서도 이 최신 화면 기준을 먼저 확인한다.
+- 검증 계획: 환경파일 없는 mirror·Node22.20.0/pnpm11.3.0에서 `pnpm test`, `pnpm lint`, API/mock/hybrid `pnpm build`, 공유 UI 소비의 `pnpm build-storybook`, `git diff --check`. 실제 Next mock·로컬 HTTP 대역에서 비로그인/COMPANY_DEFAULT/SAVED/빈 SAVED/EMPTY_DEFAULT·최신값 변경/빈 응답/실패·중복/계정/탐색 취소·모바일/키보드·저장0을 구분해 기록한다. 실제 서버 통합은 미실행/기존 차단 유지. 문서 링크/ID·상태/원본·이력 보존도 검사한다.
+- non-blocking 가정: 이번 승인 범위는 화면 정리와 전용 handler 제거다. 저장 기능이 없는 화면의 ‘계정 필터 초기화’도 함께 제거하고 목록의 ‘현재 조건 초기화’는 유지한다. 일반 성공 안내는 제거하되 실패 안내는 남긴다. 회사 전용 계약을 추정하지 않으므로 이 UI 수정의 blocking ambiguity는 없다.
+- 다음 행동: 위 파일에서 계정 mutation 보조 UI를 제거하고 검증 mirror를 준비한다. 자동 수정0/3. L07의 실제 QA 자원/로컬 선행 예외 질문에 새로운 승인이 생긴 것으로 처리하지 않는다.
+
+### 후속 UI 구현·자동 검증 체크포인트
+
+- `bid-list-client.tsx`에서 저장/계정 초기화 보조행·확인창·전용 상태/handler/import와 통상 저장/성공/빈 응답 문구를 제거했다. 최신 GET·URL 적용·중복/취소·계정 보호와 실패 안내는 유지한다. 저장/reset Repository·기존 데이터·백엔드/중앙 정책 변경 없음.
+- 환경파일 없는 `/tmp/mate-dev09-ui-cleanup-20261112/app`에서 Node22.20.0의315 tests/15files·lint·API/hybrid/mock build·Storybook build가 통과했다. 로그는 같은 외부 증거 폴더에 있다. source 자동 수정0/3.
+- 실제 Next dev의 최초 Turbopack 실행은 UI 렌더 전 `build-manifest.json` ENOENT로 실패했다. 소유 프로세스를 종료하고 자체 생성 dev artifact를 보존한 뒤 설치된 Next CLI의 `--webpack` 옵션으로 재실행해200/정상 화면을 확인했다. 제품 코드/프로젝트 설정 변경 없이 검증 환경 조치1회다. 이 실패를 통과로 기록하지 않는다.
+- 실제 브라우저/로컬 HTTP 대역에서 COMPANY_DEFAULT·SAVED 최신값26 적용·빈 SAVED/EMPTY_DEFAULT의 URL 유지/문구 없음·500 실패/Space 재시도·중복 GET1회·검색 중 지연 응답 무시와390/320px body overflow 없음까지 관찰했다. 실제 API 검증은 아니며 계정 전환/팝오버 키보드와 최종 쓰기0 집계·문서/두 리뷰를 이어간다.
+
+### 후속 UI 브라우저·문서 검증 체크포인트
+
+- [FUI-01~07](../../../qa/personal-bid-filter.md#dev-09-ui-cleanup-qa): 실제 Next API profile+loopback HTTP 대역과 production mock에서 PASS. logout 중 늦은 응답 무시·QA-B fresh 조회, 지역 미저장 draft의 Enter/Space 닫기→최신 부산26 적용·재개방/escape 초점 복귀, reload/동등성 숨김·익명 로그인 복귀/기본 mock 빈값·closing/result smoke도 확인했다. 필터 PUT/reset/import 관측0건이다.
+- `/tmp/mate-dev09-ui-cleanup-20261112/browser-results.json`과 개별 요청/화면·로그에 근거를 보존했다. 테스트한 런타임1파일 SHA256=`35db65420b6a78042d41a9e41f4ac098cf77549782dda1acaa9366c2a0824161`이며 두 mirror/작업트리 byte 일치. 대역 목록1행은 query 전달만 확인하며 실제 매칭 통과가 아니다.
+- 대역 부산26 라벨 누락을 발견해 소유 시험 fixture에 metadata를 보완하고 Space/재개방·reload를 재확인했다. 제품 source 수정 횟수에 포함하지 않는다. 최초 Turbopack 실패/webpack 환경 조치와 구분해 자동 source 수정0/3을 유지한다. 실제 업무 API/계정·메일·문서/서비스 변경 없음.
+- Documentation Update Check: DESIGN·architecture/data-access(현재 UI/Repository 계약), plan·이 Task/WBS·QA·POL-29/DEV-55 후속 연결과 context/리뷰를 갱신한다. base/package/scripts·harness 역할/흐름은 불변이고 새 source 반복 실패 근거가 없어 ai-failures는 갱신하지 않는다. 과거 본문·기준선/coverage는 보존한다.
+- [후속 ai-review](../reviews/DEV-09-ui-cleanup.md)는 여섯 섹션으로 기록했다. 링크/ID·상태/보존 검사와 read-only verifier를 이어간다. 제품 UI 교정의 PASS와 원 DEV-09 L07·실제 API QA 차단을 구분하며 다음 DEV-10은 계속 선정/인계만 유지한다.
+- `python3 /tmp/mate-dev09-ui-cleanup-20261112/validate_docs.py` PASS:15파일/11문서·링크517/깨진파일·anchor0,79원본/114Task/155의존성·기준선/coverage·과거 Task prefix/QA·단일 활성/범위/Markdown·PNG 무결성 보존. `git diff --check` PASS. 검사 도구의 기존 문서 중점 기호 오탐은 새 추가분 검사로 바로잡았으며 제품 수정이 아니다. 독립 verifier는 이 근거와 실제 diff를 직접 확인한다.
+
+<a id="dev-09-ui-cleanup-close"></a>
+
+### 후속 UI Review Gate·종료/인계 체크포인트
+
+- [read-only verifier](../reviews/DEV-09-ui-cleanup.md#독립-verifier) PASS:15파일/11문서·최신 링크518/원본·의존성/과거 이력 보존·실행 source 두 mirror 일치·315개 test/빌드 로그·FUI7묶음과 고정 backend Service/Projector를 독립 확인했다. 새 Blocker/Major/Minor 없음, 기존 fixture 시점 가이드 Minor는 별개다. 후속 UI 교정의 구현/로컬 QA·문서 검토 PASS이며 원 L07 구현 완료/실제 API 통합 PASS가 아니다.
+- primary ai-review의 여섯 섹션을 현재 요청·실제 diff/검증/문서와 다시 대조했다. 종료 문구/WBS를 반영한 뒤 `validate_docs.py --closed`·diff-check·read-only verifier freshness를 다시 수행한다. source/테스트·검증 환경 구성은 바꾸지 않았으므로 앱 검사를 불필요하게 반복하지 않는다. 최종 freshness/검증 receipt는 `/tmp/mate-dev09-ui-cleanup-20261112/`와 최종 보고에 남긴다.
+- 소유 검증 탭2개와 서버3919/3920/3921을 종료하고 해당 포트 listener 없음 확인. 합성 mock session은 탭 종료로 정리했고 실제 계정/데이터 변경·메일/문서/업무 서비스/배포는0건이다. 자동 source 수정0/3이며 최초 Turbopack 실패·대역 fixture 보완은 검증 기록에 보존했다.
+- 다음은 **DEV-10 하나를 선정/인계만 유지**한다. 현재 WBS의 P0 차단13·대기3과 P1 차단7·대기3은 실제 QA/약관/정책/선행 미충족을 유지한다. DEV-10은 P2 표 순서상 다음 후보·POL-07 완료·DEV-09 코드 선행 불필요가 근거다. 다음 첫 행동은 최신 main/Git·DEV-10/POL-07과 이번 저장 UI 제거 기준·날짜 계약/URL·경계/실행 대응·실제 QA 자원과 허용 범위를 확인해 자체 Brief를 제시하는 것이다. 이번 대화에서 상세 조사·설계·구현·검증/Git 전달을 시작하지 않는다.
+- Git 전달: runtime 제거, 현행 UI/데이터 접근 규칙, Task/QA/리뷰 근거를 목적별 작은 Conventional Commits(영어 type/한국어 설명)로 분리한다. 이번 명시 승인으로 push/PR·라벨·실제 최종 head CI/리뷰·main drift를 확인하고 정상 merge commit/main fast-forward를 수행한다. Chromatic 월간 한도만 이번 예외이며 실제 판정/PR/head/main SHA·clean은 실행 후 외부 receipt·PR/최종 보고로 확인한다. 사전 계획을 실제 병합 증거로 세지 않는다.
