@@ -26,6 +26,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-12 POL-30은 사용자 확정에 따라 [기준/후보 상태 정책 v1](../development/figma-v01/tasks/POL-30.md#pol-30-contract)을 기록한다. 마감·취소된 공개 기준은 허용하고 결과 후보에는 별도 공개/삭제/취소/마감 경계를 적용한다. 중앙 원문 정정안은 이 저장소에만 작성하며 [DEV-61 고정 Clock/음성 사례](../development/figma-v01/tasks/POL-30.md#pol-30-fixtures)와 기존 QA-03 재개 기준을 인계한다. 제품/실제 API 통합을 수행한 것은 아니며 기존 QA의 통과·차단/예외를 보존한다. 현재/다음/상태는 WBS만 소유한다.
 
+2026-11-12 DEV-61은 [POL-30 v1](../development/figma-v01/tasks/POL-30.md#pol-30-contract)에 맞춰 관련 공고 mock의 공식 코드/우선순위·후보 상태·target 분류·최신 정렬·사업금액과 고정 fixture/이동 Clock을 교정했다. [로컬 검증/리뷰 근거](../development/figma-v01/tasks/DEV-61.md#dev-61-verification)는 mock·HTTP 대역·실제 API 미실행을 구분하며 QA-03의1통과8차단·DETAIL-07 이력과 기존 정책/예외를 유지한다. 현재/다음/상태는 WBS만 관리한다.
+
 ## Required Flow
 
 1. Structure requirements.

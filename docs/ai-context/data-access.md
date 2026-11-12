@@ -97,7 +97,7 @@ src/data/
 
 ### 현재 도메인 동작
 
-- 입찰: 유효한 숫자 ID·분류번호·별도 코드/라벨, 검색/필터/페이지, 금액/날짜/nullable, 부분 실패, 로컬 첨부, 개찰 참여업체·물품 페이지. 홈은 동일 목록의 첫 9개 행이다. 과거 `Bid[]` 계약/fixture는 제거했다.
+- 입찰: 유효한 숫자 ID·분류번호·별도 코드/라벨, 검색/필터/페이지, 금액/날짜/nullable, 부분 실패, 로컬 첨부, 개찰 참여업체·물품 페이지. 홈은 동일 목록의 첫 9개 행이다. 관련 mock은 [POL-30 v1](../development/figma-v01/tasks/POL-30.md#pol-30-contract)의 정확 공식 코드/우선순위·기준/후보 상태·실제 target 분류·게시일 정렬·추정가격+VAT를 적용한다. 공개 server는 프로세스 시작 시 생성한 불변 fixture를 요청별 Repository에 복사하고 조회 Clock만 전진시킨다. [DEV-61 검증](../development/figma-v01/tasks/DEV-61.md#dev-61-verification)은 로컬 mock/HTTP 대역이며 실제 QA-03의 차단을 해소하지 않는다. 과거 `Bid[]` 계약/fixture는 제거했다.
 - 받은 알림: 25건(첫 20건/다음 5건), 읽음과 미확인 건수 공유, 빈/오류 시나리오. 합성 공고/분류·현재 계정 회사·목적지 없는 알림을 제공한다. HTTP와 mock 복원 경계는 actionPath를 허용 경로 또는 null로 전달하며 이전 탭 snapshot의 누락/위험 경로만 null로 보완해 읽음 이력을 유지한다. 구독은 계정·공고별 설정/해제/복원.
 - 개인 필터: 전체 내부 모델 저장/URL 왕복, expectedVersion 충돌과 초기화. 명시적 reset은 회사 가져오기 가능 여부를 보존한 빈 `SAVED`를 남겨 회사 기본값 자동 재적용을 막는다. 첫 저장 version1·조건 변경 시 증가하며 이미 빈 `SAVED`의 reset replay는 version을 유지한다. [DEV-63 검증](../development/figma-v01/tasks/DEV-63.md#dev-63-verification)은 mock/HTTP 대역/실제 Next 결과이며 실제 API QA-10 차단은 별도다. 화면은 사용자가 ‘내 맞춤’을 누를 때마다 공개 client의 최신 GET snapshot/filter를 받아 목록에 수동 적용한다. 초기 표시용 snapshot을 클릭 적용값으로 재사용하거나 이 버튼에서 저장하지 않는다. 일반/personal URL의 전체 조건을 canonical 비교하고 query/page/size는 제외한다. 중복 조회·저장/reset 교차 실행을 막고 탐색 의도/계정/URL/화면 종료에서 늦은 응답을 폐기한다. 조회 실패/최신 빈 조건은 현재 목록을 유지하며 다음 명시 클릭으로 다시 조회한다. [DEV-55 후속 기준](../development/figma-v01/tasks/DEV-55.md#dev-55-followup-brief)을 따른다.
 - 이메일: 인증번호 `1234`, 인증 만료·재전송 대기·오류 횟수, 인증 후 수신 주소, 독립 ON/OFF 유지. 실제 메일은 발송하지 않는다.

@@ -5,10 +5,11 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-12 KST |
-| 현재 작업 | 없음 — [POL-30](tasks/POL-30.md#pol-30-verification)의 정책 문서 검증·두 리뷰 통과. 종료 metadata freshness와 Git 전달 결과는 최종 PR/head·외부 receipt/최종 보고에서 확인 |
-| 다음 작업 | [DEV-61 · 관련 공고 mock의 동일 업종·품목 정책 정합성](tasks/DEV-61.md#dev-61-pol-30-handoff) — P1·POL-30 정책 선행 해소. 선정/인계만, 구현 미착수 |
-| 다음 첫 행동 | 새 대화에서 DEV-61/POL-30 v1·REL-01~13·CF-07와 최신 main/data-access를 읽고 현행 mock/contracts/tests·Clock/fixture/검증 범위의 Brief를 제시 |
-| 이번 승인 범위 | 2026-11-12 사용자: POL-30 한 작업의 정책 조사/결정·문서 검증/리뷰·목적별 commit/push·PR·CI·조건 충족 시 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제는 예외 승인. 사용자가 마감·취소 기준의 진행 후보 표시를 명시 확정했다. 중앙 저장소·제품/업무 API·운영/배포·다음 Task 실행 제외. [착수 기록](tasks/POL-30.md#2026-11-12--착수-조사-체크포인트) |
+| 현재 작업 | 없음 — [DEV-61](tasks/DEV-61.md#dev-61-verification)의 로컬 mock 교정·검증/두 리뷰 통과. 종료 freshness·Git 전달은 최종 PR/head·외부 receipt/종료 보고로 별도 확인 |
+| 다음 작업 | [DEV-59 · 회사 가입 mock의 평가·인증 근거 계약 정합성](tasks/DEV-59.md#dev-59-dev-61-handoff) — P1·QA-17 선행 완료. 선정/인계만, 구현 미착수 |
+| 다음 첫 행동 | 새 대화에서 DEV-59/CF-05·data-access·최신 main과 현행 소유 계약/정책을 선별 대조해 YES/NO/UNKNOWN·연도null·인증3종/출처·snapshot의 Brief를 제시 |
+| DEV-61 이번 승인 범위 | 2026-11-12 사용자: DEV-61 하나의 개발·검증·리뷰·목적별 commit/push·PR·CI·정상 main 병합·로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 다음 Task는 선정/인계만, 실제 업무 API/메일/문서 처리·운영/배포 제외. [착수 Brief](tasks/DEV-61.md#dev-61-brief) |
+| 앞선 POL-30 승인 범위 | 2026-11-12 사용자: POL-30 한 작업의 정책 조사/결정·문서 검증/리뷰·목적별 commit/push·PR·CI·조건 충족 시 main 병합/로컬 main 동기화. 당시 PR의 Chromatic 월간 한도 문제는 예외 승인. 사용자가 마감·취소 기준의 진행 후보 표시를 명시 확정했다. 중앙 저장소·제품/업무 API·운영/배포·다음 Task 실행 제외. [착수 기록](tasks/POL-30.md#2026-11-12--착수-조사-체크포인트) |
 | 앞선 DEV-55 후속 승인 범위 | 2026-11-12 사용자: DEV-55 후속 최신 GET·동등성 표시·저장 호출0·검증/리뷰/커밋/PR/CI/조건 충족 시 main 병합·로컬 동기화. 후속 PR의 Chromatic 외부 차단 예외도 이번에 명시 승인. [후속 Brief](tasks/DEV-55.md#dev-55-followup-brief) |
 | 앞선 DEV-55 승인 범위 | 2026-11-12 사용자: DEV-55 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무·메일·문서 처리·운영/배포 제외. [이번 Brief](tasks/DEV-55.md#dev-55-brief) |
 | 앞선 PR54 CI 예외 | 2026-11-12 사용자 원문 ‘이번 PR만 예외 병합 (추천)’. [PR #54](https://github.com/mate-pjt/mate-frontend/pull/54)의 Chromatic billed snapshot limit로 미실행인 `UI Tests`·`UI Review` 두 검사만 예외 승인. 제품 코드 `cd9c38a` 고정·승인 기록 문서 변경만 허용하며 최종 head의 나머지 CI/리뷰·저장소 정상 병합 조건 확인 후 merge/main 동기화. 검사 강제 성공·보호 우회·타 PR/검사·실제 QA 면제로 확대하지 않음. [승인·재개 기록](tasks/DEV-55.md#dev-55-pr54-ci-exception) |
@@ -50,7 +51,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료14 · 차단21 · 대기76 · 준비1 · 보류2 =114개**. 진행/검증/리뷰 중인 작업은 없다. Git 전달 상태와 제품/실제 QA 판정은 구분한다.
+현재 집계: **완료15 · 차단21 · 대기75 · 준비1 · 보류2 =114개**. 진행/검증/리뷰 중인 작업은 없다. Git 전달 상태와 제품/실제 QA 판정은 구분한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -213,9 +214,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-56 · 공통 헤더의 식별·상태 UI 정합성](tasks/DEV-56.md) | 개발 | P3 | 차단 | C01, S01, O01 | [POL-29](tasks/POL-29.md) |
 | [DEV-57 · 가입·시작 선택 화면의 프레임별 UI 정합성](tasks/DEV-57.md) | 개발 | P1 | 차단 | O01, O04, O05, O10, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-58 · 홈 소개·CTA와 기능 제공 범위 정합성](tasks/DEV-58.md) | 개발 | P1 | 차단 | H01, H03 | [POL-29](tasks/POL-29.md) |
-| [DEV-59 · 회사 가입 mock의 평가·인증 근거 계약 정합성](tasks/DEV-59.md) | 개발 | P1 | 대기 | O06, O07, O08 | [QA-17](tasks/QA-17.md) |
+| [DEV-59 · 회사 가입 mock의 평가·인증 근거 계약 정합성](tasks/DEV-59.md) | 개발 | P1 | 준비 | O06, O07, O08 | [QA-17](tasks/QA-17.md) |
 | [DEV-60 · 회사 기본 정보의 복수 주력업종 보존·표시](tasks/DEV-60.md) | 개발 | P1 | 대기 | M03 | [QA-17](tasks/QA-17.md) |
-| [DEV-61 · 관련 공고 mock의 동일 업종·품목 정책 정합성](tasks/DEV-61.md) | 개발 | P1 | 준비 | D09 | [POL-30](tasks/POL-30.md) |
+| [DEV-61 · 관련 공고 mock의 동일 업종·품목 정책 정합성](tasks/DEV-61.md) | 개발 | P1 | 완료 | D09 | [POL-30](tasks/POL-30.md) |
 | [DEV-62 · 알림 채널·관리 기능 안내 문구 정합성](tasks/DEV-62.md) | 개발 | P1 | 대기 | D04, A01, N02, S04, C01 | [QA-17](tasks/QA-17.md) |
 | [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) | 개발 | P0 | 완료 | L11 | [QA-17](tasks/QA-17.md) |
 | [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md) | 개발 | P2 | 대기 | D01, D02, C01 | [POL-29](tasks/POL-29.md) |
@@ -275,3 +276,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [사용자 결정/정책 v1](tasks/POL-30.md#pol-30-contract): 마감·취소된 공개 기준은 허용하며 후보는 별도 공개/삭제/취소/마감 조건을 적용한다. 중앙 §6/§10/§11 정정안은 로컬에만 작성했다. 문서 검사·primary ai-review·독립 verifier PASS 후 종료 metadata를 재검토하며 Git 결과는 실제 PR/head/최종 보고로 별도 확인한다.
 - [선정 근거/인계](tasks/POL-30.md#pol-30-handoff): 다음 DEV-61은 P1·직접 정책 후속/CF-07 mock 목표로 선정했다. 남은 P0 차단과 다른 P1 후보를 보존하며 이번 선택을 영구 우선순위 변경으로 확대하지 않는다. 새 대화의 Brief 전 구현/추가 조사·실제 API·DEV-61 Git 전달을 시작하지 않는다.
 - 79원본/114Task/155의존성·기준선/감사·기존 QA-03의1통과8차단/DETAIL-07 통과·타 Task 차단/예외를 보존한다. 중앙 원문 반영·backend 실행 SHA/실제 경계 응답·제품 구현은 후속이며 정책 문서 PASS나 이번 Chromatic 한도 예외로 대체하지 않는다.
+
+## 2026-11-12 · DEV-61 로컬 교정과 다음 Gate 인계
+
+- [DEV-61 검증](tasks/DEV-61.md#dev-61-verification): 관련 mock의 코드/우선순위·현재 후보·실제 target 분류·정렬/금액·고정 fixture를 교정했다.255 tests/lint·세구성 build·실제 Next mock/로컬 HTTP 대역·운영 guard·문서와 두 리뷰가 통과했다. 종료/PR 연결 metadata는 재검토하며 Git 전달은 실제 최종 PR/head·외부 receipt/종료 보고로 확인한다.
+- 다음 [DEV-59 인계](tasks/DEV-59.md#dev-59-dev-61-handoff): 남은 P0 QA/약관/취합은 기존 자원·정책/선행 차단이다. 앞선 P1의 미완료 정책·신원/문구 결정·실제 신호/대시보드 자원 차단을 보존하고, QA-17 완료로 선행이 해소된 DEV-59/60/62 중 WBS 기본 순서가 앞선 DEV-59를 선정했다. 영구 우선순위 변경이나 다른 Task 실행 승인이 아니다.
+- 첫 행동은 위 실행 표와 새 대화의 DEV-59 Brief다. 선정/인계만 했고 제품 소스 조사/구현·실제 API·다른 Task Git 전달을 시작하지 않았다.79원본/114Task/155의존성·기준선/감사·QA-03 실제1통과8차단/DETAIL-07·다른 정책/QA 차단·승인 예외를 유지한다.

@@ -8,14 +8,14 @@ import { ok, testNow } from "./helpers";
 import type { BidNoticeListDto } from "@/data/bids/api-types";
 import wire from "../tools/qa/bid-wire-fixtures.json";
 const query = { view: "all" as const, query: "", page: 1, size: 10 };
-const detailQuery = (id: string) => ({ id, classificationNo: "1", itemPage: 1, resultId: null, participantsPage: 1 });
+const detailQuery = (id: string) => ({ id, classificationNo: null, itemPage: 1, resultId: null, participantsPage: 1 });
 
 describe("공개 입찰 Repository", () => {
   it("홈·목록의 공고 ID가 상세와 연결되고 첨부·관련 공고는 로컬 데이터다", async () => {
     const repo = createMockBidRepository(() => testNow); const list = await repo.getBidList({ ...query, size: 9 }); expect(list.items).toHaveLength(9);
     const detail = await repo.getBidDetail(detailQuery(list.items[0].id)); expect(detail?.bid.id).toBe(list.items[0].id);
     if (detail?.attachments.status === "ready") expect(detail.attachments.data[0].downloadUrl).toBe("/mock/bid-attachment.txt");
-    if (detail?.related.status === "ready") for (const related of detail.related.data) expect((await repo.getBidDetail(detailQuery(related.id)))?.bid.id).toBe(related.id);
+    if (detail?.related.status === "ready") for (const related of detail.related.data) expect((await repo.getBidDetail({ ...detailQuery(related.id), classificationNo: related.classificationNo }))?.bid.id).toBe(related.id);
     expect(await repo.getBidDetail(detailQuery("not-an-id"))).toBeNull();
   });
   it("최신 개인 필터의 코드·금액·날짜·공동도급·페이지를 적용한다", async () => {

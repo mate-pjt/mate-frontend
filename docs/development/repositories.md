@@ -96,6 +96,13 @@ pnpm dev
 
 목록은 `src/data/config.ts`의 mockScenarios가 기준이다. 오타·없는 그룹·API 공급원에 시나리오를 지정하면 설정 오류다. 실패는 무작위가 아니다. processing-failed는 최초 OCR 실패 후 재시도 성공, conflict는 기존 회사 처리 선택을 재현한다. 회사 초기 상태는 해당 공간에 저장 상태가 없을 때 적용한다.
 
+### 관련 공고 합성 데이터 확인 · DEV-61
+
+- 기본 mock의 공사 `/bids/10001`은 같은 최종 업종의 진행 공사만 최대3개를 보여 준다. `/bids/10004`는 마감, `/bids/10016`은 취소 기준이며 둘 모두 진행 후보를 조회할 수 있다. 업종 관계 target URL에는 가짜 분류1을 붙이지 않는다.
+- 물품 `/bids/10003?bidClsfcNo=1`의 첫 카드는 `/bids/10006?bidClsfcNo=2`로 이동한다. source의1을 복사하지 않고 target에서 실제 일치한2/10 중 숫자 의미상 앞선2를 선택한다. 같은 source의 `bidClsfcNo=2`는 비교 코드에 맞는 후보가 없어 정상 빈 상태다. 전체 분류 조회는 query를 생략한다.
+- `bids=related-error`는 관련 section만 실패시키고 본문/첨부/품목 등은 유지한다. 시나리오를 default로 되돌리고 dev를 재시작하면 정상 카드가 복구된다. 카드 사업금액은 추정가격+VAT이며 한쪽 결측은 금액 미제공이다.
+- fixture의 시각은 server 프로세스 시작 때 고정되므로 같은 실행에서 시각이 흐르면 후보가 마감된다. 재시작은 새 합성 fixture를 만든다. 테스트는 고정 fixture와 주입 Clock으로 정각·1ms 경계를 검증한다. 이는 실제 API 실행/서버 Clock 검증이 아니다. 자세한 근거와 범위는 [DEV-61](figma-v01/tasks/DEV-61.md#dev-61-verification)을 따른다.
+
 ## 6. 상태 보존·초기화
 
 같은 탭 새로고침은 sessionStorage로 상태를 복원한다. 새 탭·계정·설정·API 환경·auth 공급원은 격리된다. 브라우저의 탭 복제 동작에 따라 sessionStorage가 복사될 수 있지만 복제 뒤 변경은 독립적이다. 로그아웃은 세션만 종료하며 업무 상태와 유효한 초대는 유지한다.

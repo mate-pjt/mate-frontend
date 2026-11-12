@@ -5,10 +5,11 @@ import { cache } from "react";
 import { getDataConfig } from "../config";
 import { createHttpBidDetailRepository } from "./detail-http-repository";
 import { createHttpBidListRepository } from "./http-repository";
-import { createMockBidRepository } from "./mock-repository";
+import { createMockBidEntries, createMockBidRepository } from "./mock-repository";
+const mockFixtures = createMockBidEntries(Date.now());
 const getRepositories = cache(() => {
   const config = getDataConfig();
-  const mock = config.sources.bids === "mock" ? createMockBidRepository(Date.now, config.scenarios.bids) : null;
+  const mock = config.sources.bids === "mock" ? createMockBidRepository(Date.now, config.scenarios.bids, mockFixtures) : null;
   return { list: mock ?? createHttpBidListRepository(config.apiEnvironment), detail: mock ?? createHttpBidDetailRepository(config.apiEnvironment) };
 });
 import type { BidDetailQuery, BidListQuery } from "./contracts";
