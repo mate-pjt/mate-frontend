@@ -24,6 +24,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-12 DEV-55는 POL-29 D1의 왼쪽 수동 적용·아래 계정 보조행을 구현하고 [검증 근거](../development/figma-v01/tasks/DEV-55.md#dev-55-verification)를 남긴다. 기존 표시/활성 조건·version/409/계정 경계를 유지하며 mock/로컬 HTTP 대역과 실제 QA-10의12차단을 구분한다. 현재/다음/상태와 Git 전달은 WBS·해당 Task/PR의 현행 근거를 따른다.
 
+2026-11-12 POL-30은 사용자 확정에 따라 [기준/후보 상태 정책 v1](../development/figma-v01/tasks/POL-30.md#pol-30-contract)을 기록한다. 마감·취소된 공개 기준은 허용하고 결과 후보에는 별도 공개/삭제/취소/마감 경계를 적용한다. 중앙 원문 정정안은 이 저장소에만 작성하며 [DEV-61 고정 Clock/음성 사례](../development/figma-v01/tasks/POL-30.md#pol-30-fixtures)와 기존 QA-03 재개 기준을 인계한다. 제품/실제 API 통합을 수행한 것은 아니며 기존 QA의 통과·차단/예외를 보존한다. 현재/다음/상태는 WBS만 소유한다.
+
 ## Required Flow
 
 1. Structure requirements.
