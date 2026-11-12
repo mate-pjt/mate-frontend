@@ -222,3 +222,29 @@
 ![320px에서 조건이 달라 내 맞춤 버튼을 표시한 화면](dev-55-followup-320.png)
 
 실제 API 통합은 **미실행**이다. QA-10/PBF-01~12의 실제0통과12차단, POL-02 계약 미결과 필요한 계정·배포/실행 대응·사용/변경·잔존/복구·안전한 오류 자원은 보존한다. GitHub source commit·OpenAPI GET200/계약 존재·배포 문서와 실행 중 backend SHA·인증 업무 응답은 별개이며, 이번 결과로 뒤의 두 근거나 통합 PASS를 주장하지 않는다.
+
+
+<a id="dev-09-ui-cleanup-qa"></a>
+
+## 2026-11-12 · DEV-09 후속 저장 UI 제거 QA
+
+- 근거: [후속 사용자 교정/Brief](../development/figma-v01/tasks/DEV-09.md#dev-09-ui-cleanup-brief), Figma `2048:58606`/`2098:65429`. 과거 POL-29/DEV-55 저장 보조행·PBF/ADVP/QA-10·reset 검증은 당시 이력으로 보존한다.
+- 범위: 현재 목록에서 계정 저장/초기화·확인창과 통상 저장/성공/빈 조건 문구를 제거한다. 최신 GET/URL·중복/탐색 취소·계정·오류 재시도는 유지한다. 기존 서버 SAVED 우선순위를 회사 전용으로 바꾸거나 개인 데이터를 삭제하지 않는다.
+- 실제 업무 API/계정 저장·메일/문서 처리·서비스/배포는 미실행이다. 아래는 로컬 실제 Next mock·HTTP 대역 사례이며 실제 API 통합 PASS로 세지 않는다.
+
+| ID | 사례 | 기대 결과 | 이번 결과 |
+| --- | --- | --- | --- |
+| FUI-01 | 비로그인·로그인 후 기본 목록 | 저장/계정 초기화·통상 안내 보조행 없음, 내 맞춤/일반 필터 유지 | PASS. mock 익명→로그인 복귀·합성 계정 로그인, HTTP 대역 COMPANY_DEFAULT/SAVED에서 확인 |
+| FUI-02 | COMPANY_DEFAULT·SAVED 최신 조건 적용 | 클릭마다 최신 GET, URL/reload·동등성 표시, 저장 요청0 | HTTP 대역 PASS. 초기 서울11 이후 서버를 부산26으로 변경, 클릭 GET→URL26·부산 표시·reload 후 동일 버튼 숨김. 필터 쓰기0 |
+| FUI-03 | EMPTY_DEFAULT·빈 SAVED·최신 빈 응답 | 현재 목록/URL 유지, 요청한 빈 조건 문구와 저장/성공 안내 없음 | HTTP 대역/기본 mock PASS. 빈 두 source에서 `query=keep-empty` 유지·통상 문구0 |
+| FUI-04 | 조회 실패 후 다시 명시 클릭 | 오류 안내·목록 유지·다음 GET 재시도, 중복/자동 저장 없음 | HTTP 대역 PASS. GET500→오류 status/URL 유지, Space 명시 재시도→최신 SAVED26 적용 |
+| FUI-05 | 중복 클릭·탐색·계정/화면 변경과 늦은 응답 | GET 중복 방지·이전 응답 폐기·계정 정보 격리 유지 | HTTP 대역 PASS. 조회 중 Enter에도 GET1, 8초 지연 중 검색 `keep-nav` 보존·logout 뒤 응답 무시, QA-B 초기 조회 분리. 화면/URL dispose는315개 자동 회귀에도 포함 |
+| FUI-06 | 팝오버 draft에서 Enter/Space로 내 맞춤 | draft 닫힘·최신 서버 조건만 적용·초점/재개방 정상 | HTTP 대역 PASS. 미적용 서울 draft가 닫히고 최신 부산26 적용, 재개방 부산·Escape 뒤 지역 trigger 초점 복귀 |
+| FUI-07 | desktop·390/320px·키보드 | 버튼 배치/줄바꿈·팝오버/목록 기능 유지, 요청 문구0 | PASS. desktop1920/390/320px 문서 가로 넘침 없음·필터 줄바꿈/표 내부 스크롤. mock closing/result 기본 조회에서도 계정 도구 없음 |
+
+- 실행 근거: 시작 main `81516e9` + 후속 diff, Node22.20.0/pnpm11.3.0·Next16.2.9. 환경파일 없는 두 mirror와 byte 일치하는 런타임1파일에서 실행했다. API profile 실제 Next dev3919(`--webpack`) + 합성 loopback HTTP3920, mock production Next3921을 Aside 실제 브라우저로 조작했다. 대역 목록은 정적인 합성1행으로 query 전달을 확인한 것이며 실제 공고 predicate/매칭 정확도 PASS가 아니다.
+- 자동 검사: `pnpm test`315 tests/15files·`pnpm lint`·API/hybrid/mock `pnpm build`·`pnpm build-storybook` PASS. hybrid의 company/notifications/notificationSettings는 mock, auth/bids/personalFilters는 API다. 새 테스트/라이브러리·package/scripts/config 변경 없음. UI 제거에 기존 controller/계약 회귀와 실제 화면 점검을 사용했다.
+- 외부 증거: `/tmp/mate-dev09-ui-cleanup-20261112/`의 test/lint/build/Storybook 로그·`build-results.json`·`browser-results.json`·개별 request/화면 기록·source byte 일치. 계정 필터 PUT/reset/import 관측0건이다. build의 외부 대상 fetch는 합성 wire 응답이고 dev 서버에는 외부 금지 guard를 적용했다. guard의 외부 대상 시도를 실제 업무 통합으로 세거나 브라우저 전체 네트워크를 새로 계측해 외부 시도0이라고 주장하지 않는다.
+- 실패/교정: 최초 Turbopack은 화면 렌더 전 manifest ENOENT/500으로 실패했다. 자체 dev artifact를 보존하고 webpack으로 재실행했다(환경 조치1, 제품 자동 수정0/3). 처음 대역 metadata에 부산26 라벨이 없어 숫자로 표시된 것은 시험 fixture 누락이며 대역에26을 추가한 뒤 Space/재개방·reload에서 부산 표시를 재확인했다. 제품 소스는 바꾸지 않았다.
+- [desktop 캡처](dev-09-ui-desktop.png) · [390px 캡처](dev-09-ui-390.png) · [320px 캡처](dev-09-ui-320.png). 합성 데이터/일반 목록 캡처이며 미제공 모바일 Figma와 pixel PASS를 주장하지 않는다. 현재 URL 조건 요약과 일반 팝오버의 ‘저장’은 계정 저장 UI와 구분해 유지한다.
+- 문서 검사·context-audit·두 리뷰·최종 Git/head·소유 검증 환경 정리는 [후속 검토](../development/figma-v01/reviews/DEV-09-ui-cleanup.md)를 따른다. 기존 PBF-01~12/QA-10·POL-02 실제 차단과 L07 Gate는 그대로이며 이번 실제 API 통합은 **미실행**이다.

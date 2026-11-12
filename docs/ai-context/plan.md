@@ -34,6 +34,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-12 DEV-09는 [현행 계약·metadata·Figma 사전 조사](../development/figma-v01/tasks/DEV-09.md#dev-09-investigation)를 기록했다. 실제 QA 자원/실행 대응·사용/변경/복구와 이번 로컬 선행 예외는 미확인으로 제품 Gate에서 멈췄고 구현/실제 목록·저장 QA는 실행하지 않았다. 조사 문서 검토/전달과 제품·실제 통합 판정은 별개다. 현재/다음/상태는 WBS만 소유하며 DEV-10은 선정/인계만 남긴다.
 
+2026-11-12 DEV-09 후속은 사용자 요청으로 [Figma에 없는 저장 보조 UI와 통상 안내](../development/figma-v01/tasks/DEV-09.md#dev-09-ui-cleanup-brief)를 제거한다. 과거 POL-29/DEV-55의 저장 보조행 예외만 대체하며 최신 GET·동등성·탐색/계정 수명·오류 재시도는 유지한다. 기존 개인 데이터/서버 저장 우선순위·회사 전용 조회 정책은 바꾸지 않는다. L07 고급 지역과 다음 Task는 미착수이며 현재/다음/상태는 WBS만 소유한다.
+
 ## Required Flow
 
 2026-11-12 DEV-62는 알림 채널·관리/편집 미지원 문구와 DESIGN AlarmList의 읽음 후 허용 경로 이동 설명을 현행 정책/source에 맞춘다. [문구/접근성 검증](../qa/notification-guidance.md)은 로컬 mock/HTTP 대역이며 삭제 정책/프론트 연결과 기존 QA-09/11/12/13·DEV-06 실제 차단을 해소하지 않는다. 현재/다음/상태는 WBS만 관리한다.
