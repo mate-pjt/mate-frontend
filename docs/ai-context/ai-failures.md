@@ -50,6 +50,19 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Prevention rule: PR 전 Review Gate에서 보안 입력, 기본 URL 상태, 사용자 노출 라벨과 실제 데이터 필드, fixture별 결과 차이를 별도 시나리오로 검증한다.
 - Related files: `src/lib/auth-redirect.ts`, `src/app/auth/page.tsx`, `src/app/page.tsx`, `src/components/bids/bid-list-model.ts`, `src/data/bids/mock-repository.ts`.
 
+<a id="pol-30-github-metadata"></a>
+
+## 2026-11-12 - POL-30 GitHub 작성자 메타데이터 출력 재발
+
+- Task: POL-30 중앙 정책/backend ref 조사.
+- Expected behavior: 기존 QA-10/POL-02/DEV-63 예방 규칙을 외부 조회 전에 확인하고 branch 이름·SHA만 출력한다.
+- Actual failure: branch 중첩 응답 문자열의 앞부분을 출력해 불필요한 공개 작성자 메타데이터·서명 일부가 포함됐다. 원문 값은 재인용하지 않는다. 환경파일·인증정보·업무 API 응답 조회와 구분한다.
+- Root cause: 전체 응답 대신 앞부분만 표시해도 안전하다고 잘못 판단했고, 관련 실패 기록을 끝까지 읽기 전에 원격 조회를 수행했다. 문자열 길이 제한은 허용 필드 추출을 대신하지 못한다.
+- Detection command or review step: primary가 출력 직후 확인해 사용자에게 공개했다. read-only verifier에도 잔여 한계를 전달한다.
+- Fix: 이후 중첩 JSON을 내부에서 파싱해 branch는 SHA, tree는 필요한 경로, 파일은 필요한 본문, PR/CI는 head/check/병합 조건만 추출한다. 문서/receipt/PR에 작성자 정보나 원문 응답을 저장하지 않는다. 교정이 기존 출력을 삭제·무효화했다는 뜻은 아니다.
+- Prevention rule: 기존 규칙과 함께 **원문 응답의 substring/slice도 출력 금지**다. 먼저 허용 필드로 새 객체를 구성한 뒤 출력한다. 병렬 결과 역시 각 반환값에 같은 경계를 적용한다.
+- Related files: `docs/development/figma-v01/tasks/POL-30.md`, `docs/development/figma-v01/reviews/POL-30-context.md`. 제품·하네스 설정 변경으로 확대하지 않는다.
+
 ## Failure Entry Template
 
 ```md

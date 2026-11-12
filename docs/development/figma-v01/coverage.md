@@ -117,9 +117,11 @@
 | [CF-21 · 이미 문서화된 삭제·신청취소 API의 계획 입력 갱신](audits/2026-11-11.md#cf-21) | [POL-20](tasks/POL-20.md) | [DEV-43](tasks/DEV-43.md) / [POL-10](tasks/POL-10.md) / [DEV-15](tasks/DEV-15.md) / [QA-11](tasks/QA-11.md) / [QA-05](tasks/QA-05.md) | N02, M05 | 계약 가용성 확인·기능 미연결 |
 | [CF-22 · 실제 통합·배포 실행 대응과 상태별 증거 공백](audits/2026-11-11.md#cf-22) | [QA-16](tasks/QA-16.md) | [QA-01](tasks/QA-01.md) / [QA-02](tasks/QA-02.md) / [QA-03](tasks/QA-03.md) / [QA-05](tasks/QA-05.md) / [QA-06](tasks/QA-06.md) / [QA-07](tasks/QA-07.md) / [QA-08](tasks/QA-08.md) / [QA-09](tasks/QA-09.md) / [QA-10](tasks/QA-10.md) / [QA-11](tasks/QA-11.md) / [QA-12](tasks/QA-12.md) / [QA-13](tasks/QA-13.md) / [POL-02](tasks/POL-02.md) / [POL-03](tasks/POL-03.md) / [POL-05](tasks/POL-05.md) / [POL-06](tasks/POL-06.md) / [POL-07](tasks/POL-07.md) | H02, L01, D01, M03, O06, O07, O10, D04, L11, N01, S04, S05 | 실제 QA 차단·한계 보존 |
 
-| [CF-23 · 관련 공고 기준 공고 상태 정책 충돌](audits/2026-11-11.md#cf-23) | [POL-30](tasks/POL-30.md) | [DEV-61](tasks/DEV-61.md) / [QA-03](tasks/QA-03.md) | D09 | 정책 원문 충돌 |
+| [CF-23 · 관련 공고 기준 공고 상태 정책 충돌](audits/2026-11-11.md#cf-23) | [POL-30 v1](tasks/POL-30.md#pol-30-contract) | [DEV-61](tasks/DEV-61.md#dev-61-pol-30-handoff) / [QA-03](tasks/QA-03.md) | D09 | 당시 원문 충돌 보존·사용자 상태 정책/중앙 정정안·후속 검증 연결 |
 
 QA-17은 원본 일부를 새로 구현하는 Task가 아니라 이번 전체 점검/계획 요구의 소유자다. POL-29는 시각 기준/예외 결정, POL-30은 관련 공고 정책 내부 충돌 해소, DEV-55~65는 좁게 분리한 수정 후보다. 기존 미구현·차단/보류를 새 Task로 중복 만들지 않았다. 감사/계획 검토는 원본 항목의 제품 PASS 또는 실제 QA 통과가 아니다.
+
+2026-11-12 POL-30의 [사용자 결정/중앙 정정안](tasks/POL-30.md#pol-30-central-proposal)과 [REL-01~13](tasks/POL-30.md#pol-30-fixtures)을 D09/CF-07·CF-23의 후속 기준으로 연결한다. 원본79개/Task114개/의존성155개와 감사·기존 실제 QA의 이력은 유지한다. 중앙 원문 반영·DEV-61 구현·실제 통합 검증을 수행한 기록이 아니다. 현재/다음/상태는 WBS를 따른다.
 
 ## 2026-11-11 · POL-29 최종 화면 결정 연결
 

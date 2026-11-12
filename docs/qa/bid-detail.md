@@ -211,3 +211,14 @@
 - 첫 빈 탭 debugger 미연결, 출력 축약 helper의 문자열 코드 생성 거부, breadcrumb 복귀 중 table wait timeout은 제품 결함으로 세지 않았다. 새 소유 탭·명시적 DOM collector·fresh AX 후 보이는 제목 링크로 이어갔다. 초기/누적 Network의 truncated 구간을 보존했고 재활성화한 새 구간에서404/복구/정상 응답을 확보했다.
 - API/UI 자동 대조 helper의 첫 실행은 UI `/bids`를 API `/api/v1/bids`로 잘못 매핑해 실패했다. `public-validation-attempt1.json` 보존 후 `/api/v1/bid-notices`로 한 번 교정, 23상태/독립 검증 PASS. 제품 자동 수정은0/3이다.
 - 문서/범위/보존 검증과 read-only verifier·AI Review 및 검토 후 freshness 결과는 [검토 기록](../development/figma-v01/reviews/QA-03.md)과 최종 원문에 남긴다. 실제 전체 통합은 **차단**이며, 정확한 결과 기록·정리·잔여 추적/문서 Gate와 Git 전달은 별도로 판정한다.
+
+<a id="pol-30-followup"></a>
+
+## 2026-11-12 · POL-30 정책 확정에 따른 후속 기준
+
+- [POL-30 v1](../development/figma-v01/tasks/POL-30.md#pol-30-contract): 공개·미삭제 기준 공고는 마감/취소돼도 같은 업종·품목의 진행 후보를 찾는다. 후보는 공개·미삭제·미취소, 마감시각 없음 또는 현재보다 이후다. 마감 정각 제외, 없는 공고/선택 분류404와 비교 기준/현재 후보 부재의 정상 빈 목록을 구분한다.
+- 이는 **정책/후속 검증 기대값 추가**다. 이번 실제 업무 API/제품 브라우저 실행·신규 통과는0건이다. 위2026-11-02의1통과8차단·DETAIL-07 통과/부분 범위와 QA-03 전용 제한 종료 승인을 그대로 보존한다.
+- 로컬 mock 교정은 [DEV-61](../development/figma-v01/tasks/DEV-61.md#dev-61-pol-30-handoff), 고정 Clock/음성 사례는 [REL-01~13](../development/figma-v01/tasks/POL-30.md#pol-30-fixtures)이 소유한다. 이를 실제 API 통과 증거로 사용하지 않는다. 기존 DETAIL-07(관련3/빈·target 이동), DETAIL-01(분류), DETAIL-04(취소), DETAIL-08(오류)의 원래 ID/판정에 연결해 후속 실행을 기록한다.
+- 실제 재개에 필요한 비식별 fixture: 공개 마감/취소 기준과 동일 사실의 진행 후보, 후보 미공개/삭제/취소·마감 이전/정각/이후/null, 물품/용역 선택/전체·없는 분류 및 정확 코드/target 분류, 금액/VAT·게시시각 결측과 동시각 안정 정렬. 실제 정각 경계는 제어 가능한 서버 Clock/결정적 재현과 실행 시각 근거를 확보해야 하며 로컬 가짜 Clock으로 실서버 경계를 통과 처리하지 않는다.
+- 실행 식별자·배포 schema/version와 실제 프로세스 SHA/이미지 대응, 기대 결과/대상 사용 승인·안전한 오류 재현/해제·잔존/복구 범위도 기존 재개 Gate로 유지한다. 공개 fixture/백엔드 배포·관련공고 소유 역할과 프론트 QA 역할이 준비하며 개인 담당자는 미확정이다. 중앙 원문 정정안은 별도 소유자 반영 전 상태다.
+- 기존 나머지 물품/결과/참여업체/첨부 스트리밍·HTTP 오류·clipboard·반응형 잔여 조건도 유지한다. 정책 결정이나 문서 검토·Git 전달로 해소하지 않는다.
