@@ -5,11 +5,12 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-12 KST |
-| 현재 작업 | 없음 — DEV-55 UI 배치·팝오버 Major 교정·187 tests/3구성 build·실제 Next mock/HTTP 대역 및 교정 후 두 리뷰 PASS. 종료 metadata freshness·최종 PR/head CI·병합/로컬 동기화는 [검토 기록](reviews/DEV-55.md)·외부 receipt/최종 보고에서 별도 확인. 실제 API 통합 PASS 아님 |
+| 현재 작업 | 없음 — [DEV-55 후속](tasks/DEV-55.md#dev-55-followup-verification)의 로컬 검증·문서·Review Gate 통과. 최종 종료 metadata freshness와 Git 전달 결과는 PR/head·외부 receipt/최종 보고에서 확인 |
 | 다음 작업 | [POL-30 · 관련 공고의 기준 공고 상태 정책 충돌 해소](tasks/POL-30.md) — P1·QA-17 선행 완료·DEV-61의 정책 선행. 선정/인계만, 상세 조사/정책 선택 미착수 |
 | 다음 첫 행동 | 새 대화에서 POL-30/CF-23과 최신 중앙 정책 §6/§10/§11·backend dev service/policy·개발 Swagger를 대조해 기준/후보 상태표·미결 질문·문서/검증 Brief 제시. 중앙 저장소 수정·실제 업무 요청은 별도 범위 확인 |
-| 이번 승인 범위 | 2026-11-12 사용자: DEV-55 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무·메일·문서 처리·운영/배포 제외. [이번 Brief](tasks/DEV-55.md#dev-55-brief) |
-| 이번 DEV-55 CI 예외 | 2026-11-12 사용자 원문 ‘이번 PR만 예외 병합 (추천)’. [PR #54](https://github.com/mate-pjt/mate-frontend/pull/54)의 Chromatic billed snapshot limit로 미실행인 `UI Tests`·`UI Review` 두 검사만 예외 승인. 제품 코드 `cd9c38a` 고정·승인 기록 문서 변경만 허용하며 최종 head의 나머지 CI/리뷰·저장소 정상 병합 조건 확인 후 merge/main 동기화. 검사 강제 성공·보호 우회·타 PR/검사·실제 QA 면제로 확대하지 않음. [승인·재개 기록](tasks/DEV-55.md#dev-55-pr54-ci-exception) |
+| 이번 승인 범위 | 2026-11-12 사용자: DEV-55 후속 최신 GET·동등성 표시·저장 호출0·검증/리뷰/커밋/PR/CI/조건 충족 시 main 병합·로컬 동기화. 후속 PR의 Chromatic 외부 차단 예외도 이번에 명시 승인. [후속 Brief](tasks/DEV-55.md#dev-55-followup-brief) |
+| 앞선 DEV-55 승인 범위 | 2026-11-12 사용자: DEV-55 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무·메일·문서 처리·운영/배포 제외. [이번 Brief](tasks/DEV-55.md#dev-55-brief) |
+| 앞선 PR54 CI 예외 | 2026-11-12 사용자 원문 ‘이번 PR만 예외 병합 (추천)’. [PR #54](https://github.com/mate-pjt/mate-frontend/pull/54)의 Chromatic billed snapshot limit로 미실행인 `UI Tests`·`UI Review` 두 검사만 예외 승인. 제품 코드 `cd9c38a` 고정·승인 기록 문서 변경만 허용하며 최종 head의 나머지 CI/리뷰·저장소 정상 병합 조건 확인 후 merge/main 동기화. 검사 강제 성공·보호 우회·타 PR/검사·실제 QA 면제로 확대하지 않음. [승인·재개 기록](tasks/DEV-55.md#dev-55-pr54-ci-exception) |
 | 앞선 DEV-63 승인 범위 | 2026-11-11 사용자: DEV-63 하나의 개발·검증·리뷰·목적별 커밋·push·PR·CI 확인·조건 충족 시 main 병합·로컬 main 동기화. 다음 Task는 선정/인계만. 실제 업무 API·메일/업로드·운영/배포 제외. [이번 Brief/승인 기록](tasks/DEV-63.md#dev-63-brief) |
 | 앞선 DEV-65 승인 범위 | 2026-11-11 사용자: DEV-65 개발/검증/리뷰·Git 전달. DEV-63은 당시 선정/인계만이었으며 이번 실행 승인과 구분. [당시 기록](tasks/DEV-65.md#dev-65-brief) |
 | DEV-63 교정 후 남은 경계 | 기존 QA-10/POL-02의 reset Major 기록은 당시 이력으로 보존한다. 2026-11-12 mock·HTTP 대역의 빈 SAVED/version/replay·회사 여부 차이는 [DEV-63](tasks/DEV-63.md#dev-63-verification)에서 교정·로컬 검증. 실제 reset wire/실행 대응·QA-10 실제12차단·POL-02 전체 계약 미결을 해소한 것은 아님 |
@@ -253,3 +254,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - 공개 문서·콘텐츠/API/메일·계정 조건은 착수 시 현행 소유 소스와 배포를 확인한다. 2026-10-27 보고서는 현재 서버 실행의 증명이 아니다.
 - 일정/소요일은 요구사항 Gate 이후 산정한다. 근거 없는 날짜·완료율은 넣지 않는다.
 - 새 작업은 [TEMPLATE.md](tasks/TEMPLATE.md)를 복사한다. 결과는 작업 기록과 기존 QA case에 남기고 [검토 기록](reviews/DOC-001.md) 같은 파일에 Review Gate 근거를 보존한다.
+
+## 2026-11-12 · DEV-55 최신 조회 후속과 다음 Gate 유지
+
+- [후속 사용자 확정/검증](tasks/DEV-55.md#dev-55-followup-verification)에 따라 내 맞춤은 매 클릭 최신 GET을 적용하고 현재 전체 필터와 같으면 숨김/달라지면 표시한다. 별도 저장 버튼의 의미는 유지하며 적용 쓰기0건을 확인했다.
+- 탐색 의도→URL commit Major를 재현·교정하고213 tests·lint·3구성 build·API29/hybrid2/mock8·키보드/모바일·두 리뷰를 통과했다. 종료 metadata의 freshness·Git 전달/Chromatic 직접 예외와 실제 통합 차단은 별개로 최종 PR/head·receipt/보고에서 확인한다.
+- 다음은 기존 POL-30 하나를 유지한다. 남은 P0는 실제 QA/약관·취합 선행이 차단돼 있고 POL-30은 P1·QA-17 완료·DEV-61의 정책 선행이다. 다음 첫 행동은 위 실행 표와 Task 인계의 상태표/Brief이며 이번에는 상세 조사·정책 선택·구현을 시작하지 않는다.79원본/114Task/155의존성·기존 QA/예외·POL-02 미결을 보존한다.
