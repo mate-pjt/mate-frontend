@@ -3,6 +3,7 @@ import "server-only";
 import { cache } from "react";
 
 import type { BidListRepository, BidListQuery } from "./contracts";
+import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 import {
   findContractMethodCode,
   findIndustryCode,
@@ -58,6 +59,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
       if (query.agency) {
         throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       }
+      const dates = currentBidDateFilter(query);
 
       const params = new URLSearchParams({
         view: viewCodes[query.view],
@@ -71,7 +73,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
         for (const key of ["bidTypes", "regionCodes", "industryCodes", "contractMethods"] as const) {
           filter[key].forEach((value) => params.append(key, value));
         }
-        for (const key of ["dateType", "dateFrom", "dateTo", "amountType", "amountMin", "amountMax"] as const) {
+        for (const key of ["amountType", "amountMin", "amountMax"] as const) {
           const value = filter[key];
           if (value !== null) params.set(key, String(value));
         }
@@ -87,16 +89,6 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
           if (query.industry) params.set("industryCodes", findIndustryCode(query.industry, industries));
         }
 
-        if (query.period && query.view !== "closing") {
-          const today = currentKstDate();
-          const months = { "1개월": 1, "3개월": 3, "6개월": 6, "1년": 12 }[query.period];
-          if (months) {
-            params.set("dateFrom", monthsBefore(today, months));
-            if (query.view === "result") params.set("dateTo", today);
-            else params.set("dateType", "BID_BEGIN");
-          }
-        }
-
         if (query.amount && query.view !== "result") {
           const range = amountRanges[query.amount];
           if (range) {
@@ -105,6 +97,10 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
             if (range.max !== undefined) params.set("amountMax", String(range.max));
           }
         }
+      }
+
+      for (const key of ["dateType", "dateFrom", "dateTo"] as const) {
+        if (dates[key] !== null) params.set(key, dates[key]);
       }
 
       const result = await getData<BidNoticeListDto>(`/api/v1/bid-notices?${params}`);
@@ -136,20 +132,4 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
   }
 
   return repository;
-}
-
-function currentKstDate(): string {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit",
-  }).formatToParts(new Date());
-  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  return `${values.year}-${values.month}-${values.day}`;
-}
-
-function monthsBefore(date: string, months: number): string {
-  const [year, month, day] = date.split("-").map(Number);
-  const firstDay = new Date(Date.UTC(year, month - 1 - months, 1));
-  const lastDay = new Date(Date.UTC(firstDay.getUTCFullYear(), firstDay.getUTCMonth() + 1, 0)).getUTCDate();
-  firstDay.setUTCDate(Math.min(day, lastDay));
-  return firstDay.toISOString().slice(0, 10);
 }

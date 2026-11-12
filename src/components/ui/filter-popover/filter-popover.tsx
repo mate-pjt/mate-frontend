@@ -1,5 +1,7 @@
 'use client';
 
+import { useId } from "react";
+
 import {
     CalendarIcon,
     DownArrowIcon,
@@ -214,6 +216,7 @@ function ChoiceButton({
 }) {
     return (
         <button
+            aria-pressed={selected}
             className={mergeClasses(
                 "flex min-h-8 flex-1 items-center justify-center rounded-[8px] px-3 py-1.5 text-center type-body-7",
                 selected
@@ -248,6 +251,7 @@ function SegmentedControl<TValue extends string>({
 
                 return (
                     <button
+                        aria-pressed={selected}
                         className={mergeClasses(
                             "flex flex-1 items-center justify-center rounded-[8px] px-3 py-1 text-center type-body-7",
                             selected
@@ -549,14 +553,17 @@ export function PlaceCategoryPopover({
 }
 
 export type CalendarCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
-    FilterActionHandlers & {
+    FilterActionsProps & {
         activeType?: DateFilterType;
         endDate?: string;
         heading?: string;
         selectedQuickRange?: string;
         showTypeSelector?: boolean;
         startDate?: string;
+        errorMessage?: string;
         advancedDisabled?: boolean;
+        onStartDateChange?: (value: string) => void;
+        onEndDateChange?: (value: string) => void;
         onQuickRangeSelect?: (range: string) => void;
         onTypeSelect?: (type: DateFilterType) => void;
     };
@@ -566,21 +573,28 @@ export function CalendarCategoryPopover({
     advancedDisabled = false,
     className,
     endDate,
+    errorMessage,
     heading = "기간",
     onReset,
     onSave,
     onQuickRangeSelect,
     onTypeSelect,
+    onStartDateChange,
+    onEndDateChange,
+    resetDisabled,
+    saveDisabled,
+    labels,
     selectedQuickRange,
     showTypeSelector = true,
     startDate,
     ...props
 }: CalendarCategoryPopoverProps) {
-    const hasSelection = Boolean(selectedQuickRange) || (Boolean(startDate) && Boolean(endDate));
+    const errorId = useId();
+    const hasSelection = Boolean(selectedQuickRange || startDate || endDate);
     const quickRanges = ["1개월", "3개월", "6개월", "1년"];
 
     return (
-        <FilterPanel className={className} height="h-[320px]" {...props}>
+        <FilterPanel className={mergeClasses("max-[360px]:p-4 max-[360px]:[&_button]:px-1.5 max-[360px]:[&_button]:whitespace-nowrap", className)} height="h-[320px]" {...props}>
             <FilterBody>
                 <div className="flex w-full flex-col gap-6">
                     <div className="flex w-full flex-col gap-4">
@@ -589,10 +603,11 @@ export function CalendarCategoryPopover({
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="flex w-full items-center gap-1">
-                            <DateField disabled={advancedDisabled} value={startDate} />
+                            <DateField disabled={advancedDisabled} errorId={errorMessage ? errorId : undefined} label="시작일" onChange={onStartDateChange} value={startDate} />
                             <span className="text-grayscale-600 type-body-7">~</span>
-                            <DateField disabled={advancedDisabled} value={endDate} />
+                            <DateField disabled={advancedDisabled} errorId={errorMessage ? errorId : undefined} label="종료일" onChange={onEndDateChange} value={endDate} />
                         </div>
+                        {errorMessage && <p className="text-danger type-body-7" id={errorId} role="alert">{errorMessage}</p>}
                         <div className="flex w-full gap-2">
                             {quickRanges.map((range) => (
                                 <ChoiceButton
@@ -607,28 +622,38 @@ export function CalendarCategoryPopover({
                     </div>
                 </div>
                 <FilterActions
+                    labels={labels}
                     onReset={onReset}
                     onSave={onSave}
-                    resetDisabled={!hasSelection}
-                    saveDisabled={!hasSelection}
+                    resetDisabled={resetDisabled ?? !hasSelection}
+                    saveDisabled={saveDisabled ?? (!hasSelection || Boolean(errorMessage))}
                 />
             </FilterBody>
         </FilterPanel>
     );
 }
 
-function DateField({ disabled = false, value }: { disabled?: boolean; value?: string }) {
+function DateField({ disabled = false, errorId, label, onChange, value }: { disabled?: boolean; errorId?: string; label: string; onChange?: (value: string) => void; value?: string }) {
     return (
-        <button
-            className={mergeClasses("flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5 text-grayscale-700 type-body-7", disabled && "cursor-not-allowed opacity-40")}
-            disabled={disabled}
-            type="button"
+        <label
+            className={mergeClasses("flex h-8 min-w-0 flex-1 items-center gap-1 rounded-[8px] border border-grayscale-200 bg-white px-2 py-1.5 text-grayscale-700 type-body-7 focus-within:ring-2 focus-within:ring-primary-400 max-[360px]:px-1.5 sm:px-3", disabled && "cursor-not-allowed opacity-40")}
         >
-            <span className={mergeClasses("truncate", value ? "text-grayscale-700" : "text-grayscale-500")}>
-                {value || "날짜 선택"}
-            </span>
+            <input
+                aria-describedby={errorId}
+                aria-invalid={Boolean(errorId)}
+                aria-label={label}
+                className="min-w-0 w-full bg-transparent outline-none placeholder:text-grayscale-500"
+                disabled={disabled}
+                inputMode="decimal"
+                maxLength={10}
+                onChange={event => onChange?.(event.target.value.replaceAll(".", "-"))}
+                placeholder="YYYY.MM.DD"
+                readOnly={!onChange}
+                type="text"
+                value={value?.replaceAll("-", ".") ?? ""}
+            />
             <CalendarIcon aria-hidden className="size-4 shrink-0 text-grayscale-600" focusable="false" />
-        </button>
+        </label>
     );
 }
 

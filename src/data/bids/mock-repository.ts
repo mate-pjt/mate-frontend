@@ -1,6 +1,7 @@
 import type { BidDetail, BidDetailPageData, BidParticipant, DetailSection, RelatedBid } from "@/types/bid-detail";
 import type { BidListItem } from "@/types/bid-list";
-import type { BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository } from "./contracts";
+import type { BidDateFilter, BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository } from "./contracts";
+import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 import { ApiError } from "../shared/errors";
 import { canonicalClassification, selectMockRelatedBids, type MockBidEntry } from "./mock-related";
 
@@ -54,7 +55,7 @@ export function createMockBidEntries(now: number): readonly MockBidEntry[] {
     };
   });
 }
-function matches(entry: MockBidEntry, query: BidListQuery, now: number): boolean {
+function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: BidDateFilter): boolean {
   const { item, bid } = entry;
   const close = Date.parse(bid.schedule.bidCloseAt!);
   if (query.view === "result" && !entry.closed) return false;
@@ -62,6 +63,9 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number): boolean
   if (query.view === "closing" && close > now + 3 * 86400_000) return false;
   const keyword = query.query.trim().toLocaleLowerCase("ko-KR");
   if (![item.title, item.noticeNumber, item.noticeAgencyName, item.demandAgencyName].some(value => value?.toLocaleLowerCase("ko-KR").includes(keyword))) return false;
+  const timestamp = bid.schedule[query.view === "result" ? "openAt" : dates.dateType === "PARTICIPATION_DEADLINE" ? "qualificationDeadlineAt" : dates.dateType === "BID_CLOSE" ? "bidCloseAt" : "bidBeginAt"];
+  const day = timestamp ? new Date(Date.parse(timestamp) + 9 * 3600_000).toISOString().slice(0, 10) : null;
+  if ((dates.dateFrom && (!day || day < dates.dateFrom)) || (dates.dateTo && (!day || day > dates.dateTo))) return false;
   const filter = query.personalFilter;
   if (filter && query.view === "all") {
     const type = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" }[item.kind];
@@ -69,9 +73,6 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number): boolean
     if (filter.regionCodes.length && !filter.regionCodes.some(code => entry.regionCode.startsWith(code))) return false;
     if (filter.industryCodes.length && !filter.industryCodes.includes(entry.industryCode)) return false;
     if (filter.contractMethods.length && !filter.contractMethods.some(code => code === entry.contractCode)) return false;
-    const date = bid.schedule[filter.dateType === "PARTICIPATION_DEADLINE" ? "qualificationDeadlineAt" : filter.dateType === "BID_CLOSE" ? "bidCloseAt" : "bidBeginAt"];
-    const day = date ? new Date(Date.parse(date) + 9 * 3600_000).toISOString().slice(0, 10) : null;
-    if ((filter.dateFrom && (!day || day < filter.dateFrom)) || (filter.dateTo && (!day || day > filter.dateTo))) return false;
     const amount = filter.amountType === "ESTIMATED_PRICE" ? item.estimatedPrice : item.baseAmount;
     if ((filter.amountMin !== null && (amount === null || amount < filter.amountMin)) || (filter.amountMax !== null && (amount === null || amount > filter.amountMax))) return false;
     if (filter.regionOnly && bid.eligibility.regionState !== "known") return false;
@@ -83,17 +84,6 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number): boolean
   if (query.region && query.region !== item.region && query.region !== entry.regionCode) return false;
   if (query.industry && query.industry !== item.industry && query.industry !== entry.industryCode) return false;
   if (query.contract && query.contract !== item.contractMethod) return false;
-  if (query.period && query.view !== "closing") {
-    const months = ({ "1개월": 1, "3개월": 3, "6개월": 6, "1년": 12 } as Record<string, number>)[query.period];
-    if (months) {
-      const today = new Date(now + 9 * 3600_000);
-      const start = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - months, 1));
-      const lastDay = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0)).getUTCDate();
-      start.setUTCDate(Math.min(today.getUTCDate(), lastDay));
-      const day = new Date(Date.parse(query.view === "result" ? bid.schedule.openAt! : bid.schedule.bidBeginAt!) + 9 * 3600_000).toISOString().slice(0, 10);
-      if (day < start.toISOString().slice(0, 10) || (query.view === "result" && day > today.toISOString().slice(0, 10))) return false;
-    }
-  }
   if (query.amount && query.view !== "result") {
     const ranges: Record<string, [number, number]> = { "1억 원 이하": [0, 100_000_000], "1억 ~ 10억 원 이하": [100_000_001, 1_000_000_000], "10억 ~ 50억 원 이하": [1_000_000_001, 5_000_000_000], "50억 ~ 100억 원 이하": [5_000_000_001, 10_000_000_000], "100억 원+": [10_000_000_001, Infinity] };
     const range = ranges[query.amount];
@@ -113,7 +103,8 @@ export function createMockBidRepository(now: () => number = Date.now, scenario =
       if (query.view === "recommended") throw new Error("맞춤 입찰공고 목록 API는 준비 중입니다.");
       if (query.agency) throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       const time = now();
-      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time));
+      const dates = currentBidDateFilter(query, time);
+      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time, dates));
       filtered.sort((a, b) => query.view === "result" ? Date.parse(b.bid.schedule.openAt!) - Date.parse(a.bid.schedule.openAt!) : Date.parse(a.bid.schedule.bidCloseAt!) - Date.parse(b.bid.schedule.bidCloseAt!));
       return { items: filtered.slice((query.page - 1) * query.size, query.page * query.size).map(entry => entry.item), totalCount: filtered.length, page: query.page, size: query.size };
     },

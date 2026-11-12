@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { useState } from "react";
 
 import {
     AgencyCategoryPopover,
@@ -77,11 +78,19 @@ export const PlaceCategory: Story = {
 export const CalendarCategory: Story = {
     render: () => (
         <div className="flex flex-wrap gap-5">
-            <CalendarCategoryPopover />
-            <CalendarCategoryPopover endDate="2026.05.31" selectedQuickRange="1개월" />
+            <CalendarInputExample />
+            <CalendarCategoryPopover endDate="2026.05.31" startDate="2026.05.01" selectedQuickRange="1개월" />
+            <CalendarCategoryPopover endDate="2026.05.31" heading="개찰일" showTypeSelector={false} />
+            <CalendarCategoryPopover errorMessage="종료일은 시작일과 같거나 이후여야 해요." startDate="2026.05.31" endDate="2026.05.01" />
         </div>
     ),
 };
+
+function CalendarInputExample() {
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    return <CalendarCategoryPopover endDate={endDate} onEndDateChange={setEndDate} onStartDateChange={setStartDate} onReset={() => { setStartDate(""); setEndDate(""); }} startDate={startDate} />;
+}
 
 export const PriceCategory: Story = {
     render: () => (

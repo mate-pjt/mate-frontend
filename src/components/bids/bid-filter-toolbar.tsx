@@ -11,7 +11,8 @@ import {
   PriceCategoryPopover,
   PublicCategoryPopover,
 } from "@/components/ui/filter-popover";
-import type { BidFilterOptions } from "@/data/bids/contracts";
+import type { BidDateFilter, BidFilterOptions } from "@/data/bids/contracts";
+import { bidDateFilterError, bidDatePresets, bidDateUrlKeys, emptyBidDateFilter, normalizeBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 
 import { categoryLabels, type BidFilters, type BidView } from "./bid-list-model";
 
@@ -19,19 +20,28 @@ type FilterKey = "category" | "region" | "industry" | "contract" | "period" | "a
 
 type BidFilterToolbarProps = {
   readonly filterOptions: BidFilterOptions;
+  readonly dateFilter: BidDateFilter;
+  readonly dateQueryError?: string;
   readonly filters: BidFilters;
   readonly filterLabels?: Partial<Record<FilterKey, string>>;
   readonly renderLeadingAction?: (closeFilters: () => void) => ReactNode;
   readonly onFilterChange: (key: keyof BidFilters, value?: string) => void;
+  readonly onDateFilterChange: (filter: BidDateFilter) => void;
   readonly personalMode?: boolean;
   readonly view: BidView;
 };
 
-export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderLeadingAction, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
+export function BidFilterToolbar({ dateFilter, dateQueryError, filterOptions, filters, filterLabels, renderLeadingAction, onDateFilterChange, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [openFilter, setOpenFilter] = useState<FilterKey>();
   const [draftFilters, setDraftFilters] = useState<BidFilters>(filters);
   const [industryQuery, setIndustryQuery] = useState("");
+  const [draftDateFilter, setDraftDateFilter] = useState(dateFilter);
+  const [dateQuickRange, setDateQuickRange] = useState<string>();
+  const dateError = bidDateFilterError(draftDateFilter, view);
+  const normalizedDate = normalizeBidDateFilter(draftDateFilter);
+  const sameDates = bidDateUrlKeys.every(key => normalizedDate[key] === dateFilter[key]);
+  const hasDateSelection = Boolean(dateFilter.dateFrom || dateFilter.dateTo || draftDateFilter.dateFrom || draftDateFilter.dateTo || dateQueryError);
 
   useEffect(() => {
     if (!openFilter) return;
@@ -41,7 +51,10 @@ export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderL
     }
 
     function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpenFilter(undefined);
+      if (event.key === "Escape") {
+        setOpenFilter(undefined);
+        rootRef.current?.querySelector<HTMLButtonElement>(`[data-filter-trigger="${openFilter}"]`)?.focus();
+      }
     }
 
     document.addEventListener("pointerdown", closeOnPointerDown);
@@ -53,9 +66,18 @@ export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderL
   }, [openFilter]);
 
   const close = () => setOpenFilter(undefined);
+  const closeDate = () => {
+    close();
+    rootRef.current?.querySelector<HTMLButtonElement>('[data-filter-trigger="period"]')?.focus();
+  };
   const open = (name?: FilterKey) => {
     setDraftFilters(filters);
     setIndustryQuery("");
+    setDraftDateFilter(dateFilter);
+    setDateQuickRange(filters.period ?? Object.keys(bidDatePresets).find(range => {
+      const preset = presetBidDateFilter(range, view, dateFilter.dateType);
+      return bidDateUrlKeys.every(key => preset[key] === dateFilter[key]);
+    }));
     setOpenFilter(name);
   };
   const changeDraft = (key: keyof BidFilters, value?: string) => {
@@ -68,6 +90,10 @@ export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderL
   const reset = (key: keyof BidFilters) => {
     onFilterChange(key, key === "category" && !personalMode ? "construction" : undefined);
     close();
+  };
+  const changeDate = (key: "dateFrom" | "dateTo", value: string) => {
+    setDraftDateFilter(current => ({ ...current, [key]: value || null, dateType: view === "result" ? null : current.dateType ?? "BID_BEGIN" }));
+    setDateQuickRange(undefined);
   };
 
   return (
@@ -119,15 +145,26 @@ export function BidFilterToolbar({ filterOptions, filters, filterLabels, renderL
         />
       </FilterSlot>
       {view !== "closing" && (
-        <FilterSlot active={Boolean(filters.period || (personalMode && filterLabels?.period !== "기간"))} label={filterLabels?.period ?? filters.period ?? (view === "result" ? "개찰일" : "기간")} name="period" onOpen={open} open={openFilter}>
+        <FilterSlot active={Boolean(dateFilter.dateFrom || dateFilter.dateTo || filters.period || dateQueryError)} label={dateFilter.dateFrom || dateFilter.dateTo ? (view === "result" ? "개찰기간 설정됨" : "기간 설정됨") : filters.period ?? (view === "result" ? "개찰일" : "기간")} name="period" onOpen={open} open={openFilter}>
           <CalendarCategoryPopover
-            advancedDisabled
+            activeType={draftDateFilter.dateType === "PARTICIPATION_DEADLINE" ? "participation" : draftDateFilter.dateType === "BID_CLOSE" ? "deadline" : "open"}
+            endDate={draftDateFilter.dateTo ?? ""}
+            errorMessage={dateError}
             heading={view === "result" ? "개찰일" : "기간"}
-            onQuickRangeSelect={(value) => changeDraft("period", value)}
-            onReset={() => reset("period")}
-            onSave={() => save("period")}
-            selectedQuickRange={draftFilters.period}
+            onEndDateChange={value => changeDate("dateTo", value)}
+            onStartDateChange={value => changeDate("dateFrom", value)}
+            onTypeSelect={value => setDraftDateFilter(current => ({ ...current, dateType: { open: "BID_BEGIN", participation: "PARTICIPATION_DEADLINE", deadline: "BID_CLOSE" }[value] as BidDateFilter["dateType"] }))}
+            onQuickRangeSelect={value => {
+              setDraftDateFilter(presetBidDateFilter(value, view, draftDateFilter.dateType));
+              setDateQuickRange(value);
+            }}
+            onReset={() => { onDateFilterChange(emptyBidDateFilter()); closeDate(); }}
+            onSave={() => { if (!dateError) { onDateFilterChange(normalizedDate); closeDate(); } }}
+            resetDisabled={!hasDateSelection}
+            saveDisabled={Boolean(dateError) || (sameDates && !dateQueryError)}
+            selectedQuickRange={dateQuickRange}
             showTypeSelector={view !== "result"}
+            startDate={draftDateFilter.dateFrom ?? ""}
           />
         </FilterSlot>
       )}
@@ -167,6 +204,7 @@ function FilterSlot({ active = false, children, disabled = false, label, name, o
     <div className="relative">
       <button
         aria-expanded={expanded}
+        data-filter-trigger={name}
         className={`flex h-9 ${name === "contract" ? "min-w-24" : "min-w-[72px]"} items-center justify-center gap-1 rounded-[8px] border px-[10px] outline-none type-body-2 focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 ${disabled ? "cursor-not-allowed border-transparent bg-grayscale-50 text-grayscale-500" : expanded || active ? "border-transparent bg-primary-100 text-primary-400" : "border-transparent bg-grayscale-50 text-grayscale-700 hover:bg-grayscale-100"}`}
         disabled={disabled}
         onClick={() => onOpen(expanded ? undefined : name)}

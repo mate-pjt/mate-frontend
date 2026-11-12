@@ -46,7 +46,7 @@ async function BidListContent({ searchParams }: BidListPageProps) {
   }
 
   const [result, filterOptions] = await Promise.all([
-    getBidList(state),
+    state.dateError ? { items: [], totalCount: 0, page: 1, size: state.size } : getBidList(state),
     getBidFilterOptions(),
   ]);
 
