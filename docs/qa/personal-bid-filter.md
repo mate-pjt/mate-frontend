@@ -130,6 +130,14 @@
 
 다음 첫 행동: DEV-09 Gate에서 공개 지역/공동도급 계약·관련 자료부터 확인하고, 이후 날짜/금액 Task의 검증 범위를 각각 구체화한다. 이 기록은 개발 착수·실제 mutation 승인이나 기존 QA 면제가 아니다.
 
+<a id="dev-09-gate-investigation"></a>
+
+## 2026-11-12 · DEV-09 지역 저장 Gate 조사 · 실제 실행 없음
+
+- [DEV-09 재개 표](../development/figma-v01/tasks/DEV-09.md#dev-09-gate-handoff)의 개인 저장 계약은 현재 backend dev와 개발 OpenAPI에서 확인했다. ADVP-01/02/04의 지역 저장·reload·오류/계정 수명 부분은 실제 실행0·신규 통과0·Gate 차단이며 현재/다음 Task 상태는 WBS만 소유한다.
+- disposable 계정 별칭/초기 snapshot/version·기대 공고·실행 대응·사용/저장 변경/빈 SAVED 잔존/종료·복구·안전한401/409·오류 해제와 이번 로컬 선행 예외 답변은 미확인이다. 계정/비밀값을 읽거나 실제 로그인·GET current/PUT/reset을 실행하지 않았다.
+- ADVP4/QA-10/POL-02의 과거 대기·차단/승인 예외를 보존한다. DEV-63의 mock/HTTP 대역 빈 SAVED 교정은 해당 날짜별 기록을 따르며 이 조사에서 실제 reset/매칭 통합이 통과한 것이 아니다. 지역 공개 URL 적용과 계정 명시 저장은 기존 POL-07대로 구분한다.
+
 
 <a id="dev-63-local-qa"></a>
 
