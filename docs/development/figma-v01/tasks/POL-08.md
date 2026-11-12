@@ -218,3 +218,8 @@ backend 계약 제공 역할과 프론트 후속 실행자가 이 표를 대조�
 - Review Gate: read-only verifier의 최종 정책10파일 PASS·미해결 Blocker/Major/Minor0, 검토 diff SHA-256 `32754e8e70a0f1d0b97df5a54ffce4e25bab3df5d32ddc9a58198fe565237bf4`. 자체 ai-review 여섯 섹션도 PASS다. 종료 체크리스트/WBS·다음 인계 metadata는 후속 검증·영향 재검토에 포함한다. 실제 최종 freshness와 Git 결과는 PR/receipt/최종 보고로 연결한다.
 - 남은 조건: 사용자는 전용 API를 backend 개발자에게 요청했다고 보고했다. 실제 계약/접수·담당 개인/일정·source/schema/배포/실행 대응·fixture/오류·복구 자원은 미확보다. [DEV-13 재개 Gate](#pol-08-dev13-gate) 전 제품 구현을 시작하지 않으며 기존 no-view 조회/기본 예시 fallback·로컬 선행 예외를 만들지 않는다.
 - 다음 Task: **POL-09** 하나. DOC-001 완료·P2 표 순서의 독립 정책 후보이며, 앞선 P0/P1·DEV-09 차단·DEV-12 별도 Gate/보류·DEV-13 전용 계약 조건을 유지한다. 정의/선행/완료 기준만 읽었고 [다음 첫 행동](POL-09.md#pol-09-pol-08-handoff)을 남겼다. POL-09의 전용 조사/정책/Brief·설계/구현/검증/전달은 실행하지 않았다. 현재/다음/상태는 WBS가 소유한다.
+
+### Git 전달 체크포인트
+
+- 종료11파일의 문서 검사/ai-review·독립 freshness 재검토 PASS 후 정책/후속 기준 `ecf9116`, 검증/오류 교정 기록 `70056a7`을 나눠 commit/push하고 [PR #65](https://github.com/mate-pjt/mate-frontend/pull/65)를 draft로 열었다. base는 `145324ee551f7b24c555d0d21ebe5dcb7f5eb79e`, 라벨은 `type: docs`다.
+- WBS/plan·POL-09의 인계와 이 Git 체크포인트를 마지막 전달/인계 목적 커밋으로 분리한다. 이 기록은 PR 생성 시점의 실제 결과이며 최종 head CI/리뷰·정상 merge/로컬 main 동기화 완료를 미리 주장하지 않는다. 이후 결과는 같은 PR의 최종 head와 저장소 밖 receipt·최종 보고에서 확인한다. 이 metadata 추가도 문서 검사·두 리뷰 영향 재검토 대상으로 포함한다.
