@@ -67,3 +67,9 @@ WBS/Task·coverage·DEV-61/상세 QA·plan·사건 로그·context/sources/revie
 ## 종료 metadata 준비
 
 1차 verifier의 Minor 고정 URL을 교정하고 Task 체크리스트·WBS 완료/집계·DEV-61 다음 선정 이유/첫 행동과 이 보고서를 추가했다. primary는 변경을 다시 대조해 정책/계약·실제 QA 범위가 변하지 않았고 갱신 문서의 Blocker/Major/Minor가 남지 않음을 확인했다. AI Review의 위 여섯 섹션을 이 종료 diff에도 적용한다. 전체 문서 최종 검사와 같은 verifier의 freshness를 재실행하며 실제 결과/최종 지문은 외부 receipt/최종 보고에 보존한다. 이후 PR/head 연결이 추가되면 해당 부분도 다시 검토한다.
+
+## 종료 freshness와 PR 연결 재검토
+
+- 같은 read-only verifier의 종료 재검토 **PASS**: URL Minor 해소, Blocker/Major/Minor 없음. 최종 문서10파일·원본79/Task114/의존성155·링크770·보존 지문8개, WBS 완료14/차단21/대기76/준비1/보류2와 활성0을 독립 확인했다. 파일 SHA256 결합 지문은 `4bc86e1e4ea57750a36bc035477751de1ea8def4b13d4ffdd033decbe2bd127e`였다. 위 AI Review 여섯 섹션도 종료 diff에 재적용해 PASS했다.
+- 목적별4커밋 push 후 [PR #56](https://github.com/mate-pjt/mate-frontend/pull/56), 초기 head `a202a641882d66b18cea43dfc395250d92f79f54`와 `type: docs`를 확인했다. 이 PR 연결·검토 결과 추가2파일은 정책/QA/실행 동작을 바꾸지 않는다. primary는 추가분을 여섯 Review Checks에 재대조했고 같은 verifier에게 문서 검사와 metadata freshness를 다시 요청한다.
+- 이 기록은 최종 head CI/병합 완료를 미리 선언하지 않는다. 실제 최종 head·검사/리뷰·Chromatic 한도 오류의 승인 예외·정상 merge/main 동일 SHA/clean은 원격 상태 및 저장소 밖 POL-30 비식별 receipt/최종 보고에서 확인한다. 최종 재검토 뒤 파일을 바꾸면 다시 영향 검토한다.

@@ -198,3 +198,9 @@ DEV-61은 실제 package scripts의 test/lint·API/mock/hybrid build·영향에 
 - 다음 한 작업 선정: **DEV-61**. P0 실제 QA/약관/취합은 기존 자원/정책/의존 차단을 유지한다. P1의 DEV-59/60/62도 선행 충족 후보지만, 이번에 정책 선행이 해소된 직접 후속이며 CF-07의 좁은 mock 목표/합성 검증 기준을 연결할 수 있어 DEV-61을 선택했다. 표 기본 순서에 대한 이번 인계의 선택 근거이며 제품 전체 우선순위의 영구 변경은 아니다.
 - 다음 첫 행동: 새 대화에서 [DEV-61 인계](DEV-61.md#dev-61-pol-30-handoff), POL-30 v1/REL-01~13·CF-07과 최신 main·data-access를 읽고 현재 mock/contracts/tests·시나리오를 선별 확인해 수정 대상·Clock/fixture·실행/검증 범위의 Brief를 제시한다. 선정/인계만 했으며 DEV-61 구현·상세 조사·검증·Git 전달은 시작하지 않았다.
 - Git 전달 체크포인트: 이번 변경만 목적별 commit/push·PR/라벨·최종 head CI/리뷰·정상 merge·main fast-forward 대상이다. 이 시점의 로컬 문서 PASS를 원격 전달 완료로 표시하지 않는다. 이번 PR의 Chromatic 월간 한도 문제만 사용자 승인 예외이며 나머지 검사/병합 규칙은 유지한다. 실제 PR/head/CI/병합/main 일치·clean 결과는 후속 비식별 receipt와 최종 보고에 남긴다.
+
+## 2026-11-12 · PR 전달 체크포인트
+
+- 종료 metadata까지 문서 최종 검사와 같은 verifier freshness/primary ai-review를 재실행해 PASS, 미해결 Blocker/Major/Minor 없음. 문서10파일·링크770·79원본/114Task/155의존성·지문8개 보존을 재확인했다.
+- 목적별4커밋 `a1d8d8b`(정책/출처), `61f1d9e`(후속 기준), `70ea6ee`(출력 사건), `a202a64`(WBS/검토)를 push하고 [PR #56](https://github.com/mate-pjt/mate-frontend/pull/56)을 생성했다. 초기 head는 `a202a641882d66b18cea43dfc395250d92f79f54`, 라벨은 `type: docs`다. 이 PR 연결 추가분도 문서 검사/두 리뷰의 freshness 대상이다.
+- 다음 첫 행동: PR 연결 문서 재검토 후 해당 기록 커밋/push, 실제 최종 PR head의 CI/리뷰·최신 main/병합 허용 조건 확인. Chromatic 월간 한도 관련 차단만 이번 승인 예외로 구분하고, 나머지 성공 후 정상 merge 및 로컬 main fast-forward/동일 SHA·clean을 확인한다. 수행 전 병합/실제 QA 완료로 표시하지 않는다.
