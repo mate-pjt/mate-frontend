@@ -5,7 +5,7 @@ export type AppEnvironment = "local" | "preview" | "production";
 export const mockScenarios = {
   auth: ["default", "slow", "signup", "expired", "invalid-flow"],
   bids: ["default", "slow", "empty", "error", "partial-error", "attachments-error", "related-error", "results-error", "purchases-error", "participants-error"],
-  company: ["default", "slow", "connected", "pending", "rejected", "canceled", "approved-stale", "denied", "invite-mismatch", "invite-expired", "processing-failed", "conflict", "error"],
+  company: ["default", "slow", "connected", "pending", "rejected", "canceled", "approved-stale", "denied", "invite-mismatch", "invite-expired", "processing-failed", "conflict", "evidence-empty", "error"],
   notifications: ["default", "slow", "empty", "error"],
   bidAlerts: ["default", "slow", "error"],
   personalFilters: ["default", "slow", "conflict", "error"],

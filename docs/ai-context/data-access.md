@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-09-30
+Last updated: 2026-11-12
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -102,6 +102,7 @@ src/data/
 - 개인 필터: 전체 내부 모델 저장/URL 왕복, expectedVersion 충돌과 초기화. 명시적 reset은 회사 가져오기 가능 여부를 보존한 빈 `SAVED`를 남겨 회사 기본값 자동 재적용을 막는다. 첫 저장 version1·조건 변경 시 증가하며 이미 빈 `SAVED`의 reset replay는 version을 유지한다. [DEV-63 검증](../development/figma-v01/tasks/DEV-63.md#dev-63-verification)은 mock/HTTP 대역/실제 Next 결과이며 실제 API QA-10 차단은 별도다. 화면은 사용자가 ‘내 맞춤’을 누를 때마다 공개 client의 최신 GET snapshot/filter를 받아 목록에 수동 적용한다. 초기 표시용 snapshot을 클릭 적용값으로 재사용하거나 이 버튼에서 저장하지 않는다. 일반/personal URL의 전체 조건을 canonical 비교하고 query/page/size는 제외한다. 중복 조회·저장/reset 교차 실행을 막고 탐색 의도/계정/URL/화면 종료에서 늦은 응답을 폐기한다. 조회 실패/최신 빈 조건은 현재 목록을 유지하며 다음 명시 클릭으로 다시 조회한다. [DEV-55 후속 기준](../development/figma-v01/tasks/DEV-55.md#dev-55-followup-brief)을 따른다.
 - 이메일: 인증번호 `1234`, 인증 만료·재전송 대기·오류 횟수, 인증 후 수신 주소, 독립 ON/OFF 유지. 실제 메일은 발송하지 않는다.
 - 회사: empty/connected/pending/terminated/approved-stale/denied, 검색·신청, 초대 수락/거절/계정 불일치, 사업자번호 처리·등록, 문서 processing/failure/retry/replacement/proposal/registration과 나의 회사 상태 공유.
+- 가입 회사 근거: 대표면허와 WOMEN_OWNED/DISABLED_OWNED/SOCIAL_ENTERPRISE는 YES/NO/UNKNOWN을 구분하고 평가연도 미확인은 null이다. 출처4종과 개별 sourceSnapshotDate를 보존한다. 기본 mock은 금액 있음/연도 없음·인증 혼합, `evidence-empty`는 금액/근거 없음·모두 UNKNOWN이다. 회사 영역의 근거 버전1이 구형 합성 연도/ACTIVE/빈 인증만 변환하고 진행·멱등 replay를 보존한다. 새 형식의 잘못된 상태/출처/날짜는 해당 회사 공간만 초기화하며 실제 API 응답/파일을 저장하지 않는다. [DEV-59 로컬 검증](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)은 기존 QA-06/07 실제 차단을 대체하지 않는다.
 
 ## 7. 회사와 업로드의 경계
 
