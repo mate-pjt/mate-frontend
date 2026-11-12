@@ -5,9 +5,10 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-12 KST |
-| 현재 작업 | 없음 — [DEV-62](tasks/DEV-62.md#dev-62-close)의 문구/문서 교정·로컬 검증·두 리뷰 통과. 종료 metadata freshness와 Git 전달은 최종 PR/head·receipt/최종 보고에서 별도 확인 |
-| 다음 작업 | [DEV-09 · 고급 지역·업체·공동도급 조건 연결](tasks/DEV-09.md#dev-09-dev-62-handoff) — P2·POL-07 선행 완료. 자체 자원/계약 Gate 전 선정·인계만 |
-| 다음 첫 행동 | 새 대화에서 최신 main/Git·DEV-09/POL-07의 결정·현재 지역 metadata/URL/Repository와 source/OpenAPI·실제 QA 자원/승인을 대조해 Brief 제시. 이번에는 구현/실제 QA 미착수 |
+| 현재 작업 | 없음 — [DEV-09](tasks/DEV-09.md#dev-09-document-close) Gate 조사 문서의 검증/두 리뷰 통과. 제품은 자원/예외 미확인으로 차단·구현 미착수. 종료 freshness와 Git 전달은 최종 head/receipt·보고에서 별도 확인 |
+| 다음 작업 | [DEV-10 · 날짜 기준·직접 기간 입력 연결](tasks/DEV-10.md#dev-10-dev-09-handoff) — P2·POL-07 선행 완료. 선정/인계만, 자체 Gate 전 실행 안 함 |
+| 다음 첫 행동 | 새 대화에서 최신 main/Git·DEV-10/POL-07·현행 날짜 계약/URL·경계 자료와 실제 QA 자원/사용·변경·복구 범위를 확인해 자체 Brief 제시. DEV-09 재개는 자원/이번 로컬 선행 예외 답변부터 |
+| DEV-09 이번 승인 범위 | 2026-11-12 사용자: DEV-09 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API 변경/메일·문서 처리/운영·배포는 별도 범위 확인. 다음 Task는 선정/인계만. [사전 조사](tasks/DEV-09.md#dev-09-investigation) |
 | DEV-62 이번 승인 범위 | 2026-11-12 사용자: DEV-62 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API·메일/문서 처리·서비스 운영/배포와 다음 Task 실행 제외. [Brief](tasks/DEV-62.md#dev-62-brief) |
 | DEV-60 이번 승인 범위 | 2026-11-12 사용자: DEV-60 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도만 예외. 실제 업무 변경/운영/배포와 다음 Task 실행 제외. [Brief](tasks/DEV-60.md#dev-60-brief) |
 | DEV-59 이번 승인 범위 | 2026-11-12 사용자: DEV-59 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API/메일/문서 처리·운영/배포 제외. 다음 Task는 선정/인계만. [Brief](tasks/DEV-59.md#dev-59-brief) |
@@ -54,7 +55,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료18 · 차단21 · 대기72 · 준비1 · 보류2 =114개**. 진행/검증/리뷰 중인 작업은 없다. Git 전달 상태와 제품/실제 QA 판정은 구분한다.
+현재 집계: **완료18 · 차단22 · 대기71 · 준비1 · 보류2 =114개**. 진행/검증/리뷰 중인 제품 작업은 없다. Git 전달 상태와 제품/실제 QA 판정은 구분한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -112,8 +113,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
 | [POL-07 · 고급 조건·범위·낙찰금액 계약 확정](tasks/POL-07.md) | 정책 결정 | P2 | 완료 | L07, L08, L09, L10 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-09 · 고급 지역·업체·공동도급 조건 연결](tasks/DEV-09.md) | 개발 | P2 | 준비 | L07 | [POL-07](tasks/POL-07.md) |
-| [DEV-10 · 날짜 기준·직접 기간 입력 연결](tasks/DEV-10.md) | 개발 | P2 | 대기 | L08 | [POL-07](tasks/POL-07.md) |
+| [DEV-09 · 고급 지역·업체·공동도급 조건 연결](tasks/DEV-09.md) · **실제 QA 자원/이번 로컬 선행 예외 미확인·제품 미착수** | 개발 | P2 | 차단 | L07 | [POL-07](tasks/POL-07.md) |
+| [DEV-10 · 날짜 기준·직접 기간 입력 연결](tasks/DEV-10.md) | 개발 | P2 | 준비 | L08 | [POL-07](tasks/POL-07.md) |
 | [DEV-11 · 금액 종류·직접 최소/최대 연결](tasks/DEV-11.md) | 개발 | P2 | 대기 | L09 | [POL-07](tasks/POL-07.md) |
 | [DEV-12 · 개찰결과 낙찰금액 필터 연결](tasks/DEV-12.md) · **사용자 D2: 서버 필터 계약 확보 전 보류** | 개발 | P2 | 보류 | L10 | [POL-07](tasks/POL-07.md) |
 | [POL-08 · 정정 이력 조회·선택 계약 확정](tasks/POL-08.md) | 정책 결정 | P2 | 대기 | D06, C02 | [DOC-001](tasks/DOC-001.md) |
@@ -255,6 +256,13 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [DEV-62 검증](tasks/DEV-62.md#dev-62-verification): 알림4영역 안내·DESIGN을 교정하고315 tests/lint·3구성 build·Storybook·실제 Next mock8/HTTP9관찰 묶음·모바일/키보드/AX/DOM·문서 검사와1차 두 리뷰를 통과했다. verifier가 찾은 기존 요약 집계 Minor는 실제 행으로 보정하고 종료 metadata도 재검토한다. 실제 Git 전달은 최종 PR/head·receipt/최종 보고로 확인한다.
 - 다음 DEV-09 선정 이유: P0 실제 QA/약관/취합·앞선 P1 정책/신원/문구·실제 자원 차단을 유지한다. 남은 P1은 차단/선행 미충족이며 P2 표의 첫 개발 후보 DEV-09는 POL-07이 완료돼 자체 Gate 대상으로 선정했다. 실행 process/합성 공고·계정/오류/복구 준비 완료나 로컬 선행 예외 승인이 아니다.
 - DEV-09의 Task 정의·선행/자원 조건만 읽어 선정/인계했다. 이번에는 DEV-09 소유 source/API/Figma 상세 조사·Brief/설계·구현·검증·Git 전달을 시작하지 않는다. 기존 실제 QA/정책 차단·Task별 예외·79원본/114Task/155의존성·baseline/coverage를 보존한다.
+
+## 2026-11-12 · DEV-09 Gate 조사와 다음 후보 인계
+
+- [DEV-09 조사](tasks/DEV-09.md#dev-09-investigation): 최신 source/OpenAPI·test 배포 기록·공개 metadata296개·지역 팝오버 Figma 상태를 확인했다. 실제 경계 공고/개인 저장/오류·복구 자원과 실행 대응은 미확인이고 로컬 선행 예외 답변도 없으므로 제품 설계/구현 전 Gate에서 멈췄다. 문서 검토/전달과 제품/실제 통합 판정은 구분한다.
+- 필요한 담당 역할·재개 조건은 [DEV-09 재개 표](tasks/DEV-09.md#dev-09-gate-handoff)에 남긴다. ‘자원 미확인’은 사용자 미준비 답변/실제 API 부재를 뜻하지 않는다. 이번 Git 승인과 Chromatic 한도 예외는 재질문하지 않는다.
+- 사용자 요청7항의 다음 작업 선정/인계 범위에서 DEV-10을 선정했다. 남은 P0/P1 차단/선행 미충족은 보존하고 P2 표 순서상 다음이며 선행 POL-07이 완료됐다. DEV-09를 임의 코드 의존성으로 추가하지 않는다. DEV-10은 Task 정의/인계만 읽었고 source/API/Figma 조사·Brief/설계·구현·검증·업무 API·Git 전달을 시작하지 않는다. DEV-09 검증을 면제하거나 다른 Task로 제품 실행을 전환한 것이 아니다.
+- 기존79원본/114Task/155의존성·baseline/coverage·과거 결정/QA 이력과 Task별 예외를 보존한다.
 
 ## 갱신 규칙
 
