@@ -185,3 +185,27 @@
 | CDASH-12 | 연결/미연결/권한·부분 오류 상태, desktop/390px/320px·Tab/Enter/재시도 | 기존 기본정보/가입 동선 회귀 보존·가로 넘침 없음·읽기 순서/초점/상태 안내/재시도 조작 확인 | 차단 — 구현/승인 상태별 자원 미준비 |
 
 실제 재개에는 [POL-06 필수6조건](../development/figma-v01/tasks/POL-06.md#pol-06-handoff)의 배포/실행 대응·합성 회사/권한/경계 기대값·사용/잔존/종료/복구·안전한 오류/해제와 DEV-08 자체 Brief가 필요하다. 담당은 API/배포·fixture·프론트 QA·승인자 역할이며 개인 배정은 미확인이다. 실행 후 이 표에 시각/실행 ID·비식별 Network/화면·정리 증거를 추가하고, mock/HTTP 대역/실제 결과를 각각 기록한다. 이번에 API/로그인/회사·권한 변경·운영/배포는 실행하지 않았다.
+
+<a id="dev-60-local-qa"></a>
+
+## DEV-60 기본정보 복수 주력업종 로컬 검증 · 2026-11-12
+
+- 소유: [DEV-60 Brief/소유 근거](../development/figma-v01/tasks/DEV-60.md#dev-60-brief)·[검증](../development/figma-v01/tasks/DEV-60.md#dev-60-verification). 시작 source main `ccb14b8` + 해당 Task diff, 환경파일 없는 격리 Next16.2.9/Node22.20.0·Aside/Chrome, app loopback4360/HTTP double4369,1440×900·390×844·320×900. Figma 기본정보 `3134:64574`/주력업종 `3134:64609`; 기존 Task의 팀원 section 연결 오류는 Task에 근거를 보존해 정정했다.
+- 로컬 구현/자동·mock·HTTP 대역만 검증했다. 아래 결과는 MCO/CDASH 실제 API 통합 통과 건수에 합산하지 않는다. QA-05 MCO4통과6차단·DEV-08 CDASH12차단과 기존 AUTH/가입 QA·Task별 승인 예외/재개 조건은 그대로다. 실제 업무 API/로그인·회사/권한 변경·메일·업로드0건. 개발 Swagger GET200은 배포 문서 조회이며 실행 process SHA·실응답 증명이 아니다.
+
+| 사례 | 기대/실행 | 로컬 판정 |
+| --- | --- | --- |
+| BASIC-01 | 신형 목록0/1/복수·서버 순서·정확 중복, legacy가 달라도 목록 우선(빈 배열 포함) | 자동/실제 Next HTTP 대역 PASS |
+| BASIC-02 | 목록이 없는 legacy 단일값/null만 목록/빈 목록으로 호환, 둘 다 결측은 오류 | 자동/실제 Next HTTP 대역 PASS |
+| BASIC-03 | 목록 null/비배열/결측 행·코드/이름 오류·같은 코드 이름충돌은 오류/재시도, 빈 성공·임의값 없음 | 자동/실제 Next HTTP 대역 PASS |
+| BASIC-04 | 긴 업종+두 번째 이름이320/390px에서 전체 보존·줄바꿈·가로넘침 없음 | 전체 dl/dd DOM과 실제 viewport 육안 PASS. 전체 snapshot 문자열 요약으로 발생한 최초 오판은 도구 관측으로 별도 보존 |
+| BASIC-05 | 403권한·409/500오류·키보드 Enter 재시도→정상 복구, 초기 auth401에서 이전 목록 없음 | 자동/실제 Next HTTP 대역 PASS. 실제 서버 오류/세션 해제 미실행 |
+| BASIC-06 | 미연결/신청 대기·다른 합성 계정/새로고침에서 해당 상태/목록 표시 | 실제 Next HTTP 대역 PASS. 계정별 mock 저장 보존은 자동 계약으로 별도 확인 |
+| BASIC-07 | connected mock 두 업종·새로고침·구형 단일값 변환·문서/멱등 replay·다른 영역/계정 보존 | 자동/실제 Next mock PASS. 전체 mock ResourceTiming 외부 요청0건 |
+| BASIC-08 | hybrid(auth HTTP 대역/company mock)에서 회사 HTTP 요청0·전체 목록, production mock build/start 거부 | 실제 Next/ResourceTiming·HTTP double log/guard exit1 PASS |
+
+- 명령:15files/315tests·lint·API/mock/hybrid build·Storybook build·diff-check PASS. 기존 테스트의 불완전 기본정보 fixture를 실제 필드로 보완했다. 최초 새 테스트4실패는 it.each 배열 자료 펼침 오류로 교정 후 전수 통과했고 runtime을 임의 변경하지 않았다.
+- 브라우저 HTTP 대역20개 최종 검사 통과와 최초 도구 요약 오판1건을 `browser-results.json`에 보존한다. hybrid/mock 최종 요청 검사는 별도 결과다. Aside의 page.route 미지원으로 루프백 HTTP double을 사용했고 DOM과 실제 viewport 캡처를 확인했다. page.on 수집0건을 외부 요청0의 근거로 쓰지 않았다.
+- 증거: 로컬 `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev60/`의 test/lint·build3/Storybook·guard 로그, browser/mock/hybrid 결과·비식별 HTTP 경로/status, `final-desktop.png`·`long-320-viewport.png`. 로컬 증거는 Git 외부이며 토큰/쿠키/환경값을 저장하지 않는다.
+- 실제 재개: QA-05의 승인된 다중 업종 회사/계정·현재 실행 대응·정확한 기대 목록/안전한 권한·오류/사용·잔존/종료·복구 자원을 해당 Gate에서 확인한다. DEV-08의 대시보드/leaf6조건은 그대로다. source/문서/로컬 브라우저 PASS를 실제 통합 PASS로 승격하지 않는다.
+- PR에서 확인할 합성 화면: [데스크톱 복수 업종](assets/dev60/desktop.png), [320px 긴 이름 전체 표시](assets/dev60/long-320.png). 위 로컬 원본 캡처 중 이 두 장만 QA 증거로 Git에 포함한다. Figma 전체 화면 정합성/실서버 자료를 뜻하지 않는다.
