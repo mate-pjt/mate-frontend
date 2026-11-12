@@ -172,3 +172,10 @@
 사용자는 [승인 원문/제한](../development/figma-v01/tasks/QA-09.md#qa-09-next-qa-10-exception)에 따라 QA-09 실제8건 차단을 유지하고 QA-10을 다음 대화의 요구사항 Gate 대상으로 선정하는 예외를 승인했다. 위 ‘다음 QA-09 재개/QA-10 예외 없음’은 당시 이력이며 다음 작업 선정만 이번 승인으로 대체한다. ALERT-01~08 실제0통과·8차단/미실행과 [재개 조건](../development/figma-v01/tasks/QA-09.md#qa-09-resume)은 불변이다.
 
 다음 **QA-10**에서는 main/Git·QA-10/PREP 준비표·PBF-01~12를 대조하고 disposable EMPTY_DEFAULT/COMPANY_DEFAULT 계정·매칭/오류/409 fixture, 로그인·GET/PUT/reset 사용·변경과 빈 SAVED 잔존/종료 상태·복구 담당/방법·현재 실행 대응을 확인해 Gate를 작성한다. reset을 최초 상태 복구로 세지 않는다. 이번 예외는 QA-09 통합 PASS나 QA-10 실제 실행/필터 변경·운영/배포 승인이 아니며, QA-10 작업/개인 필터 QA는 수정·실행하지 않았다.
+
+
+## 2026-11-12 · DEV-62 안내 교정
+
+- 팝업은 공고별 변경 소식을 상단 알림에서 확인하고 해당 공고 상세에서 설정·해제하도록 안내한다. 매일08:30 맞춤 공고 이메일은 별개이며 마이페이지의 알림 설정에서 따로 변경한다. 미지원 전체 관리 화면이나 없는 전역 토글을 안내하지 않는다.
+- 이번 mock 팝업·설정/해제·키보드/320px 검증을 기존 ALERT 실제8차단의 통과로 세지 않는다.
+- 이번 근거는 [알림 안내 로컬 검증](notification-guidance.md)과 [DEV-62](../development/figma-v01/tasks/DEV-62.md)에서 확인한다. 기존 실제 API 결과·미실행/차단을 보존한다.
