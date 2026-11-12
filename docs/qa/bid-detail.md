@@ -233,3 +233,13 @@
 - 구성/네트워크: full mock과 auth HTTP 구현의 로컬 익명401 대역+bids mock hybrid를 별도 확인했다. 최종 ResourceTiming은 full mock28리소스/외부0/API0, hybrid30리소스/외부0·로컬 refresh만이다. 서버 업무 API 외부 시도0과 개발도구 registry 차단/초기 미분류 차단을 Task에 따로 기록했다. Preview의 production 승격은 실제 시작에서 exit1로 거부됐다.
 - 실행 식별: 2026-11-12 KST, `fix/dev-61-related-bids-mock`, 시작`1166f08`; Node22.20.0/pnpm11.3.0·Next16.2.9·Aside의 소유 loopback3061. 합성 fixture/비로그인만 사용했고 실제 로그인·알림 변경·첨부 내용/다운로드·메일·서비스 운영은0건이다. 원문 AX/PNG/명명16관찰·명령 로그는 `/tmp/mate-dev61-20261112`에 보존한다.
 - 정리: 소유 Next/대역 종료,3061/3062/3063 리스너0·소유 탭 닫기/viewport복구. 원시 page query 정규화·기존 상세 시각 정합성/중첩 main은 이번 변경 밖이다. backend 실행 SHA/실제 경계 fixture·Clock·오류/복구 등 [POL-30 후속 재개 조건](#pol-30-followup)과 다른8차단을 유지한다.
+
+<a id="pol-08-followup"></a>
+
+## 2026-11-13 · POL-08 정책에 따른 정정 차수 후속 기준
+
+- [POL-08 v1](../development/figma-v01/tasks/POL-08.md#pol-08-contract): 현재 상태/변경시각/사유 표시와 동일 공고번호의 수집 차수 조회는 별개다. 사용자는 이전 차수 전용 backend 계약 확보 후 DEV-13에서 연결하기로 확정했고 backend 개발자에게 요청했다고 보고했다. 기존 no-view 검색의 재사용 가능성은 조사 근거이며 이번 제품 연결 대안으로 채택하지 않았다.
+- 이번 기록은 정책/검증 기대값 추가다. 계약 조사로 공개 GET3건의200/단일 차수2검색을 확인했지만 **제품 UI/복수 차수·페이지·선택/복귀 통합의 신규 통과는0건**이다. 위2026-11-02의 실제1통과8차단, DETAIL-04의 당시 부분 확인과 QA-03 전용 제한 종료 승인은 유지한다. 전용 API의 source/schema/배포·실행 SHA는 미확인이다.
+- 실제 연결/신규 검증은 [DEV-13](../development/figma-v01/tasks/DEV-13.md#dev-13-pol-08-handoff)이 소유한다. [전용 계약 수락 표](../development/figma-v01/tasks/POL-08.md#pol-08-backend-request)의 이전/현재 포함 관계·정렬/페이지·원본키/target ID·공개/부재/누락/오류 의미 및 합성 fixture/사용·재현/해제·잔존/복구를 먼저 확보한다. 현재 계약 없는 endpoint/enum을 QA 기대값에 발명하지 않는다.
+- 후속 [HIST-01~12](../development/figma-v01/tasks/POL-08.md#pol-08-dev13-gate)는 모두 미실행이다. 기존 DETAIL-01(분류/직접 URL)·DETAIL-04(현재 정정 사실)·DETAIL-08(본문/독립 오류)의 원래 ID/이력과 연결하고 새 이력 범위를 별도 기록한다.
+- 필수 경계: 원문 번호/차수와 실제 ID,0/1/복수·차수 간격/결측·정정 횟수/최초 추정 금지, 공사/물품/용역·서로 다른 분류/회차, 마감/취소 공개본과 미공개/삭제, 다음 page/변동·중도 실패, 닫기/선택·같은 탭 전체 공고 이동·하드 리로드/뒤로 가기의 원래 URL 복귀, 키보드/모바일과 늦은 응답. API가 알려주지 않은 미수집/부재 이유를 생성하지 않고 오류를 빈 성공/기존 목록/기본 예시로 치환하지 않는다.
