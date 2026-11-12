@@ -5,14 +5,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { BasicPopup } from "@/components/ui/popup";
 import type { BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
-import { ApiError, errorMessage } from "@/data/shared/errors";
+import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 import { createPersonalFilterApplyController } from "@/features/bid-notice-filters/apply-controller";
-import { getPersonalFilter, resetPersonalFilter, savePersonalFilter } from "@/data/personal-filters/client";
+import { getPersonalFilter } from "@/data/personal-filters/client";
 import {
-  hasPersonalConditions,
   samePersonalFilter,
   writePersonalFilterParams,
   type PersonalFilterSnapshot,
@@ -47,18 +45,12 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   const { state: authState, getAccessToken, refresh, getAccountKey } = useAuthSession();
   const accountId = authState.status === "authenticated" ? authState.authentication.account.id : null;
   const [loadedAccountId, setLoadedAccountId] = useState<number | null>(null);
-  const [loadedStatus, setPersonalStatus] = useState<"ready" | "error">("ready");
   const [loadedSnapshot, setSnapshot] = useState<PersonalFilterSnapshot | null>(null);
   const [personalMessage, setPersonalMessage] = useState("");
-  const [saving, setSaving] = useState(false);
   const [applyRun, setApplyRun] = useState<ApplyRun | null>(null);
-  const [resetOpen, setResetOpen] = useState(false);
-  const activeAccountId = useRef(accountId);
   const personalReadIntent = useRef(0);
   const applyController = useRef<ReturnType<typeof createPersonalFilterApplyController> | null>(null);
-  const resetDialogRef = useRef<HTMLDivElement>(null);
   const snapshot = loadedAccountId === accountId ? loadedSnapshot : null;
-  const personalStatus = accountId === null ? "idle" : loadedAccountId === accountId ? loadedStatus : "loading";
   const visiblePersonalMessage = loadedAccountId === accountId ? personalMessage : "";
   const totalPages = Math.max(1, Math.ceil(result.totalCount / result.size));
   const search = searchParams.toString();
@@ -71,47 +63,14 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   }, [accountId, pathname, search]);
 
   useEffect(() => {
-    activeAccountId.current = accountId;
-  }, [accountId]);
-
-  useEffect(() => {
     if (accountId !== null) return;
     const timeout = window.setTimeout(() => {
       setLoadedAccountId(null);
       setSnapshot(null);
       setPersonalMessage("");
-      setResetOpen(false);
     }, 0);
     return () => window.clearTimeout(timeout);
   }, [accountId]);
-
-  useEffect(() => {
-    if (!resetOpen) return;
-    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const dialog = resetDialogRef.current;
-    dialog?.querySelector<HTMLButtonElement>("button")?.focus();
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setResetOpen(false);
-      }
-      if (event.key !== "Tab" || !dialog) return;
-      const buttons = [...dialog.querySelectorAll<HTMLButtonElement>("button:not(:disabled)")];
-      if (buttons.length === 0) return;
-      if (event.shiftKey && document.activeElement === buttons[0]) {
-        event.preventDefault();
-        buttons[buttons.length - 1].focus();
-      } else if (!event.shiftKey && document.activeElement === buttons[buttons.length - 1]) {
-        event.preventDefault();
-        buttons[0].focus();
-      }
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      previous?.focus();
-    };
-  }, [resetOpen]);
 
   useEffect(() => {
     if (state.view !== "recommended" || authState.status !== "anonymous") return;
@@ -128,14 +87,12 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         if (controller.signal.aborted || intent !== personalReadIntent.current) return;
         setSnapshot(value);
         setLoadedAccountId(accountId);
-        setPersonalStatus("ready");
         setPersonalMessage("");
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted || intent !== personalReadIntent.current) return;
         setSnapshot(null);
         setLoadedAccountId(accountId);
-        setPersonalStatus("error");
         setPersonalMessage(errorMessage(error));
       });
     return () => controller.abort();
@@ -194,7 +151,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
       router.push(`/auth?mode=login&next=${encodeURIComponent(nextPath)}`);
       return;
     }
-    if (accountId === null || saving || applyController.current?.pending) return;
+    if (accountId === null || applyController.current?.pending) return;
     applyController.current?.dispose();
     const requestedAccountKey = getAccountKey();
     const run = { accountId, pathname, search };
@@ -207,89 +164,23 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         personalReadIntent.current += 1;
         setLoadedAccountId(accountId);
         setSnapshot(latest);
-        setPersonalStatus("ready");
       },
       onApply: (filter) => {
         const next = new URLSearchParams(search);
         ["category", "region", "industry", "contract", "period", "amount", "agency", "page", "view"].forEach((key) => next.delete(key));
         writePersonalFilterParams(next, filter);
-        setPersonalMessage("내 맞춤 조건을 현재 목록에 적용했어요.");
         navigate(next);
       },
-      onEmpty: () => setPersonalMessage("저장된 맞춤 조건이 없어요. 현재 목록 조건은 그대로 유지됩니다."),
+      onEmpty: () => setPersonalMessage(""),
       onError: (error) => {
         personalReadIntent.current += 1;
         setLoadedAccountId(accountId);
-        setPersonalStatus("error");
         setPersonalMessage(errorMessage(error));
       },
       onPending: (pending) => setApplyRun((current) => pending ? run : current === run ? null : current),
     });
     applyController.current = controller;
     void controller.apply();
-  }
-
-  async function reloadPersonalFilter(message = "") {
-    const requestedAccountId = accountId;
-    const intent = ++personalReadIntent.current;
-    try {
-      const latest = await getPersonalFilter({ getAccessToken, refresh, getAccountKey });
-      if (activeAccountId.current !== requestedAccountId || intent !== personalReadIntent.current) return;
-      setSnapshot(latest);
-      setPersonalStatus("ready");
-      setPersonalMessage(message);
-    } catch (error) {
-      if (activeAccountId.current !== requestedAccountId || intent !== personalReadIntent.current) return;
-      setPersonalStatus("error");
-      setPersonalMessage(errorMessage(error));
-    }
-  }
-
-  function refreshAfterConflict() {
-    return reloadPersonalFilter("다른 화면에서 맞춤 조건이 바뀌었어요. 최신 조건을 확인한 뒤 다시 저장해 주세요.");
-  }
-
-  async function saveToAccount() {
-    if (!snapshot || saving || applyController.current?.pending) return;
-    const filter = currentPersonalFilter(state, filterOptions);
-    if (!hasPersonalConditions(filter)) return;
-    const requestedAccountId = accountId;
-    setSaving(true);
-    setPersonalMessage("");
-    try {
-      const saved = await savePersonalFilter({ getAccessToken, refresh, getAccountKey }, snapshot.version, filter);
-      if (activeAccountId.current !== requestedAccountId) return;
-      setSnapshot(saved);
-      setPersonalMessage("내 맞춤 조건을 계정에 저장했어요. 다음 맞춤 이메일부터 반영됩니다.");
-    } catch (error) {
-      if (activeAccountId.current !== requestedAccountId) return;
-      if (error instanceof ApiError && error.status === 409) await refreshAfterConflict();
-      else setPersonalMessage(errorMessage(error));
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function resetAccountFilter() {
-    if (!snapshot || saving || applyController.current?.pending) return;
-    const requestedAccountId = accountId;
-    setSaving(true);
-    setPersonalMessage("");
-    try {
-      const saved = await resetPersonalFilter({ getAccessToken, refresh, getAccountKey }, snapshot.version);
-      if (activeAccountId.current !== requestedAccountId) return;
-      setSnapshot(saved);
-      setResetOpen(false);
-      setPersonalMessage("계정의 맞춤 조건을 초기화했어요. 현재 목록 조건은 그대로 유지됩니다.");
-    } catch (error) {
-      if (activeAccountId.current !== requestedAccountId) return;
-      if (error instanceof ApiError && error.status === 409) {
-        setResetOpen(false);
-        await refreshAfterConflict();
-      } else setPersonalMessage(errorMessage(error));
-    } finally {
-      setSaving(false);
-    }
   }
 
   const personal = state.personalFilter;
@@ -363,7 +254,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
               <>
                 <Button
                   className="h-9 shrink-0 gap-1 bg-grayscale-800 enabled:hover:bg-grayscale-700 enabled:active:bg-grayscale-900"
-                  disabled={authState.status === "loading" || applying || saving}
+                  disabled={authState.status === "loading" || applying}
                   onClick={() => {
                     closeFilters();
                     applyPersonalFilter();
@@ -381,33 +272,6 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
             personalMode={Boolean(personal)}
             view={state.view}
           />
-          {state.view === "all" && authState.status === "authenticated" && (
-            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0 text-grayscale-600 type-body-7">
-                <p>목록 필터 변경은 계정에 자동 저장되지 않아요.</p>
-                {personalStatus === "loading" ? <p>계정의 맞춤 조건을 확인하고 있어요.</p> :
-                  personalStatus === "error" ? <button className="underline" onClick={() => void reloadPersonalFilter()} type="button">맞춤 조건 다시 불러오기</button> :
-                    snapshot?.source === "COMPANY_DEFAULT" ? <p>회사 기본 조건을 볼 수 있어요. 계정에 저장하려면 ‘내 맞춤에 저장’을 누르세요.</p> :
-                      snapshot?.source === "EMPTY_DEFAULT" ? <p>저장된 맞춤 조건이 없어요. 현재 조건을 계정에 저장할 수 있어요.</p> :
-                        snapshot?.source === "SAVED" && !hasPersonalConditions(snapshot.filter) ? <p>계정의 맞춤 조건을 비워뒀어요. 회사 기본 조건은 자동으로 적용되지 않아요.</p> : null}
-              </div>
-              <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
-                <Button
-                  className="h-9"
-                  disabled={!snapshot || saving || applying || !currentFilter || !hasPersonalConditions(currentFilter) || (snapshot.source === "SAVED" && samePersonalFilter(currentFilter, snapshot.filter))}
-                  onClick={() => void saveToAccount()}
-                  size="xs"
-                >
-                  {saving ? "처리 중..." : "내 맞춤에 저장"}
-                </Button>
-                {snapshot?.source === "SAVED" && hasPersonalConditions(snapshot.filter) && (
-                  <Button className="h-9 underline" disabled={saving || applying} onClick={() => setResetOpen(true)} size="xs" variant="text_gray">
-                    계정 필터 초기화
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
           {state.view === "all" && authState.status === "error" && (
             <p className="mt-2 text-grayscale-600 type-body-7">로그인 상태를 확인하지 못했어요. ‘내 맞춤’을 눌러 다시 확인해 주세요.</p>
           )}
@@ -462,20 +326,6 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
           )}
         </div>
       </section>
-      {resetOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" ref={resetDialogRef} role="presentation">
-          <BasicPopup
-            aria-modal="true"
-            className="max-w-full"
-            description="계정에 저장된 맞춤 조건을 비웁니다. 회사 기본 조건으로 돌아가지 않으며, 현재 목록의 조건은 그대로 유지돼요."
-            onClose={() => setResetOpen(false)}
-            primaryAction={{ label: saving ? "처리 중..." : "초기화", tone: "danger", disabled: saving, onClick: () => void resetAccountFilter() }}
-            role="dialog"
-            secondaryAction={{ label: "취소", onClick: () => setResetOpen(false) }}
-            title="계정 맞춤 조건을 초기화할까요?"
-          />
-        </div>
-      )}
     </div>
   );
 }
