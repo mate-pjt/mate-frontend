@@ -84,3 +84,12 @@
 - 범위/소유: mock은 regionCodes에서 unrestricted를 구분하지 않고 AVAILABLE에서 REQUIRED를 배제하지 않는다. 이 고급 지역 Task의 구현/검증 범위에 포함한다.
 - 추가 완료/재개 기준: POL-07 v1의 NO_ROWS/known/unknown·광역/시군구·regionOnly·일반/의무 공동도급을 나누고 AVAILABLE이 의무를 제외하는 음성 assertion을 추가한다. 공개 검색/view는 DEV-65, 관련공고는 DEV-61.
 - 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
+
+
+<a id="dev-09-dev-62-handoff"></a>
+
+## 2026-11-12 · DEV-62 이후 선정/인계
+
+- DEV-62 종료에서 작업 정의/선행/자원 조건만 읽고 다음 Gate 후보로 선정했다. 남은 P0 실제 QA/약관·취합과 P1 차단/선행 미충족을 유지하며, P2 표 순서상 첫 후보·POL-07 선행 완료를 근거로 삼았다. 현재/다음/상태는 WBS만 소유한다.
+- 다음 첫 행동: 새 대화에서 최신 main/Git·이 Task의 마지막 체크포인트·POL-07 승인 D1/D2와 D3 조사/미확인 조건, 현행 지역 metadata/URL/Repository·backend source/개발 OpenAPI를 대조하고 합성 공고/계정·안전한 오류/복구·실행 대응의 준비/승인을 확인해 자체 Brief를 제시한다. 미확보가 확인되면 구체적 차단·재개 조건을 기록한다.
+- 이번 인계로 준비/승인을 확정하지 않는다. DEV-09 source/API/Figma 상세 조사·최종 문구/정책·Implementation Brief/설계·구현·검증·실제 API 저장·Git 전달은 미착수다. DEV-62의 Git/Chromatic 예외나 로컬 mock/HTTP 검증을 다음 Task·기존 실제 QA의 면제로 확대하지 않는다.
