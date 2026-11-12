@@ -23,7 +23,7 @@ describe("공개 입찰 Repository", () => {
     const result = await repo.getBidList({ ...query, size: 1, personalFilter: filter }); expect(result.totalCount).toBeGreaterThan(1); expect(result.items).toHaveLength(1);
     expect(result.items.every(item => item.kind === "construction" && item.region === "서울특별시" && item.baseAmount! >= 100_000_000)).toBe(true);
     const next = await repo.getBidList({ ...query, size: 1, page: 2, personalFilter: filter }); expect(next.items[0].id).not.toBe(result.items[0].id);
-    expect((await repo.getBidList({ ...query, personalFilter: { ...filter, dateFrom: "2099-01-01" } })).totalCount).toBe(0);
+    expect((await repo.getBidList({ ...query, personalFilter: { ...filter, dateType: "BID_BEGIN", dateFrom: "2099-01-01" } })).totalCount).toBe(0);
   });
   it("공고명·공고번호·공고기관·수요기관을 부분 검색하고 공백·대소문자를 정규화한다", async () => {
     const repo = createMockBidRepository(() => testNow);
