@@ -58,3 +58,7 @@ Result: PASS — runtime5/test2·관련 문서·합성 이미지2장 포함 최�
 Result: PASS. DEV-60 종료 체크리스트·WBS 완료/다음·DEV-62 선정/인계·리뷰/Context Audit 후속 기록까지 재검토해 Blocker/Major/Minor 없음.20파일/439링크·79원본/114Task/155의존성/active0·QA 보존과 runtime5/test2의 검증 source 지문 일치를 다시 확인했다. 기능 검증 반복 불필요, 추가 정책 확인 없음.
 
 이후 이번 리뷰 결과 자체·commit SHA/PR 번호/링크/라벨·실제 CI 관찰 같은 receipt만 추가하면 primary가 추가 diff/링크/diff-check와 runtime/test/이미지 불변을 확인해 독립 전체 재실행을 생략할 수 있다는 명시적 freshness 조건을 받았다. 범위/정책/검증 판정·차단/예외나 실행 파일이 바뀌면 해당 검증/독립 리뷰를 재실행한다. Git 전달은 최종 head·원격 조건/실제 결과로 별도 확인한다.
+
+## PR receipt 추가분의 freshness
+
+[PR #59](https://github.com/mate-pjt/mate-frontend/pull/59)·최초 head `0601eb0`/base·목적별 커밋/라벨과 실제 Chromatic 한도 관찰만 Task에 추가했다. 기존 사용자 예외 적용 범위를 좁혀 재기록한 receipt이며 신규 예외/정책/검증 판정은 없다. 독립 verifier의 명시적 freshness 조건에 따라 primary가 이 추가 diff·링크/문서 검사·runtime/test/이미지 지문과 AI Review 여섯 항목 영향을 재확인하고 전체 독립 재실행을 생략한다. 최종 원격 CI/리뷰·병합/main 일치는 실제 최종 head/PR·외부 receipt/최종 보고에서 별도 확인한다.

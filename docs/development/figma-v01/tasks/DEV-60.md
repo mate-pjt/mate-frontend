@@ -138,3 +138,14 @@
 - 이번 DEV-60 Git/Chromatic 한도 승인은 DEV-62 실제 실행/운영·Git 전달·QA 면제로 확대하지 않는다. 현재/다음/상태는 WBS만 관리한다.
 
 - 2026-11-12 종료 문서 재검토: primary ai-review 여섯 항목과 독립 verifier freshness 모두 PASS, 미해결 Blocker/Major/Minor 없음.20files/439links·79원본/114Task/155의존성/active0·원본/QA 보존 및 runtime5/test2/합성 이미지 불변을 확인했다. 이후 결과 자체/커밋·PR·CI receipt만 추가할 경우 primary의 diff/링크/지문/diff-check 확인으로 독립 전체 재실행을 생략할 수 있다는 범위 한정 조건을 받았다. 범위/정책/검증/차단/실행 파일 변경은 재실행 대상이다. 다음 첫 행동은 목적별 commit/push·PR과 최종 head CI 확인이다.
+
+
+<a id="dev-60-pr59-receipt"></a>
+
+## 2026-11-12 · PR #59 전달 관찰
+
+- [PR #59](https://github.com/mate-pjt/mate-frontend/pull/59), branch `fix/dev-60-company-primary-industries` → `main`, 최초 head `0601eb0de04eceaad43d99fb16f274624732d920`, base `ccb14b804e4e3517c310c38d43b9f2660cb5f305`. push/원격 SHA 일치·작업트리 clean, `type: bug` 라벨/템플릿·합성 화면2장 연결 확인.
+- 목적별5커밋: `c2176aa` 런타임, `aa641b5` 테스트, `e8b0301` 기본정보 계약 안내, `67408f8` 실제 출력 재발 기록, `0601eb0` 검증/다음 인계. 이 receipt는 별도 문서 커밋으로 보존한다. 기능/정책/실제 QA 판정은 불변이다.
+- 당시 원격: `MERGEABLE`/`UNSTABLE`, main 보호 없음·ruleset0·merge/rebase/squash 허용, reviews0/요청된 변경 없음. 작은 커밋 보존을 위해 정상 merge commit을 사용한다. 최종 base/head가 달라지면 차이와 검증/리뷰를 다시 확인한다.
+- 최초 head Chromatic run `43149497114`의 로그에서 **Billed snapshot limit reached**를 확인했다. Publish job/Storybook Publish는 성공이지만 `UI Tests`·`UI Review`는 월간 한도로 대기다. 이번2026-11-12 사용자 요청의 직접 예외는 이 두 pending 검사에만 적용한다. 검사 강제 성공·보호 우회·다른 CI/제품 QA/다음 Task 예외로 확대하지 않는다. Data access checks/세구성 build와 기타 remote 조건은 실제 최종 head에서 별도로 통과해야 한다.
+- 최종 PR head의 CI·리뷰/정상 병합·로컬 main FF/원격 일치 결과는 실제 PR 및 로컬 `git-delivery.json`/최종 보고로 확인한다. 이 최초 관찰을 최종 결과로 재사용하지 않는다. 다음 첫 행동은 receipt 검토/commit/push 후 실제 최종 head의 CI와 리뷰·main 변동 확인이다.
