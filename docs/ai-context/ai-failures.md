@@ -171,3 +171,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 중앙 navigate에서 router.push 전에 조회 controller를 dispose하고 AbortSignal/pending 수명을 종료한다. 같은 지연 순서와 URL 왕복·계정/화면 종료, 최신 적용 전체 흐름을 재검증한다. 최종 결과는 후속 Task/QA/리뷰 기록을 따른다.
 - Prevention rule: 비동기 조회가 URL을 적용할 때 탐색 의도·URL commit·응답 도착을 별도 사건으로 검증한다. URL 변경 완료 뒤의 취소만으로 수명 보호를 주장하지 않는다.
 - Related files: `src/components/bids/bid-list-client.tsx`, `src/features/bid-notice-filters/apply-controller.ts`, `docs/development/figma-v01/tasks/DEV-55.md`. 기존 source/DTO·별도 저장 정책은 바꾸지 않는다.
+
+## 2026-11-12 - DEV-60 GitHub 작성자 메타데이터 출력 재발
+
+- Task: DEV-60 현행 backend dev 확인.
+- Expected behavior: 기존 출력 예방 규칙을 외부 호출 전에 적용해 SHA·필요 경로/계약만 표시한다.
+- Actual failure: branch 중첩 응답 전체를 도구 출력에 전달해 불필요 공개 작성자/서명 메타데이터가 포함됐다. 원문 값은 기록하지 않는다. 환경파일·인증정보·실제 업무 응답 조회와 구분한다.
+- Root cause: 여러 독립 도구 결과의 공통 출력 경계에서 필드 투영을 누락했고 실패 기록의 해당 규칙을 읽기 전에 호출했다.
+- Detection command or review step: primary가 원문 출력 후 확인해 사용자에게 공개했으며 Task와 독립 verifier에 한계를 전달한다.
+- Fix: 이후 tree는 관련 경로, 파일은 필요한 코드/정책 본문, Git/CI/PR은 SHA·check·병합 조건만 투영한다. 이미 발생한 출력의 삭제/무효화를 주장하지 않는다.
+- Prevention rule: 원격 호출 전 해당 실패 규칙을 먼저 읽고 각 응답 유형의 allowlist를 정한 뒤 호출한다. 전체 structuredContent/content·중첩 원문·substring을 그대로 출력/저장하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/DEV-60.md`, `docs/development/figma-v01/reviews/DEV-60-context.md`. 제품/하네스 설정 변경 없음.
