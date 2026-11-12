@@ -267,7 +267,7 @@ function ConnectedCompany({ profile }: { profile: CompanyBasicProfile }) {
       <dl className="mt-6 grid gap-x-6 gap-y-6 rounded-2xl bg-basic-white p-6 sm:grid-cols-2 lg:grid-cols-3">
         <InfoField label="대표자명" value={profile.representativeName} />
         <InfoField label="사업자등록번호" value={profile.businessNumber} />
-        <InfoField label="주력업종" value={profile.primaryIndustry?.name} />
+        <InfoField label="주력업종" value={profile.primaryIndustries.map(industry => industry.name).join(", ")} />
         <InfoField label="주소" value={address} />
         <InfoField label="전화번호" value={profile.telephoneNumber} />
         <InfoField label="설립 연도" value={profile.establishedYear == null ? null : `${profile.establishedYear}년`} />

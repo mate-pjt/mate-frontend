@@ -29,7 +29,7 @@ src/data/
   auth/{contracts,http-repository,mock-repository,client,session-controller}.ts
   bids/{contracts,http-repository,detail-http-repository,mock-repository,server}.ts
        {api-types,api-mapper,detail-api-types,detail-api-mapper}.ts
-  company/{contracts,api-types,http-repository,mock-repository,client}.ts
+  company/{contracts,api-types,api-mapper,http-repository,mock-repository,client}.ts
   notifications/{contracts,http-repository,mock-repository,client}.ts
   bid-alerts/{contracts,http-repository,mock-repository,client}.ts
   personal-filters/{contracts,http-repository,mock-repository,client}.ts
@@ -105,6 +105,8 @@ src/data/
 - 가입 회사 근거: 대표면허와 WOMEN_OWNED/DISABLED_OWNED/SOCIAL_ENTERPRISE는 YES/NO/UNKNOWN을 구분하고 평가연도 미확인은 null이다. 출처4종과 개별 sourceSnapshotDate를 보존한다. 기본 mock은 금액 있음/연도 없음·인증 혼합, `evidence-empty`는 금액/근거 없음·모두 UNKNOWN이다. 회사 영역의 근거 버전1이 구형 합성 연도/ACTIVE/빈 인증만 변환하고 진행·멱등 replay를 보존한다. 새 형식의 잘못된 상태/출처/날짜는 해당 회사 공간만 초기화하며 실제 API 응답/파일을 저장하지 않는다. [DEV-59 로컬 검증](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)은 기존 QA-06/07 실제 차단을 대체하지 않는다.
 
 ## 7. 회사와 업로드의 경계
+
+기본정보의 내부 모델은 `primaryIndustries` 배열이다. HTTP mapper는 목록 필드가 있으면 빈 배열까지 그대로 사용하고, 필드가 없을 때만 `primaryIndustry`의 유효한 단일값/null을 목록/빈 목록으로 호환한다. null/비배열/결측·잘못된 행·동일 코드의 이름 충돌을 빈 성공으로 바꾸지 않는다. 정확 중복은 제거하고 서버 순서/원문을 보존한다. legacy 대표값을 목록에 추가하거나 대표/부업종을 만들지 않는다. mock 기본정보는 복수 목록을 제공하고 `basicProfileVersion: 1`이 구형 단일값만 변환한다. 가입용 단일 선택 계약과 전역 MockStore schema/계정 namespace·문서/멱등 replay는 유지한다. 실제 QA-05/DEV-08 차단은 [DEV-60 로컬 검증](../development/figma-v01/tasks/DEV-60.md#dev-60-verification)으로 해소되지 않는다.
 
 화면은 `getMyCompanyOverview()`를 사용한다. API 구현은 기존 refresh → companyContext에 해당하는 기본 profile 또는 내 소속 신청을 조회한다. `404/CR001`만 신청 없음이고 403은 권한 오류다. APPROVED지만 아직 연결되지 않은 상태를 보존한다. mock은 회사 상태를 조회하고 실제 인증 응답을 덮어쓰지 않는다.
 

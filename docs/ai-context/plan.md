@@ -30,6 +30,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 2026-11-12 DEV-59는 번호/문서 가입 프로필의 tri-state·인증3종·평가연도 null·출처/자료 기준일과 회사 mock 저장 복원을 교정한다. [Task의 검증 근거](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)는 자동 계약·HTTP 대역·실제 Next와 미실행 실서버 QA를 구분한다. QA-06/07·POL-06의 차단/예외를 보존하며 현재/다음/상태는 WBS만 관리한다.
 
+2026-11-12 DEV-60은 회사 기본정보의 전체 주력업종 목록·신형/legacy HTTP 경계·구형 mock 복원·모바일 표시를 교정한다. [Task의 근거](../development/figma-v01/tasks/DEV-60.md#dev-60-verification)에서 로컬 mock/HTTP 대역/실제 API 미실행을 구분한다. QA-05/DEV-08의 차단·소유 경계를 보존하고 현재/다음/상태는 WBS만 관리한다.
+
 ## Required Flow
 
 1. Structure requirements.

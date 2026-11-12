@@ -25,12 +25,31 @@ function signupProfile(number = companies[0].businessNumber, empty = false, docu
   };
 }
 function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile["verificationStatus"] = "VERIFIED", number = companies[0].businessNumber): CompanyBasicProfile {
-  return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustry: industries[0] };
+  return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustries: structuredClone(industries) };
 }
 type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null };
-type CompanyState = { signupEvidenceVersion: 1; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
+type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
+const basicIndustryValid = (value: unknown) => isRecord(value) && typeof value.code === "string" && value.code.trim().length > 0 && typeof value.name === "string" && value.name.trim().length > 0;
+function basicIndustriesValid(value: unknown): boolean {
+  return Array.isArray(value) && value.every(basicIndustryValid) && new Set(value.map(item => item.code)).size === value.length;
+}
+function migrateLegacyBasicProfile(value: Record<string, unknown>): boolean {
+  if (!isRecord(value.overview)) return false;
+  if (value.overview.status === "connected") {
+    const profile = value.overview.profile;
+    if (!isRecord(profile)) return false;
+    if (!Object.hasOwn(profile, "primaryIndustries")) {
+      if (!Object.hasOwn(profile, "primaryIndustry") || !(profile.primaryIndustry === null || basicIndustryValid(profile.primaryIndustry))) return false;
+      profile.primaryIndustries = profile.primaryIndustry === null ? [] : [profile.primaryIndustry];
+    }
+    if (!basicIndustriesValid(profile.primaryIndustries)) return false;
+    delete profile.primaryIndustry;
+  }
+  value.basicProfileVersion = 1;
+  return true;
+}
 function searchItemValid(value: unknown): boolean {
   return isRecord(value) && isCount(value.companyId) && typeof value.companyName === "string" && typeof value.businessNumber === "string" && textOrNull(value.baseAddress) && ["LEGACY", "VERIFIED", "UNVERIFIED"].includes(String(value.verificationStatus));
 }
@@ -94,10 +113,10 @@ function requestResultValid(value: unknown): boolean {
   return typeof value.status === "string";
 }
 function valid(value: unknown): value is CompanyState {
-  if (!isRecord(value) || value.signupEvidenceVersion !== 1 || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
+  if (!isRecord(value) || value.signupEvidenceVersion !== 1 || value.basicProfileVersion !== 1 || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
   const view = value.overview;
   if (view.status === "connected") {
-    const p = view.profile; if (!isRecord(p) || !isCount(p.companyId) || typeof p.companyName !== "string" || typeof p.businessNumber !== "string" || !["LEGACY", "VERIFIED", "UNVERIFIED"].includes(String(p.verificationStatus)) || !textOrNull(p.representativeName) || !textOrNull(p.telephoneNumber) || !(p.establishedYear === null || isCount(p.establishedYear)) || !industryValid(p.primaryIndustry) || !(p.address === null || (isRecord(p.address) && ["zipCode", "baseAddress", "detailAddress"].every(key => textOrNull((p.address as Record<string, unknown>)[key]))))) return false;
+    const p = view.profile; if (!isRecord(p) || !isCount(p.companyId) || typeof p.companyName !== "string" || typeof p.businessNumber !== "string" || !["LEGACY", "VERIFIED", "UNVERIFIED"].includes(String(p.verificationStatus)) || !textOrNull(p.representativeName) || !textOrNull(p.telephoneNumber) || !(p.establishedYear === null || isCount(p.establishedYear)) || !basicIndustriesValid(p.primaryIndustries) || !(p.address === null || (isRecord(p.address) && ["zipCode", "baseAddress", "detailAddress"].every(key => textOrNull((p.address as Record<string, unknown>)[key]))))) return false;
   } else if (["pending", "terminated", "approved-stale"].includes(String(view.status))) {
     const r = view.request; if (!isRecord(r) || !searchItemValid(r.company) || !isCount(r.requestId) || !["PENDING", "APPROVED", "REJECTED", "CANCELED"].includes(String(r.status)) || !isDate(r.createdAt) || typeof r.requestedRepresentative !== "boolean" || !["requestedPositionName", "proposedPositionName", "rejectionReason"].every(key => textOrNull(r[key]))) return false;
   } else if (view.status !== "empty") return false;
@@ -130,12 +149,21 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       const request: MyMembershipRequest = { requestId: 8001, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt: new Date(runtime.now()).toISOString() };
       overview = { status: scenario === "pending" ? "pending" : scenario === "approved-stale" ? "approved-stale" : "terminated", request };
     }
-    return { signupEvidenceVersion: 1, overview, connection: null, documents: {}, proposals: {}, requests: {} };
+    return { signupEvidenceVersion: 1, basicProfileVersion: 1, overview, connection: null, documents: {}, proposals: {}, requests: {} };
   }
   const read = (account: string) => {
     let migrated = false;
     const state = runtime.store.read<CompanyState>(account, "company", initial, (value): value is CompanyState => {
-      if (isRecord(value) && !Object.hasOwn(value, "signupEvidenceVersion")) migrated = migrateLegacyState(value);
+      if (isRecord(value)) {
+        if (!Object.hasOwn(value, "signupEvidenceVersion")) {
+          if (!migrateLegacyState(value)) return false;
+          migrated = true;
+        }
+        if (!Object.hasOwn(value, "basicProfileVersion")) {
+          if (!migrateLegacyBasicProfile(value)) return false;
+          migrated = true;
+        }
+      }
       return valid(value);
     });
     if (migrated) runtime.store.write(account, "company", state);
@@ -292,7 +320,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
         if (!industries.some(item => item.code === body.primaryIndustryCode) || (proposal.conflict?.decisionRequired && !body.conflictChoice)) throw new ApiError(400, "REGISTRATION_INVALID", "업종과 기존 회사 처리 방법을 확인해 주세요.");
         version.status = "VERIFIED"; proposal.revision += 1;
         const result = register(state, true, proposal.businessNumber);
-        if (state.overview.status === "connected") { state.overview.profile.primaryIndustry = industries.find(item => item.code === body.primaryIndustryCode)!; state.overview.profile.telephoneNumber = body.telephoneNumber; }
+        if (state.overview.status === "connected") { state.overview.profile.telephoneNumber = body.telephoneNumber; }
         return body.conflictChoice === "REUSE_EXISTING" ? { ...result, conflict: { caseId: 1, type: "MERGE", status: "PENDING" } } : result;
       }); write(account, state); return result;
     },
