@@ -180,3 +180,37 @@
 - 기존 실제 QA case·원문·차단·POL-02 미결과 승인 예외는 그대로다. 이 새 로컬 표가 과거 실제 통과/대기/차단을 덮어쓰지 않는다. 소유 mock 공간/브라우저·검증 프로세스 정리는 Task 종료 기록에서 확인한다.
 
 - 1차 독립 verifier FAIL/Major1을 보존한다. 적용 버튼이 rootRef 안으로 이동해 바깥 클릭 닫기가 차단됐고, 실제 Next에서 지역 미저장 draft→내 맞춤 뒤 잔존을 재현했다. render callback으로 close→기존 apply 순서를 명시했다. 교정 후 pointer/Enter/Space3입력에서 닫힘·재개방 draft 폐기·계정 불변 PASS,187 tests/lint·API/mock/hybrid build·Storybook 및 기존 mock6/HTTP13+2/키보드·계정 격리/캡처도 다시 PASS했다. 최종 근거는 `*-corrected-result.json`, `popover-after-result.json`과 `*-corrected.log`/`test-final.log`/`lint-final.log`다. 제품 자동 수정1/3이며 이전 개별 동작 PASS를 이 회귀의 통과로 사용하지 않는다.
+
+<a id="dev-55-followup-local-qa"></a>
+
+## 2026-11-12 · DEV-55 후속 최신 조회·동등성 표시 로컬 QA
+
+기준은 [후속 사용자 결정/Brief](../development/figma-v01/tasks/DEV-55.md#dev-55-followup-brief)다. 클릭마다 최신 GET으로 조회·적용하고 현재 전체 필터가 같으면 숨김/다르면 재표시한다. 별도 ‘내 맞춤에 저장’·reset 의미는 유지하며 적용 버튼의 쓰기는 금지한다. 원본 Figma 2048:58606의 숨김 상태와 사용자 직접 확정을 연결한다. 과거 POL-29/PR54의 ‘기존 표시/핸들러 보존’ 이력은 당시 범위이며 이번 후속 확정으로 대체되는 현재 행동과 구분한다.
+
+- 환경: 환경파일 없는 두 mirror, Node22.20.0/pnpm11.3.0, 실제 Next16.2.9 production server. Node 기본 셸과 저장소 환경파일을 사용하지 않았다. API·mock·hybrid build와213 tests/12files·lint·diff-check PASS. 신규26개는 최신값/중복/실패/빈3source·계정/URL/view/dispose·전체12필드 및 배열 순서/일반 URL 비교다. 기존187개 공급원·guard/계약 회귀도 통과했다.
+- 정확한 명령: mirror에서 `pnpm --config.verify-deps-before-run=false test`, `lint`, `build`; build는 `MATE_APP_ENV=preview`와 mock/API/hybrid 구성별 실행이다. hybrid는 company/notifications/notificationSettings만 mock이며 auth/bids/personalFilters는 API다. 실제 Next는 `pnpm start --hostname 127.0.0.1 --port 3155/3156`으로 확인했다. 사전 의존성 검사 해제는 APFS 복제 mirror에서만 적용했고 저장소 설정은 바꾸지 않았다.
+- `pnpm build-storybook` 로컬 미실행: 이번 후속은 공유 UI primitive·toolbar·asset·stories·Storybook 설정을 변경하지 않는다. 라우트의 비동기 조회/표시와 controller만 바뀌므로 앱 build/브라우저로 검증했다. 이전 PR54 Storybook PASS를 이번 실행으로 세지 않는다. 원격 CI는 실제 최종 PR head에서 별도 확인한다.
+- Aside로 최신 용역/서울 적용 뒤 버튼 숨김과 공사 변경 뒤 재표시를 관찰했다. 요청 가로채기 미지원으로 요청 차단/건수는 Playwright CLI·loopback HTTP 대역으로 보완했다. 업무 API 요청0·외부 요청0·pageerror0이다. HTTP 대역은 실제 백엔드가 아니며 query별 합성 목록 응답으로 SSR 전달을 점검했다.
+
+| 구성/묶음 | 검증한 행동 | 결과 |
+| --- | --- | --- |
+| API/최신값·비교6 | 화면 snapshot A 이후 서버 B/version7·C/version9 변경, 매 클릭 fresh GET1·snapshot/source/version 반영·숨김. 한 필드 변경/복귀, personal 없는 일반 URL, query/page/size 제외. 조회 중 중복 GET1·별도 쓰기 버튼 비활성 | PASS |
+| API/오류6 | GET503/403/401에 현재 URL/조건 유지·기존 값 자동 적용 없음·명시적 재시도에서 최신값 적용. 401은 authorized refresh 후 GET2, 그 외 GET1 | PASS |
+| API/빈 조건3 | 최신 EMPTY_DEFAULT/COMPANY_DEFAULT/빈 SAVED는 안내·snapshot만 갱신하고 URL 유지. 이전 empty를 이유로 다음 fresh GET을 막지 않아 새 nonempty 적용 가능 | PASS |
+| API/초기 조회 경쟁2 | 느린 초기 A가 fresh B를 덮지 않음. 늦은 초기 성공이 클릭 GET 실패 안내를 지우지 않음 | PASS |
+| API/수명5 | RSC1.2초/GET0.4초에서 검색 의도 보존, query 변경 후 history 복귀, ALL→recommended→복귀, logout, 401 refresh의 계정 전환에서 이전 GET 폐기·다음 클릭 가능 | PASS |
+| API/키보드3 | pointer/Enter/Space에서 최신 COMPANY_DEFAULT 적용·미저장 draft 즉시 닫힘·재개방 시 폐기·저장 없음 | PASS |
+| API/반응형3 | 1440/390/320px에서 표시→숨김→한 필드 변경 재표시, Enter 적용, 버튼 viewport 포함·문서 가로 넘침 없음 | PASS |
+| API/unmount1 | Q&A 이동 시 GET 폐기, 재진입 새 클릭 정상 | PASS |
+| hybrid/SSR 전달2 | 최신 전체12필드(최솟값0·boolean 포함)가 목록 HTTP query에 전달되고 SERVICE 합성 응답이 화면에 표시됨. GET1·쓰기0·동일 버튼 숨김 | PASS |
+| mock8 | 익명 로그인 복귀/빈 최신 조회·별도 명시 저장 후 동일 숨김, pointer/Enter/Space 열린 draft에서 적용 후 storage 불변·숨김, 1440/390/320px 표시/경계·넘침 | PASS |
+
+- 합계: API29+hybrid2의 HTTP 대역31시나리오와 mock8흐름. 필터 적용 흐름에서 PUT/reset/import0건이다. mock의 별도 저장 준비1건을 적용 버튼의 동작으로 세지 않는다. HTTP 합성 auth refresh/logout·fixture control POST는 개인 필터 쓰기와 구분한다.
+- 첫 독립 검토의 **Major1/FAIL**: URL commit 전의 탐색 의도 공백을 RSC 지연으로 재현했다. 자동 수정1/3으로 중앙 navigate에서 push 전에 controller를 dispose했다. 교정 후 같은 지연 시나리오와 전체37흐름을 다시 실행했고 hybrid2도 추가 통과했다. 브라우저 스크립트의 view selector role/정확한 이름 오류는 source/snapshot에 맞춰 고친 검사 도구 오류이며 제품 수정 횟수와 구분한다. 최종 review freshness는 후속 검토 기록에서 확인한다.
+- 증거: 저장소 밖 `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev-55-followup/`의 build/test/lint exit/log, `wire-core-result.json`(6), `wire-errors-empty-result.json`(11), `wire-lifecycle-result.json`(5), `wire-keyboard-mobile-result.json`(7), `hybrid-list-query-result.json`(2), `mock-ui-result.json`(8), 네트워크 guard 및 교정 전 race 결과. 최종 source manifest/두 mirror byte 일치·문서 보존 검사를 함께 수행한다.
+
+![최신 개인 필터를 적용해 내 맞춤 버튼이 숨겨진 화면](dev-55-followup-applied.png)
+
+![320px에서 조건이 달라 내 맞춤 버튼을 표시한 화면](dev-55-followup-320.png)
+
+실제 API 통합은 **미실행**이다. QA-10/PBF-01~12의 실제0통과12차단, POL-02 계약 미결과 필요한 계정·배포/실행 대응·사용/변경·잔존/복구·안전한 오류 자원은 보존한다. GitHub source commit·OpenAPI GET200/계약 존재·배포 문서와 실행 중 backend SHA·인증 업무 응답은 별개이며, 이번 결과로 뒤의 두 근거나 통합 PASS를 주장하지 않는다.

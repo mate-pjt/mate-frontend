@@ -129,3 +129,43 @@
 - 확정 범위: 본 PR의 위 두 검사만 미실행 예외로 명시한다. 제품 코드/기존 검증 산출물은 그대로 두고 WBS·이 Task·리뷰3문서에 승인 근거만 추가한다. 승인 기록 커밋을 포함한 **실제 최종 PR head**의 나머지 CI·리뷰/미해결 thread·최신 main과 저장소의 정상 merge 허용 조건을 다시 확인한 뒤 작은 커밋 이력을 보존해 병합한다. 다른 검사 실패/미실행·보호 규칙 우회·타 PR/Task·제품 QA 면제를 승인한 것은 아니다.
 - 재개 계획: 문서 링크/anchor·ID/상태/의존성·원문/제품 코드 보존·diff-check 및 primary6절 ai-review/read-only verifier freshness → 목적별 문서 커밋/push·PR 본문 반영 → 새 최종 head CI/승인 범위 대조 → 정상 merge/main fast-forward·SHA/clean 확인. 문서만 바뀌므로 앱 test/lint/build·브라우저를 반복하지 않으며 기존 교정 후 근거를 유지한다.
 - 남은 경계: 실제 QA-10의12차단·POL-02 미결, 다음 POL-30 선정/인계·미착수는 그대로다. 실제 최종 head/check·merge/main SHA/작업트리 결과는 외부 delivery receipt·PR·최종 보고에 기록해 검토한 파일을 다시 바꾸지 않는다.
+
+<a id="dev-55-followup-brief"></a>
+
+## 2026-11-12 · 최신 조회·버튼 표시 후속 Brief
+
+- 시작: PR #54 병합 후 clean main/원격 main `740371886075f16d9af0b7c7b1ee061ad0d85fbd`, 동일 Task 진행 브랜치/미커밋 변경 없음. `fix/dev-55-latest-filter-apply` 생성. POL-30은 선정/인계만 유지하며 착수하지 않는다.
+- 최신 사용자 결정: 내 맞춤 클릭 시 서버의 최신 개인 필터를 조회·적용한다. 현재 전체 필터와 같으면 버튼을 숨기고 하나라도 다르면 다시 표시한다. 이 버튼에서 저장 API를 호출하지 않는다. 개발·검증/리뷰·커밋/PR/CI·조건 충족 시 main 병합/로컬 동기화까지 승인했다. 이번 후속 PR의 Chromatic 관련 외부 차단은 예외 처리하도록 별도 승인했으며 과거 PR54/49의 예외를 확대 해석한 것이 아니다. 다른 제품/CI 실패·보호 우회·검사 강제 성공·실제 업무 API/운영/수동 배포 권한은 포함하지 않는다.
+- 현재 차이: 적용 시 기존 snapshot을 재사용하고 버튼 비교는 personal URL 존재를 요구한다. 일반 URL에서 같은 조건을 선택해도 버튼이 남는다. 변경 범위는 이 조회/표시 조합과 관련 검증/문서다. 기존 별도 저장/reset API·DTO·회사/필터 정책·새 라이브러리·다른 Task 구현은 제외한다.
+- 출처: 이 대화의 직접 조회에서 backend dev `4c328d4a943eaa5dcbb0e8d9596b22389d154988`/main `c32e3f1d5e53b01294045b28adda0ec13d1f068b`의 controller와 service가 같은 GET/PUT 계약임을 확인했다. 개발 OpenAPI GET200/3.1.0/v1에 GET/PUT current와 reset/import가 존재한다. GET은 저장 개인값→회사 기본값→빈 기본값이며 조회로 저장하지 않는다. 실제 인증 업무 응답/배포 process SHA 증거는 아니다.
+- 성공 기준: 클릭마다 최신 GET의 filter로 URL/목록을 적용하고 snapshot/source/version도 최신화한다. 모든 필드의 의미상 동등성을 사용하며 일반/personal URL·배열 순서 차이에 관계없이 같은 조건은 숨긴다. 조회 중 중복 요청과 계정/화면/조건 변경 뒤 늦은 응답을 방어한다. 실패 시 현재 필터/URL 보존·명시 재시도, PUT/reset/import0건을 검증한다.
+- 가정: 서버 조건이 비면 기존 미설정 안내와 현재 목록을 유지한다. 기존 빈 SAVED/EMPTY_DEFAULT 정책을 전체 공고 자동 적용이나 저장으로 바꾸지 않는다. 이전 empty snapshot만으로 새 GET 시도를 막지 않으며 적용할 최신 값이 있는지는 응답으로 판단한다. 별도 저장/reset의 의미·버전/409 동작은 유지한다. blocking ambiguity 없음.
+- 설계/수정 파일: `bid-list-client.tsx`에서 최신 조회 controller를 조합하고 `currentPersonalFilter`/`samePersonalFilter`로 전체 조건을 비교한다. `features/bid-notice-filters/apply-controller.ts`는 GET·중복/취소·수명 방어만 담당하고 저장 포트는 두지 않는다. Node 테스트 `tests/personal-filter-apply.test.ts`, 기존 QA append·Task/WBS·DESIGN/data-access/architecture/plan·후속 리뷰 기록을 갱신한다. 기존 폴더/토큰·버튼/팝오버 닫기·Repository 공개 경계를 재사용한다.
+- 검증 계획: Node22.20.0/pnpm11.3.0·환경파일 없는 mirror의 test/lint·API/mock/hybrid build·diff-check, 실제 Next mock/로컬 HTTP 대역에서 최신값/일치-변경-복귀/일반 URL·실패/중복·계정/URL/화면 수명·키보드/320/390px·GET 및 쓰기0건을 확인한다. 공유 primitive/stories 변경이 없어 Storybook은 영향 확인 후 판단한다. 문서 링크/ID/상태/의존성·원본/기존 QA 보존·두 리뷰와 freshness를 확인한다. 실제 QA-10의12차단/POL-02 미결을 유지한다.
+- 첫 행동: 조회 전용 controller와 UI 비교/연결을 구현하고 계약/수명 회귀를 검증한다. 이번 후속 자동 수정0/3. 근거는 저장소 밖 `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev-55-followup/`에 보존한다.
+
+## 2026-11-12 · 후속 중간 검증과 수명 교정
+
+- 1차213 tests/12files·lint·mock/hybrid/API build PASS. 실제 Next HTTP 대역에서 최신 B/C 각각 새 GET1건·동일 조건 숨김/한 필드 변경 재표시/복귀 숨김·일반 URL 동등성·query/page/size 제외·중복 및 저장/reset 비활성화를 확인했다. 필터 요청은 모두 GET이며 외부 요청/pageerror0이었다. Aside에서도 최신 용역 적용 뒤 숨김·공사로 변경 뒤 재표시를 관찰했다.
+- read-only verifier가 URL commit 전 탐색 의도 공백을 제안했다. 검색 RSC를1.2초 지연하고 apply GET을0.4초 뒤 응답시킨 실제 Next에서 검색 의도 `cancel-intent`가 사라지고 personal=1로 덮이는 **FAIL**을 재현했다. 이미 완료한 URL 변경만 검사하면 놓치는 경계였다.
+- 자동 수정 **1/3**: 중앙 `navigate`에서 router.push보다 먼저 진행 중 apply controller를 dispose한다. 적용 성공의 자체 탐색도 요청 종료 이후이므로 동일 경계를 사용한다. 초기 GET이 늦게 실패 안내를 지우는 경우도 최신 apply 오류에서 read intent를 갱신해 막았다. 이전 empty snapshot의 tooltip은 최신 조회 의미로 교정했다.
+- 다음 첫 행동: 두 mirror에 교정을 반영·재빌드한 뒤 같은 지연 순서 및 전체 최신 조회/오류/빈 값/수명/모바일·키보드 흐름을 다시 실행한다. 이전 브라우저 PASS를 최종 source 결과로 재사용하지 않는다. 실제 QA-10의12차단·POL-02 미결·POL-30 미착수는 유지한다.
+
+<a id="dev-55-followup-verification"></a>
+
+## 2026-11-12 · 후속 교정 후 검증·문서 체크포인트
+
+- [QA 상세/캡처](../../../qa/personal-bid-filter.md#dev-55-followup-local-qa): 교정 후213 tests/12files·lint·API/mock/hybrid build·diff-check PASS. 실제 Next API29+hybrid2 HTTP 대역과 mock8, 3입력·1440/390/320px·탐색 의도/URL 왕복·view/unmount·logout/401 계정 변경·느린 초기 성공/실패 경쟁을 검증했다. 적용 흐름의 필터 PUT/reset/import0·외부0·pageerror0이다. hybrid에서 전체12필드의 SSR query 전달과 SERVICE 합성 목록까지 확인했다.
+- 오류/최신 empty는 현재 조건을 유지하며 명시 클릭으로 재조회한다. 일반 URL도 같은 조건이면 숨기고 변경/복귀 시 표시/숨김을 따른다. 별도 저장/reset은 유지하며 apply pending 중만 교차 실행을 막는다. 미저장 popover 닫기·draft 폐기와 pointer/Enter/Space 회귀도 통과했다.
+- 자동 수정1/3. 검사 도구의 view role/이름 오류는 source/snapshot에 맞게 교정해 끝까지 다시 실행했다. 새 라이브러리·package/환경 설정·API/DTO·toolbar/아이콘/다른 Task 구현 변경은 없다. Storybook 로컬 build는 공유 catalog 영향이 없어 미실행했고 이전 PASS를 이번 실행으로 세지 않는다.
+- 실행 입력282파일은 두 mirror와 byte 일치한다. 외부 최종 source manifest SHA256 `be2297525f350144adbd65de39af87ea844e935385ab9e87f400e5b0cb2663c4`. 소유 브라우저 세션·서버 프로세스 종료와3155/3156/4155 listener0을 확인했다. 합성 fixture/로그는 저장소 밖 evidence 폴더에 보존한다.
+- Documentation Update Check: DESIGN·architecture/data-access/plan·ai-failures·QA/대표 캡처·Task/WBS·후속 review/context 보고를 갱신했다. base/harness는 package/scripts/하네스 변경이 없어 미갱신한다. 문서 checker는 허용15파일·링크/anchor·Markdown·114Task/155의존성·79원본·기준선/coverage·기존 Task/QA 원문 보존과 mirror 일치를 PASS했다. 최종 종료 metadata 변경 뒤 다시 검사한다.
+- 다음 첫 행동: 최종 read-only verifier와6절 ai-review → WBS 종료/같은 다음 POL-30 인계 유지·freshness 재검토 → 목적별 커밋/push·최종 PR/head의 CI/리뷰·정상 merge/main 동기화. 실제 QA-10의12차단/POL-02 미결과 다른 Task의 선행 차단을 유지한다.
+
+## 2026-11-12 · 후속 Review Gate·종료와 다음 Gate 인계
+
+- 교정 후 read-only verifier **PASS**, 미해결 Blocker/Major/Minor0. manifest `118af596bb0577ea8f101c297e30df93fcc8e8f718a2127e560dbbd4e7a74eb4`에서213 tests·문서 검사·diff-check를 직접 실행하고 최종 source·3build/lint·API29/hybrid2/mock8·캡처/수명·쓰기0·소유 포트 종료를 확인했다. [6절 primary ai-review/독립 보고](../reviews/DEV-55-followup.md), [범위별 context-audit](../reviews/DEV-55-followup-context.md)도 PASS다. 최초 Major1/FAIL은 앞선 이력에 보존한다.
+- 제품 요구·로컬 검증·문서/리뷰 범위를 충족해 WBS에서 종료한다. 이번 종료 metadata 뒤 문서 검사·primary6절 재검토를 수행하고 같은 read-only verifier의 최종 freshness를 다시 요청한다. 이후 source 변경은 없으므로 앱 검사는 반복하지 않는다. 최종 freshness와 실제 원격 head/CI·merge/main 결과는 외부 receipt·PR·최종 보고에 남긴다.
+- 다음은 기존 선정인 **POL-30** 하나를 유지한다. 최신 WBS에서 남은 P0는13차단, DEV-01/02는 POL-01 선행 차단, QA-16은 실제 QA/약관/취합 선행이 남아 있다. POL-30은 P1·선행 QA-17 완료·DEV-61의 정책 선행이라 다음 Gate로 적합하다. 기존 우선순위/승인/차단을 바꾸지 않는다.
+- 다음 첫 행동: 새 대화에서 POL-30·CF-23과 최신 중앙 정책 §6/§10/§11·backend dev 관련 query service/relation policy·개발 Swagger를 대조해 기준/후보 공고 상태표·남은 질문·수정 문서/검증을 담은 Brief를 제시한다. **이번 후속에서도 상세 조사·정책 선택/원문 수정·제품/QA/Git 전달을 시작하지 않았다.** 실제 QA-10의12차단·POL-02 미결도 그대로다.
+- Git 전달은 이번 사용자 명시 승인에 따라 runtime/test/문서/실패 예방을 목적별 작은 한국어 Conventional Commits로 분리하고 push·PR/라벨·최종 head CI/리뷰 조건을 확인한다. 이번 후속 PR의 Chromatic 외부 한도 차단은 이번 직접 승인만 적용하며 미실행을 PASS로 세지 않는다. 나머지 조건 충족 시 commit 이력을 보존하는 normal merge·로컬 main fast-forward/원격 SHA·clean을 확인한다. 강제 push/직접 main push/보호 우회/check 강제 성공은 사용하지 않는다.

@@ -147,3 +147,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: toolbar가 선행 action render callback에 close 함수를 제공하고 클릭/Enter/Space 모두 닫은 뒤 기존 적용 함수를 호출한다. 해당 세 입력과 재개방 draft·계정 불변을 실제 Next에서 재검증하고 두 리뷰를 다시 수행한다. 최종 결과는 DEV-55 검토 기록을 따른다.
 - Prevention rule: 버튼/팝오버 DOM을 옮길 때 기존 contains·바깥 클릭·focus/keyboard·전파 경계를 함께 확인한다. ‘미저장 draft가 열린 상태→새 적용 동작→닫힘→재개방은 현재 적용값’ 순서를 회귀에 포함하며 handler가 같다는 사실만으로 행동 보존을 주장하지 않는다.
 - Related files: `src/components/bids/bid-filter-toolbar.tsx`, `src/components/bids/bid-list-client.tsx`, `docs/development/figma-v01/tasks/DEV-55.md`, `docs/development/figma-v01/reviews/DEV-55.md`. 데이터 계약·별도 제품 정책 변경은 없다.
+
+## 2026-11-12 - 최신 필터 조회와 탐색 의도 사이의 경쟁
+
+- Task: DEV-55 후속 최신 GET·동등성 표시.
+- Expected behavior: 최신 조회 중 사용자가 목록 필터/검색/화면을 변경하면 이전 조회가 그 의도를 덮지 않는다.
+- Actual failure: 실제 window URL만 수명으로 비교해 router.push 이후 새 RSC가 도착하기 전의 공백에서 이전 GET이 유효했다. 검색 RSC1.2초·GET0.4초 대역 순서에서 새 검색이 사라지고 personal=1이 적용됐다. 초기213 tests와 정상 URL 변경 검증만으로는 드러나지 않았고 read-only verifier의 조합 검토로 재현했다.
+- Root cause: 탐색 완료를 사용자 의도 발생과 같은 시점으로 취급했다.
+- Detection command or review step: 실제 Next에서 새 검색의 RSC를 보류한 동안 먼저 apply GET을 완료하고 query/URL을 대조했다.
+- Fix: 중앙 navigate에서 router.push 전에 조회 controller를 dispose하고 AbortSignal/pending 수명을 종료한다. 같은 지연 순서와 URL 왕복·계정/화면 종료, 최신 적용 전체 흐름을 재검증한다. 최종 결과는 후속 Task/QA/리뷰 기록을 따른다.
+- Prevention rule: 비동기 조회가 URL을 적용할 때 탐색 의도·URL commit·응답 도착을 별도 사건으로 검증한다. URL 변경 완료 뒤의 취소만으로 수명 보호를 주장하지 않는다.
+- Related files: `src/components/bids/bid-list-client.tsx`, `src/features/bid-notice-filters/apply-controller.ts`, `docs/development/figma-v01/tasks/DEV-55.md`. 기존 source/DTO·별도 저장 정책은 바꾸지 않는다.

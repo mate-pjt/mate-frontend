@@ -68,7 +68,7 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 - Layout: `/bids`는 Figma 1920px desktop frame에서 좌우 30px의 full-width 예외를 사용하고, 좁은 화면에서는 필터를 줄바꿈하며 테이블 영역만 가로 스크롤한다.
 - Table content: 지역명은 단어 단위 줄바꿈을 유지하고, 업종은 한 줄 말줄임, 입찰마감은 한 줄 고정을 사용한다.
 - Interaction: 검색·필터·페이지·표시 개수는 URL query와 동기화하고, 팝오버는 적용 전 draft 상태와 적용된 상태를 분리한다.
-- Personal filter: ALL의 수동 ‘내 맞춤’은 필터 맨 왼쪽 어두운 버튼과 구분선으로 표시한다. 계정 저장·초기화는 자동 저장 아님 안내와 함께 아래 보조행 오른쪽에 두고 좁은 화면에서 같은 순서로 줄바꿈한다. 표시/활성 조건과 URL 적용·계정 저장/reset은 별개다. [POL-29 D1](docs/development/figma-v01/tasks/POL-29.md#pol-29-decisions), [DEV-55 검증](docs/development/figma-v01/tasks/DEV-55.md#dev-55-verification)을 따른다.
+- Personal filter: ALL의 수동 ‘내 맞춤’은 필터 맨 왼쪽 어두운 버튼과 구분선으로 표시한다. 계정 저장·초기화는 자동 저장 아님 안내와 함께 아래 보조행 오른쪽에 두고 좁은 화면에서 같은 순서로 줄바꿈한다. 클릭마다 최신 개인 필터를 GET으로 조회해 적용하며 현재 전체 필터와 같으면 숨기고 하나라도 다르면 다시 표시한다. 조회 중 중복 적용·저장/reset을 막고 실패 시 현재 목록을 유지한다. 이 버튼은 저장 API를 호출하지 않는다. [POL-29 D1](docs/development/figma-v01/tasks/POL-29.md#pol-29-decisions), [DEV-55 검증](docs/development/figma-v01/tasks/DEV-55.md#dev-55-verification)과 [후속 사용자 기준](docs/development/figma-v01/tasks/DEV-55.md#dev-55-followup-brief)을 따른다.
 - Accessibility: view selector와 필터 trigger는 현재 상태를 노출하고, 검색은 label을 제공하며, 표는 caption과 scope가 지정된 header cell을 사용한다.
 
 ### AlarmList
