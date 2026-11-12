@@ -69,8 +69,8 @@ const pricePresetLabels = [
     "100억 원+",
 ] as const;
 
-const DEFAULT_MIN_PRICE_LABEL = "0 만 원" as const;
-const DEFAULT_MAX_PRICE_LABEL = "0 만 원" as const;
+const DEFAULT_MIN_PRICE_LABEL = "제한 없음" as const;
+const DEFAULT_MAX_PRICE_LABEL = "제한 없음" as const;
 
 function mergeClasses(...classes: Array<string | false | null | undefined>) {
     return classes.filter(Boolean).join(" ");
@@ -658,10 +658,15 @@ function DateField({ disabled = false, errorId, label, onChange, value }: { disa
 }
 
 export type PriceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
-    FilterActionHandlers & {
+    FilterActionsProps & {
         activeType?: AmountFilterType;
         maxLabel?: string;
         minLabel?: string;
+        maxValue?: string;
+        minValue?: string;
+        errorMessage?: string;
+        onMaxValueChange?: (value: string) => void;
+        onMinValueChange?: (value: string) => void;
         selectedPreset?: (typeof pricePresetLabels)[number];
         advancedDisabled?: boolean;
         onPresetSelect?: (preset: (typeof pricePresetLabels)[number]) => void;
@@ -674,18 +679,27 @@ export function PriceCategoryPopover({
     className,
     maxLabel = DEFAULT_MAX_PRICE_LABEL,
     minLabel = DEFAULT_MIN_PRICE_LABEL,
+    maxValue,
+    minValue,
+    errorMessage,
+    onMaxValueChange,
+    onMinValueChange,
     onReset,
     onSave,
     onPresetSelect,
     onTypeSelect,
+    resetDisabled,
+    saveDisabled,
+    labels,
     selectedPreset,
     ...props
 }: PriceCategoryPopoverProps) {
+    const errorId = useId();
     const hasSelection =
         Boolean(selectedPreset) || minLabel !== DEFAULT_MIN_PRICE_LABEL || maxLabel !== DEFAULT_MAX_PRICE_LABEL;
 
     return (
-        <FilterPanel className={className} height="h-[460px]" {...props}>
+        <FilterPanel className={mergeClasses("max-[360px]:p-4 max-[360px]:[&_button]:px-1.5", className)} height="min-h-[460px]" {...props}>
             <div className="flex w-full flex-col gap-6">
                 <div className="flex w-full flex-col gap-4">
                     <SectionTitle>금액</SectionTitle>
@@ -693,21 +707,22 @@ export function PriceCategoryPopover({
                 </div>
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col items-center gap-5">
-                        <div className="flex items-center gap-2 text-grayscale-800 type-body-5">
+                        <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all text-grayscale-800 type-body-5">
                             <span>{minLabel}</span>
                             <span>~</span>
                             <span>{maxLabel}</span>
                         </div>
                         <RangePreview selected={hasSelection} />
                     </div>
-                    <div className="rounded-[16px] bg-grayscale-50 p-4">
-                        <div className="flex w-full items-center gap-1 text-grayscale-700 type-body-7">
-                            <PriceInputField disabled={advancedDisabled} label="최소금액" />
-                            <span className="text-grayscale-500">~</span>
-                            <PriceInputField disabled={advancedDisabled} label="최대금액" />
+                    <div className="rounded-[16px] bg-grayscale-50 p-4 max-[360px]:p-2">
+                        <div className="flex w-full items-center gap-1 text-grayscale-700 type-body-7 max-[360px]:flex-col max-[360px]:items-stretch">
+                            <PriceInputField disabled={advancedDisabled} errorId={errorMessage ? errorId : undefined} label="최소금액" onChange={onMinValueChange} value={minValue} />
+                            <span className="text-grayscale-500 max-[360px]:text-center">~</span>
+                            <PriceInputField disabled={advancedDisabled} errorId={errorMessage ? errorId : undefined} label="최대금액" onChange={onMaxValueChange} value={maxValue} />
                         </div>
                     </div>
-                    <div className="flex w-full flex-col gap-2">
+                    {errorMessage && <p className="text-danger type-body-7" id={errorId} role="alert">{errorMessage}</p>}
+                    <div className="flex w-full flex-col gap-2 [&_button]:break-keep max-[400px]:[&_button]:px-1.5">
                         <div className="flex gap-2">
                             {pricePresetLabels.slice(0, 2).map((label) => (
                                 <ChoiceButton
@@ -740,10 +755,11 @@ export function PriceCategoryPopover({
                 </div>
                 <div className="flex justify-end">
                     <FilterActions
+                        labels={labels}
                         onReset={onReset}
                         onSave={onSave}
-                        resetDisabled={!hasSelection}
-                        saveDisabled={!hasSelection}
+                        resetDisabled={resetDisabled ?? !hasSelection}
+                        saveDisabled={saveDisabled ?? (!hasSelection || Boolean(errorMessage))}
                     />
                 </div>
             </div>
@@ -770,16 +786,28 @@ function RangePreview({ selected }: { selected?: boolean }) {
     );
 }
 
-function PriceInputField({ disabled = false, label }: { disabled?: boolean; label: string }) {
+function PriceInputField({ disabled = false, errorId, label, onChange, value }: { disabled?: boolean; errorId?: string; label: string; onChange?: (value: string) => void; value?: string }) {
     return (
-        <button
-            className={mergeClasses("flex h-8 flex-1 items-center justify-between rounded-[8px] border border-grayscale-200 bg-white px-3 py-1.5", disabled && "cursor-not-allowed opacity-40")}
-            disabled={disabled}
-            type="button"
+        <label
+            className={mergeClasses("flex h-8 min-w-0 flex-1 items-center gap-1 rounded-[8px] border border-grayscale-200 bg-white px-2 py-1.5 focus-within:ring-2 focus-within:ring-primary-400 sm:px-3", disabled && "cursor-not-allowed opacity-40")}
         >
-            <span>{label}</span>
-            <span>원</span>
-        </button>
+            <span className="hidden shrink-0 text-grayscale-500 max-[360px]:inline">{label === "최소금액" ? "최소" : "최대"}</span>
+            <input
+                aria-describedby={errorId}
+                aria-invalid={Boolean(errorId)}
+                aria-label={label}
+                className="min-w-0 w-full bg-transparent outline-none placeholder:text-grayscale-500"
+                disabled={disabled}
+                inputMode="numeric"
+                maxLength={32}
+                onChange={event => onChange?.(event.target.value)}
+                placeholder={label === "최소금액" ? "최소" : "최대"}
+                readOnly={!onChange}
+                type="text"
+                value={value ?? ""}
+            />
+            <span className="shrink-0">원</span>
+        </label>
     );
 }
 

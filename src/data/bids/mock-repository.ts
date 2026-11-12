@@ -1,7 +1,8 @@
 import type { BidDetail, BidDetailPageData, BidParticipant, DetailSection, RelatedBid } from "@/types/bid-detail";
 import type { BidListItem } from "@/types/bid-list";
-import type { BidDateFilter, BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository } from "./contracts";
+import type { BidAmountFilter, BidDateFilter, BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository } from "./contracts";
 import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
+import { currentBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 import { ApiError } from "../shared/errors";
 import { canonicalClassification, selectMockRelatedBids, type MockBidEntry } from "./mock-related";
 
@@ -55,7 +56,7 @@ export function createMockBidEntries(now: number): readonly MockBidEntry[] {
     };
   });
 }
-function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: BidDateFilter): boolean {
+function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: BidDateFilter, amounts: BidAmountFilter): boolean {
   const { item, bid } = entry;
   const close = Date.parse(bid.schedule.bidCloseAt!);
   if (query.view === "result" && !entry.closed) return false;
@@ -66,6 +67,8 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: B
   const timestamp = bid.schedule[query.view === "result" ? "openAt" : dates.dateType === "PARTICIPATION_DEADLINE" ? "qualificationDeadlineAt" : dates.dateType === "BID_CLOSE" ? "bidCloseAt" : "bidBeginAt"];
   const day = timestamp ? new Date(Date.parse(timestamp) + 9 * 3600_000).toISOString().slice(0, 10) : null;
   if ((dates.dateFrom && (!day || day < dates.dateFrom)) || (dates.dateTo && (!day || day > dates.dateTo))) return false;
+  const amount = amounts.amountType === "ESTIMATED_PRICE" ? item.estimatedPrice : item.baseAmount;
+  if ((amounts.amountMin !== null && (amount === null || amount < amounts.amountMin)) || (amounts.amountMax !== null && (amount === null || amount > amounts.amountMax))) return false;
   const filter = query.personalFilter;
   if (filter && query.view === "all") {
     const type = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" }[item.kind];
@@ -73,8 +76,6 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: B
     if (filter.regionCodes.length && !filter.regionCodes.some(code => entry.regionCode.startsWith(code))) return false;
     if (filter.industryCodes.length && !filter.industryCodes.includes(entry.industryCode)) return false;
     if (filter.contractMethods.length && !filter.contractMethods.some(code => code === entry.contractCode)) return false;
-    const amount = filter.amountType === "ESTIMATED_PRICE" ? item.estimatedPrice : item.baseAmount;
-    if ((filter.amountMin !== null && (amount === null || amount < filter.amountMin)) || (filter.amountMax !== null && (amount === null || amount > filter.amountMax))) return false;
     if (filter.regionOnly && bid.eligibility.regionState !== "known") return false;
     if (filter.jointContract === "REQUIRED" && !entry.jointRequired) return false;
     if (filter.jointContract === "AVAILABLE" && !bid.jointSupply.method) return false;
@@ -84,11 +85,6 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: B
   if (query.region && query.region !== item.region && query.region !== entry.regionCode) return false;
   if (query.industry && query.industry !== item.industry && query.industry !== entry.industryCode) return false;
   if (query.contract && query.contract !== item.contractMethod) return false;
-  if (query.amount && query.view !== "result") {
-    const ranges: Record<string, [number, number]> = { "1억 원 이하": [0, 100_000_000], "1억 ~ 10억 원 이하": [100_000_001, 1_000_000_000], "10억 ~ 50억 원 이하": [1_000_000_001, 5_000_000_000], "50억 ~ 100억 원 이하": [5_000_000_001, 10_000_000_000], "100억 원+": [10_000_000_001, Infinity] };
-    const range = ranges[query.amount];
-    if (range && (item.baseAmount === null || item.baseAmount < range[0] || item.baseAmount > range[1])) return false;
-  }
   return true;
 }
 
@@ -104,7 +100,8 @@ export function createMockBidRepository(now: () => number = Date.now, scenario =
       if (query.agency) throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       const time = now();
       const dates = currentBidDateFilter(query, time);
-      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time, dates));
+      const amounts = currentBidAmountFilter(query);
+      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time, dates, amounts));
       filtered.sort((a, b) => query.view === "result" ? Date.parse(b.bid.schedule.openAt!) - Date.parse(a.bid.schedule.openAt!) : Date.parse(a.bid.schedule.bidCloseAt!) - Date.parse(b.bid.schedule.bidCloseAt!));
       return { items: filtered.slice((query.page - 1) * query.size, query.page * query.size).map(entry => entry.item), totalCount: filtered.length, page: query.page, size: query.size };
     },

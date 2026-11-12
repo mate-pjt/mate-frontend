@@ -11,14 +11,18 @@ import {
   PriceCategoryPopover,
   PublicCategoryPopover,
 } from "@/components/ui/filter-popover";
-import type { BidDateFilter, BidFilterOptions } from "@/data/bids/contracts";
+import type { BidAmountDraft, BidAmountFilter, BidDateFilter, BidFilterOptions } from "@/data/bids/contracts";
 import { bidDateFilterError, bidDatePresets, bidDateUrlKeys, emptyBidDateFilter, normalizeBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
+import { bidAmountDraft as toAmountDraft, bidAmountPresets, bidAmountUrlKeys, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 
 import { categoryLabels, type BidFilters, type BidView } from "./bid-list-model";
 
 type FilterKey = "category" | "region" | "industry" | "contract" | "period" | "amount";
 
 type BidFilterToolbarProps = {
+  readonly amountDraft?: BidAmountDraft;
+  readonly amountFilter: BidAmountFilter;
+  readonly amountQueryError?: string;
   readonly filterOptions: BidFilterOptions;
   readonly dateFilter: BidDateFilter;
   readonly dateQueryError?: string;
@@ -27,17 +31,26 @@ type BidFilterToolbarProps = {
   readonly renderLeadingAction?: (closeFilters: () => void) => ReactNode;
   readonly onFilterChange: (key: keyof BidFilters, value?: string) => void;
   readonly onDateFilterChange: (filter: BidDateFilter) => void;
+  readonly onAmountFilterChange: (filter: BidAmountFilter) => void;
   readonly personalMode?: boolean;
   readonly view: BidView;
 };
 
-export function BidFilterToolbar({ dateFilter, dateQueryError, filterOptions, filters, filterLabels, renderLeadingAction, onDateFilterChange, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
+export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, dateFilter, dateQueryError, filterOptions, filters, filterLabels, renderLeadingAction, onAmountFilterChange, onDateFilterChange, onFilterChange, personalMode = false, view }: BidFilterToolbarProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [openFilter, setOpenFilter] = useState<FilterKey>();
   const [draftFilters, setDraftFilters] = useState<BidFilters>(filters);
   const [industryQuery, setIndustryQuery] = useState("");
   const [draftDateFilter, setDraftDateFilter] = useState(dateFilter);
   const [dateQuickRange, setDateQuickRange] = useState<string>();
+  const [draftAmount, setDraftAmount] = useState(amountDraft ?? toAmountDraft(amountFilter));
+  const parsedAmount = parseBidAmountDraft(draftAmount);
+  const amountPreset = Object.keys(bidAmountPresets).find(preset => {
+    const filter = presetBidAmountFilter(preset, draftAmount.amountType);
+    return !parsedAmount.amountError && bidAmountUrlKeys.every(key => filter[key] === parsedAmount.amountFilter[key]);
+  });
+  const sameAmounts = bidAmountUrlKeys.every(key => parsedAmount.amountFilter[key] === amountFilter[key]);
+  const hasAmountSelection = Boolean(draftAmount.amountMin || draftAmount.amountMax || amountFilter.amountMin !== null || amountFilter.amountMax !== null || amountQueryError);
   const dateError = bidDateFilterError(draftDateFilter, view);
   const normalizedDate = normalizeBidDateFilter(draftDateFilter);
   const sameDates = bidDateUrlKeys.every(key => normalizedDate[key] === dateFilter[key]);
@@ -70,10 +83,15 @@ export function BidFilterToolbar({ dateFilter, dateQueryError, filterOptions, fi
     close();
     rootRef.current?.querySelector<HTMLButtonElement>('[data-filter-trigger="period"]')?.focus();
   };
+  const closeAmount = () => {
+    close();
+    rootRef.current?.querySelector<HTMLButtonElement>('[data-filter-trigger="amount"]')?.focus();
+  };
   const open = (name?: FilterKey) => {
     setDraftFilters(filters);
     setIndustryQuery("");
     setDraftDateFilter(dateFilter);
+    setDraftAmount(amountDraft ?? toAmountDraft(amountFilter));
     setDateQuickRange(filters.period ?? Object.keys(bidDatePresets).find(range => {
       const preset = presetBidDateFilter(range, view, dateFilter.dateType);
       return bidDateUrlKeys.every(key => preset[key] === dateFilter[key]);
@@ -94,6 +112,9 @@ export function BidFilterToolbar({ dateFilter, dateQueryError, filterOptions, fi
   const changeDate = (key: "dateFrom" | "dateTo", value: string) => {
     setDraftDateFilter(current => ({ ...current, [key]: value || null, dateType: view === "result" ? null : current.dateType ?? "BID_BEGIN" }));
     setDateQuickRange(undefined);
+  };
+  const changeAmount = (key: "amountMin" | "amountMax", value: string) => {
+    setDraftAmount(current => ({ ...current, [key]: value, amountType: current.amountType ?? "BASE_PRICE" }));
   };
 
   return (
@@ -169,20 +190,29 @@ export function BidFilterToolbar({ dateFilter, dateQueryError, filterOptions, fi
         </FilterSlot>
       )}
       <FilterSlot
-        active={Boolean(filters.amount || (personalMode && filterLabels?.amount !== "금액"))}
+        active={Boolean(amountFilter.amountMin !== null || amountFilter.amountMax !== null || amountQueryError)}
         disabled={view === "result"}
-        label={view === "result" ? "낙찰금액 · 준비 중" : filterLabels?.amount ?? filters.amount ?? "금액"}
+        label={view === "result" ? "낙찰금액 · 준비 중" : amountFilter.amountMin !== null || amountFilter.amountMax !== null ? "금액 설정됨" : "금액"}
         name="amount"
         onOpen={open}
         open={openFilter}
       >
         <PriceCategoryPopover
-          advancedDisabled
-          maxLabel={draftFilters.amount ?? undefined}
-          onPresetSelect={(value) => changeDraft("amount", value)}
-          onReset={() => reset("amount")}
-          onSave={() => save("amount")}
-          selectedPreset={toPricePreset(draftFilters.amount)}
+          activeType={draftAmount.amountType === "ESTIMATED_PRICE" ? "estimated" : "base"}
+          errorMessage={parsedAmount.amountError}
+          maxLabel={parsedAmount.amountError ? `${draftAmount.amountMax || "제한 없음"}` : formatBidAmount(parsedAmount.amountFilter.amountMax)}
+          minLabel={parsedAmount.amountError ? `${draftAmount.amountMin || "제한 없음"}` : formatBidAmount(parsedAmount.amountFilter.amountMin)}
+          maxValue={draftAmount.amountMax}
+          minValue={draftAmount.amountMin}
+          onMaxValueChange={value => changeAmount("amountMax", value)}
+          onMinValueChange={value => changeAmount("amountMin", value)}
+          onTypeSelect={value => setDraftAmount(current => ({ ...current, amountType: value === "estimated" ? "ESTIMATED_PRICE" : "BASE_PRICE" }))}
+          onPresetSelect={value => setDraftAmount(toAmountDraft(presetBidAmountFilter(value, draftAmount.amountType)))}
+          onReset={() => { onAmountFilterChange(emptyBidAmountFilter()); closeAmount(); }}
+          onSave={() => { if (!parsedAmount.amountError) { onAmountFilterChange(parsedAmount.amountFilter); closeAmount(); } }}
+          resetDisabled={!hasAmountSelection}
+          saveDisabled={Boolean(parsedAmount.amountError) || (sameAmounts && !amountQueryError)}
+          selectedPreset={toPricePreset(amountPreset)}
         />
       </FilterSlot>
     </div>

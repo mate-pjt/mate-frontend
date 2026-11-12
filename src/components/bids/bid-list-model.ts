@@ -2,6 +2,7 @@ import type { BidListQuery, BidView } from "@/data/bids/contracts";
 import type { BidKind } from "@/types/bid";
 import { readPersonalFilterParams } from "@/features/bid-notice-filters/model";
 import { readBidDateParams } from "@/features/bid-notice-filters/date-filter";
+import { readBidAmountParams } from "@/features/bid-notice-filters/amount-filter";
 
 export type { BidFilters, BidView } from "@/data/bids/contracts";
 
@@ -36,6 +37,7 @@ export function readBidListState(searchParams: URLSearchParams): BidListState {
   const rawSize = Number(searchParams.get("size"));
   const personalFilter = view === "all" ? readPersonalFilterParams(searchParams) : undefined;
   const dates = readBidDateParams(searchParams, view);
+  const amounts = readBidAmountParams(searchParams, view);
 
   return {
     view,
@@ -48,9 +50,10 @@ export function readBidListState(searchParams: URLSearchParams): BidListState {
     contract: personalFilter ? undefined : readOptional(searchParams.get("contract")),
     agency: personalFilter ? undefined : readOptional(searchParams.get("agency")),
     period: personalFilter || dates.dateFilter || view === "closing" ? undefined : readSupportedValue(searchParams.get("period"), supportedPeriods),
-    amount: personalFilter || view === "result" ? undefined : readSupportedValue(searchParams.get("amount"), supportedAmounts),
+    amount: personalFilter || amounts.amountFilter || view === "result" ? undefined : readSupportedValue(searchParams.get("amount"), supportedAmounts),
     personalFilter,
     ...dates,
+    ...amounts,
   };
 }
 

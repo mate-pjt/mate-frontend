@@ -2,18 +2,12 @@ import type { BidFilterOptions, BidListQuery } from "@/data/bids/contracts";
 import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
 import { emptyPersonalFilter } from "@/features/bid-notice-filters/model";
 import { currentBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
+import { currentBidAmountFilter, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 
 const bidTypeCodes = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" } as const;
 const bidTypeLabels = { CONSTRUCTION: "공사", SERVICE: "용역", GOODS: "물품" } as const;
 const contractMethodCodes = { 일반경쟁: "GENERAL", 제한경쟁: "LIMITED", 지명경쟁: "NOMINATION", 수의계약: "PRIVATE" } as const;
 const contractMethodLabels = { GENERAL: "일반경쟁", LIMITED: "제한경쟁", NOMINATION: "지명경쟁", PRIVATE: "수의계약" } as const;
-const amountRanges: Record<string, { min: number | null; max: number | null }> = {
-  "1억 원 이하": { min: null, max: 100_000_000 },
-  "1억 ~ 10억 원 이하": { min: 100_000_001, max: 1_000_000_000 },
-  "10억 ~ 50억 원 이하": { min: 1_000_000_001, max: 5_000_000_000 },
-  "50억 ~ 100억 원 이하": { min: 5_000_000_001, max: 10_000_000_000 },
-  "100억 원+": { min: 10_000_000_001, max: null },
-};
 
 export function currentPersonalFilter(state: BidListQuery, options: BidFilterOptions): PersonalFilterValues {
   if (state.personalFilter) return state.personalFilter;
@@ -31,11 +25,7 @@ export function currentPersonalFilter(state: BidListQuery, options: BidFilterOpt
     filter.contractMethods = [contractMethodCodes[state.contract as keyof typeof contractMethodCodes]];
   }
   Object.assign(filter, currentBidDateFilter(state));
-  if (state.amount && amountRanges[state.amount]) {
-    filter.amountType = "BASE_PRICE";
-    filter.amountMin = amountRanges[state.amount].min;
-    filter.amountMax = amountRanges[state.amount].max;
-  }
+  Object.assign(filter, currentBidAmountFilter(state));
   return filter;
 }
 
@@ -62,10 +52,7 @@ export function changePersonalFilter(
       return { ...filter, ...presetBidDateFilter(value ?? "", "all", filter.dateType) };
     }
     case "amount": {
-      const range = value ? amountRanges[value] : undefined;
-      return range
-        ? { ...filter, amountType: "BASE_PRICE", amountMin: range.min, amountMax: range.max }
-        : { ...filter, amountType: null, amountMin: null, amountMax: null };
+      return { ...filter, ...presetBidAmountFilter(value ?? "", filter.amountType) };
     }
   }
 }
