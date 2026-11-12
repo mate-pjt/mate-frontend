@@ -105,7 +105,7 @@ describe("회사·증명서 Repository", () => {
       const repo = createHttpCompanyRepository(createHttpClient("https://synthetic-api.test", fetcher));
       if (empty) expect(await repo.getMyCompanyOverview(access)).toEqual({ status: "empty" }); else await expect(repo.getMyCompanyOverview(access)).rejects.toMatchObject({ status: 404 });
     }
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(ok({ companyId: 77 })); const repo = createHttpCompanyRepository(createHttpClient("https://synthetic-api.test", fetcher));
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(ok({ companyId: 77, companyName: "합성 회사", businessNumber: "1234567890", representativeName: null, verificationStatus: "VERIFIED", address: null, telephoneNumber: null, establishedYear: null, primaryIndustries: [] })); const repo = createHttpCompanyRepository(createHttpClient("https://synthetic-api.test", fetcher));
     expect((await repo.getMyCompanyOverview({ ...access, refresh: async () => ({ ...authentication(), companyContext: { companyId: 77, role: "ADMIN" } }) })).status).toBe("connected");
   });
 });
