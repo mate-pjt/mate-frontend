@@ -363,6 +363,14 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 재개 첫 행동: 해당 DEV의 최신 main·정책·source/배포 drift와 실제 검증 자료/승인 범위를 먼저 확인한다. GitHub 배포 기록은 실행 프로세스 SHA 직접 증명이 아니며 OpenAPI의 required 누락/`success` wrapper 설명을 근거로 frontend 검증·`isSuccess` wire 처리를 완화하지 않는다.
 
 
+<a id="dev-09-gate-investigation"></a>
+
+## 2026-11-12 · DEV-09 Gate 조사 · 제품 QA 미실행
+
+- [조사/재개 조건](../development/figma-v01/tasks/DEV-09.md#dev-09-gate-handoff): 현행 고정 backend dev·개발 OpenAPI·GitHub test 배포 기록을 대조했다. 공개 metadata GET200/isSuccess/296개의 관계만 실제 읽기 전용으로 확인했다. 업무 목록 조회·계정 저장/401/409·제품 브라우저/HTTP 대역·mock 실행은 없다.
+- ADV-01~04/12의 지역 부분은 이번 실제 실행0·신규 통과0·Gate 차단이다. 실제 경계 공고/예상 행/count/page·실행 process 대응·안전한 오류·사용/변경/복구와 로컬 선행 예외 답변이 미확인이다. 사용자 미준비 답변이나 API 부재라고 단정하지 않는다.
+- POL-07 당시 ADV12 대기와 BID/QA-02의 기존 통과/차단·예외는 위 이력 그대로다. 신규 metadata 확인은 지역 UI/URL/reload/조합·접근성 통과가 아니다. 현재 목록 schema의 낙찰금액 query 추가는 DEV-12의 후속 조사 입력이며 DEV-09 제품 범위에 포함하지 않는다.
+
 <a id="dev-65-mock-qa"></a>
 
 ## 2026-11-11 · DEV-65 검색·view mock 교정 검증
