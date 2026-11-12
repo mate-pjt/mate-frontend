@@ -119,7 +119,7 @@ src/data/
 
 ## 8. 유지하는 제품/API 정책
 
-- 맞춤공고 목록, 받은 알림 편집·삭제, import-company/금액 직접 범위 편집, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다.
+- 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다. 당시 미연결이던 금액 직접 범위의 후속 연결은 아래 DEV-11 기록을 따른다.
 - 받은 알림 읽음은 성공 응답 뒤에만 반영한다. 구독 해제는 받은 알림 삭제와 다르다. 7일 보존·카카오톡/SMS는 미확정/미구현 정책을 유지한다. actionPath 이동은 2026-11-05 사용자 승인 [POL-04 v1](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)을 따른다. 공고 상세(선택 bidClsfcNo)·`/my/company`만 허용, 위험/미지원 경로는 목록 유지·안내, 읽음 성공 뒤 이동/실패 시 목록 유지, 이미 읽음은 PATCH 없이 이동한다. 경계 및 이동 직전 allowlist를 적용하고 최종401/로그아웃·계정 교체/해제 뒤 사용자 행동을 자동 재생하지 않는다. hybrid에서도 목적지 ID 치환·자동 fallback·새 공급원 제약은 없다. 로컬 구현/대역/브라우저와 미실행 실제 통합의 증거는 [DEV-06](../development/figma-v01/tasks/DEV-06.md), [ANAV QA](../qa/alarms.md#dev-06-local-qa)를 구분해 확인한다.
 - 공개 목록의 UI page는 1부터, API page는 0부터다. 조회 metadata에서 코드/라벨을 변환하고 KST를 표시한다. 기관 역할·nullable 금액과 결과 값을 그대로 구분한다.
 - 공개 상세 본문 404와 section 실패는 별도다. 실제 첨부는 backend 스트리밍 URL이고 mock 첨부는 `/mock/bid-attachment.txt`다. 명세 없는 정정 이력·지시사항을 만들지 않는다.
@@ -129,6 +129,8 @@ src/data/
 날짜 직접 입력은 [DEV-10](../development/figma-v01/tasks/DEV-10.md#dev-10-brief)에서 실제 HTTP 조회에 연결한다. ALL은 날짜3종·RESULT는 dateType 없는 개찰일 범위이고 CLOSING_SOON은 날짜 UI/query가 없다. 일반 URL도 같은 날짜 키를 쓰며 personal URL과 동일한 달력/조합 검증을 적용한다. 잘못된 날짜를 조용히 제거해 넓은 목록을 조회하지 않는다. 양쪽 빈값은 종류까지 해제하고 preset은 계산된 절대 날짜를 전송한다. 목록의 날짜 편집/초기화·내 맞춤 GET은 계정 무쓰기이며 기존 Repository 저장 계약을 화면에 재노출하지 않는다. mock/HTTP 대역 결과와 실제 경계 공고/실행 식별자가 필요한 실서버 QA는 별개다.
 
 ## 9. 새 기능의 개발 순서와 검증
+
+금액 직접 입력은 [DEV-11](../development/figma-v01/tasks/DEV-11.md#dev-11-brief)에서 ALL/closing 조회 URL·HTTP/mock에 연결한다. BASE_PRICE는 canonical 분류 행 기초금액, ESTIMATED_PRICE는 공고 추정가격이며 두 경계는 포함한다. 0..9,007,199,254,740,991의 정수 원과 null 무제한을 구분하고 양쪽 빈값은 종류까지 해제한다. 음수/소수/초과/역전/중복·종류 누락 URL은 오류/원문을 보존하고 목록 요청 전에 차단한다. preset은 기존 정확한 경계와 선택 종류를 유지한다. RESULT의 기초/추정 금액·낙찰금액 연결은 추가하지 않는다. 팝업의 ‘저장’은 현재 조회 URL 적용이며 계정 쓰기/회사 투영 변경이 아니다. 최신 GET→URL 및 기존 Repository 저장/재조회 계약은 로컬에서 검증하고 실제 ADV/ADVP·QA-02/QA-10 통합 차단은 보존한다.
 
 1. 현재 필요한 내부 입력/출력·Repository 계약 정의.
 2. mock으로 정상/빈/오류/변경/복원 화면 개발.

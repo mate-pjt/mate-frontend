@@ -425,3 +425,37 @@ QA-A 앱 로그아웃 200·로그인 복귀, 실패 제어 파일 제거, Networ
 - verifier1차 PASS의 Minor1: 잘못된 개인 날짜 enum의 chip에 undefined가 표시됐다. 조회 차단은 유지됐다. 날짜 라벨 fallback1줄/음성 회귀1사례를 추가하고 최종16파일/351 tests·lint·API/mock/hybrid build를 다시 PASS했다. 로그는 `*-final-review.log`이며 기존350개/21사례는 앞선 결과로 보존한다. 제품 자동 수정3/3.
 - DTF-B22 실제 Next production mock: `personal=1&dateType=OPEN&dateFrom=2024-02-29`에서 ‘날짜 2024-02-29 ~ 이후’·날짜 기준 오류를 표시하고 undefined/목록 table은 없다. 관측 리소스는 localhost3191뿐이다. 추가 소유 서버/탭도 정리했다. 브라우저 근거는 최종22사례다.
 - 마지막 교정은 어댑터의 잘못된 enum 라벨 fallback만 바꿨다. 공용 UI/Storybook graph·레이아웃/날짜 전송은 그대로여서 직전 `storybook-verified.log`와1440/390/320 캡처의 해당 검증은 유효하다. 최종 세 빌드·351 tests·오류 화면을 다시 확인했으며 Storybook 로컬 재실행은 영향이 없어 생략했다. 원격 최종 head의 Storybook CI는 별도로 확인한다. 실제 API 통합 미실행/차단은 변하지 않는다.
+
+<a id="dev-11-local-qa"></a>
+
+## 2026-11-12 · DEV-11 금액 직접 입력·로컬 검증
+
+- 실행 범위: 사용자 ‘로컬 선행·실서버 QA 차단 보존 (추천)’ 승인. 실제 API에 연결되는 frontend를 구현하고 실제 Next16.2.9 production process/Aside의 API profile+loopback HTTP 대역, 전체 mock, hybrid를 검증했다. 실제 backend 통합 신규 통과0·실행0이며 기존 BID/ADV-09~12/QA-02·개인 ADVP/QA-10·정책/승인 예외는 보존한다.
+- 환경: Node22.20.0/pnpm11.3.0, 환경파일 없는 `/tmp/mate-dev11-20261112/{api,app,hybrid}`, localhost3291/3292/3293·loopback4298. API/hybrid 합성 자료는 canonical 분류24행, 기초0/1억원±1/10/50/100억원 경계/안전 상한/null과 공고 추정가격을 독립 배치했다. 공고 basePrice777,777,777과 분류 행 금액을 다르게 두어 잘못된 대체를 탐지한다. 실제 공고/계정·개인정보·메일/문서 변경은 없다.
+- 근거: `/tmp/mate-dev11-20261112/dev11-cases.json`23사례, `wire-requests.ndjson`·`server-fetch.ndjson`·`runtime-verification.json`, 최종 `*-final.log`. 소스/배포/OpenAPI/실행 process SHA/실응답을 구분한 [Task Brief](../development/figma-v01/tasks/DEV-11.md#dev-11-brief)를 따른다.
+
+| 사례 | 실제 Next/Aside 관찰 | 결과/한계 |
+| --- | --- | --- |
+| AMT-B01~04 | 역전·음수·소수·9007199254740993 원문 유지, 오류와 저장 disabled | 로컬 PASS |
+| AMT-B05 | Escape 닫기/trigger 초점·Enter 재개방 시 미저장 draft 폐기·URL 불변 | 로컬 PASS |
+| AMT-B06~07 | BASE_PRICE0~0의 분류4행·검색/날짜 보존·page1·hard reload0/종류 복원 | HTTP 대역 PASS |
+| AMT-B08 | ESTIMATED_PRICE에서 preset1000000001~5000000000, Space 적용/종류 유지 | HTTP 대역 PASS |
+| AMT-B09 | MAX_SAFE_INTEGER 동일 경계2행·정확한 입력/원 summary/URL | HTTP 대역 PASS |
+| AMT-B10~11 | 추정가격0~무제한22행·null 제외·page3의2행·조건/페이지 전송 | HTTP 대역 PASS |
+| AMT-B12 | 양쪽 입력을 비우면 종류/경계/page 해제·날짜/검색 유지 | HTTP 대역 PASS |
+| AMT-B13 | 잘못된 personal URL 원문/오류, 목록 요청0. 유형·날짜 편집 후에도 원문/차단 유지 | HTTP 대역 PASS |
+| AMT-B14 | 초기 표시 이후 바뀐 최신 SAVED GET0~0·열린 draft 폐기·수동 URL 적용/동등성 숨김 | HTTP 대역 PASS·계정 쓰기 없음 |
+| AMT-B15~17 | 최종320px 두 행/라벨·상한 input160.7px/원값·오류 aria-invalid/describedby/저장 차단·390px 두 입력과 개인 URL 편집 | 교정 후 PASS·문서 폭305/375px≤320/390px |
+| AMT-B18 | 최신 GET500 오류와 현재 URL 보존·Space 명시 재시도 성공 | HTTP 대역 PASS |
+| AMT-B19 | closing 직접 추정가격 범위·날짜 무전송·503 오류 화면→다시 시도→6행 복구 | HTTP 대역 PASS·실제 서버 오류 아님 |
+| AMT-B20 | RESULT 기존 금액 준비 중/disabled·기초/추정/낙찰 query0 | 미지원 기능 활성화 없음 |
+| AMT-B21 | 전체 mock의 기초80,000,000원1행→같은 추정조건 빈 결과→초기화1행·관측 서버fetch0 | mock PASS |
+| AMT-B22 | hybrid의 공개 bids HTTP0~0 4행, 회사/알림/설정 mock3그룹 | 로컬 HTTP/hybrid PASS |
+| AMT-B23 | 최종1440px 팝업·선택 종류·정확한 원/preset/직접 입력 캡처 | 해당 컴포넌트 검토·화면 전체 픽셀 PASS 아님 |
+
+- B01~14는 모바일 CSS 교정 전 동작이다. 금액 모델/URL/HTTP source는 이후 불변이며 B15~23은 최종 artifact다. 최종 source12파일/세 mirror의 SHA256·buildID를 일치 확인했다. 최종 자동 검사는393 tests/17files·lint·API/mock/hybrid build·Storybook 모두 PASS. 설정/운영 guard·storage/계정 회귀도 기존 계약 tests에 포함된다. mock Preview artifact를 production flag로 시작하면 명시적 mock 거부/exit1을 확인했다.
+- 최초 test4실패는 기존2 fixture의 amountType 누락·새 테스트 Response 재사용/선택 필드 assertion으로 교정했다. pnpm mirror workspace install/non-TTY·Turbopack symlink 거부는 의존성 복사/검증용 warn 설정으로 해결했다.320px 입력/단어 줄바꿈을 교정해 자동 검사를 재실행했다. 자동 교정 누계2/3이며 최초 결과를 PASS로 덮지 않는다.
+- 관측 기준137 wire요청/113 서버fetch에서 개인 필터 PUT/reset/import0·외부 서버 시도0이다. 브라우저 Resource Timing은 API/hybrid의 localhost/127.0.0.1, 전체 mock의 localhost뿐이었다. 합성 상세 endpoint의 Next Link prefetch404는 직접 금액 QA/실제 API 오류 PASS로 세지 않는다. 관측 범위 외의 모든 요청을 증명했다고 확대하지 않는다.
+- Figma `2083:61727` 기본/선택3상태·`2085:67295` 선택 상태와 기존 FilterPanel/SegmentedControl/ChoiceButton/FilterActions·색상/간격/원 입력을 대조했다. 승인된 POL-07의 기존 preset 숫자/경계·기본 BASE_PRICE를 적용하며 현재 탭 순서/RangePreview 표시 패턴을 재사용한다. 드래그 slider·화면 전체 시각 예외 승인/픽셀 전수 PASS를 주장하지 않는다. 작은 화면 두 행 입력은 정확한 원을 읽고 편집하기 위한 반응형 보정이다.
+- 최종 합성 화면: [1440px](dev-11-amount-desktop.png) · [390px](dev-11-amount-390.png) · [320px](dev-11-amount-320.png).
+- 실서버 재개: 경계 금액/복수 분류/누락 공고·기대 count/page, 실행 식별자·안전한 오류/해제와 필요한 계정/사용·잔존·복구 범위를 준비한 뒤 별도 실행한다. 제품 연결 구현/로컬 PASS와 실서버 통합 PASS는 구분한다. 정리/두 리뷰·최종 Git 전달 근거는 [Task](../development/figma-v01/tasks/DEV-11.md)·[검토](../development/figma-v01/reviews/DEV-11.md)·실제 PR/head/receipt를 따른다.
