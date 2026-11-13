@@ -12,6 +12,7 @@ type MockSession = { accountId: number; expiresAt: number };
 const sessionValid = (value: unknown): value is MockSession => isRecord(value) && isCount(value.accountId) && typeof value.expiresAt === "number" && Number.isFinite(value.expiresAt);
 
 export function createMockAuthRepository(runtime: MockRuntime): AuthRepository {
+  const signupNames = new Map<number, string>();
   const pending = () => runtime.store.read<PendingAuth>("anonymous", "auth-flows", () => ({ flows: {}, nextAccountId: 101 }), pendingValid);
   function flow(flowId: string) {
     const item = pending().flows[flowId];
@@ -21,7 +22,7 @@ export function createMockAuthRepository(runtime: MockRuntime): AuthRepository {
   }
   function authentication(accountId: number): Authentication {
     return { accessToken: `mock-session-${accountId}`, tokenType: "Mock", expiresInSeconds: 3600,
-      account: { id: accountId, email: `demo${accountId}@example.test` }, companyContext: null,
+      account: { id: accountId, email: `demo${accountId}@example.test`, nickname: signupNames.get(accountId) ?? (accountId === 1 ? "가상 사용자" : accountId === 2 ? "다른 가상 사용자" : null) }, companyContext: null,
       companyOnboarding: { status: "NOT_STARTED", availableActions: ["START_NOW", "FIND_COMPANY", "REGISTER_COMPANY"] } };
   }
   function complete(accountId: number) {
@@ -59,7 +60,10 @@ export function createMockAuthRepository(runtime: MockRuntime): AuthRepository {
     async completeSocialSignup(flowId, input) {
       const signup = await this.getCurrentSocialSignup(flowId);
       if (!input.name.trim() || !signup.requiredAgreements.every((agreement) => input.agreementAcceptances.some((item) => item.code === agreement.code && item.version === agreement.version))) throw new ApiError(400, "AGREEMENTS_REQUIRED", "이름과 필수 약관을 확인해 주세요.");
-      return complete(flow(flowId).accountId);
+      const accountId = flow(flowId).accountId;
+      // Signup input stays in memory; synthetic browser storage contains no entered names.
+      signupNames.set(accountId, input.name.trim());
+      return complete(accountId);
     },
     async refreshBrowserSession() {
       await mockOperation(runtime, "auth");

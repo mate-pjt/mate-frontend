@@ -4,7 +4,7 @@ import type { MockRuntime } from "@/data/mock/runtime";
 import type { Authentication } from "@/data/auth/contracts";
 import type { AuthAccess } from "@/data/shared/http";
 export const testNow = Date.parse("2030-06-01T01:00:00Z");
-export const authentication = (id = 1): Authentication => ({ accessToken: "synthetic-token", tokenType: "Bearer", expiresInSeconds: 3600, account: { id, email: `demo${id}@example.test` }, companyContext: null, companyOnboarding: { status: "NOT_STARTED", availableActions: ["START_NOW"] } });
+export const authentication = (id = 1): Authentication => ({ accessToken: "synthetic-token", tokenType: "Bearer", expiresInSeconds: 3600, account: { id, email: `demo${id}@example.test`, nickname: `가상 사용자 ${id}` }, companyContext: null, companyOnboarding: { status: "NOT_STARTED", availableActions: ["START_NOW"] } });
 export const access: AuthAccess = { getAccountKey: () => "1", getAccessToken: async () => "synthetic-token", refresh: async () => authentication() };
 export function mockRuntime(storage: StoragePort = memoryStorage(), scenarios: Record<string, string> = {}, clock = () => testNow): MockRuntime {
   const config: DataConfig = resolveDataConfig({ MATE_APP_ENV: "local", MATE_DATA_PROFILE: "mock", MATE_MOCK_SCENARIOS: JSON.stringify(scenarios) });

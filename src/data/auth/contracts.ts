@@ -18,7 +18,7 @@ export type Authentication = {
   accessToken: string;
   tokenType: string;
   expiresInSeconds: number;
-  account: { id: number; email: string };
+  account: { id: number; email: string; nickname: string | null };
   companyContext: { companyId: number; role: string } | null;
   companyOnboarding: {
     status: "NOT_STARTED" | "COMPLETED";
