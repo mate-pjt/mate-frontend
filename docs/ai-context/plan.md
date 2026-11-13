@@ -238,3 +238,7 @@ Final reports should include:
 ## 2026-11-13 · 소속 신청 취소의 완료/재조회 기준
 
 [POL-10 사용자 확정/정책 v1](../development/figma-v01/tasks/POL-10.md#pol-10-contract)은 중앙의 본인 PENDING 취소·expectedVersion·승인 경쟁/409와 사용자 선택의 확인 창→빈 `/my/company`→기존 Sonner 완료 Toast1회를 연결한다. reload/조회·충돌/실패에는 성공 Toast를 재생하지 않는다. 취소는 CANCELED/version 증가·이력 잔존이며 관리자 대리 취소/활성 소속 탈퇴/회사 간 합치기와 구분한다. 제품 구현은 [DEV-15 자체 Gate](../development/figma-v01/tasks/DEV-15.md#dev-15-pol-10-handoff) 이후이며 [MCANCEL-01~12](../qa/my-company.md#pol-10-cancellation-qa)의 실제 wire/실행 대응·합성 자원/변경·잔존·복구와 기존 QA 차단/승인 예외는 보존한다. 이번 문서 조사/결정을 제품 구현/실제 API 통합 PASS로 세지 않으며 현재/다음/상태는 WBS만 관리한다.
+
+## 2026-11-13 · DEV-15 취소 실행의 로컬 선행
+
+[이번 DEV-15 Brief/사용자 답변](../development/figma-v01/tasks/DEV-15.md#dev-15-brief)에 따라 실제 API 연결 구현·계정별 mock 이력/구형 이관·확인/중복·완료/재조회/계정 수명을 연결한다. [자동/HTTP 대역/실제 Next 브라우저 근거](../qa/my-company.md#dev-15-local-qa)는 당해 취소 성공의 정확한 Sonner1회와 reload/충돌/실패/응답 유실·로그아웃의 거짓 안내0을 구분한다. 사용자는 **로컬 선행·실서버 QA 차단 보존**을 이번 Task에 승인했다. 실제 업무 API 실행0·MCANCEL12 실서버 차단과 기존 QA-05 MCO4통과6차단/CDASH·가입 AUTH/타 Task 예외를 유지하며, 현재/다음/상태와 최종 검증·리뷰/Git 전달은 WBS·Task/실제 PR을 따른다.

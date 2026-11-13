@@ -245,3 +245,16 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 지정 버튼/toast/CTA 하위 노드의 text만 읽고 허용 필드로 출력했다. 임시 이미지 주소·원문 metadata·신원 예시는 문서/QA/PR에 복사하지 않는다. 기존 도구 출력이 삭제·무효화됐다고 주장하지 않는다.
 - Prevention rule: 디자인 metadata도 원문/부분 문자열을 그대로 출력하지 않는다. 먼저 필요한 노드 ID·상태·비식별 문구의 allowlist를 정하고 새 결과 객체로 투영한다. 기능에 불필요한 예시 신원 필드는 증거로 보관하지 않는다.
 - Related files: `docs/development/figma-v01/tasks/POL-10.md`, `docs/development/figma-v01/reviews/POL-10-context.md`. 제품·하네스 설정 변경 없음.
+
+<a id="dev-15-nested-401"></a>
+
+## 2026-11-13 · DEV-15 후속 조회의 최종401 누락
+
+- Task: 소속 신청 취소 후 완료/충돌의 최신 상태 확인.
+- Expected behavior: 명령 자체와 후속 조회 모두 최종401이면 보호 자료를 숨기고 로그인/복귀로 연결한다. 이미 확인된 취소 성공은 별도 완료 안내로 보존한다.
+- Actual failure: 독립 verifier가 Major1로 판정했다. 충돌 뒤 `load` catch는 error 객체를 버리고, 성공 뒤 catch는 모든 오류를 일반 경고로 바꿔 최종401을 UI에 전달하지 않았다. 공통 HTTP의 refresh 성공 뒤 두 번째401은 provider가 자동 해제하지 않는다.
+- Root cause: 취소 명령의401만 테스트하고 후속 GET/refresh 뒤 재요청401을 빠뜨렸다. 성공 유지와 인증 오류 전달을 별개의 결과로 설계하지 못했다.
+- Detection: read-only verifier의 원본 POL-10/HTTP·controller/UI 대조. 전체 자동 테스트466개 PASS가 이 분기 검증을 대신하지 못했다.
+- Fix: 두 catch의 오류 객체 전달, 성공 뒤 확인된 완료 notice+로그인 분기, 404/409 뒤401·성공 뒤401 자동 회귀3개와 합성 브라우저2사례를 추가했다. 실제 API QA 차단은 보존한다.
+- Prevention rule: 다단계 mutation→refresh/GET의 각 최종401 경로를 별도 검증한다. 성공 여부와 인증·재조회 가능 여부를 나눠 표시하며, 오류를 일반 문자열/경고로 바꿀 때 인증 정보가 사라지지 않게 한다.
+- Related files: `src/features/company/membership-cancellation.ts`, `src/components/my/my-company-client.tsx`, `tests/membership-cancellation-controller.test.ts`, DEV-15 Task/리뷰·회사 QA.

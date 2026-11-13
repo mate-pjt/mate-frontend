@@ -1,0 +1,183 @@
+{
+  "observedAt": "2026-11-13 KST",
+  "environment": "Next16.2.9 API profile against local synthetic HTTP double only",
+  "liveBusinessExecutions": 0,
+  "cases": [
+    {
+      "label": "http-success",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": null,
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "conflict-approved",
+      "url": "/my/company",
+      "heading": "우리 회사 정보를 확인해 보세요!",
+      "alert": null,
+      "notice": "신청 상태가 변경됐어요. 최신 상태를 확인한 후 다시 진행해 주세요.다시 확인하기",
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "conflict-new",
+      "url": "/my/company",
+      "heading": "관리자가 통합 요청을확인하고 있어요!",
+      "alert": null,
+      "notice": "신청 상태가 변경됐어요. 최신 상태를 확인한 후 다시 진행해 주세요.다시 확인하기",
+      "toasts": 0,
+      "cancelButtons": 1,
+      "loginHref": null
+    },
+    {
+      "label": "conflict-canceled",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": "신청 상태가 변경됐어요. 최신 상태를 확인한 후 다시 진행해 주세요.다시 확인하기",
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "forbidden",
+      "url": "/my/company",
+      "alert": "취소 결과를 확인하지 못했어요. 최신 상태를 다시 확인해 주세요. 요청을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "invalid-response",
+      "url": "/my/company",
+      "alert": "취소 결과를 확인하지 못했어요. 최신 상태를 다시 확인해 주세요. 취소 결과를 확인하지 못했어요. 최신 상태를 다시 확인해 주세요.",
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "refresh-failure",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": "회사 변경은 완료됐지만 로그인 상태를 갱신하지 못했습니다. 새로고침 후 확인해 주세요.다시 확인하기",
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "late-refresh-failure",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": "통합 요청 취소는 완료됐지만 최신 회사 상태를 확인하지 못했어요. 다시 확인해 주세요.다시 확인하기",
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "read-failure",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": "통합 요청 취소는 완료됐지만 최신 회사 상태를 확인하지 못했어요. 다시 확인해 주세요.다시 확인하기",
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "final-401",
+      "url": "/my/company",
+      "alert": "로그인이 필요해요. 다시 로그인한 뒤 신청 상태를 확인해 주세요.",
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": "/auth?mode=login&next=%2Fmy%2Fcompany"
+    },
+    {
+      "label": "lost-submitted",
+      "url": "/my/company",
+      "alert": "취소 결과를 확인하지 못했어요. 최신 상태를 다시 확인해 주세요. 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "lost-recovered",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "duplicate-submitted",
+      "url": "/my/company",
+      "heading": "관리자가 통합 요청을확인하고 있어요!",
+      "alert": null,
+      "notice": "통합 요청을 취소하고 있어요.",
+      "toasts": 0,
+      "cancelButtons": 1,
+      "loginHref": null
+    },
+    {
+      "label": "duplicate-completed",
+      "url": "/my/company",
+      "heading": "우리 회사에 딱 맞는 입찰공고,놓치지 않도록 챙겨드릴게요!",
+      "alert": null,
+      "notice": null,
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "logout-submitted",
+      "url": "/my/company",
+      "heading": "관리자가 통합 요청을확인하고 있어요!",
+      "alert": null,
+      "notice": "통합 요청을 취소하고 있어요.",
+      "toasts": 0,
+      "cancelButtons": 1,
+      "loginHref": null
+    },
+    {
+      "label": "logout-completed",
+      "url": "/my/company",
+      "heading": "나의 회사 정보를 확인해 보세요",
+      "alert": null,
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": null
+    },
+    {
+      "label": "conflict-followup-final401",
+      "url": "/my/company",
+      "alert": "로그인이 필요해요. 다시 로그인한 뒤 신청 상태를 확인해 주세요.",
+      "notice": null,
+      "toasts": 0,
+      "cancelButtons": 0,
+      "loginHref": "/auth?mode=login&next=%2Fmy%2Fcompany"
+    },
+    {
+      "label": "success-followup-final401",
+      "url": "/my/company",
+      "alert": "로그인이 필요해요. 다시 로그인한 뒤 신청 상태를 확인해 주세요.",
+      "notice": "통합 요청 취소는 완료됐어요. 다시 로그인한 뒤 최신 회사 상태를 확인해 주세요.다시 확인하기",
+      "toasts": 1,
+      "cancelButtons": 0,
+      "loginHref": "/auth?mode=login&next=%2Fmy%2Fcompany"
+    }
+  ],
+  "pageErrors": [],
+  "unexpectedOrigins": []
+}

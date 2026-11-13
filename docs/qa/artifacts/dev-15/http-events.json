@@ -1,0 +1,805 @@
+{
+  "environment": "local synthetic HTTP double; never live API",
+  "events": [
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-1",
+      "mode": "success",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-approved",
+      "mode": "conflict-approved",
+      "method": "GET",
+      "path": "/api/v1/companies/7001",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-new",
+      "mode": "conflict-new",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled",
+      "mode": "conflict-canceled",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled",
+      "mode": "conflict-canceled",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled",
+      "mode": "conflict-canceled",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-canceled-v2",
+      "mode": "conflict-canceled",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "forbidden-v2",
+      "mode": "forbidden",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "forbidden-v2",
+      "mode": "forbidden",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "forbidden-v2",
+      "mode": "forbidden",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "forbidden-v2",
+      "mode": "forbidden",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "invalid-response-v2",
+      "mode": "invalid-response",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "invalid-response-v2",
+      "mode": "invalid-response",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "invalid-response-v2",
+      "mode": "invalid-response",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "invalid-response-v2",
+      "mode": "invalid-response",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "refresh-failure-v2",
+      "mode": "refresh-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "refresh-failure-v2",
+      "mode": "refresh-failure",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "refresh-failure-v2",
+      "mode": "refresh-failure",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "refresh-failure-v2",
+      "mode": "refresh-failure",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "refresh-failure-v2",
+      "mode": "refresh-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "late-refresh-failure-v2",
+      "mode": "late-refresh-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "read-failure-v2",
+      "mode": "read-failure",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "final-401-v2",
+      "mode": "final-401",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "lost",
+      "mode": "lost",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "duplicate",
+      "mode": "duplicate",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "logout",
+      "mode": "logout",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "logout",
+      "mode": "logout",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "logout",
+      "mode": "logout",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "logout",
+      "mode": "logout",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "logout",
+      "mode": "logout",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "conflict-final401",
+      "mode": "conflict-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/8001",
+      "expectedVersion": [
+        "3"
+      ],
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "expectedVersion": null,
+      "bodyLength": 0
+    },
+    {
+      "run": "success-final401",
+      "mode": "success-final401",
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "expectedVersion": null,
+      "bodyLength": 0
+    }
+  ]
+}
