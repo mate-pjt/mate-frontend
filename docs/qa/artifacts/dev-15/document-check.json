@@ -1,0 +1,64 @@
+{
+  "markdownFiles": 11,
+  "localLinks": 530,
+  "baselineIds": 79,
+  "tasks": 114,
+  "dependencies": 156,
+  "states": {
+    "완료": 26,
+    "차단": 22,
+    "대기": 63,
+    "보류": 2,
+    "준비": 1
+  },
+  "allowedWbsRows": [
+    "DEV-15",
+    "POL-11"
+  ],
+  "preservedQaPrefixes": 3,
+  "browserObservations": 18,
+  "httpDoubleDeletes": {
+    "success-1": 1,
+    "conflict-approved": 1,
+    "conflict-new": 1,
+    "conflict-canceled-v2": 1,
+    "forbidden-v2": 1,
+    "invalid-response-v2": 1,
+    "refresh-failure-v2": 1,
+    "late-refresh-failure-v2": 1,
+    "read-failure-v2": 1,
+    "final-401-v2": 2,
+    "lost": 1,
+    "duplicate": 1,
+    "logout": 1,
+    "conflict-final401": 1,
+    "success-final401": 1
+  },
+  "images": {
+    "confirm-320.png": {
+      "width": 640,
+      "height": 1560
+    },
+    "success-desktop.png": {
+      "width": 2880,
+      "height": 2000
+    },
+    "success-390.png": {
+      "width": 780,
+      "height": 1688
+    }
+  },
+  "runtimeSha256": {
+    "src/components/my/membership-cancellation-dialog.tsx": "df01642a4e8882cbeaa1ae63286f28aca4470f02a6b58f1fd284f48fcde41bac",
+    "src/components/my/my-company-client.tsx": "4ef0b36f21f0af5a137c6b317c6482f67aff7b63c95dcb0a6d2cf5aece45af8f",
+    "src/data/company/api-mapper.ts": "2a441cb9603ba4fa5ac9235f349a55e1c9484a3ff5e239a44bfc0c549694c926",
+    "src/data/company/client.ts": "b701c41c4f1bcacbd6855361a7a8137824b3c09cdee8f94e6b96f61b58e9027b",
+    "src/data/company/contracts.ts": "e8d1f85c6bf87732bada31b2a3ee1d991c98b4e85273f591208662c9d29a9ae6",
+    "src/data/company/http-repository.ts": "84d14b53ece2d671adac599cc3c9eec61b72f4c239df3fbf5b9c8bb92391920b",
+    "src/data/company/mock-repository.ts": "35ed666e9bb975d04ea2cb8a3dedce3a149ead0ce854011218a7019142603602",
+    "src/features/company/membership-cancellation.ts": "2ec1c001102926510082228c8b83baef11ce1a8f8a54a3d92817ac3c9f1304e9",
+    "tests/company-membership-cancellation.test.ts": "2f3e966fed85070bc1742cce7b5178c92e1c7ba40858755d1216f26b18fede75",
+    "tests/membership-cancellation-controller.test.ts": "e39189f582424ab5b8cb9335af5537f1438a54b08f2f606eb4e2a03d93bd224c"
+  },
+  "result": "PASS"
+}

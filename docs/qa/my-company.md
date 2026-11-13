@@ -234,3 +234,36 @@
 | MCANCEL-12 | API/mock/hybrid의 고정 source/production guard·업로드 경계 보존, mock 영역 외부 업무 요청0. 실QA 시작/종료 snapshot·신청/취소/재신청/이력 잔존/복구·승인된 담당/방법과 실행 SHA 대응 기록 | 미실행 — DEV-15 자원/변경 승인 필수 |
 
 실제 QA는 현재 frontend/backend 실행 대응과 disposable 계정/상태별 신청, version/회사 기대값, 동시 승인 주체·안전한 오류/해제·사용/변경/잔존/종료·복구 담당/방법을 확보한 뒤 수행한다. source/게시 schema/CI test deploy 성공을 실행 process SHA/업무 응답으로 대신하지 않는다. 과거 QA-05 QA-A/QA-B 조회 승인은 취소/재신청·상태 생성 허가가 아니다. 이번 업무 API 실행0·신규 실제 통과0이고 로컬 선행/실제 QA 생략 예외도 없다. 상태는 WBS와 실제 실행 시의 사례 증거에서 관리한다.
+
+<a id="dev-15-local-qa"></a>
+
+## 2026-11-13 · DEV-15 취소 실행 로컬 QA
+
+- 사용자 승인: [DEV-15 Brief](../development/figma-v01/tasks/DEV-15.md#dev-15-brief)의 ‘로컬 선행·실서버 QA 차단 보존’. 아래는 Node 계약·full mock·실제 Next/API 프로필의 **로컬 합성 HTTP 대역**이다. 실제 취소/업무 API 실행0, MCANCEL-01~12 실제0통과·12차단. 위 POL-10 당시 미실행·기존 MCO4통과6차단/CDASH/가입 AUTH와 다른 Task의 차단/승인 예외는 보존한다.
+- 환경: Node22.20.0·pnpm11.3.0·Next16.2.9. Aside Browser desktop1440×1000·390×844·320×780. mock은 `company=pending`, HTTP 대역은 API snapshot을 로컬 합성 서버로 고정해 사용했다. mock의 외부 HTTP0, HTTP 대역의 예상 밖 외부 origin0/pageerror0. 실제 `.env` 값/계정·비밀값/개인 자료는 읽거나 저장하지 않았다.
+- 증거: [HTTP 브라우저18개 관찰](artifacts/dev-15/http-browser.json)·[대역 요청의 method/path/query/body 길이](artifacts/dev-15/http-events.json), [desktop 완료](artifacts/dev-15/success-desktop.png)·[390px 완료 Toast](artifacts/dev-15/success-390.png)·[320px 확인창](artifacts/dev-15/confirm-320.png). 이미지/응답은 합성 자료만 포함한다. Figma3162:52414/52419의 고정 버튼/Toast context·screenshot을 대조했으며 기존 전 화면/모든 frame의 픽셀 전수 PASS는 주장하지 않는다.
+
+| Case | 자동 계약·mock/HTTP 대역·실제 Next 브라우저의 이번 결과 | 실제 API |
+| --- | --- | --- |
+| MCANCEL-01 | PASS — 본인 PENDING에만 버튼·native 확인창, 닫기/돌아가기/Escape·초점 복귀·조회/닫기 mutation0. 일반/대표자 mock 모두 취소 | 차단 |
+| MCANCEL-02 | 로컬 PASS — 다른 계정/없는 대상 mock404, HTTP403/최종401·로그인 복귀. 실제 관리자 leaf/타인 권한은 서버에서 별도 검증 필요 | 차단 |
+| MCANCEL-03 | PASS — 조회 version3 보존→body 없는 DELETE expectedVersion3→같은8001 CANCELED/version4·시각. mock 취소2/이력 잔존·재신청 새 ID. 활성 소속 생성/삭제0 | 차단 |
+| MCANCEL-04 | PASS — 빈 `/my/company`·정확한 Sonner1개/32px 기존 아이콘·단일 viewport.320px dialog288px·가로 넘침0,390px/desktop·키보드 Enter/초점. CTA→start→찾기/대표자 재신청→직접 start 취소 후 overview. reload Toast0 | 차단 |
+| MCANCEL-05 | PASS — 지연 응답 중 버튼/진행 표시·연속 Enter에도 DELETE1, 완료 Toast1. 전송 후 닫기/로그아웃을 서버 롤백으로 표시하지 않음 | 차단 |
+| MCANCEL-06 | 로컬 PASS — 승인 경쟁409→최신 연결 회사·취소 버튼0/Toast0. 승인 지연은 계약/소스 분기를 보존하며 실제 경쟁 잠금/트랜잭션은 미실행 | 차단 |
+| MCANCEL-07 | PASS — CR003/CR004/CR001 계약·최신 CANCELED/REJECTED/APPROVED·새 PENDING 처리. 브라우저의 승인/이미취소/새 신청409는 자동 DELETE 추가0·성공 Toast0 | 차단 |
+| MCANCEL-08 | PASS — 양수 안전 ID/version·누락/타입/상태/시각·다른 대상/동일 version/빈·잘못된 wrapper 거부. 브라우저 다른 requestId 성공 응답은 오류/Toast0. 실제 wire `isSuccess`/게시 `success` 차이는 미확인 | 차단 |
+| MCANCEL-09 | PASS — HTTP404/403/500·연결 실패/응답 유실 오류·자동 재전송0. 브라우저 응답 유실 후 명시 재확인으로 CANCELED/빈 화면 복구·Toast0. 재조회 실패는 미확정/확인 안내 유지 | 차단 |
+| MCANCEL-10 | PASS — 동일 계정401 한 번 재요청·최종401의 보호 자료 제거/로그인 경로. 취소 후 refresh 실패는 빈 완료+sessionWarning·Toast1, 이후 refresh/GET 실패도 완료+경고 유지·재취소0 | 차단 |
+| MCANCEL-11 | PASS — 자동 계정 교체/로그아웃/화면 dispose의 늦은 결과 콜백0. 브라우저 전송 중 로그아웃 후 늦은 Toast0·비로그인 화면, mock 두 계정의 취소 이력2/별도 PENDING 격리. reload·구형 이관·문서/초대/멱등 replay·탭/프로필/namespace 기존 계약 보존 | 차단 |
+| MCANCEL-12 | 로컬 PASS — API/mock/hybrid 빌드·config/production guard/계정 namespace·업로드 회귀 테스트, mock 외부 요청0. 실제 운영 artifact 시작/배포·실제 QA snapshot/복구는 미실행 | 차단 |
+
+- 최종 scripts/리뷰: [DEV-15 검증 기록](../development/figma-v01/reviews/DEV-15.md)을 따른다. 브라우저 reload 직후 hydration 대기 locator 두 번과 연속 자동화의 첫 진입 locator는 최종 snapshot에서 정상 로드를 확인한 도구 타이밍 이력이다. 제품/계약 검사 실패나 자동 수정으로 세지 않았다.
+- 실제 재개 조건: frontend/backend 실행 SHA 대응·실제 wrapper/취소 결과·상태별 disposable 본인/타인·관리자 합성 계정/신청·안전한409/권한/세션·응답 유실/오류·사용/취소/재신청·이력 잔존/정리 담당과 허용 범위. 승인 자원으로 MCANCEL12를 실행·두 리뷰하기 전 실서버 통합 PASS로 올리지 않는다.
+- 복구: 이번 실행자가 시작한 full mock/API 대역 Next와 로컬 합성 HTTP 서버를 종료했다. 실제 신청/회사·계정/메일·문서·DB의 변경/원복0이다.
+
+
+### DEV-15 독립 리뷰 후 최종401 회귀
+
+- 1차 verifier의 Major1로 후속 조회의 최종401 전달을 교정했다. MCANCEL-10에 충돌 후 GET/인증 재시도 최종401과 취소 성공 후 최종401을 추가했다. 전자는 로그인/복귀·보호 자료 제거·Toast0, 후자는 확인된 취소 완료 notice+로그인/복귀·보호 자료 제거·당해 성공 Toast1이다. DELETE는 각1건이며 추가 재취소0이다.
+- 자동469개(추가 회귀3)·로컬 HTTP 브라우저18개 관찰로 확장했다. 기존 첫 검증/독립 FAIL은 Task/리뷰에 보존하고 실제 API 실행0·MCANCEL12 차단은 유지한다. 새로 시작한 회귀 Next/합성 서버/탭도 종료했다.
