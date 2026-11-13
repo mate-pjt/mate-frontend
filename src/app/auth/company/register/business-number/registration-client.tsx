@@ -11,11 +11,15 @@ import { ApiError, errorMessage } from "@/data/shared/errors";
 import { clearBusinessConnection, createBusinessConnection, createUnverifiedCompany, getBusinessConnection } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
 import type { BidAmountRange, BusinessConnection } from "@/data/company/contracts";
+import { companyFlowHref, type CompanyFlow } from "@/lib/company-flow";
+import { useCompanyFlowScope } from "@/features/company/use-flow-scope";
 
 type Step = "input" | "enriching" | "identity" | "evidence" | "preferences" | "not-found" | "verified" | "done";
 
-export function BusinessNumberRegistration() {
+export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
   const session = useAuthSession();
+  const scope = useCompanyFlowScope();
+  const [reauthenticate, setReauthenticate] = useState(false);
   const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const [step, setStep] = useState<Step>("input");
   const [businessNumber, setBusinessNumber] = useState("");
@@ -25,6 +29,7 @@ export function BusinessNumberRegistration() {
   const [amountRange, setAmountRange] = useState<BidAmountRange | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [registrationUncertain, setRegistrationUncertain] = useState(false);
   const [doneWarning, setDoneWarning] = useState<string | null>(null);
   const [restoring, setRestoring] = useState(true);
   const [restoreFailed, setRestoreFailed] = useState(false);
@@ -46,14 +51,16 @@ export function BusinessNumberRegistration() {
   useEffect(() => {
     if (session.state.status !== "authenticated") return;
     let active = true;
+    const request = scope.capture();
     void getBusinessConnection(access)
       .then((value) => {
-        if (!active) return;
+        if (!active || !request.current()) return;
         handleConnection(value);
         setRestoring(false);
       })
       .catch((reason: unknown) => {
-        if (!active) return;
+        if (!active || !request.current()) return;
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
         if (!(reason instanceof ApiError && reason.status === 404)) {
           setError(errorMessage(reason));
           setRestoreFailed(true);
@@ -62,27 +69,31 @@ export function BusinessNumberRegistration() {
         }
       });
     return () => { active = false; };
-  }, [access, handleConnection, session.state.status]);
+  }, [access, handleConnection, scope, session.state.status]);
 
   useEffect(() => {
     if (step !== "enriching" || session.state.status !== "authenticated") return;
     let active = true;
+    const request = scope.capture();
     let timer: number | undefined;
     async function poll() {
       try {
         const value = await getBusinessConnection(access);
-        if (!active) return;
+        if (!active || !request.current()) return;
         handleConnection(value);
         if (value.enrichmentRun.status !== "COMPLETED" && value.enrichmentRun.status !== "CANCELLED") {
           timer = window.setTimeout(() => { void poll(); }, 1000);
         }
       } catch (reason) {
-        if (active) setError(errorMessage(reason));
+        if (active && request.current()) {
+          setError(errorMessage(reason));
+          setReauthenticate(reason instanceof ApiError && reason.status === 401);
+        }
       }
     }
     timer = window.setTimeout(() => { void poll(); }, 1000);
     return () => { active = false; window.clearTimeout(timer); };
-  }, [access, handleConnection, session.state.status, step]);
+  }, [access, handleConnection, scope, session.state.status, step]);
 
   async function connect(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -95,43 +106,63 @@ export function BusinessNumberRegistration() {
       handleConnection(connection);
       return;
     }
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
       if (connection) {
         await clearBusinessConnection(access);
+        if (!request.current()) return;
         setConnection(null);
       }
       connectKey.current ??= crypto.randomUUID();
-      handleConnection(await createBusinessConnection(access, digits, connectKey.current));
+      const value = await createBusinessConnection(access, digits, connectKey.current);
+      if (request.current()) handleConnection(value);
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
       if (reason instanceof ApiError && reason.code === "COMPANY_ALREADY_VERIFIED") setStep("verified");
       else setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
   async function retryLookup() {
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
-      handleConnection(await getBusinessConnection(access));
+      const value = await getBusinessConnection(access);
+      if (!request.current()) return;
+      handleConnection(value);
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
       setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
   async function retryRestore() {
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
-      handleConnection(await getBusinessConnection(access));
+      const value = await getBusinessConnection(access);
+      if (!request.current()) return;
+      handleConnection(value);
       setRestoring(false);
       setRestoreFailed(false);
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
       if (reason instanceof ApiError && reason.status === 404) {
         setRestoring(false);
         setRestoreFailed(false);
@@ -139,7 +170,8 @@ export function BusinessNumberRegistration() {
         setError(errorMessage(reason));
       }
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
@@ -156,17 +188,24 @@ export function BusinessNumberRegistration() {
       positionName: representative ? null : positionName.trim(),
     };
     const payload = JSON.stringify(body);
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
       if (registerKey.current?.payload !== payload) registerKey.current = { payload, key: crypto.randomUUID() };
       const result = await createUnverifiedCompany(access, body, registerKey.current.key);
+      if (!request.current(true)) return;
       setDoneWarning(result.sessionWarning ?? null);
       setStep("done");
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      setRegistrationUncertain(reason instanceof ApiError && (reason.status < 400 || reason.status >= 500));
       setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
@@ -175,9 +214,9 @@ export function BusinessNumberRegistration() {
 
   const content = (
       <AuthCard>
-        {step === "input" || step === "enriching" || step === "not-found" || step === "verified" ? <AuthBack href="/auth/company/register" /> : null}
+        {step === "input" || step === "enriching" || step === "not-found" || step === "verified" ? <AuthBack href={companyFlowHref("register", flow)} onNavigate={() => scope.dispose()} /> : null}
         {step === "identity" || step === "evidence" || step === "preferences" ? (
-          <button className="mb-6 text-grayscale-600 type-body-3" onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
+          <button className="mb-6 text-grayscale-600 type-body-3" disabled={busy} onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
         ) : null}
         {step === "input" && restoring ? (
           <div className="space-y-4" role="status">
@@ -208,14 +247,14 @@ export function BusinessNumberRegistration() {
             <h1 className="text-grayscale-800 type-heading-7">회사를 찾을 수 없어요!</h1>
             <p className="text-grayscale-600 type-body-7">번호가 틀렸거나 신규 사업자라면 검색되지 않을 수 있어요.</p>
             <Button className="w-full" onClick={() => setStep("input")} variant="secondary">다른 번호 조회하기</Button>
-            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href="/auth/company/register/document">사업자등록증명서로 등록하기</Link>
+            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={companyFlowHref("document", flow)}>사업자등록증명서로 등록하기</Link>
           </div>
         ) : null}
         {step === "verified" ? (
           <div className="space-y-5">
             <h1 className="text-grayscale-800 type-heading-7">이미 인증된 회사 정보가 있어요!</h1>
             <p className="text-grayscale-600 type-body-7">기존 회사에 통합 요청을 보내면 합류할 수 있어요.</p>
-            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={`/auth/company/search?query=${encodeURIComponent(businessNumber.replace(/\D/g, ""))}`}>기존 회사 찾기</Link>
+            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={companyFlowHref("search", { ...flow, query: businessNumber.replace(/\D/g, ""), page: 0 })}>기존 회사 찾기</Link>
           </div>
         ) : null}
         {step === "identity" && profile ? (
@@ -238,9 +277,9 @@ export function BusinessNumberRegistration() {
             <Button className="h-14 w-full" disabled={busy || representative === null || !amountRange || (representative === false && !positionName.trim())} onClick={() => void register()}>{busy ? "등록하고 있어요..." : "메이트 시작하기"}</Button>
           </div>
         ) : null}
-        {step === "done" ? <RegistrationFinished verified={false} warning={doneWarning} /> : null}
-        <div className="mt-4"><AuthError message={error} /></div>
+        {step === "done" ? <RegistrationFinished fromSettings={flow.fromSettings} verified={false} warning={doneWarning} /> : null}
+        <div className="mt-4"><AuthError message={error} />{registrationUncertain ? <Link className="mt-3 block text-primary underline" href="/my/company">현재 회사 상태 확인하기</Link> : null}</div>
       </AuthCard>
   );
-  return step === "done" ? content : <AuthGate>{content}</AuthGate>;
+  return step === "done" ? content : <AuthGate nextPath={companyFlowHref("business-number", flow)} reauthenticate={reauthenticate}>{content}</AuthGate>;
 }

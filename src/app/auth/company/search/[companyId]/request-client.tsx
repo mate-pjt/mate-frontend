@@ -1,18 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { errorMessage } from "@/data/shared/errors";
+import { ApiError, errorMessage } from "@/data/shared/errors";
 import { getMembershipContext, requestMembership } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
 import type { MembershipApplicationContext } from "@/data/company/contracts";
+import { companyFlowCompletion, companyFlowHref, type CompanyFlow } from "@/lib/company-flow";
+import { useCompanyFlowScope } from "@/features/company/use-flow-scope";
+import { isMembershipSubmissionUncertain } from "@/features/company/membership-submission";
 
-export function MembershipApplication({ companyId }: { companyId: number }) {
-  const access = useAuthSession();
+export function MembershipApplication({ companyId, flow }: { companyId: number; flow: CompanyFlow }) {
+  const session = useAuthSession();
+  const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
+  const scope = useCompanyFlowScope();
   const [context, setContext] = useState<MembershipApplicationContext | null>(null);
   const [representative, setRepresentative] = useState<boolean | null>(null);
   const [positionId, setPositionId] = useState("");
@@ -21,25 +26,33 @@ export function MembershipApplication({ companyId }: { companyId: number }) {
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reauthenticate, setReauthenticate] = useState(false);
+  const [uncertain, setUncertain] = useState(false);
 
   useEffect(() => {
-    if (access.state.status !== "authenticated") return;
+    if (session.state.status !== "authenticated" || done) return;
     let active = true;
+    const request = scope.capture();
     void getMembershipContext(access, companyId).then((value) => {
-      if (active) setContext(value);
+      if (active && request.current()) setContext(value);
     }).catch((reason: unknown) => {
-      if (active) setError(errorMessage(reason));
+      if (active && request.current()) {
+        setError(errorMessage(reason));
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      }
     });
     return () => { active = false; };
-  }, [access, companyId]);
+  }, [access, companyId, done, scope, session.state.status]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!context || context.availability !== "AVAILABLE" || representative === null || busy) return;
+    if (!context || context.availability !== "AVAILABLE" || representative === null || busy || done || uncertain) return;
     if (!representative && !positionId && !customPosition.trim()) {
       setError("직급을 선택하거나 입력해 주세요.");
       return;
     }
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
@@ -50,23 +63,27 @@ export function MembershipApplication({ companyId }: { companyId: number }) {
         proposedPositionName: representative || positionId ? null : customPosition.trim(),
         message: message.trim() || null,
       });
-      setDone(true);
+      if (request.current()) setDone(true);
     } catch (reason) {
-      setError(errorMessage(reason));
+      if (request.current()) {
+        setError(errorMessage(reason));
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
+        setUncertain(isMembershipSubmissionUncertain(reason));
+      }
     } finally {
-      setBusy(false);
+      if (request.current()) setBusy(false);
+      request.finish();
     }
   }
 
-  return (
-    <AuthGate>
+  const content = (
       <AuthCard>
-        <AuthBack href="/auth/company/search" />
+        {!done ? <AuthBack href={companyFlowHref("search", flow)} onNavigate={() => scope.dispose()} /> : null}
         {done ? (
           <div className="space-y-5 text-center">
             <h1 className="text-grayscale-800 type-heading-7">통합 요청을 보냈어요!</h1>
             <p className="text-grayscale-600 type-body-3">회사 관리자가 요청을 확인한 뒤 결과를 알려드릴게요.</p>
-            <Link className="inline-block rounded-lg bg-primary px-5 py-3 text-white" href="/bids">입찰공고 둘러보기</Link>
+            {flow.fromSettings ? <ButtonLink className="w-full" href={companyFlowCompletion(flow)} size="xxl">마이페이지로 돌아가기</ButtonLink> : <Link className="inline-block rounded-lg bg-primary px-5 py-3 text-white" href="/bids">입찰공고 둘러보기</Link>}
           </div>
         ) : (
           <>
@@ -105,12 +122,13 @@ export function MembershipApplication({ companyId }: { companyId: number }) {
                   <span className="block text-right text-grayscale-600 type-body-7">{message.length}/150</span>
                 </label>
                 <AuthError message={error} />
-                <Button className="h-14 w-full" disabled={busy || representative === null || context.availability !== "AVAILABLE"} type="submit">{busy ? "요청하고 있어요..." : "통합 요청하기"}</Button>
+                {uncertain || context.availability === "ACTIVE_MEMBERSHIP_EXISTS" || context.availability === "PENDING_REQUEST_EXISTS" ? <Link className="block text-primary underline" href="/my/company">현재 회사 상태 확인하기</Link> : null}
+                <Button className="h-14 w-full" disabled={busy || uncertain || representative === null || context.availability !== "AVAILABLE"} type="submit">{busy ? "요청하고 있어요..." : "통합 요청하기"}</Button>
               </form>
             ) : <p>{error ?? "회사 정보를 불러오고 있어요."}</p>}
           </>
         )}
       </AuthCard>
-    </AuthGate>
   );
+  return done ? content : <AuthGate nextPath={companyFlowHref("request", flow, companyId)} reauthenticate={reauthenticate}>{content}</AuthGate>;
 }

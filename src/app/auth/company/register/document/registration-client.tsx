@@ -23,14 +23,18 @@ import {
 } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
 import type { BidAmountRange, CompanyRegistrationProposal, DocumentProcessing } from "@/data/company/contracts";
+import { companyFlowHref, type CompanyFlow } from "@/lib/company-flow";
+import { useCompanyFlowScope } from "@/features/company/use-flow-scope";
 
 const acceptedFileTypes: Record<string, string> = { pdf: "application/pdf", jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png" };
 type Step = "upload" | "processing" | "processing-failed" | "identity" | "evidence" | "preferences" | "verified" | "done";
 type DocumentTarget = { documentId: string; versionId: string };
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export function DocumentRegistration() {
+export function DocumentRegistration({ flow }: { flow: CompanyFlow }) {
   const session = useAuthSession();
+  const scope = useCompanyFlowScope();
+  const [reauthenticate, setReauthenticate] = useState(false);
   const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const inputRef = useRef<HTMLInputElement>(null);
   const uploadKey = useRef<{ signature: string; key: string } | null>(null);
@@ -52,6 +56,7 @@ export function DocumentRegistration() {
   const [amountRange, setAmountRange] = useState<BidAmountRange | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [registrationUncertain, setRegistrationUncertain] = useState(false);
   const [doneWarning, setDoneWarning] = useState<string | null>(null);
   const [restoring, setRestoring] = useState(true);
   const accountId = session.state.status === "authenticated" ? session.state.authentication.account.id : null;
@@ -99,12 +104,13 @@ export function DocumentRegistration() {
     const currentAccountId = accountId;
     if (step !== "processing" || !target || currentAccountId === null) return;
     let active = true;
+    const request = scope.capture();
     let timer: number | undefined;
     async function poll() {
       if (!target) return;
       try {
         const value = await getDocumentProcessing(access, target.documentId);
-        if (!active) return;
+        if (!active || !request.current()) return;
         setProcessing(value);
         if (value.status === "VERIFIED") {
           if (currentAccountId !== null) {
@@ -116,7 +122,7 @@ export function DocumentRegistration() {
         if (value.status === "COMPANY_CONFIRMATION_REQUIRED" && value.proposalId) {
           try {
             const next = await getRegistrationProposal(access, value.proposalId);
-            if (!active) return;
+            if (!active || !request.current()) return;
             setProposal(next);
             setTelephoneNumber(next.telephoneNumber ?? "");
             setIndustry(next.primaryIndustry);
@@ -126,7 +132,8 @@ export function DocumentRegistration() {
             setStep("identity");
             return;
           } catch (reason) {
-            if (!active) return;
+            if (!active || !request.current()) return;
+            setReauthenticate(reason instanceof ApiError && reason.status === 401);
             if (reason instanceof ApiError && reason.code === "COMPANY_ALREADY_VERIFIED") {
               if (currentAccountId !== null) {
                 try { window.sessionStorage.removeItem(documentStorageKey(currentAccountId)); } catch { /* Storage may be unavailable. */ }
@@ -150,17 +157,20 @@ export function DocumentRegistration() {
         }
         timer = window.setTimeout(() => { void poll(); }, 1000);
       } catch (reason) {
-        if (!active) return;
+        if (!active || !request.current()) return;
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
         setError(errorMessage(reason));
         setStep("processing-failed");
       }
     }
     void poll();
     return () => { active = false; window.clearTimeout(timer); };
-  }, [access, accountId, step, target]);
+  }, [access, accountId, scope, step, target]);
 
   async function upload() {
     if (!file || busy) return;
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
@@ -169,8 +179,11 @@ export function DocumentRegistration() {
       const uploadSession = target
         ? await createDocumentVersion(access, target.documentId, target.versionId, file, uploadKey.current.key)
         : await createDocumentUpload(access, file, uploadKey.current.key);
+      if (!request.current()) return;
       await uploadDocumentFile(access, uploadSession.uploadHandle, file);
+      if (!request.current()) return;
       await completeDocumentUpload(access, uploadSession.documentId, uploadSession.versionId);
+      if (!request.current()) return;
       const nextTarget = { documentId: uploadSession.documentId, versionId: uploadSession.versionId };
       if (accountId !== null) {
         try { window.sessionStorage.setItem(documentStorageKey(accountId), JSON.stringify(nextTarget)); } catch { /* Storage may be unavailable. */ }
@@ -180,9 +193,12 @@ export function DocumentRegistration() {
       setProcessing(null);
       setStep("processing");
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
       setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
@@ -199,27 +215,44 @@ export function DocumentRegistration() {
       return;
     }
     const kind = processing.status === "OCR_FAILED" ? "ocr" : "verification";
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
       retryKey.current ??= crypto.randomUUID();
       await retryDocumentProcessing(access, target.documentId, target.versionId, kind, retryKey.current);
+      if (!request.current()) return;
       retryKey.current = null;
       setStep("processing");
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
       setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
   async function searchIndustries(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
-    try { setIndustries(await getIndustries(industryQuery.trim())); }
-    catch (reason) { setError(errorMessage(reason)); }
-    finally { setBusy(false); }
+    try {
+      const value = await getIndustries(industryQuery.trim());
+      if (request.current()) setIndustries(value);
+    } catch (reason) {
+      if (request.current()) {
+        setError(errorMessage(reason));
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      }
+    } finally {
+      if (request.current()) setBusy(false);
+      request.finish();
+    }
   }
 
   async function register() {
@@ -252,20 +285,27 @@ export function DocumentRegistration() {
       businessNumberCorrectionChoice: correctNumber ? "CORRECT_CURRENT_UNVERIFIED" as const : null,
     };
     const payload = JSON.stringify(body);
+    const request = scope.begin();
+    if (!request) return;
     setBusy(true);
     setError(null);
     try {
       if (registerKey.current?.payload !== payload) registerKey.current = { payload, key: crypto.randomUUID() };
       const result = await createVerifiedCompany(access, body, registerKey.current.key);
+      if (!request.current(true)) return;
       if (accountId !== null) {
         try { window.sessionStorage.removeItem(documentStorageKey(accountId)); } catch { /* Storage may be unavailable. */ }
       }
       setDoneWarning(result.sessionWarning ?? (result.conflict ? "기존 회사와의 합치기 제안은 별도 검토를 거쳐 처리됩니다." : null));
       setStep("done");
     } catch (reason) {
+      if (!request.current()) return;
+      setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      setRegistrationUncertain(reason instanceof ApiError && (reason.status < 400 || reason.status >= 500));
       setError(errorMessage(reason));
     } finally {
-      setBusy(false);
+      if (request.current(true)) setBusy(false);
+      request.finish();
     }
   }
 
@@ -276,9 +316,9 @@ export function DocumentRegistration() {
   const content = (
       <AuthCard>
         {restoring ? <p className="text-grayscale-700 type-body-3" role="status">이전 증명서 처리 상태를 확인하고 있어요.</p> : null}
-        {step === "upload" || step === "processing" || step === "processing-failed" || step === "verified" ? <AuthBack href="/auth/company/register" /> : null}
+        {step === "upload" || step === "processing" || step === "processing-failed" || step === "verified" ? <AuthBack href={companyFlowHref("register", flow)} onNavigate={() => scope.dispose()} /> : null}
         {step === "identity" || step === "evidence" || step === "preferences" ? (
-          <button className="mb-6 text-grayscale-600 type-body-3" onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
+          <button className="mb-6 text-grayscale-600 type-body-3" disabled={busy} onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
         ) : null}
         {step === "upload" && !restoring ? (
           <div className="space-y-5">
@@ -323,7 +363,7 @@ export function DocumentRegistration() {
           <div className="space-y-5">
             <h1 className="text-grayscale-800 type-heading-7">이미 인증된 회사 정보가 있어요!</h1>
             <p className="text-grayscale-600 type-body-7">서류 검증이 완료된 회사로 통합 요청이 필요해요.</p>
-            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={`/auth/company/search?query=${encodeURIComponent(processing?.extractedFields?.businessNumber ?? "")}`}>팀원으로 합류하기</Link>
+            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={companyFlowHref("search", { ...flow, query: processing?.extractedFields?.businessNumber ?? "", page: 0 })}>팀원으로 합류하기</Link>
           </div>
         ) : null}
         {step === "identity" && proposal && profile ? (
@@ -376,9 +416,9 @@ export function DocumentRegistration() {
             <Button className="h-14 w-full" disabled={busy || representative === null || !amountRange || (representative === false && !positionName.trim())} onClick={() => void register()}>{busy ? "등록하고 있어요..." : "메이트 시작하기"}</Button>
           </div>
         ) : null}
-        {step === "done" ? <RegistrationFinished verified warning={doneWarning} /> : null}
-        <div className="mt-4"><AuthError message={error} /></div>
+        {step === "done" ? <RegistrationFinished fromSettings={flow.fromSettings} verified warning={doneWarning} /> : null}
+        <div className="mt-4"><AuthError message={error} />{registrationUncertain ? <Link className="mt-3 block text-primary underline" href="/my/company">현재 회사 상태 확인하기</Link> : null}</div>
       </AuthCard>
   );
-  return step === "done" ? content : <AuthGate>{content}</AuthGate>;
+  return step === "done" ? content : <AuthGate nextPath={companyFlowHref("document", flow)} reauthenticate={reauthenticate}>{content}</AuthGate>;
 }

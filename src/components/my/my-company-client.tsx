@@ -214,7 +214,7 @@ function StartChoices({ previousRequest }: { previousRequest: MembershipRequest 
       <h1 className="type-heading-5 text-grayscale-800">반가워요!<br />메이트를 어떻게 시작할까요?</h1>
       {statusText && <p className="mt-4 rounded-xl bg-grayscale-50 p-4 type-body-3 text-grayscale-700" role="status">{statusText}</p>}
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Link className="flex min-h-[272px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100 focus-visible:outline-2 focus-visible:outline-primary-400 sm:p-8" href="/auth/company/register">
+        <Link className="flex min-h-[272px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100 focus-visible:outline-2 focus-visible:outline-primary-400 sm:p-8" href="/auth/company/register?from=settings">
           <span className="rounded-md bg-primary-100 px-2 py-1 type-body-7 text-primary">메이트 추천</span>
           <Image alt="" height={80} src="/icon/24dp/company.svg" width={80} />
           <span className="flex flex-col gap-2">
@@ -222,7 +222,7 @@ function StartChoices({ previousRequest }: { previousRequest: MembershipRequest 
             <span className="type-body-3 text-grayscale-600">우리 회사를 등록하고<br />메이트 서비스를 사용해요!</span>
           </span>
         </Link>
-        <Link className="flex min-h-[272px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100 focus-visible:outline-2 focus-visible:outline-primary-400 sm:p-8" href="/auth/company/search">
+        <Link className="flex min-h-[272px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100 focus-visible:outline-2 focus-visible:outline-primary-400 sm:p-8" href="/auth/company/search?from=settings">
           <span aria-hidden className="invisible rounded-md px-2 py-1 type-body-7">메이트 추천</span>
           <Image alt="" height={80} src="/icon/24dp/search_color.svg" width={80} />
           <span className="flex flex-col gap-2">
