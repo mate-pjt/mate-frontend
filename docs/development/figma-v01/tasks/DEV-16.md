@@ -73,3 +73,15 @@
 - 범위/소유: membership 신청과 회사 간 merge를 UI에서 모두 통합 요청으로 부르는 문맥을 POL-11에서 결정한다. 실제 endpoint는 membership이며 merge 실행 결함으로 단정하지 않는다.
 - 추가 완료/재개 기준: 가입/설정 진입별 next/return·이미연결/신청대기·대표/팀원/직급·중단/오류·완료 목적지를 검증한다. 직급은 현재 submit validation이 있으므로 누락으로 오인하지 않는다.
 - 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
+
+<a id="dev-16-pol-11-handoff"></a>
+
+## 2026-11-13 · POL-11의 승인 정책 인계
+
+- 정책 근거: [POL-11 D1/D2·원문/Brief](POL-11.md#pol-11-decisions) · [정책 v1](POL-11.md#pol-11-contract) · [frame/source 대조](POL-11.md#pol-11-investigation). 이번에는 후속 범위/재개 기준만 갱신했으며 DEV-16의 조사/Brief·설계·구현·검증·Git 전달은 시작하지 않았다.
+- D1: 기존 `/auth/company` 등록/찾기를 재사용한다. 설정에서 진입하면 모든 중간 링크·검색→신청/등록·번호↔문서/합류·로그인 왕복에 문맥을 유지한다. 최상위 Back은 `/my/company/start`, 하위 Back은 앞 단계, 설정 완료 버튼은 고정 `/my/company`다. Figma 등록 완료 버튼 문구는 ‘마이페이지로 돌아가기’. 기존 가입 진입/완료 `/bids`·건너뛰기 next 의미는 유지한다.
+- D2: **Figma의 ‘통합 요청’을 유지하고 설명을 추가하지 않는다.** ‘소속 신청’으로 바꾸자는 추천은 미채택이다. 새 설명/tooltip·배너를 만들지 않으며 Figma가 바뀌면 별도 Gate에서 재검토한다. 내부 membership와 회사 간 합치기의 소유 정책/API 구분은 유지한다. 현재의 모든 시각 차이에 대한 예외 승인은 아니다.
+- 구현 범위 후보: `components/my/my-company-client.tsx`의 진입 링크, `app/auth/company/{register,search}`의 페이지/클라이언트와 공유 등록 완료, `auth-gate`/기존 auth 복귀 유틸에 대한 좁은 조합, 의미 있는 순수 복귀/계정 수명 테스트·기존 QA. 정확한 수정 파일/URL 표현은 새 요구사항 Gate에서 확인한다. 새로운 Repository/API·회사 합치기/초대 관리·취소 정책 변경·등록/OCR 재설계는 제외한다.
+- 추가 완료 기준: [RCTX-01~15](../../../qa/my-company.md#pol-11-return-qa)의 설정/가입·전환/Back·direct/reload·안전한 return·대표/팀원/직급·이미소속/신청/초대·401/403·중복/오류/계정·완료 후 경고와 Figma 문구를 검증한다. 등록/신청 완료의 실제 최신 overview와 시각 상태를 구분하고, 기존 DEV-15의 본인 취소·Sonner1회·이력과 QA-05/06/07/08 차단/예외를 회귀로 보존한다.
+- 실제 QA Gate: 현재 frontend/backend 실행 SHA와 배포의 대응, 실제 wrapper/생성201 vs 게시200·필수 입력/권한·409, disposable 미연결/연결/PENDING/종료/초대·대표/팀원 계정/회사·정확한 기대값, 합성 번호/비식별 증명서·처리/잔존/복구·오류 재현 자원이 필요하다. 사용할 자원/실제 변경 범위·복구 담당/방법은 아직 확보하지 않았다. POL-11의 정책/문서 PASS·Git/Chromatic 예외가 실제 QA 면제나 DEV-16 로컬 선행 예외를 만들지 않는다.
+- 다음 자체 Gate 첫 행동: 최신 Git/main·이 정책/인계·현재 관련 source/Figma/개발 Swagger의 변경 유무를 확인하고, URL 문맥/allowlist·후보 파일·계정 수명/완료 및 실제 QA 자원·승인 범위를 담은 Brief/검증 계획을 편집 전에 제시한다. 필요한 미준비 조건만 질문하며 준비 상태를 추정하지 않는다.
