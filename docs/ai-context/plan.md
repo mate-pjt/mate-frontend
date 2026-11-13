@@ -219,3 +219,8 @@ Final reports should include:
 ## 2026-11-13 · 정정 차수 정책의 제공 경계
 
 [POL-08 v1](../development/figma-v01/tasks/POL-08.md#pol-08-contract)은 현재 정정 사실과 동일 번호의 수집 차수 조회를 구분하고 실제 ID의 공고 전체 이동/뒤로 가기 복귀를 사용자 결정으로 기록한다. 추가 조사에서 기존 no-view 공개 목록의 조회 경로와 공개 GET3건을 확인했지만, 사용자는 **전용 backend 계약을 먼저 마련한 뒤 구현**하기로 확정했고 backend 개발자에게 요청했다고 보고했다. [DEV-13 재개 표](../development/figma-v01/tasks/POL-08.md#pol-08-backend-request)와 [기존 QA 후속 기준](../qa/bid-detail.md#pol-08-followup)을 따른다. 정책 문서·제한된 계약 조사와 전용 계약 확정/제품 연결/실제 복수 차수 통합은 별개다. 기존 실제 QA/승인 예외는 유지하며 현재/다음/상태는 WBS만 관리한다.
+
+
+## 2026-11-13 · 원문 본문·추가 일자 제공의 계약 선행
+
+[POL-09 v1](../development/figma-v01/tasks/POL-09.md#pol-09-contract)은 사용자 결정 ‘추가 정보 제공 추진·백엔드 계약부터 정리’에 따라 원문 자격사항/지시사항 본문·현장설명 일시·기준일/수집일의 계약 요구와 [DEV-14 재개 Gate](../development/figma-v01/tasks/DEV-14.md#dev-14-pol-09-handoff)를 연결한다. 실제 공개 계약·날짜의 개별 원천/산출 의미·본문 형식/안전한 표시 책임·배포/실행 대응·검증 자원은 미확보이며 제품 구현·실제 통합은 미실행이다. 현재 Figma 차이는 승인 예외로 닫지 않는다. 기존 공동수급 협정 마감/원문 링크·기준선/감사/실제 QA·타 Task 차단/승인 예외를 보존하며 현재/다음/상태는 WBS만 관리한다.

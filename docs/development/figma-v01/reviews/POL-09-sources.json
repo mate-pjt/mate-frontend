@@ -1,0 +1,133 @@
+{
+  "task": "POL-09",
+  "observedAt": "2026-11-13 KST",
+  "frontendBase": "3fb4742370d83a578b241037e872ec5a1d24a7ae",
+  "policyApproval": {
+    "decisionMaker": "사용자",
+    "decidedAt": "2026-11-13 KST",
+    "verbatim": "추가 정보 제공 추진·백엔드 계약부터 정리",
+    "scope": "정책/후속 계약 요구 문서화; 실제 계약과 구현은 미확보",
+    "rejectedRecommendation": "현행 유지·Figma 차이 승인·DEV-14 보류",
+    "figmaExceptionGranted": false,
+    "codexBackendRequestSent": false,
+    "externalBackendRequestStatus": "unverified"
+  },
+  "sources": [
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeDetailResponse.kt",
+      "blobSha": "4892a61753bdea36ff6b544dcb2a78c39c57cad1",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeDetailResponse.kt"
+    },
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/overview.md",
+      "blobSha": "db87e70ee1e50f8ab799648143aaca058d47c903",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/overview.md"
+    },
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/api/bid-notices.md",
+      "blobSha": "3d2003083cd948cc4e5be625efe61002cc3b33bc",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/api/bid-notices.md"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryService.kt",
+      "blobSha": "00b741ddc657600ded877fed7c5575b57103925a",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryService.kt"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeQueryResponseMapper.kt",
+      "blobSha": "55ec1229a2e257d1164015e1e81c00e85d1cf228",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeQueryResponseMapper.kt"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryResultMapper.kt",
+      "blobSha": "e5bed7afe6af6acca95204255771446709b54d20",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryResultMapper.kt"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/result/BidNoticeDetailReadModel.kt",
+      "blobSha": "d4f15d806e41dce1b3478c7ff63ee64b3ac76264",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/result/BidNoticeDetailReadModel.kt"
+    }
+  ],
+  "figma": {
+    "fileKey": "Eayi1SWD8Xq8tGBmlp5SV2",
+    "method": "get_metadata and three targeted card screenshots; no all-frame/pixel audit",
+    "referenceDateExample": "2026.05.28 (Figma example only; meaning not defined by public API)",
+    "screenshotNodes": ["2181:70267", "2154:10878", "2175:69728"],
+    "frames": [
+      {
+        "nodeId": "2113:19107",
+        "state": "공사 상세 로그인 전",
+        "siteExplanationDateNode": "2154:10879",
+        "siteExplanationExample": "-",
+        "qualificationTitleNode": "2181:70269",
+        "collectionDateNode": "2175:69823",
+        "collectionExample": "2026.05.28 19:24"
+      },
+      {
+        "nodeId": "2181:69353",
+        "state": "공사 상세 로그인 후(인증회사)",
+        "siteExplanationDateNode": "3184:52791",
+        "siteExplanationExample": "-",
+        "qualificationTitleNode": "3184:52915",
+        "collectionDateNode": "3184:53020",
+        "collectionExample": "2026.05.28 19:24"
+      }
+    ]
+  },
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "httpStatus": 200,
+    "openapi": "3.1.0",
+    "version": "v1",
+    "originalNoticeProperties": [
+      "available",
+      "noticeUrl"
+    ],
+    "originalPreviewDescription": "1차 false",
+    "scheduleProperties": [
+      "noticePublishedAt",
+      "bidQualificationRegistrationDeadlineAt",
+      "bidBeginAt",
+      "bidCloseAt",
+      "openAt"
+    ],
+    "eligibilitySiteExplanationKey": "siteExplanationRequired",
+    "sectionTimeProperties": [
+      "lastAttemptedAt",
+      "lastSuccessfulAt",
+      "sourceVersionAt"
+    ],
+    "globalCollectionTimestamp": "not in public detail schema",
+    "siteExplanationTimestamp": "not in public detail schema",
+    "textBody": "not in public detail schema"
+  },
+  "limits": {
+    "runningServerCommit": "unverified",
+    "deploymentToSourceCorrespondence": "unverified",
+    "businessRequests": 0,
+    "mutations": 0,
+    "externalOriginalPageVisits": 0,
+    "liveIntegration": "not run",
+    "newProductVerification": "not run"
+  },
+  "notes": [
+    "Backend Kotlin and frontend DTO use isSiteExplanationRequired; development OpenAPI lists siteExplanationRequired. Wire key not confirmed by a business response.",
+    "section-specific timestamps do not define a whole-notice collection date",
+    "Storage/raw-source existence is not inferred from absence in public response"
+  ]
+}

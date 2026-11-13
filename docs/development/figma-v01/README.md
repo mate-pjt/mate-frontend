@@ -5,12 +5,14 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-13 KST |
-| 현재 작업 | 없음 — [POL-08](tasks/POL-08.md#pol-08-close) 정책/문서 검증·두 리뷰 PASS. 전용 API/DEV-13 구현·실제 통합은 미완료로 보존. Git 전달은 최종 PR/head·receipt·보고에서 확인 |
-| 다음 작업 | [POL-09 · 원문 본문·추가 일자 제공 범위 결정](tasks/POL-09.md#pol-09-pol-08-handoff) — P2·DOC-001 선행 완료. 선정/인계만, 자체 Gate 전 실행 안 함 |
+| 현재 작업 | 없음 — [POL-09](tasks/POL-09.md#pol-09-close) 추가 제공/계약 선행 정책·문서 검증/두 리뷰 PASS. 실제 계약·DEV-14 구현/통합은 미완료. 최종 Git 전달은 PR/head·receipt·보고로 별도 확인 |
+| 다음 작업 | [POL-10 · 소속 신청 취소 계약·권한 결정](tasks/POL-10.md#pol-10-pol-09-handoff) — P2·DOC-001 선행 완료. 선정/인계만, 자체 Gate 전 실행 안 함 |
+| POL-09 이번 승인 범위 | 2026-11-13 사용자: POL-09 정책·문서 검증/두 리뷰·목적별 commit/push·PR·최종 CI/정상 main 병합·로컬 동기화. 이번 Chromatic 월간 한도만 예외. 제품/다른 Task 실행·업무/중앙 문서/외부 메시지·운영/배포 제외. [조사/질문](tasks/POL-09.md#pol-09-investigation) |
 | POL-08 이번 승인 범위 | 2026-11-13 사용자: POL-08 정책·문서 검증/두 리뷰·목적별 commit/push·PR·최종 CI/정상 main 병합·로컬 동기화. 이번 Chromatic 월간 한도만 예외. 제품/업무 API 변경·중앙 저장소 편집·외부 메시지·운영/배포·다음 Task 실행 제외. [조사/결정](tasks/POL-08.md#pol-08-investigation) |
 | DEV-11 이번 승인 범위 | 2026-11-12 사용자 요청6항의 Git 전달·이번 Chromatic 한도 예외와 추가 답변 ‘로컬 선행·실서버 QA 차단 보존 (추천)’. 실제 업무/계정 변경·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-11.md#dev-11-brief) |
 | DEV-10 이번 승인 범위 | 2026-11-12 사용자: DEV-10 개발·검증·두 리뷰·목적별 commit/push·PR·CI·정상 main 병합/로컬 동기화. 이번 Chromatic 월간 한도 예외, 로컬 선행/실제 API 차단 보존 답변과 실제 HTTP 연결 구현을 구분. [Brief](tasks/DEV-10.md#dev-10-brief) |
-| 다음 첫 행동 | 새 대화에서 최신 main/Git·POL-09 정의/선행·원문 링크/본문·현장설명 일시/수집 기준일의 현행 소유 정책·source/Swagger/Figma를 대조하고 정책 Brief부터 제시 |
+| 다음 첫 행동 | 새 대화에서 최신 Git/main·POL-10 정의/인계·현행 소속 신청 정책/source/개발 Swagger와 취소 명령·권한/동시 승인/expectedVersion/409·목적지/검증 자원을 대조해 정책 Brief부터 제시 |
+| DEV-14 외부 조건 | [POL-09 사용자 결정](tasks/POL-09.md#pol-09-contract): 본문·현장설명 일시·기준일/수집일 추가 추진, 실제 backend 계약·실행 대응/비식별 검증 자원 선행. 요청 발송/접수·일정 미확인, 구현 미착수·현재 차이에 대한 Figma 예외 승인 없음. [재개 Gate](tasks/DEV-14.md#dev-14-pol-09-handoff) |
 | DEV-13 외부 조건 | 2026-11-13 사용자 전용 backend 이전 차수 계약 선행 확정·개발자에게 요청 발송 보고. 기존 no-view 조회 경로는 미채택. 실제 계약/접수·일정·배포/실행 대응·합성 검증 자원은 미확보이며 [재개 Gate](tasks/DEV-13.md#dev-13-pol-08-handoff) 전 구현/로컬 선행 예외 없음 |
 | DEV-09 이번 승인 범위 | 2026-11-12 사용자: DEV-09 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API 변경/메일·문서 처리/운영·배포는 별도 범위 확인. 다음 Task는 선정/인계만. [사전 조사](tasks/DEV-09.md#dev-09-investigation) |
 | DEV-62 이번 승인 범위 | 2026-11-12 사용자: DEV-62 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API·메일/문서 처리·서비스 운영/배포와 다음 Task 실행 제외. [Brief](tasks/DEV-62.md#dev-62-brief) |
@@ -123,9 +125,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-12 · 개찰결과 낙찰금액 필터 연결](tasks/DEV-12.md) · **사용자 D2: 서버 필터 계약 확보 전 보류** | 개발 | P2 | 보류 | L10 | [POL-07](tasks/POL-07.md) |
 | [POL-08 · 정정 이력 조회·선택 계약 확정](tasks/POL-08.md) · **정책/문서 PASS·전용 API 실계약/제품 구현은 DEV-13 재개 조건** | 정책 결정 | P2 | 완료 | D06, C02 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-13 · 상세 정정 이력 팝업·선택 연결](tasks/DEV-13.md) · **사용자 전용 backend 계약 선행·요청 발송 보고, 계약/제품 미확보** | 개발 | P2 | 차단 | D06, C02 | [POL-08](tasks/POL-08.md) |
-| [POL-09 · 원문 본문·추가 일자 제공 범위 결정](tasks/POL-09.md) | 정책 결정 | P2 | 준비 | D10 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-14 · 승인된 원문·추가 일자 표시](tasks/DEV-14.md) | 개발 | P2 | 대기 | D10 | [POL-09](tasks/POL-09.md) |
-| [POL-10 · 소속 신청 취소 계약·권한 결정](tasks/POL-10.md) | 정책 결정 | P2 | 대기 | M05 | [DOC-001](tasks/DOC-001.md) |
+| [POL-09 · 원문 본문·추가 일자 제공 범위 결정](tasks/POL-09.md) · **추가 제공/계약 선행 정책·문서 PASS, 실제 계약/제품은 후속** | 정책 결정 | P2 | 완료 | D10 | [DOC-001](tasks/DOC-001.md) |
+| [DEV-14 · 승인된 원문·추가 일자 표시](tasks/DEV-14.md) · **추가 제공 추진·backend 실제 계약/검증 Gate 선행, 구현 미착수** | 개발 | P2 | 차단 | D10 | [POL-09](tasks/POL-09.md) |
+| [POL-10 · 소속 신청 취소 계약·권한 결정](tasks/POL-10.md) | 정책 결정 | P2 | 준비 | M05 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-15 · 소속 신청 취소 실행 연결](tasks/DEV-15.md) | 개발 | P2 | 대기 | M05 | [POL-10](tasks/POL-10.md) |
 | [POL-11 · 회사 찾기/등록 재사용 동선 결정](tasks/POL-11.md) | 정책 결정 | P2 | 대기 | M06 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-16 · 회사 찾기/등록의 관리 화면 복귀 보완](tasks/DEV-16.md) | 개발 | P2 | 대기 | M06 | [POL-11](tasks/POL-11.md) |

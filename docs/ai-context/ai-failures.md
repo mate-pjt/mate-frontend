@@ -208,3 +208,16 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 기존 API로 공개 수집 차수를 조회할 경로가 있다는 점과 부분 검색/페이지/수집 완전성 한계를 설명하고 초기 연결 불가 판단을 정정했다. 사용자가 최종 선택한 전용 계약 선행은 별도 정책 결정으로 기록한다. 이 결정이 초기 단정을 사후 정당화하지 않는다.
 - Prevention rule: 미지원 판단 전 저장 identity→기존 조회 입력/필터→응답 식별자/페이지→공개 경계→현재 소비 계층을 대조한다. 데이터 부재/전용 계약 부재/조합 가능성/전체 이력 보장은 구분하고 제한된 성공 응답을 제품 통합 PASS로 확대하지 않는다.
 - Related files: `docs/development/figma-v01/tasks/POL-08.md`, `docs/development/figma-v01/reviews/POL-08-sources.json`. 새 endpoint/제품 구현은 하지 않았다.
+
+<a id="pol-09-asset-output"></a>
+
+## 2026-11-13 - POL-09 Figma 임시 이미지 주소 출력 재발
+
+- Task: POL-09 정책 설명을 위한 관련 Figma 카드 screenshot 조회.
+- Expected behavior: tool 응답의 임시 asset 주소를 내부 다운로드에만 사용하고, 사용자에게는 영속 Figma node 링크·로컬 이미지 파일을 전달한다.
+- Actual failure: screenshot 응답의 text content를 그대로 출력해 임시 asset 주소가 도구 출력에 포함됐다. 실제 주소는 다시 기록하지 않는다. 환경파일·실제 계정 credential을 읽은 사건과 구분한다.
+- Root cause: 기존 allowlist 원칙을 Git/source/Figma metadata에는 적용했지만 screenshot 응답에는 같은 출력 경계를 적용하지 않았다.
+- Detection command or review step: primary가 출력 직후 확인해 사용자에게 알리고 부분 이미지를 로컬 파일로 전달했다.
+- Fix: 이후 URL은 내부 파싱/다운로드 인자에만 사용하고 node ID·크기·로컬 경로·종료 코드만 출력한다. 문서/PR/receipt에 임시 URL을 복사하지 않는다. 이전 출력 삭제를 주장하지 않는다.
+- Prevention rule: 이미지 응답도 외부 원문이다. `content`를 그대로 출력하지 않고 매 응답 종류마다 허용 필드의 새 객체를 만든다.
+- Related files: `docs/development/figma-v01/tasks/POL-09.md`, `docs/development/figma-v01/reviews/POL-09-context.md`. 제품/하네스 설정 변경 없음.
