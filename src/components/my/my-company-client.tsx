@@ -2,20 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 import { StrokeLeftArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
+import { showToast } from "@/components/ui/toast";
 import { ApiError, errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
+import { createMembershipCancellationController } from "@/features/company/membership-cancellation";
 import {
+  cancelMembershipRequest,
   getMyCompanyOverview,
   type CompanyBasicProfile,
   type MyMembershipRequest as MembershipRequest,
 } from "@/data/company/client";
 
 import { MySideMenu } from "./my-side-menu";
+import { MembershipCancellationDialog } from "./membership-cancellation-dialog";
 
 type CompanyView = "overview" | "start";
 type LoadState =
@@ -24,6 +29,7 @@ type LoadState =
   | { status: "pending" | "terminated" | "approved-stale"; request: MembershipRequest }
   | { status: "connected"; profile: CompanyBasicProfile }
   | { status: "denied" }
+  | { status: "unauthorized" }
   | { status: "error"; message: string };
 
 export function MyCompanyClient({ view }: { view: CompanyView }) {
@@ -67,29 +73,68 @@ export function MyCompanyClient({ view }: { view: CompanyView }) {
 }
 
 function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }: AuthAccess & { view: CompanyView }) {
+  const router = useRouter();
   const [result, setResult] = useState<LoadState>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
+  const [selection, setSelection] = useState<MembershipRequest | null>(null);
+  const [pending, setPending] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const cancellation = useRef<ReturnType<typeof createMembershipCancellationController> | null>(null);
+  const content = useRef<HTMLElement>(null);
+  const focusResult = useRef(false);
+
+  useEffect(() => {
+    if (focusResult.current) { content.current?.focus(); focusResult.current = false; }
+  }, [result]);
 
   useEffect(() => {
     const controller = new AbortController();
     const access = { getAccessToken, refresh, getAccountKey };
+    const account = getAccountKey();
+    const actions = createMembershipCancellationController({
+      getAccountKey,
+      cancel: (requestId, version) => cancelMembershipRequest(access, requestId, version),
+      load: (signal) => getMyCompanyOverview({ ...access, refresh: () => refresh({ preserveOnError: true }) }, signal),
+      onPending: setPending,
+      onCommitted: ({ request, sessionWarning }) => {
+        focusResult.current = true;
+        setSelection(null);
+        setResult({ status: "terminated", request });
+        setNotice(sessionWarning ?? null);
+        showToast("성공적으로 통합 요청을 취소했어요!");
+        if (view === "start") router.replace("/my/company");
+      },
+      onOverview: setResult,
+      onError: (message, error) => {
+        focusResult.current = true;
+        setSelection(null);
+        setResult(error instanceof ApiError && error.status === 401 ? { status: "unauthorized" } : { status: "error", message });
+      },
+      onNotice: setNotice,
+    });
+    cancellation.current = actions;
 
     async function load() {
       try {
         const overview = await getMyCompanyOverview(access, controller.signal);
-        if (!controller.signal.aborted) setResult(overview);
+        if (!controller.signal.aborted && account === getAccountKey()) setResult(overview);
       } catch (error) {
-        if (controller.signal.aborted) return;
-        if (error instanceof ApiError && error.status === 403) setResult({ status: "denied" });
+        if (controller.signal.aborted || account !== getAccountKey()) return;
+        if (error instanceof ApiError && error.status === 401) setResult({ status: "unauthorized" });
+        else if (error instanceof ApiError && error.status === 403) setResult({ status: "denied" });
         else setResult({ status: "error", message: errorMessage(error) });
       }
     }
 
     void load();
-    return () => controller.abort();
-  }, [attempt, getAccessToken, refresh, getAccountKey]);
+    return () => { controller.abort(); actions.dispose(); cancellation.current = null; };
+  }, [attempt, getAccessToken, refresh, getAccountKey, router, view]);
 
   function retry() {
+    cancellation.current?.dispose();
+    setPending(false);
+    setSelection(null);
+    setNotice(null);
     setResult({ status: "loading" });
     setAttempt((current) => current + 1);
   }
@@ -101,18 +146,26 @@ function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }
   return (
     <div className="mx-auto flex w-full max-w-[1668px] flex-1 flex-col gap-6 px-4 pb-24 pt-[30px] sm:px-6 lg:flex-row xl:px-0">
       <MySideMenu value="company" />
-      <section className="min-w-0 w-full max-w-[1180px]" id="my-company-content">
+      <section className="min-w-0 w-full max-w-[1180px] focus:outline-none" id="my-company-content" ref={content} tabIndex={-1}>
+        {notice && <div className="mb-4 rounded-xl bg-grayscale-50 p-4 type-body-3 text-grayscale-700" role="status"><p>{notice}</p><Button className="mt-3" disabled={pending} onClick={retry} variant="outline">다시 확인하기</Button></div>}
         {result.status === "loading" && <StatusMessage message="회사 정보를 확인하고 있어요." />}
         {result.status === "error" && <StatusMessage message={result.message} onRetry={retry} />}
         {result.status === "denied" && <StatusMessage message="회사 정보를 볼 권한이 없어요. 회사 관리자에게 권한을 확인해 주세요." onRetry={retry} />}
+        {result.status === "unauthorized" && <div className="grid min-h-[520px] place-items-center text-center"><div><p className="mb-5 type-body-3 text-grayscale-600" role="alert">로그인이 필요해요. 다시 로그인한 뒤 신청 상태를 확인해 주세요.</p><ButtonLink href={`/auth?mode=login&next=${encodeURIComponent(view === "start" ? "/my/company/start" : "/my/company")}`}>로그인하기</ButtonLink></div></div>}
         {result.status === "empty" && <EmptyCompany />}
-        {result.status === "pending" && <PendingRequest request={result.request} />}
-        {result.status === "terminated" && <TerminatedRequest request={result.request} />}
+        {result.status === "pending" && <PendingRequest onCancel={() => setSelection(structuredClone(result.request))} pending={pending} request={result.request} />}
+        {result.status === "terminated" && (result.request.status === "CANCELED" ? <EmptyCompany /> : <TerminatedRequest request={result.request} />)}
         {result.status === "approved-stale" && (
           <StatusMessage message="소속 신청은 승인됐지만 회사 연결이 아직 반영되지 않았어요. 잠시 후 다시 확인해 주세요." onRetry={retry} />
         )}
         {result.status === "connected" && <ConnectedCompany profile={result.profile} />}
       </section>
+      <MembershipCancellationDialog
+        onClose={() => setSelection(null)}
+        onConfirm={() => { if (selection) void cancellation.current?.submit(selection); }}
+        open={selection !== null}
+        pending={pending}
+      />
     </div>
   );
 }
@@ -227,12 +280,14 @@ function RequestCompanyCard({ request, statusLabel }: { request: MembershipReque
   );
 }
 
-function PendingRequest({ request }: { request: MembershipRequest }) {
+function PendingRequest({ request, pending, onCancel }: { request: MembershipRequest; pending: boolean; onCancel: () => void }) {
   return (
     <section className="mx-auto max-w-[592px] py-16 sm:py-24" aria-labelledby="pending-request-title">
       <h1 className="mb-6 type-heading-7 text-grayscale-800" id="pending-request-title">관리자가 통합 요청을<br />확인하고 있어요!</h1>
       <RequestCompanyCard request={request} statusLabel="검토 중" />
       <p className="mt-5 type-body-7 text-grayscale-600">신청 결과가 반영되면 이 화면에서 확인할 수 있어요.</p>
+      <Button className="mt-6 w-full" disabled={pending} onClick={onCancel} size="xxl" variant="gray">통합 요청 취소하기</Button>
+      {pending && <p className="mt-3 type-body-7 text-grayscale-600" role="status">통합 요청을 취소하고 있어요.</p>}
     </section>
   );
 }
