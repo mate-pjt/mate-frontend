@@ -1,0 +1,467 @@
+{
+  "observedAt": "2026-11-13 KST",
+  "frontend": {
+    "branch": "docs/pol-10-membership-cancellation",
+    "base": "ebda651016d323680be3364708f5c1ed6818b219",
+    "initialWorktree": "clean",
+    "upstreamMainMatched": true
+  },
+  "refs": {
+    "backendDev": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "backendMain": "8f522d0876a70edf61b8f5456a11c51756f60372",
+    "policyMain": "c9e50ff591ae18023164e1a94581c611bf1e4f29"
+  },
+  "backendDelivery": {
+    "run": {
+      "id": 43170618340,
+      "head_sha": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "head_branch": "dev",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-12T06:47:32Z",
+      "updated_at": "2026-11-12T07:20:51Z",
+      "html_url": "https://github.com/mate-pjt/mate-backend/actions/runs/43170618340",
+      "path": ".github/workflows/ci.yml"
+    },
+    "jobs": [
+      {
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": []
+      },
+      {
+        "name": "publish",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": []
+      },
+      {
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Deploy immutable image to test",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "deploy-prod",
+        "status": "completed",
+        "conclusion": "skipped",
+        "steps": []
+      }
+    ],
+    "runtimeProcessSha": "unconfirmed",
+    "businessReads": 0,
+    "businessMutations": 0,
+    "liveIntegration": "not run"
+  },
+  "membershipSourceComparison": {
+    "scope": "11 non-test membershiprequest files; not entire branches",
+    "allEqual": true,
+    "files": [
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+        "devBlob": "9d5f6d32e2cc6d4c9ac50c76912a6383418ce947",
+        "mainBlob": "9d5f6d32e2cc6d4c9ac50c76912a6383418ce947"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/request/CompanyMembershipRequestRequests.kt",
+        "devBlob": "9f43c54e7c3d4c156a11fe1bcc779db0aad0273d",
+        "mainBlob": "9f43c54e7c3d4c156a11fe1bcc779db0aad0273d"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/response/CompanyMembershipRequestResponses.kt",
+        "devBlob": "f0d2f0c5a7ed9fd38596793d1a75656cc72048b1",
+        "mainBlob": "f0d2f0c5a7ed9fd38596793d1a75656cc72048b1"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companymembership/membershiprequest/CompanyMembershipRequestPersistenceAdapter.kt",
+        "devBlob": "3160425058e5f436bc3acf093922e52a7450e690",
+        "mainBlob": "3160425058e5f436bc3acf093922e52a7450e690"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companymembership/membershiprequest/CompanyMembershipRequestReviewQueryPersistenceAdapter.kt",
+        "devBlob": "23b15aa570d25062fb6d9a1a5d87dbb06309f776",
+        "mainBlob": "23b15aa570d25062fb6d9a1a5d87dbb06309f776"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/companymembership/membershiprequest/CompanyMembershipRequestReviewUseCases.kt",
+        "devBlob": "de9d82d431691be017a6c5b4caa202a499126ee9",
+        "mainBlob": "de9d82d431691be017a6c5b4caa202a499126ee9"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/companymembership/membershiprequest/CompanyMembershipRequestUseCases.kt",
+        "devBlob": "d027e6bf11eaba3551658d1b1fc8c0793c74ddf4",
+        "mainBlob": "d027e6bf11eaba3551658d1b1fc8c0793c74ddf4"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/companymembership/membershiprequest/CompanyMembershipRequestPort.kt",
+        "devBlob": "be5dbeb97bb1f84851b1f71ad03dc9688074c5bb",
+        "mainBlob": "be5dbeb97bb1f84851b1f71ad03dc9688074c5bb"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/companymembership/membershiprequest/CompanyMembershipRequestReviewQueryPort.kt",
+        "devBlob": "dfab70c6957be66dc1afc56f7efc5ab5236882a9",
+        "mainBlob": "dfab70c6957be66dc1afc56f7efc5ab5236882a9"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestReviewServices.kt",
+        "devBlob": "349b22da899e771f397d34a9d5a1cb4473d9a884",
+        "mainBlob": "349b22da899e771f397d34a9d5a1cb4473d9a884"
+      },
+      {
+        "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestServices.kt",
+        "devBlob": "a16c4b30a242057427579f8213ecb9094f164d87",
+        "mainBlob": "a16c4b30a242057427579f8213ecb9094f164d87"
+      }
+    ]
+  },
+  "figma": {
+    "fileKey": "Eayi1SWD8Xq8tGBmlp5SV2",
+    "evidence": "metadata + read-only text-node lookup; no full pixel audit",
+    "nodes": [
+      {
+        "nodeId": "3162:52364",
+        "state": "pending",
+        "cancelButtonNodeId": "3162:52414",
+        "text": "통합 요청 취소하기"
+      },
+      {
+        "nodeId": "3162:52416",
+        "state": "canceled empty screen",
+        "toastNodeId": "3162:52419",
+        "toast": "성공적으로 통합 요청을 취소했어요!",
+        "restartNodeId": "3162:52426",
+        "restart": "우리 회사 등록 · 통합하기"
+      }
+    ],
+    "visualLimit": "Screenshot asset download returned an empty file; screenshot/pixel review not passed. DEV-15 must recheck visual states.",
+    "privacy": "Only relevant node IDs/copy are retained. Sample identity fields in initial metadata output are not reproduced."
+  },
+  "limitations": [
+    "Source/tests inspected, not backend test execution",
+    "OpenAPI omits source-confirmed 404/409 documentation",
+    "OpenAPI wrapper success versus frontend isSuccess requires actual wire confirmation",
+    "No authenticated business API, login, cancel, mail, document processing, production operation or deployment executed"
+  ],
+  "sources": [
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+      "lines": [
+        101,
+        122
+      ],
+      "blob": "9d5f6d32e2cc6d4c9ac50c76912a6383418ce947",
+      "sha256": "7d35b7f0839e4ae1850bae79128d01df81dd2e704b3e5dd28b0402cc4f65442e",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt#L101-L122"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestServices.kt",
+      "lines": [
+        171,
+        185
+      ],
+      "blob": "a16c4b30a242057427579f8213ecb9094f164d87",
+      "sha256": "c2980f715fe48c72e5af90985d2e065f1f5ae992a1567f343e07a2e1b672a019",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestServices.kt#L171-L185"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestReviewServices.kt",
+      "lines": [
+        122,
+        140
+      ],
+      "blob": "349b22da899e771f397d34a9d5a1cb4473d9a884",
+      "sha256": "aaa016d4106c980802899294503c39a20647080987b7ff9bc563a670f14b6ece",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestReviewServices.kt#L122-L140"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companymembership/membershiprequest/CompanyMembershipRequestPersistenceAdapter.kt",
+      "lines": [
+        104,
+        114
+      ],
+      "blob": "3160425058e5f436bc3acf093922e52a7450e690",
+      "sha256": "320a45296edeca0c515c4efed2db133e8f461a9b9611d31a6a246d4a2b3eeef5",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companymembership/membershiprequest/CompanyMembershipRequestPersistenceAdapter.kt#L104-L114"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/global/exception/CompanyMembershipRequestErrorCode.kt",
+      "lines": [
+        11,
+        14
+      ],
+      "blob": "7548904c232c3a1883b9b5906fc17bdac62effe3",
+      "sha256": "bd85285fc07ba81e266123a49cf8cd683ac94cde0e34134e5ce6fa112f6b02a0",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/global/exception/CompanyMembershipRequestErrorCode.kt#L11-L14"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/response/CompanyMembershipRequestResponses.kt",
+      "lines": [
+        40,
+        60
+      ],
+      "blob": "f0d2f0c5a7ed9fd38596793d1a75656cc72048b1",
+      "sha256": "dc96748f1063727164dd6096fb413f019c08088b96279f44eed20f0702507c7c",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/response/CompanyMembershipRequestResponses.kt#L40-L60"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/companymembership/membershiprequest/CompanyMembershipRequestUseCases.kt",
+      "lines": [
+        48,
+        56
+      ],
+      "blob": "d027e6bf11eaba3551658d1b1fc8c0793c74ddf4",
+      "sha256": "32fdb6391cb6895360022892714fdb785a8998eb04c699aaecf379dc12d6bd2d",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/companymembership/membershiprequest/CompanyMembershipRequestUseCases.kt#L48-L56"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/domain/companymembership/enums/CompanyMembershipRequestStatus.kt",
+      "lines": [
+        4,
+        9
+      ],
+      "blob": "35dae20721699233f0c4e1239801845ad101326a",
+      "sha256": "cd83524f3531f325453eee33a64abc48cac2951d8b7f5b318f22a9f7ecfeca7d",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/domain/companymembership/enums/CompanyMembershipRequestStatus.kt#L4-L9"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestControllerTest.kt",
+      "lines": [
+        85,
+        108
+      ],
+      "blob": "0cd7b328711398168b55d551fac32d0ef1ee6af1",
+      "sha256": "ffdfc6e61955adc48ee4229af7f338df81b01e8f3d185f7473058acf6a6732b2",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestControllerTest.kt#L85-L108"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/membership-and-positions.md",
+      "lines": [
+        34,
+        73
+      ],
+      "blob": "fd56232a56a3b45c2edef78815bf045c5c413292",
+      "sha256": "b6db363a38d819299e82952d4ef5ff3ada8e724917ea73100fa209ca1d993638",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/membership-and-positions.md#L34-L73"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/merge-and-dispute.md",
+      "lines": [
+        1,
+        38
+      ],
+      "blob": "8bdec10917d914bc83cdf4210645af6fffb54eee",
+      "sha256": "04405387f195d292a365752222f4ff324a6d50662037dabca2fa0aae20cf5f05",
+      "blobVerified": true,
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/merge-and-dispute.md#L1-L38"
+    }
+  ],
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "projection": {
+      "status": 200,
+      "openapi": "3.1.0",
+      "version": "v1",
+      "read": {
+        "path": "/api/v1/company-membership-requests/me",
+        "method": "get",
+        "operationId": "mine"
+      },
+      "cancel": {
+        "path": "/api/v1/company-membership-requests/{requestId}",
+        "method": "delete",
+        "operationId": "cancel_2",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "exclusiveMinimum": 0
+            }
+          },
+          {
+            "name": "expectedVersion",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "exclusiveMinimum": 0
+            }
+          }
+        ],
+        "responseCodes": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "500"
+        ],
+        "responseSchema": {
+          "$ref": "#/components/schemas/CommonResponseCompanyMembershipRequestResponse"
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "company": {},
+          "requestedRepresentative": {
+            "type": "boolean"
+          },
+          "requestedPositionId": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64"
+          },
+          "requestedPositionName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "proposedPositionName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CANCELED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rejectionReason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "appliedRepresentative": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "appliedPositionId": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64"
+          },
+          "appliedPositionName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "appliedMembershipId": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64"
+          },
+          "appliedRole": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "ADMIN",
+              "AGENT",
+              "VIEWER"
+            ]
+          },
+          "appliedPermissions": {
+            "type": "array"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "wrapperFields": [
+        "data",
+        "code",
+        "message",
+        "traceId",
+        "retryAfterSeconds",
+        "success"
+      ]
+    },
+    "projectionSha256": "a2135b146634bcbad77f9d00336d98792c87efee6f6a6cde48e5eb3d547c73a3"
+  }
+}
