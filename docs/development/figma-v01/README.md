@@ -5,8 +5,9 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-13 KST |
-| 현재 작업 | 없음 — [POL-11 정책/문서 범위](tasks/POL-11.md#pol-11-verification)의 검증·두 리뷰 PASS. 제품/실제 API 실행0·기존 차단 보존. 종료 freshness 뒤 Git 전달/최종 CI·정상 병합/main 일치는 실제 PR/최종 보고에서 확인 |
-| 다음 작업 | [DEV-16 · 회사 찾기/등록의 관리 화면 복귀 보완](tasks/DEV-16.md#dev-16-pol-11-handoff) — POL-11 정책 선행 충족·P0/P1 해소 가능 대기0·P2 기본 표 순서 첫 후보. 선정/인계만, 자체 Brief·설계/구현 미착수 |
+| 현재 작업 | 없음 — [DEV-16 승인된 로컬 범위](tasks/DEV-16.md#dev-16-review-close) 구현/검증·두 리뷰 PASS. 실제 API/기존 차단 보존. Git 전달·최종 head CI/정상 병합/main 일치는 실제 PR/최종 보고에서 확인 |
+| 다음 작업 | [POL-12 · 회사 갱신·비교 적용·직접 수정 정책](tasks/POL-12.md#pol-12-dev-16-handoff) — POL-06 선행 충족·P0/P1 해소 가능 대기0·P2 기본 표 순서 첫 후보. 선정/인계만, 자체 정책 Gate/조사 미착수 |
+| DEV-16 이번 승인 범위 | 2026-11-13 사용자: 개발/검증·두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 답변 **로컬 선행·실서버 QA 차단 보존**, 이번 Chromatic 월간 한도만 예외. 실제 업무 API/등록·신청·문서 처리·운영/배포 제외. [Brief/근거](tasks/DEV-16.md#dev-16-brief) |
 | POL-11 이번 승인 범위 | 2026-11-13 사용자: POL-11 정책 조사/결정·문서 검증·두 리뷰·목적별 commit/push·PR·최종 CI·정상 main 병합/로컬 FF. 재사용/설정 복귀 확정, Figma의 ‘통합 요청’ 유지·설명 추가 없음. 이번 Chromatic 월간 한도만 예외. 제품/업무 API·중앙 저장소 편집·메일/문서 처리·운영/배포·다음 Task 실행 제외. [Brief/결정](tasks/POL-11.md#pol-11-brief) |
 | DEV-15 이번 승인 범위 | 2026-11-13 사용자: DEV-15 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 로컬 선행·실서버 QA 차단 보존 답변과 이번 Chromatic 월간 한도 예외. 실제 업무 API/메일·문서 처리·운영/배포 제외. [Brief](tasks/DEV-15.md#dev-15-brief) |
 | POL-10 이번 승인 범위 | 2026-11-13 사용자: POL-10 정책·문서 검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추천 흐름 확정·지정 Figma Sonner 완료 안내 요구. 이번 Chromatic 월간 한도만 예외. 제품/업무 API/중앙 저장소 편집·메일·문서 처리·운영/배포 제외. [결정/Brief](tasks/POL-10.md#pol-10-brief) |
@@ -19,7 +20,7 @@
 | POL-08 이번 승인 범위 | 2026-11-13 사용자: POL-08 정책·문서 검증/두 리뷰·목적별 commit/push·PR·최종 CI/정상 main 병합·로컬 동기화. 이번 Chromatic 월간 한도만 예외. 제품/업무 API 변경·중앙 저장소 편집·외부 메시지·운영/배포·다음 Task 실행 제외. [조사/결정](tasks/POL-08.md#pol-08-investigation) |
 | DEV-11 이번 승인 범위 | 2026-11-12 사용자 요청6항의 Git 전달·이번 Chromatic 한도 예외와 추가 답변 ‘로컬 선행·실서버 QA 차단 보존 (추천)’. 실제 업무/계정 변경·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-11.md#dev-11-brief) |
 | DEV-10 이번 승인 범위 | 2026-11-12 사용자: DEV-10 개발·검증·두 리뷰·목적별 commit/push·PR·CI·정상 main 병합/로컬 동기화. 이번 Chromatic 월간 한도 예외, 로컬 선행/실제 API 차단 보존 답변과 실제 HTTP 연결 구현을 구분. [Brief](tasks/DEV-10.md#dev-10-brief) |
-| 다음 첫 행동 | 새 대화에서 최신 Git/main·POL-11 D1/D2·DEV-16 인계와 현행 source/Figma/Swagger 변경 유무를 확인한다. URL 문맥/고정 return·계정 수명/완료·RCTX15 및 실제 자원/변경·잔존/복구 승인 범위를 담은 DEV-16 자체 Brief/검증 계획을 편집 전에 제시한다. 이번에는 DEV-16 실행 없음 |
+| 다음 첫 행동 | 새 대화에서 최신 Git/main·POL-12 정의/완료 기준·POL-06 결정/관련 QA와 현행 소유 정책/source·개발 Swagger를 대조해 갱신/비교·선택 적용/직접 편집·로고의 자체 정책 Brief/검증 계획을 편집 전에 제시한다. 이번에는 다음 Task 실행 없음 |
 | DEV-14 외부 조건 | [POL-09 사용자 결정](tasks/POL-09.md#pol-09-contract): 본문·현장설명 일시·기준일/수집일 추가 추진. 2026-11-13 [사용자 요청문/이미지 전달 보고](tasks/POL-09.md#pol-09-backend-delivery)를 기록했다. **답변과 실제 API 계약 확보 전까지 차단 유지**. 접수/답변·실행 대응/비식별 검증 자원·일정 미확인, 구현 미착수·현재 차이에 대한 Figma 예외 승인 없음. [재개 Gate](tasks/DEV-14.md#dev-14-pol-09-handoff) |
 | DEV-13 외부 조건 | 2026-11-13 사용자 전용 backend 이전 차수 계약 선행 확정·개발자에게 요청 발송 보고. 기존 no-view 조회 경로는 미채택. 실제 계약/접수·일정·배포/실행 대응·합성 검증 자원은 미확보이며 [재개 Gate](tasks/DEV-13.md#dev-13-pol-08-handoff) 전 구현/로컬 선행 예외 없음 |
 | DEV-09 이번 승인 범위 | 2026-11-12 사용자: DEV-09 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API 변경/메일·문서 처리/운영·배포는 별도 범위 확인. 다음 Task는 선정/인계만. [사전 조사](tasks/DEV-09.md#dev-09-investigation) |
@@ -69,7 +70,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료27 · 차단22 · 대기62 · 준비1 · 보류2 =114개**. POL-11은 이번 사용자 D1/D2·정책 문서/후속 기준의 검증·두 리뷰로 완료하고 DEV-16은 다음 자체 Gate로 선정/인계만 했다. 제품/실제 API 실행은 없다. DEV-15의 실제 MCANCEL12 차단, DEV-56의 특수 실제4사례·실행 SHA 대응 미확인, 기존 QA-14/MSET·DEV-57/타 Task 차단/승인 예외는 그대로다. 원본79개/Task114개·의존성156개를 유지한다.
+현재 집계: **완료28 · 차단22 · 대기61 · 준비1 · 보류2 =114개**. POL-11의 D1/D2 선행이 충족되어 DEV-16을 이번 사용자 로컬 선행·실서버 QA 차단 보존 승인으로 구현/검증했다. DEV-16의 검증/두 리뷰를 통과해 승인된 로컬 단위로 완료하고 POL-12를 다음 자체 Gate로 선정/인계만 했다. 실제 업무 API 실행0·실제 통합 차단은 유지한다. DEV-15의 실제 MCANCEL12 차단, DEV-56의 특수 실제4사례·실행 SHA 대응 미확인, 기존 QA-14/MSET·DEV-57/타 Task 차단/승인 예외는 그대로다. 원본79개/Task114개·의존성156개를 유지한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -138,13 +139,13 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [POL-10 · 소속 신청 취소 계약·권한 결정](tasks/POL-10.md) · **정책/문서 PASS·Sonner 완료 기준 확정, 제품/실제 취소는 DEV-15 후속** | 정책 결정 | P2 | 완료 | M05 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-15 · 소속 신청 취소 실행 연결](tasks/DEV-15.md) · **로컬 구현/검증·두 리뷰 PASS, 실제 MCANCEL12 차단 보존** | 개발 | P2 | 완료 | M05 | [POL-10](tasks/POL-10.md) |
 | [POL-11 · 회사 찾기/등록 재사용 동선 결정](tasks/POL-11.md) · **정책/문서·두 리뷰 PASS, Figma ‘통합 요청’ 유지·설명 추가 없음** | 정책 결정 | P2 | 완료 | M06 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-16 · 회사 찾기/등록의 관리 화면 복귀 보완](tasks/DEV-16.md) | 개발 | P2 | 준비 | M06 | [POL-11](tasks/POL-11.md) |
+| [DEV-16 · 회사 찾기/등록의 관리 화면 복귀 보완](tasks/DEV-16.md) | 개발 | P2 | 완료 | M06 | [POL-11](tasks/POL-11.md) |
 
 ## 4. 회사 갱신·서류함
 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
-| [POL-12 · 회사 갱신·비교 적용·직접 수정 정책](tasks/POL-12.md) | 정책 결정 | P2 | 대기 | U01, U02, U03, F04 | [POL-06](tasks/POL-06.md) |
+| [POL-12 · 회사 갱신·비교 적용·직접 수정 정책](tasks/POL-12.md) | 정책 결정 | P2 | 준비 | U01, U02, U03, F04 | [POL-06](tasks/POL-06.md) |
 | [DEV-17 · 연도별 최신 정보·갱신 안내](tasks/DEV-17.md) | 개발 | P2 | 대기 | U01 | [POL-12](tasks/POL-12.md) / [DEV-08](tasks/DEV-08.md) |
 | [DEV-18 · 최신 회사정보 불러오기·차이 비교](tasks/DEV-18.md) | 개발 | P2 | 대기 | U02 | [POL-12](tasks/POL-12.md) / [DEV-17](tasks/DEV-17.md) |
 | [DEV-19 · 선택한 회사정보 적용·충돌 처리](tasks/DEV-19.md) | 개발 | P2 | 대기 | U02 | [DEV-18](tasks/DEV-18.md) |
@@ -368,3 +369,10 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [D1/D2](tasks/POL-11.md#pol-11-decisions): 기존 회사 등록·찾기 재사용/설정 문맥·고정 완료 `/my/company`, 기존 가입 `/bids` 유지. 사용자 최종 요청대로 Figma ‘통합 요청’을 유지하고 설명 추가0·용어 변경 추천 미채택이다. 미래 Figma 변경은 새 Gate에서 반영한다.
 - [검증/두 리뷰](reviews/POL-11.md): 문서/출처·부분 이미지 검토 PASS. 제품 구현/전체 화면 정합성/실제 API 통합 PASS가 아니며 RCTX15미실행·MCO4통과6차단/MCANCEL12와 가입/타 Task 차단·예외를 보존한다. Git/Chromatic 예외는 이번 POL-11에 한정한다.
 - 다음은 [DEV-16](tasks/DEV-16.md#dev-16-pol-11-handoff) 하나다. 남은 P0/P1은 선행/정책·실제 자원 차단, P2는 POL-11 선행이 해소된 이 Task가 기본 표 순서 첫 후보다. 실제 QA 준비나 로컬 선행 예외가 아니며 자체 Brief/Gate가 필요하다. 이번에는 인계만 하고 DEV-16 조사/정책 선택·설계/구현·검증·업무 API/Git 전달을 시작하지 않았다.
+
+
+## 2026-11-13 · DEV-16 로컬 복귀 보완 종료와 POL-12 선정
+
+- [DEV-16 Brief/사용자 답변](tasks/DEV-16.md#dev-16-brief)과 [RCTX-L01~12](../../qa/my-company.md#dev-16-local-qa): 기존 등록/찾기의 설정·검색/로그인/Back·고정 완료 복귀, 계정/화면 수명·2xx 미확정/최소 성공 응답을 보완했다. 가입 `/bids`/건너뛰기 next·Figma ‘통합 요청’ 유지.
+- [검증/두 리뷰](reviews/DEV-16.md): 524 tests·lint·앱/Storybook·문서/Context Audit·두 리뷰 PASS. 승인된 로컬 범위 판정이며 실제 업무 API0·RCTX-15/기존 MCO/MCANCEL·가입·타 Task 차단/예외는 보존한다. 이번 Chromatic 월간 한도만 예외다.
+- 다음 하나는 [POL-12](tasks/POL-12.md#pol-12-dev-16-handoff)다. POL-06 선행 충족·해소 가능한 P0/P1 대기0·P2 기본 표 순서 첫 후보이며 선정/인계 외 실행은 없다. Git 전달/실제 최종 CI·정상 병합/main 일치는 실제 PR/최종 보고에서 확인한다.
