@@ -234,3 +234,7 @@ Final reports should include:
 사용자가 [문서 수정안/다음 선정 반영](../development/figma-v01/tasks/POL-09.md#pol-09-backend-replan-approval)을 승인했다. [날짜별 재조사](../development/figma-v01/audits/2026-11-13-backend-readiness.md)·JSON에26개 차단/보류와 관련 후보14개·43개 고정 source를 보존하고, nickname·전역 상세/야간 저장 설정·RESULT 낙찰금액 계약과 미결 정책/실제 QA를 구분했다. DEV-57 재개 요구사항 확인의 선정/첫 행동을 인계했으며 제품 구현은 다음 대화의 자체 Gate 이후다. DEV-66에 POL-19 선행을 추가하고 기존 집계 문장을 실제 행에 맞췄다. 원본79/114Task·기존 차단/보류/QA·결정/승인 예외를 보존한다.
 
 [재개 점검 규칙](../development/figma-v01/workflow.md#backend-contract-recheck)은 source/CI배포/게시 OpenAPI/실행 SHA/실제 응답과 계약·정책·QA 자원을 나누며 API 등장/다음 선정만으로 차단을 해제하지 않는다. 기존 Status·날짜별 인계는 당시 이력이고 현재/다음/상태는 WBS만 소유한다. 앱 source/Repository/DTO/mock·패키지/실제 업무 API는 변경하지 않았다.
+
+## 2026-11-13 · 소속 신청 취소의 완료/재조회 기준
+
+[POL-10 사용자 확정/정책 v1](../development/figma-v01/tasks/POL-10.md#pol-10-contract)은 중앙의 본인 PENDING 취소·expectedVersion·승인 경쟁/409와 사용자 선택의 확인 창→빈 `/my/company`→기존 Sonner 완료 Toast1회를 연결한다. reload/조회·충돌/실패에는 성공 Toast를 재생하지 않는다. 취소는 CANCELED/version 증가·이력 잔존이며 관리자 대리 취소/활성 소속 탈퇴/회사 간 합치기와 구분한다. 제품 구현은 [DEV-15 자체 Gate](../development/figma-v01/tasks/DEV-15.md#dev-15-pol-10-handoff) 이후이며 [MCANCEL-01~12](../qa/my-company.md#pol-10-cancellation-qa)의 실제 wire/실행 대응·합성 자원/변경·잔존·복구와 기존 QA 차단/승인 예외는 보존한다. 이번 문서 조사/결정을 제품 구현/실제 API 통합 PASS로 세지 않으며 현재/다음/상태는 WBS만 관리한다.

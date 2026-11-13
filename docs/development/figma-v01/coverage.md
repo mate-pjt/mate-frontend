@@ -137,3 +137,5 @@ QA-17은 원본 일부를 새로 구현하는 Task가 아니라 이번 전체 �
 
 
 2026-11-13 POL-09의 [추가 제공/계약 선행 결정](tasks/POL-09.md#pol-09-contract)과 [DEV-14 재개 Gate](tasks/DEV-14.md#dev-14-pol-09-handoff)를 D10/CF-10·CF-20의 후속 기준으로 연결한다. 원문 자격사항/지시사항 본문·현장설명 일시·기준일/수집일의 실제 계약은 미확보다. 현재 차이의 Figma 예외 승인은 없고 제품 구현/실제 통합을 수행하지 않았다. 기존 공동수급 협정 마감은 신규 누락으로 세지 않는다. 원본79/114Task/155의존성·기준선/감사/QA 이력·기존 차단/승인 예외를 보존하며 상태는 WBS만 관리한다.
+
+2026-11-13 M05/CF-21의 [POL-10 사용자 확정/정책 v1](tasks/POL-10.md#pol-10-contract)은 본인 PENDING 취소·필수 expectedVersion·승인 경쟁/재조회와 **빈 회사 화면+지정 Figma Sonner 완료 Toast1회**를 연결한다. [DEV-15 후속 Gate](tasks/DEV-15.md#dev-15-pol-10-handoff)·[MCANCEL-01~12](../../qa/my-company.md#pol-10-cancellation-qa)는 후속 개발/검증 기준이며 이번 제품 구현·실제 취소·새 통합 PASS가 아니다. 원본79개/114Task/현행156의존성·기준선/감사·기존 QA-05 MCO4통과6차단/다른 차단·승인 예외를 보존한다. 현재/다음/상태는 WBS만 관리하며 C02의 다른 팝업과 회사 간 통합의 소유 범위를 바꾸지 않는다.
