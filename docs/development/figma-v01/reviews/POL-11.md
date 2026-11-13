@@ -83,3 +83,9 @@ WBS 완료/다음 DEV-16 선정·체크리스트/검토 결과 기록을 반영�
 그 뒤 primary의 Git fuller 출력에 불필요한 작성자 이메일이 포함돼 사용자에게 알리고 [비식별 예방 기록](../../../ai-context/ai-failures.md#pol-11-git-metadata-output)을 추가했다. 실제 값/원문을 저장하지 않고 SHA·제목·필수 JSON 필드만 조회하도록 변경한다. Context Audit/Task의 갱신 필요 설명도 맞췄으며 이 추가분은 문서 검사·두 리뷰에서 다시 확인한다. 제품/QA 정책·현재/다음은 바뀌지 않는다.
 
 이 추가4문서의 primary 재검토·독립 verifier도 **PASS**（Blocker/Major/Minor0）. 독립이12파일·79/114/156·889상대 링크/신규36·과거 prefix/범위·diff-check·추가 이메일 패턴0을 직접 확인했다. 경계는 HEAD `09017e5`+4문서, 정규 `git diff --binary 39230102d53fcce7aab5588d868c11dedd45cb43 | shasum -a 256` 지문 `4534e47f81ea89a7756f2e3cf75e8dec3c118b71df622d5f0758bf88b5e10d86`다. 이 literal 결과와 여섯 절의 현재 설명 정합성만 기록하고 문서 검사를 재실행하며, 의미 변경 없는 결과 기록 자체는 추가 독립 재검토를 생략한다.
+
+## PR receipt와 최종 head의 검토 경계
+
+[PR #74](https://github.com/mate-pjt/mate-frontend/pull/74)의 생성/첫 head `50e2251`·라벨/4커밋·초기 실행 중 CI는 Task receipt에 기록했다. 최종 원격 CI/정상 병합·main 일치와 구별하며 정책/QA/source 의미는 바뀌지 않는다. primary는 receipt의 SHA/초기 상태와 원문 승인·범위를 대조해 여섯 절의 결론에 새 미해결 지적 없음을 확인했다. 문서 검사·독립 freshness를 다시 확인한 뒤 이 receipt를 커밋/push한다. 이후 저장소 내용 변경 없이 최종 PR head의 실제 CI/리뷰/병합·로컬 동기화를 PR/최종 보고에 남긴다.
+
+Receipt 독립 결과도 **PASS**, Blocker/Major/Minor0·추가 이메일 패턴0. verifier는 실제 PR head/base·OPEN/MERGEABLE을 직접 확인하고12파일·79/114/156·889링크/신규36·문서 검사/base diff-check를 재실행했다. 경계 HEAD `50e2251`+receipt2문서, 정규 binary diff 지문 `69ca8f1795096574a8f38bfd4ea0240727057de4befd3170978a71252e4b1801`. 이 문단은 해당 보고서 literal 기록이므로 primary 확인·문서 재검증 후 추가 독립 재실행은 생략한다. 정책/QA 의미 변화가 없으며 최종 PR head의 CI/리뷰/병합 조건은 별도 확인한다.

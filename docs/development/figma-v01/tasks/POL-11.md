@@ -194,3 +194,12 @@ Figma가 변경되면 변경 node/버전·현재 구현·소유 정책을 대조
 - Git 전달은 별도 진행 단계다. 정상 merge commit 허용·rulesets0·main 보호 없음/Branch not protected를 조회했으며 설정 변경/우회 없음. 두 리뷰 뒤 추가한 종료/인계·결과 기록은 문서 검사와 두 리뷰 freshness를 재검토한 뒤 작은 목적별 커밋/PR·실제 최종 head CI·정상 병합/main FF로 전달한다. 마지막 실제 PR/head/CI·로컬 일치는 PR/최종 보고에서 확인한다.
 - 종료 freshness도 primary/독립 verifier **PASS**（Blocker/Major/Minor0）. 독립 검사가11파일·79/114/156·886상대 링크/신규33·집계/선정·기존 prefix/범위·diff-check를 재확인했다. 마지막 추가는 이 보고서 결과의 문자 그대로 기록이며 정책/후속 QA/선정 변경이 없어 문서 검사/primary 확인 뒤 별도3차 독립 검토를 생략한다. PR receipt 추가 시에는 해당 변경을 다시 검토한다.
 - 후속 기록: 독립 verifier가3개 목적별 커밋의 HEAD `09017e5`까지도 실제 base→HEAD diff/문서 검사를 확인해 PASS했다. 지문은 PNG 본문을 포함하는 `git diff --binary` 기준으로 일반 diff와 구별한다. 별도로 primary의 Git fuller 출력에 불필요한 작성자 이메일이 포함돼 사용자에게 알리고 실제 값 없이 [ai-failures의 원인/예방 기록](../../../ai-context/ai-failures.md#pol-11-git-metadata-output)을 추가했다. Context Audit/리뷰의 갱신 필요 설명도 맞추고 이 추가분의 문서 검증·두 리뷰를 다시 수행한다. 기존 출력 삭제를 주장하지 않으며 제품/정책/실제 QA 판정은 그대로다.
+
+<a id="pol-11-git"></a>
+
+## 2026-11-13 · PR 전달 체크포인트
+
+- 목적별4커밋: `6aec773` 정책/고정 근거·Figma 부분 이미지, `f551f45` 후속 개발/QA·WBS 연결, `09017e5` 문서 검증/두 리뷰, `50e2251` Git 출력 사건/예방 근거. 출력 예방 추가4문서도 primary/독립 verifier PASS, 문서 최종12파일·79/114/156·889상대 링크/신규36·추가 이메일 패턴0·diff-check PASS를 확인하고 push했다.
+- [PR #74](https://github.com/mate-pjt/mate-frontend/pull/74) 생성·`type: docs` 라벨 적용. 생성/첫 원격 관찰 head는 `50e2251944813ac72e45fe07ebe293045d6b609d`, base main은 `39230102d53fcce7aab5588d868c11dedd45cb43`다. 최초 checks2개 실행 중, Chromatic 게시 job/Storybook Publish 성공·UI Tests/UI Review 대기, Vercel 대기 관찰이며 최종 CI PASS로 세지 않는다.
+- 이 receipt는 전달 메타데이터만 추가한다. 정책 D1/D2·제품 source·QA 기대 동작/기존 차단/다음 DEV-16은 그대로다. 이 추가분의 문서 검사·primary 여섯 절/독립 freshness를 확인해 별도 문서 커밋으로 push하고, **그 실제 최종 PR head**에서 모든 원격 CI/리뷰·base/head/병합 조건을 다시 확인한다.
+- 이번 월간 Chromatic 한도 예외만 실제 원인 확인 후 적용한다. 나머지 checks 실패/미해결 리뷰·보호 규칙을 면제하거나 상태를 강제 성공으로 만들지 않는다. merge commit으로 작은 이력을 보존하고 로컬 main FF·로컬/원격 SHA·clean을 확인한 실제 결과는 PR/최종 보고에 기록한다. final head/CI·병합/main 동기화는 이 시점 아직 미완료다.
