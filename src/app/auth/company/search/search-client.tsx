@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
@@ -62,20 +63,23 @@ export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) 
         <AuthBack href="/auth/start" />
         <h1 className="mb-6 text-grayscale-800 type-heading-7">이미 등록된 회사가 있다면<br />통합 요청해볼까요?</h1>
         <form className="flex gap-2" onSubmit={(event) => { event.preventDefault(); void search(); }}>
-          <TextInput className="min-w-0 flex-1" onValueChange={changeQuery} placeholder="회사명 또는 사업자등록번호 10자리" value={query} />
-          <Button className="h-12 shrink-0" disabled={!query.trim() || busy} type="submit">조회하기</Button>
+          <TextInput aria-label="회사명 또는 사업자등록번호" className="min-w-0 flex-1" fieldClassName="focus-within:border-primary" onValueChange={changeQuery} placeholder="회사명 또는 사업자등록번호 10자리" value={query} />
+          <Button className="h-12 w-[106px] shrink-0 rounded-xl" disabled={!query.trim() || busy} type="submit">조회하기</Button>
         </form>
         <div className="mt-4"><AuthError message={error} /></div>
         {result?.content.length ? (
           <>
-            <ul className="mt-4 space-y-2">
+            <ul className="mt-6 space-y-4">
               {result.content.map((company) => (
-                <li className="flex items-center justify-between gap-3 rounded-xl border border-grayscale-200 p-4" key={company.companyId}>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-grayscale-800">{company.companyName} {company.verificationStatus === "VERIFIED" ? <span className="text-success type-body-7">인증</span> : null}</p>
-                    <p className="text-grayscale-600 type-body-7">{company.businessNumber} · {company.baseAddress ?? "주소 정보 없음"}</p>
+                <li className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-grayscale-200 p-5" key={company.companyId}>
+                  <div className="flex min-w-0 items-center gap-4">
+                    <Image alt="" className="hidden shrink-0 sm:block" height={48} src="/icon/24dp/company.svg" width={48} />
+                    <div className="min-w-0">
+                    <p className="break-words text-grayscale-800 type-heading-9">{company.companyName} {company.verificationStatus === "VERIFIED" ? <span className="rounded-md bg-success/10 px-2 py-1 text-success type-body-6">인증</span> : null}</p>
+                    <p className="mt-1 break-words text-grayscale-600 type-body-7">{company.businessNumber} · {company.baseAddress ?? "주소 정보 없음"}</p>
+                    </div>
                   </div>
-                  <Link className="shrink-0 rounded-lg bg-primary-100 px-3 py-2 text-primary type-body-7" href={`/auth/company/search/${company.companyId}`}>통합 요청</Link>
+                  <Link className="shrink-0 rounded-lg bg-primary-100 px-4 py-2 text-primary type-body-2 focus-visible:outline-2 focus-visible:outline-primary" href={`/auth/company/search/${company.companyId}`}>통합 요청</Link>
                 </li>
               ))}
             </ul>

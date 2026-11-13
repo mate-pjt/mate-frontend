@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
+import { DatePicker } from "@/components/ui/calendar";
+import { calendarToday, isDateInRange } from "@/components/ui/calendar/calendar-date";
 import { Button } from "@/components/ui/button";
 import { CheckboxSquare } from "@/components/ui/checkbox";
 import { TextInput } from "@/components/ui/input";
@@ -69,9 +71,7 @@ export function SignupForm({ flowId, returnTo }: { flowId: string | null; return
       setError("이름은 1자 이상 50자 이하로 입력해 주세요.");
       return;
     }
-    const today = new Date();
-    const localToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-    if (birthDate && (birthDate < "1900-01-01" || birthDate > localToday)) {
+    if (birthDate && !isDateInRange(birthDate, "1900-01-01", calendarToday())) {
       setError("생년월일을 다시 확인해 주세요.");
       return;
     }
@@ -112,34 +112,34 @@ export function SignupForm({ flowId, returnTo }: { flowId: string | null; return
         </div>
       ) : null}
       {signup ? (
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-[30px]" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <label className="block text-grayscale-700 type-body-3">
-              가입 이메일
-              <TextInput className="mt-2 w-full" disabled readOnly value={signup.verifiedEmail} />
-            </label>
-            <label className="block text-grayscale-700 type-body-3">
-              이름<span className="text-primary">*</span>
-              <TextInput className="mt-2 w-full" maxLength={50} onValueChange={setName} placeholder="이름을 입력해 주세요." required value={name} />
-            </label>
-            <label className="block text-grayscale-700 type-body-3">
-              생년월일(선택)
-              <input className="mt-2 h-12 w-full rounded-lg border border-grayscale-200 bg-white px-3 text-grayscale-700 outline-none focus:border-primary" max="9999-12-31" min="1900-01-01" onChange={(event) => setBirthDate(event.target.value)} type="date" value={birthDate} />
-            </label>
-            <label className="block text-grayscale-700 type-body-3">
-              휴대폰번호(선택)
-              <TextInput className="mt-2 w-full" inputMode="tel" onValueChange={setMobilePhone} placeholder="휴대폰번호를 입력해 주세요." value={mobilePhone} />
-              <span className="mt-2 block text-grayscale-600 type-body-7">본인 확인용이 아니니 편하게 적어주세요!</span>
-            </label>
+            <div>
+              <label className="block text-grayscale-700 type-body-3" htmlFor="signup-email">가입 이메일</label>
+              <TextInput className="mt-2 w-full" disabled id="signup-email" readOnly value={signup.verifiedEmail} />
+            </div>
+            <div>
+              <label className="block text-grayscale-700 type-body-3" htmlFor="signup-name">이름<span className="text-primary">*</span></label>
+              <TextInput className="mt-2 w-full" fieldClassName="focus-within:border-primary" id="signup-name" maxLength={50} onValueChange={setName} placeholder="이름을 입력해 주세요." required value={name} />
+            </div>
+            <div>
+              <label className="text-grayscale-700 type-body-3" htmlFor="signup-birthdate">생년월일(선택)</label>
+              <DatePicker disabled={submitting} id="signup-birthdate" label="생년월일" maxDate={calendarToday()} minDate="1900-01-01" onValueChange={setBirthDate} placeholder="생년월일을 선택해주세요." value={birthDate} />
+            </div>
+            <div>
+              <label className="block text-grayscale-700 type-body-3" htmlFor="signup-phone">휴대폰번호(선택)</label>
+              <TextInput aria-describedby="signup-phone-help" className="mt-2 w-full" fieldClassName="focus-within:border-primary" id="signup-phone" inputMode="tel" onValueChange={setMobilePhone} placeholder="휴대폰번호를 입력해 주세요." value={mobilePhone} />
+              <span className="mt-2 block text-grayscale-500 type-body-7" id="signup-phone-help">본인 확인용이 아니니 편하게 적어주세요!</span>
+            </div>
           </div>
 
-          <div className="rounded-lg bg-grayscale-50 p-6">
+          <div className="bg-grayscale-50 p-6">
             <p className="mb-4 text-warning type-body-7">개발·테스트용 임시 약관입니다. 정식 본문은 추후 게시됩니다.</p>
             <div className="flex items-center gap-2">
               <CheckboxSquare ariaLabel="필수 약관에 모두 동의" checked={Boolean(allAccepted)} onCheckedChange={(checked) => setAccepted(checked ? [...agreementCodes] : [])} />
               <span className="text-grayscale-800 type-body-1">필수 약관에 모두 동의</span>
             </div>
-            <div className="mt-4 space-y-3 border-t border-grayscale-200 pt-4">
+            <div className="mt-5 space-y-4 border-t border-grayscale-200 pt-4">
               {agreementCodes.map((code) => {
                 const agreement = signup.requiredAgreements.find((item) => item.code === code);
                 return agreement ? (
@@ -155,7 +155,7 @@ export function SignupForm({ flowId, returnTo }: { flowId: string | null; return
           </div>
           {!agreementsValid ? <AuthError message="필수 약관 정보를 확인할 수 없습니다. 잠시 후 다시 시도해 주세요." /> : null}
           <AuthError message={error} />
-          <Button className="h-16 w-full" disabled={!name.trim() || !allAccepted || submitting} type="submit">
+          <Button className="h-16 w-full" disabled={!name.trim() || !allAccepted || submitting} size="xxl" type="submit">
             {submitting ? "가입하고 있어요..." : "메이트 시작하기"}
           </Button>
         </form>
