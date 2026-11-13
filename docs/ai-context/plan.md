@@ -247,3 +247,7 @@ Final reports should include:
 ## 2026-11-13 · 회사 찾기/등록의 진입 문맥과 Figma 용어
 
 [POL-11 사용자 D1/D2·정책 v1](../development/figma-v01/tasks/POL-11.md#pol-11-contract)은 기존 /auth 회사 등록·찾기 재사용, 설정 문맥의 중간/로그인 왕복·Back·고정 완료 /my/company와 기존 가입 완료 /bids 유지를 정한다. 사용자 요청대로 Figma ‘통합 요청’을 유지하고 설명을 추가하지 않는다. 용어 변경 추천은 미채택이며 미래 Figma 변경 때 자체 Gate에서 재검토한다. [DEV-16 인계](../development/figma-v01/tasks/DEV-16.md#dev-16-pol-11-handoff)·[RCTX15 미실행 기준](../qa/my-company.md#pol-11-return-qa)은 후속 개발/검증 소유다. 이번 정책 문서·출처 확인을 제품 구현/전체 화면 일치/실제 API 통합 PASS로 세지 않는다. 기존 MCO/MCANCEL·가입 QA 차단/예외를 보존하고 현재/다음/상태는 WBS만 관리한다.
+
+## 2026-11-13 · DEV-16 회사 흐름의 설정 복귀
+
+[이번 Brief/사용자 답변](../development/figma-v01/tasks/DEV-16.md#dev-16-brief)은 **로컬 선행·실서버 QA 차단 보존**을 승인했다. 기존 등록/찾기의 설정 문맥·검색 query/page·단계별 Back/로그인 next와 고정 완료 `/my/company`를 연결하며 가입 `/bids`/건너뛰기 next·Figma ‘통합 요청’을 유지한다. 계정 epoch/화면 수명·단일 제출과 성공/미확정 응답 검증을 보완하고, [자동/실제 Next mock·HTTP 대역 근거](../qa/my-company.md#dev-16-local-qa)를 실제 업무 API와 구분한다. 업무 API 실행0·RCTX-15/QA-05/06/07/08·기존 MCANCEL12 차단/예외를 보존한다. 현재/다음/상태와 최종 두 리뷰·Git 전달은 WBS·Task/실제 PR에서 확인한다.
