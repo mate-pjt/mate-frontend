@@ -148,3 +148,9 @@ pnpm build-storybook
 Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 시 같은 Clock의 현재 시각으로 마감 여부를 판단한다. 마감 시각은 활성 목록에서 제외하고 CLOSING_SOON의3일 상한은 포함한다. 실제 Next 공개 Repository는 요청마다 생성되므로 합성 일정은 요청의 실제 시각 기준이다. 테스트는 고정 Clock과 시간 이동으로 동일 fixture의 경계를 검증한다.
 
 새 mock 검증은 [DEV-65](figma-v01/tasks/DEV-65.md)와 [홈](../qa/home.md#dev-65-mock-qa)·[목록](../qa/bid-list.md#dev-65-mock-qa)에 연결하며 기존 실제 API 통과/차단을 대체하지 않는다. 고급 지역/공동도급과 관련 공고 predicate는 각각 DEV-09·DEV-61의 별도 범위다.
+
+## 9. 소속 신청 취소의 로컬 상태
+
+- `company=pending`은 실제 version/시각을 가진 합성 신청으로 시작한다. 본인 대기 화면에서 확인 후 취소하면 CANCELED/version 증가 이력을 보존하고 회사 화면은 비운다. reload에서는 완료 Toast를 재생하지 않는다. 기존 start의 등록/찾기로 재신청하면 새 ID를 사용하고 이전 취소 이력은 남는다.
+- 회사 공간의 `membershipVersion: 1`이 구형 합성 신청만 이관한다. 문서/초대·멱등 replay와 계정/탭/프로필 namespace는 유지하며 실제 API 자료를 mock에 복사하지 않는다. source 선택/전역 schema/시나리오 이름의 변경은 없다.
+- [DEV-15 로컬 검증](../qa/my-company.md#dev-15-local-qa)의 HTTP 대역은 합성 서버만 사용했다. 실제 계정/취소·재신청·권한/경쟁/복구는 승인 자원과 실행 대응 확보 전 차단이며 기존 실제 QA를 대체하지 않는다.

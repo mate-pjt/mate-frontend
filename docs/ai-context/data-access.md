@@ -111,6 +111,10 @@ src/data/
 
 화면은 `getMyCompanyOverview()`를 사용한다. API 구현은 기존 refresh → companyContext에 해당하는 기본 profile 또는 내 소속 신청을 조회한다. `404/CR001`만 신청 없음이고 403은 권한 오류다. APPROVED지만 아직 연결되지 않은 상태를 보존한다. mock은 회사 상태를 조회하고 실제 인증 응답을 덮어쓰지 않는다.
 
+- `cancelMembershipRequest(access, requestId, expectedVersion)`는 Onboarding 포트/공개 client의 명시 취소다. 실제 조회의 양수 안전 정수 version을 기본값 없이 보존하고 body/추측한 멱등성 키 없는 DELETE query로 보낸다. mapper가 같은 신청의 CANCELED·증가 version/완료 시각을 검증한 뒤 `{ request, sessionWarning? }`를 반환한다. wrapper는 기존 `isSuccess` 경계를 유지하며 게시 `success`와 실제 wire/실행 대응 미확인은 [DEV-15](../development/figma-v01/tasks/DEV-15.md#dev-15-brief)의 별도 실서버 차단이다.
+- 취소 controller는 같은 제출 중복/완료 replay와 계정·화면 종료 뒤 늦은 상태/Toast를 막는다.409/404는 최신 조회만 복원하며 새 신청에 자동 재취소하지 않는다. 응답 유실/잘못된 성공/권한·서버 오류는 미확정/명시 상태 확인이다. 성공 뒤 세션/최신 조회 실패는 성공과 경고를 구분한다. 취소 후 재확인의 refresh는 `preserveOnError`를 사용해 일시 오류로 확인된 완료를 잃지 않는다. 최종401/세션 해제는 보호 자료를 숨기고 로그인/복귀로 연결한다.
+- 회사 mock의 `membershipVersion: 1`은 알려진 구형 합성 신청에만 version1/시각과 `membershipRequests` 이력을 이관한다. 취소는 CANCELED/version 증가와 이력을 보존하고 재신청은 새 ID다. 실제 HTTP version 누락은 이관/기본값 대상이 아니다. 기존 연결/문서/proposal·초대/멱등 replay와 전역 schema/계정 namespace는 유지한다. 새 형식의 손상은 해당 회사 공간만 초기화한다. [로컬 QA](../qa/my-company.md#dev-15-local-qa)는 기존 MCO/CDASH의 실제 차단을 해소하지 않는다.
+
 - 등록/초대 수락 후 API 구현은 refresh, mock 구현은 mock 회사 상태를 갱신한다. 화면이 직접 post-mutation refresh를 호출하지 않는다.
 - HTTP 업로드는 SHA-256·파일 metadata·멱등성 키로 업로드 세션을 만들고, 내부 descriptor의 method/header/URL로 `PUT`(credentials omit)한다. 화면에는 document/version ID와 opaque uploadHandle만 반환한다.
 - mock 업로드는 외부 전송 없이 상태만 변경한다. 완료 → processing → 등록 제안 또는 실패, 재시도, 버전 충돌을 지원한다.
