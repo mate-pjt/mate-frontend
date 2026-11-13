@@ -151,3 +151,18 @@
 - 위 종료/소유 source/인계 메타데이터 추가에 문서 검사·ai-review 재검토와 같은 read-only verifier freshness를 수행한 뒤 커밋한다. 제품 동작/실제 QA 승인 범위는 바뀌지 않았다.
 
 - 종료 freshness까지 primary/독립 verifier **PASS**, Blocker/Major/Minor0. 문서39파일/10MD·544상대 링크·79/114/156·활성0/PNG6·다음 POL-12 선행/집계와 source 응답2blob·runtime/test 불변 지문을 직접 확인했다. 이 결과의 문자 그대로 기록은 소스/정책/QA/선정 변화가 없어 primary/문서 검사 후 별도 반복 독립 검토를 생략한다. 뒤의 PR receipt에는 해당 추가분을 다시 검토한다.
+
+
+<a id="dev-16-git"></a>
+
+## 2026-11-13 · PR 전달 체크포인트
+
+- 목적별7커밋: `5f465ce` 계정/화면 수명, `39abf49` 설정 복귀, `f9008f9` 성공 응답 검증, `3f2b441` 회귀 테스트, `1b9e167` 공통 기준, `800940f` 합성 QA 근거, `c063ffc` 리뷰/다음 인계. source/runtime·테스트·문서를 분리했으며 이번 Task 변경만 포함했다.
+- branch push·[PR #75](https://github.com/mate-pjt/mate-frontend/pull/75) 생성, `type: feature`/`type: test`/`type: docs` 라벨. 생성/첫 관찰 head `c063ffcb4cae960b09774524c10f78305aac41f4`, base `a8e4900c913e6fb80782b3cbc5b3688248d45ca3`. mergeable, GitHub checks 일부 실행 중/구성별 build 실행 중. Chromatic 게시 job/Storybook Publish·Vercel/Preview Comments 성공, UI Tests/UI Review pending은 이 시점 최종 CI PASS가 아니다.
+- PR 생성 응답의 불필요한 공개 계정 메타데이터 출력은 사용자에게 알리고 [예방 기록](../../../ai-context/ai-failures.md#dev-16-unconfirmed-success)에 값 없이 남겼다. 실제 이메일 값/인증정보 출력은 없었다. 이후 결과를 SHA/상태/필요 필드로만 투영한다.
+- 이 receipt/예방 추가는 전달 메타데이터이며 정책/소스/검증·실제 QA/다음 선정 변화0. 문서 검사와 primary 여섯 절/독립 freshness를 재검토해 별도 문서 커밋으로 push한 뒤 **그 실제 최종 head**의 원격 CI/리뷰·base/head/병합 조건을 다시 확인한다.
+- 이번 Chromatic 월간 한도 예외만 원인과 구분해 적용한다. 다른 checks 실패/미해결 리뷰·보호 규칙을 면제하지 않으며 check 강제 성공/force push/직접 main push/규칙 우회0. merge commit→로컬 main FF/SHA·clean의 실제 결과는 최종 PR/보고에서 확인한다. 이 시점 main 병합/동기화는 미완료다.
+
+- PR receipt/예방 추가의 독립 freshness도 **PASS / Blocker·Major·Minor0**, 문서39파일/10MD·545상대 링크·79/114/156/활성0/PNG6와 runtime/test 지문 불변을 직접 확인했다. 추가4문서 지문은 `a19ca064b4f266e3e63822f8997fbfe0541a387cf8c6f505942f3702c2f441b5`다.
+- 초기 head의 Chromatic job `131758615974` 로그에서 **Billed snapshot limit reached**를 확인했다. 사용자에게 이미 승인된 이번 월간 한도 예외의 원인과 일치하며 UI Tests/UI Review pending을 성공으로 바꾸지 않는다. 나머지 초기 head의 checks와 api/mock/hybrid build는 성공했다. 변경된 최종 head는 별도로 다시 확인한다.
+- 위 두 줄은 받은 독립 결과와 조회한 CI 사실만 기록한다. 정책/코드/검증 범위·예외를 바꾸지 않아 primary가 여섯 절/문서 검사를 확인하고 독립 검토 반복은 생략한다. 실제 최종 head CI/리뷰·병합/동기화는 아직 다음 행동이다.
