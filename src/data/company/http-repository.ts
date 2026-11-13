@@ -17,11 +17,15 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return authorizedRequest(access, `/api/v1/companies/${companyId}/membership-application-context`);
   }
 
-  function requestMembership(
+  async function requestMembership(
     access: AuthAccess,
     body: { companyId: number; representative: boolean; positionId: number | null; proposedPositionName: string | null; message: string | null },
   ): Promise<MembershipRequest> {
-    return authorizedRequest(access, "/api/v1/company-membership-requests", { method: "POST", body });
+    const result = await authorizedRequest<MembershipRequest>(access, "/api/v1/company-membership-requests", { method: "POST", body });
+    if (!Number.isSafeInteger(result.requestId) || result.requestId <= 0 || result.status !== "PENDING" || result.company?.companyId !== body.companyId) {
+      throw new ApiError(0, "MEMBERSHIP_RESPONSE_INVALID", "신청 결과를 확인하지 못했어요. 현재 회사 상태를 확인해 주세요.");
+    }
+    return result;
   }
 
   async function cancelMembershipRequest(access: AuthAccess, requestId: number, expectedVersion: number) {
@@ -71,7 +75,7 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     body: { connectionId: string; preferredBidNoticeAmountRange: BidAmountRange | null; representative: boolean; positionName: string | null },
     idempotencyKey: string,
   ): Promise<RegistrationResult> {
-    return postCommit(access, await authorizedRequest<RegistrationResult>(access, "/api/v1/unverified-company-registrations", { method: "POST", body, idempotencyKey }));
+    return postCommit(access, registrationResult(await authorizedRequest<unknown>(access, "/api/v1/unverified-company-registrations", { method: "POST", body, idempotencyKey })));
   }
 
   async function createDocumentUpload(access: AuthAccess, file: File, idempotencyKey: string): Promise<DocumentUpload> {
@@ -178,7 +182,16 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     },
     idempotencyKey: string,
   ): Promise<RegistrationResult> {
-    return postCommit(access, await authorizedRequest<RegistrationResult>(access, "/api/v1/company-registrations", { method: "POST", body, idempotencyKey }));
+    return postCommit(access, registrationResult(await authorizedRequest<unknown>(access, "/api/v1/company-registrations", { method: "POST", body, idempotencyKey })));
+  }
+
+  function registrationResult(value: unknown): RegistrationResult {
+    const result = value as RegistrationResult | null;
+    if (!result || !Number.isSafeInteger(result.companyId) || result.companyId <= 0 || !Number.isSafeInteger(result.membershipId) || result.membershipId <= 0
+      || typeof result.role !== "string" || !result.role.trim() || typeof result.verificationStatus !== "string" || !result.verificationStatus.trim()) {
+      throw new ApiError(0, "REGISTRATION_RESPONSE_INVALID", "등록 결과를 확인하지 못했어요. 현재 회사 상태를 확인해 주세요.");
+    }
+    return result;
   }
 
   async function postCommit<T extends object>(access: AuthAccess, result: T): Promise<T & { sessionWarning?: string }> {
