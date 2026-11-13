@@ -1,0 +1,547 @@
+{
+  "observed_on": "2026-11-13 KST",
+  "frontend": {
+    "base": "39230102d53fcce7aab5588d868c11dedd45cb43",
+    "branch": "docs/pol-11-company-return-policy",
+    "initial_worktree": "clean",
+    "upstream_main_matched": true
+  },
+  "refs": {
+    "policy_main": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+    "backend_dev": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "backend_main": "8f522d0876a70edf61b8f5456a11c51756f60372"
+  },
+  "sources": [
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/membership-and-positions.md",
+      "blob_sha": "fd56232a56a3b45c2edef78815bf045c5c413292",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/membership-and-positions.md",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/registration-and-verification.md",
+      "blob_sha": "85a0145715a539801cb6ce9292ecf7f2bd1751f8",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/registration-and-verification.md",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/merge-and-dispute.md",
+      "blob_sha": "8bdec10917d914bc83cdf4210645af6fffb54eee",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/merge-and-dispute.md",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+      "blob_sha": "9d5f6d32e2cc6d4c9ac50c76912a6383418ce947",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestServices.kt",
+      "blob_sha": "a16c4b30a242057427579f8213ecb9094f164d87",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/membershiprequest/CompanyMembershipRequestServices.kt",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/request/CompanyMembershipRequestRequests.kt",
+      "blob_sha": "9f43c54e7c3d4c156a11fe1bcc779db0aad0273d",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/request/CompanyMembershipRequestRequests.kt",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companysearch/CompanySearchController.kt",
+      "blob_sha": "53fd8037d5ca74eceeb1966c621707d6cd773b57",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companysearch/CompanySearchController.kt",
+      "evidence": "source-only; no tests or business requests executed"
+    },
+    {
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyregistration/CompanyRegistrationController.kt",
+      "blob_sha": "b3892353b10e416a017ad98b1ce37dcfb7af6cd6",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyregistration/CompanyRegistrationController.kt",
+      "evidence": "source-only; no tests or business requests executed"
+    }
+  ],
+  "figma": {
+    "file_key": "Eayi1SWD8Xq8tGBmlp5SV2",
+    "observed_nodes": [
+      "3162:51308",
+      "3162:52186",
+      "3162:51941",
+      "3162:51949",
+      "3140:121981"
+    ],
+    "screenshots": [
+      {
+        "node_id": "3162:52191",
+        "path": "POL-11-company-search.png",
+        "observation": "통합 요청 heading and empty search registration choice",
+        "sha256": "43eb5469a5726a9ea39a16232c304c4c1da5f1f4186a3f455c54ba599293a32f"
+      },
+      {
+        "node_id": "3162:51949",
+        "path": "POL-11-completion-cta.png",
+        "observation": "마이페이지로 돌아가기",
+        "sha256": "23d67424b5a7d93ccad74eac83d25b568b48cd16f380a1b79391f91b81676262"
+      }
+    ],
+    "limits": "Metadata and selected non-identifying crop images only; no full-frame/pixel/mobile approval"
+  },
+  "backend_delivery": {
+    "run_id": 43170618340,
+    "url": "https://github.com/mate-pjt/mate-backend/actions/runs/43170618340",
+    "head_sha": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "verify": "success",
+    "publish": "success",
+    "deploy": "success",
+    "deploy_prod": "skipped",
+    "runtime_process_sha": "not verified",
+    "business_response": "not executed"
+  },
+  "decisions": {
+    "date": "2026-11-13 KST",
+    "recorded_at": "2026-11-13T15:41:07+09:00",
+    "decider": "user in this conversation",
+    "D1": "Reuse existing auth company flows; preserve settings context and return to /my/company; retain onboarding /bids completion",
+    "D2": "Keep Figma 통합 요청 without added explanation; future changes require updated Figma and a new gate",
+    "rejected_recommendation": "Rename UI to 소속 신청"
+  },
+  "live_api_integration": "not executed; prior blockers preserved",
+  "openapi": {
+    "observed_on": "2026-11-13 KST",
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "observations": [
+      {
+        "client": "Python urllib default user agent",
+        "http_status": 403
+      },
+      {
+        "client": "curl Mozilla user agent",
+        "http_status": 200
+      }
+    ],
+    "openapi": "3.1.0",
+    "version": "v1",
+    "path_count": 184,
+    "operation_count": 209,
+    "operations": [
+      {
+        "path": "/api/v1/companies/search",
+        "method": "GET",
+        "operation_id": "search",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20,
+              "maximum": 50,
+              "minimum": 1
+            }
+          }
+        ],
+        "request": null,
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/companies/{companyId}/membership-application-context",
+        "method": "GET",
+        "operation_id": "context",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "exclusiveMinimum": 0
+            }
+          }
+        ],
+        "request": null,
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/company-membership-requests",
+        "method": "POST",
+        "operation_id": "create_6",
+        "parameters": [],
+        "request": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyMembershipRequestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/company-membership-requests/me",
+        "method": "GET",
+        "operation_id": "mine",
+        "parameters": [],
+        "request": null,
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/unverified-company-registrations",
+        "method": "POST",
+        "operation_id": "register_1",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "request": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUnverifiedCompanyRegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/company-registrations",
+        "method": "POST",
+        "operation_id": "register_2",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "request": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyRegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": [
+          "200",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      },
+      {
+        "path": "/api/v1/account-business-connections",
+        "method": "POST",
+        "operation_id": "create_16",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "request": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountBusinessConnectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": [
+          "201",
+          "409",
+          "400",
+          "500",
+          "401",
+          "403"
+        ]
+      }
+    ],
+    "schemas": {
+      "CreateUnverifiedCompanyRegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "connectionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preferredBidNoticeAmountRange": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "BELOW_100_MILLION",
+              "FROM_100_MILLION_TO_500_MILLION",
+              "FROM_500_MILLION_TO_1_BILLION",
+              "FROM_1_BILLION_TO_5_BILLION",
+              "AT_LEAST_5_BILLION",
+              "ANY"
+            ]
+          },
+          "representative": {
+            "type": "boolean"
+          },
+          "positionName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30,
+            "minLength": 0
+          }
+        }
+      },
+      "CreateCompanyRegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "proposalId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "documentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "versionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "telephoneNumber": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30,
+            "minLength": 0
+          },
+          "primaryIndustryCode": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 0
+          },
+          "preferredBidNoticeAmountRange": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "BELOW_100_MILLION",
+              "FROM_100_MILLION_TO_500_MILLION",
+              "FROM_500_MILLION_TO_1_BILLION",
+              "FROM_1_BILLION_TO_5_BILLION",
+              "AT_LEAST_5_BILLION",
+              "ANY"
+            ]
+          },
+          "representative": {
+            "type": "boolean"
+          },
+          "positionName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30,
+            "minLength": 0
+          },
+          "conflictChoice": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "REUSE_EXISTING",
+              "CREATE_NEW_VERIFIED"
+            ]
+          },
+          "businessNumberCorrectionChoice": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "CORRECT_CURRENT_UNVERIFIED"
+            ]
+          }
+        },
+        "required": [
+          "primaryIndustryCode"
+        ]
+      },
+      "CreateCompanyMembershipRequestRequest": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "representative": {
+            "type": "boolean"
+          },
+          "positionId": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64"
+          },
+          "proposedPositionName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30,
+            "minLength": 0
+          },
+          "message": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 500,
+            "minLength": 0
+          }
+        }
+      },
+      "CompanyMembershipApplicationContextResponse": {
+        "type": "object",
+        "properties": {
+          "accountName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "googleVerifiedEmail": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyMembershipRequestCompanyResponse"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyMembershipRequestPositionResponse"
+            }
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "GOOGLE_VERIFIED_EMAIL_REQUIRED",
+              "ACTIVE_MEMBERSHIP_EXISTS",
+              "PENDING_REQUEST_EXISTS",
+              "PENDING_INVITATION_EXISTS"
+            ]
+          }
+        }
+      }
+    },
+    "document_sha256": "30b46f3eca639a412659fe2a18f5908c6695786b4134d8319705dba095197164"
+  },
+  "backend_selected_blob_comparison": {
+    "count": 27,
+    "main_dev_equal": true,
+    "scope": "main source files under membershiprequest and registration web packages; not entire branch or running server"
+  }
+}
