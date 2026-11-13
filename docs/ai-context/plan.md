@@ -110,6 +110,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 ## Status Update Rules
 
+2026-11-13 DEV-56은 [이번 표시/로그아웃 결정과 실제 QA 범위](../development/figma-v01/tasks/DEV-56.md#dev-56-brief)에 따라 공통 헤더에 nickname·Figma 아이콘·세션 상태/재시도를 연결한다. [QA](../qa/my-settings-home.md#dev-56-header-qa)는 로컬17사례와 실제 로그인/refresh/프로필 이동·모바일·logout/401을 구분하며, 준비되지 않은 특수 실제 QA와 실행 SHA 대응 미확인을 보존한다. 기존 QA-14/MSET 이력·DEV-51 미구현은 유지하고 현재/다음/상태는 WBS만 관리한다.
+
 2026-11-13 DEV-57은 [이번 사용자 결정/Brief](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)에 따라 가입용 Figma Calendar/DatePicker와 프레임별 auth 폭·타일/입력 표면·nullable nickname 경계를 구현한다. mock·HTTP 대역·실제 Next/Storybook 검증과 [실제 OAuth/가입/초대 QA의 미실행/차단](../qa/auth.md#dev-57-local-qa)을 구분한다. 약관·회사 용어·헤더/홈 소유권을 유지하며 현재/다음/상태는 WBS만 관리한다.
 
 ### 승인된 Repository 전환 단계 (2026-09-30)
