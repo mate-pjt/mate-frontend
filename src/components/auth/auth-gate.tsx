@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { useAuthSession } from "@/features/auth/session";
 import { AuthCard, AuthError } from "./auth-screen";
 
-export function AuthGate({ children, nextPath }: { children: React.ReactNode; nextPath?: string }) {
+export function AuthGate({ children, nextPath, reauthenticate = false }: { children: React.ReactNode; nextPath?: string; reauthenticate?: boolean }) {
   const pathname = usePathname();
   const { state, refresh } = useAuthSession();
 
-  if (state.status === "authenticated") return children;
+  if (state.status === "authenticated" && !reauthenticate) return children;
 
   return (
     <AuthCard className="space-y-4">
@@ -20,7 +20,7 @@ export function AuthGate({ children, nextPath }: { children: React.ReactNode; ne
           <button className="text-primary underline" onClick={() => void refresh().catch(() => undefined)} type="button">다시 시도하기</button>
         </>
       ) : null}
-      {state.status === "anonymous" ? (
+      {state.status === "anonymous" || (state.status === "authenticated" && reauthenticate) ? (
         <>
           <AuthError message="로그인이 필요합니다." />
           <Link className="text-primary underline" href={`/auth?next=${encodeURIComponent(nextPath ?? pathname)}`}>로그인하기</Link>

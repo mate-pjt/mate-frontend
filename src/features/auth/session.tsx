@@ -12,6 +12,7 @@ type AuthSessionContextValue = {
   refresh: (options?: { preserveOnError?: boolean }) => Promise<Authentication | null>;
   getAccessToken: () => Promise<string>;
   getAccountKey: () => string | null;
+  getSessionEpoch: () => number;
   logout: () => Promise<void>;
 };
 const AuthSessionContext = createContext<AuthSessionContextValue | null>(null);

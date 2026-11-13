@@ -25,9 +25,9 @@ export function AuthCard({ children, className = "" }: { children: React.ReactNo
   );
 }
 
-export function AuthBack({ href }: { href: string }) {
+export function AuthBack({ href, onNavigate }: { href: string; onNavigate?: () => void }) {
   return (
-    <Link className="mb-6 inline-flex items-start gap-2 rounded text-grayscale-600 type-body-3 hover:text-grayscale-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href={href}>
+    <Link className="mb-6 inline-flex items-start gap-2 rounded text-grayscale-600 type-body-3 hover:text-grayscale-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href={href} onNavigate={onNavigate}>
       <StrokeLeftArrowIcon aria-hidden className="size-4 shrink-0" />
       뒤로가기
     </Link>
