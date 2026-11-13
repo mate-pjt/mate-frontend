@@ -73,3 +73,12 @@
 - 현재 중앙 문서·Backend main/dev·배포 OpenAPI의 amountType은 BASE_PRICE/ESTIMATED_PRICE뿐이다. RESULT 응답의 successfulBidAmount는 필터 query 계약이 아니다. 낙찰금액을 기초/추정가격으로 바꾸거나 임의 enum/endpoint·개인 저장 필드를 추가하지 않는다. 기존 ‘준비 중’ 비활성/무전송을 유지한다.
 - 재개 조건: 서버 소유자의 필드/enum·단위/정수/소수·분류/최신 회차·null/결과 상태·포함 경계·정렬/count/page·오류·URL/개인 저장 의미 명세, 개발자 정책 승인과 배포 대응, 안전한 합성 공고/계정·검증/변경·복구 범위를 확보한다. [ADV-11/12](../../../qa/bid-list.md#pol-07-advanced-qa) 중 비활성 보존만 정의했으며 기능 자체 QA는 미실행이다.
 - 다음 첫 행동: 확장 계약 원문/버전·승인 근거를 받은 뒤 최신 main·API/URL 모델과 비교해 요구사항 Gate부터 재개한다. 보류는 구현 완료/실제 통합 PASS가 아니다.
+
+<a id="dev-12-backend-20261113"></a>
+
+## 2026-11-13 · 서버 낙찰금액 필터 계약 재확인
+
+- 근거: [날짜별 재조사](../audits/2026-11-13-backend-readiness.md)·[고정 source/명세 JSON](../audits/2026-11-13-backend-readiness.json). backend dev `befe434c`·개발 OpenAPI에서 RESULT 전용 `successfulBidAmountMin/Max`를 확인했다. 위11/09의 필터 계약 부재는 당시 관찰로 보존하며 현재 부재의 근거로 반복하지 않는다.
+- source/OpenAPI 관찰: nullable int64·0이상·min≤max·포함 경계, request/allowlist/validation→query→최종 낙찰금액 SQL ge/le 연결. 표시 행별 최신 재입찰 회차를 고르고 최신 미발표를 과거 발표 결과로 대체하지 않는다. null과0은 구분하며 개찰1순위 금액 대체가 아니다. 테스트 소스 열람과 이번 실제 테스트/통합 실행은 구분한다.
+- 유지하는 재개 조건: 원/소수·안전 정수·분류/최신 회차·null/결과 상태·정렬/count/page/오류·URL/개인 저장 경계와 기존 POL-07 D2의 적용을 자체 Gate에서 확인한다. source/배포 기록·실행 대응·실제 경계 공고/합성 자원·사용/변경/복구 범위는 별개다. API 등장만으로 사용자 승인/전체 준비 완료를 만들지 않는다.
+- 이번 사용자 승인은 새 근거와 재개 조건의 **문서 반영**이다. 보류를 해제하거나 DEV-12 자체 Brief·제품/실제 QA를 시작하지 않았다. 현재 상태는 WBS만 소유한다. 다음 첫 행동은 WBS에서 이 Task가 선정될 때 최신 계약과 위 잔여 조건을 대조하는 것이다.
