@@ -1,0 +1,386 @@
+{
+  "observed_on": "2026-11-13 KST",
+  "frontend_base": "a8e4900c913e6fb80782b3cbc5b3688248d45ca3",
+  "branch": "feat/dev-16-company-return-context",
+  "backend_source_refs": {
+    "dev": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "main": "8f522d0876a70edf61b8f5456a11c51756f60372",
+    "policy_main": "c9e50ff591ae18023164e1a94581c611bf1e4f29"
+  },
+  "openapi_sha256": "30b46f3eca639a412659fe2a18f5908c6695786b4134d8319705dba095197164",
+  "runtime_server_sha": "not verified",
+  "live_business_requests": 0,
+  "local_mock_browser": "Next mock 7 groups, 127.0.0.1:3016; synthetic accounts/files only",
+  "mock_resource_timing_observation": {
+    "local_resources": 23,
+    "external_resources": 0,
+    "limit": "one observed navigation; not a complete journey Network capture"
+  },
+  "http_double_browser": {
+    "frontend": "127.0.0.1:3016",
+    "synthetic_http": "127.0.0.1:4016",
+    "fixture_sha256": "ac6ee3468b3810871307ea415a153e1af9f6bbfcb24da8b3bc293a34894a1d55",
+    "events": [
+      {
+        "case": "context401",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "context401",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 401
+      },
+      {
+        "case": "context401",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 401
+      },
+      {
+        "case": "context401",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "context401",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 401
+      },
+      {
+        "case": "context401",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 401
+      },
+      {
+        "case": "context403",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "context403",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "case": "context403",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "case": "pending",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "pending",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "pending",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "invite",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "invite",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "invite",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "google",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "google",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "google",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "conflict",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "conflict",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "conflict",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "conflict",
+        "path": "/api/v1/company-membership-requests",
+        "method": "POST",
+        "status": 409,
+        "representative": true,
+        "positionId": null,
+        "hasProposedPosition": false
+      },
+      {
+        "case": "slow",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "slow",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "slow",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "slow",
+        "path": "/api/v1/company-membership-requests",
+        "method": "POST",
+        "status": 201,
+        "representative": true,
+        "positionId": null,
+        "hasProposedPosition": false
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/search",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/search",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/search",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "available",
+        "path": "/api/v1/companies/search",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/account-business-connections/current",
+        "method": "GET",
+        "status": 404
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/account-business-connections/current",
+        "method": "GET",
+        "status": 404
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/account-business-connections",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/unverified-company-registrations",
+        "method": "POST",
+        "status": 201
+      },
+      {
+        "case": "registration-refresh401",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 401
+      },
+      {
+        "case": "malformed201",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "malformed201",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "malformed201",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "malformed201",
+        "path": "/api/v1/company-membership-requests",
+        "method": "POST",
+        "status": 201,
+        "representative": true,
+        "positionId": null,
+        "hasProposedPosition": false
+      },
+      {
+        "case": "invalid201",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "invalid201",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "invalid201",
+        "path": "/api/v1/companies/7001/membership-application-context",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "case": "invalid201",
+        "path": "/api/v1/company-membership-requests",
+        "method": "POST",
+        "status": 201,
+        "representative": true,
+        "positionId": null,
+        "hasProposedPosition": false
+      },
+      {
+        "case": "registration-invalid201",
+        "path": "/api/v1/auth/token/refresh",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "registration-invalid201",
+        "path": "/api/v1/account-business-connections/current",
+        "method": "GET",
+        "status": 404
+      },
+      {
+        "case": "registration-invalid201",
+        "path": "/api/v1/account-business-connections/current",
+        "method": "GET",
+        "status": 404
+      },
+      {
+        "case": "registration-invalid201",
+        "path": "/api/v1/account-business-connections",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "case": "registration-invalid201",
+        "path": "/api/v1/unverified-company-registrations",
+        "method": "POST",
+        "status": 201
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "DEV-16-completion-320.png",
+      "sha256": "61307ae032e029f33315bb05217edc7b9e062100b37dfbd9a73bb166598079b9"
+    },
+    {
+      "path": "DEV-16-completion-desktop.png",
+      "sha256": "3ade416a1fc968efced91f77ddd62761216de42379a19134f86cb4b999773421"
+    },
+    {
+      "path": "DEV-16-document-390.png",
+      "sha256": "1d45e1ac61a9d2ad438b6b57f20dabbe0ad32340b01018730cc5aad805e2bda6"
+    },
+    {
+      "path": "DEV-16-http-invalid201.png",
+      "sha256": "c90559051c4a840cd6c978b9b788f2ba1f97d45756b64e5a2c551338fa33c869"
+    },
+    {
+      "path": "DEV-16-http-success-refresh401.png",
+      "sha256": "996533720e86572c18930c047544823f2ac0083f8cba5b9e5cfb351b048284ec"
+    },
+    {
+      "path": "DEV-16-request-390.png",
+      "sha256": "5bd6442f5e81cfcd4527a8985f63221f49512c43a414e5a2d652618a05bec400"
+    }
+  ],
+  "registration_response_sources": [
+    {
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyregistration/response/CompanyRegistrationResponse.kt",
+      "blob_sha": "9bdb541315c4914409259127eea85fb5b4d4e6b6"
+    },
+    {
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyregistration/response/UnverifiedCompanyRegistrationResponse.kt",
+      "blob_sha": "329c37931f2e905993ff77d648dcf1558d83ab9f"
+    }
+  ]
+}

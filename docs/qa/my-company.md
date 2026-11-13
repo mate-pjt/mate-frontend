@@ -296,3 +296,32 @@
 - 연결할 소유 근거: Figma 3162:51308/52186/51941(완료 버튼51949), 대표/팀원3140:121981, 대기/취소3162:52364/52416 및 POL-10/DEV-15의 기존 증거. 신규 캡처는 POL-11의 비식별 부분2개만이며 전체 화면 정합성 검증이 아니다.
 - 실제 준비/승인: disposable 회사/계정·대표/팀원/신청/초대/종료/지연 상태와 기대값, 합성 사업자번호·비식별 증명서 및 업로드/OCR/등록/신청의 사용·변경·이력 잔존/정리·복구 담당/방법, 안전한 오류/경쟁·인증 재현, frontend/backend 실행 SHA와 배포 대응을 DEV-16 Gate에서 확보해야 한다. 이번에는 자원 준비·실제 변경 승인·로컬 선행 예외를 받지 않았다.
 - source/개발 OpenAPI 확인과 실제 업무 응답은 별개다. 게시 success/현재 isSuccess, source 신청201/게시200·일부 required 누락은 실제 wire와 소유 source를 확인해 검증하고 URL 존재만으로 통합 PASS 처리하지 않는다. 기존 사례의 상태/요청 문구를 소급 수정하지 않는다.
+
+<a id="dev-16-local-qa"></a>
+
+## 2026-11-13 · DEV-16 설정 복귀의 로컬 검증
+
+- 승인: [DEV-16 Brief/이번 사용자 답변](../development/figma-v01/tasks/DEV-16.md#dev-16-brief)의 **로컬 선행·실서버 QA 차단 보존**. 실제 회사 등록·신청·업로드/OCR/메일0, 신규 실제 통합 PASS0. 원래 RCTX-01~15 표는 POL-11 당시 기대 기준/미실행 이력으로 보존한다. 아래는 로컬 하위 범위의 별도 결과이며 **RCTX-15는 실서버 차단**이다.
+- 실행 식별: branch `feat/dev-16-company-return-context`, base `a8e4900`; Node22.20.0/pnpm11.3.0/Next16.2.9, Aside Browser. 전체 mock 7그룹과 api 프로필+합성 loopback HTTP 대역을 차례로 실행했다. 양쪽 모두 frontend `127.0.0.1:3016`; HTTP 대역만 `127.0.0.1:4016`. 실제 테스트 API/Google/storage/OCR로 요청하지 않았다.
+- 환경: desktop1280×900,390×844,320×780. 가상 계정1/2·합성 사업자번호·합성 PDF만 사용했다. mock 증명서는 외부 전송/원본 저장0. UI 탐색/설정 전환에는 실제 Next process를 사용했다. HTTP 대역은 `isSuccess` wrapper/합성 인증으로 실제 HTTP Repository와 CORS/fetch를 통과하며 실제 서버 계약 증명은 아니다.
+- 자동 검증: `pnpm test` **21파일/524 tests PASS**, `pnpm lint`, api/local `pnpm build`, `pnpm build-storybook`, `git diff --check`를 수행한다. 최종 재실행/리뷰 결과는 [리뷰](../development/figma-v01/reviews/DEV-16.md)에 연결한다. 테스트 작성 오류1회와 독립 지적 수정1회, 총2/3. Storybook 기존 chunk 크기 경고는 비차단이다.
+
+| 로컬 ID / 원래 기준 | 실행/관찰 | 결과·범위 |
+| --- | --- | --- |
+| RCTX-L01 / 01~03 | 설정 start→방법 선택→번호/문서의 href·Back, 검색→신청→Back·빈 결과 등록 전환, direct/reload | 브라우저 PASS. 모든 허용 route 조합/비정상 query는 순수 테스트로 보완. 번호 ‘이미 인증’/문서 ‘팀원 합류’ 특수 화면 전환은 이번 신규 브라우저 재현 없이 소유 소스의 같은 helper callsite를 대조 |
+| RCTX-L02 / 02 | HTTP 대역 search `query=가상&page=2`→신청→Back | 화면3/4·동일 query/page 복귀 PASS. page는0기준, UI는1기준 |
+| RCTX-L03 / 04~05 | 비로그인 direct 번호→로그인 왕복, HTTP context 최종401→재로그인 next, 중복 from/외부 raw return | 브라우저 PASS. 401 next는 현재 신청 단계·from=settings·query/page=2를 유지. 비정상/다중 인코딩/제어 문자/중복 값은 순수 테스트로 차단 |
+| RCTX-L04 / 06·12 | 설정 번호/합성 문서 등록→완료 CTA→회사 화면 | mock 브라우저 PASS. ‘마이페이지로 돌아가기’→고정 `/my/company`; 번호 완료 후 실제 mock 최신 overview는 미인증 연결로 표시. HTTP 등록201→refresh401에서도 확인된 완료+경고·같은 CTA 유지, 재등록0 |
+| RCTX-L05 / 07 | 팀원 선택→직급 누락 제출→안내→합성 직급 입력→신청 완료. HTTP 대표 신청 | 브라우저 PASS. 누락 안내, pending 최신 overview·신청 직급 확인. 대역 대표 payload의 positionId=null/제안 이름 없음. 활성 직급/대표·임의 권한 검증은 기존 소유 계약·자동 테스트와 구분 |
+| RCTX-L06 / 08~09 | 실제 mock 연결 계정의 신청 context, HTTP PENDING/INVITATION/Google 이메일 필요 context | 브라우저 제출 disabled PASS·해당 대역 변경0. 활성/대기에는 `/my/company` 상태 확인 링크. 초대 발행/자동 수락/임의 token 생성0 |
+| RCTX-L07 / 10 | 기존 신청 취소→빈 회사→Sonner, context403 | mock 취소 성공 Toast1회·빈 화면 PASS. HTTP403은 오류 유지/거짓 완료0. APPROVED 지연·REJECTED/CANCELED 전체 상태는 기존 DEV-15/회사 tests로 회귀, 해당 실제 상태 자원은 미준비 |
+| RCTX-L08 / 11 | HTTP409·지연201·201 null data·201 `{}` | 각 신청 POST1회.409/불완전201은 완료0·추가 제출 disabled·현재 상태 확인, 지연201은 완료 PASS. 서버5xx/중복 same-tick·화면 종료는 자동 회귀로 보완하며 대역을 실제 경쟁 검증으로 세지 않음 |
+| RCTX-L09 / 11~12 | HTTP 등록201 `{}`와 번호/문서의 불완전 data 자동 테스트 | 거짓 완료0·최신 상태 확인 링크. 대역에서 명령 뒤 refresh0; 두 등록 명령의 자동 회귀는 기존 멱등 key 유지/후속 refresh0. 등록 재시도는 기존 명시 멱등 replay를 유지 |
+| RCTX-L10 / 12 | 가상 계정1→2 후 검색/문서 draft, scope의 A→B→A·명시 logout/동일 계정 재로그인·업로드 중 교체/화면 종료 | 계정2에 이전 임시 입력/완료 노출0 확인. epoch·중복·업로드 후속 요청/저장0·refresh401/403 성공 보존은 순수/HTTP 자동 테스트 PASS. 실제 동시 로그아웃·업로드 서버 경쟁은 미실행 |
+| RCTX-L11 / 13 | 새 탭의 기존 가입 번호 경로→로그인→등록 완료·비정상 설정값 | 기존 완료 ‘메이트 시작하기’ href `/bids`, 최상위 `/auth/start` PASS. 기존 `/auth/start` 건너뛰기 next source는 변경0·기존 auth tests 회귀 |
+| RCTX-L12 / 14 | 지정 CTA/Figma metadata, desktop/390/320px·키보드 | 완료 CTA 문구/기존 ButtonLink xxl 토큰·가로 넘침0, 키보드 Enter 회사 복귀 PASS. ‘통합 요청’ 유지·membership/merge 설명 추가0. 전체 frame/pixel/모든 상태의 시각 PASS는 아님 |
+
+- 그림/증거: [320px 완료](../development/figma-v01/reviews/DEV-16-completion-320.png), [desktop 완료](../development/figma-v01/reviews/DEV-16-completion-desktop.png), [390px 신청](../development/figma-v01/reviews/DEV-16-request-390.png), [390px 문서 완료](../development/figma-v01/reviews/DEV-16-document-390.png), [성공 후401](../development/figma-v01/reviews/DEV-16-http-success-refresh401.png), [201 미확정](../development/figma-v01/reviews/DEV-16-http-invalid201.png). 모두 합성 자원이다. [기계 근거](../development/figma-v01/reviews/DEV-16-evidence.json)는 source/Swagger 지문·loopback 대역 요청 method/path/status·PNG 지문을 보존하며 header/body·auth 거래 query를 기록하지 않는다.
+- mock ResourceTiming의 마지막 확인은23건 모두 frontend loopback이었다. 전체 여정의 완전한 Network 캡처는 아니며 페이지 event listener가0건을 반환한 결과를 외부 요청0의 증거로 사용하지 않는다. HTTP 대역 마지막 확인은 frontend28건/loopback 대역5건이다. 설정 snapshot의7그룹 mock·기존 source/contract tests와 함께 해석한다.
+- 복구: 이번에 생성한 QA 탭2개와 mock/HTTP frontend 및 대역 프로세스만 종료했다. 저장소/실제 계정·업무 데이터는 변경하지 않았다. 합성 mock의 회사/취소 이력은 탭 범위였으며 실제 데이터 정리 작업은 없다.
+- 잔여: RCTX-15의 disposable 실제 자원/변경·잔존·복구·실행 SHA/wire, 기존 MCO4통과6차단·MCANCEL12·AUTH/QA-05/06/07/08 차단/예외를 보존한다. source commit·과거 배포 기록·현재 게시 OpenAPI를 실행 중 서버 SHA/실제 업무 응답으로 대체하지 않는다.
