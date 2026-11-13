@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
 import type { BidAmountRange, SignupCompanyProfile } from "@/data/company/contracts";
+import { companyFlowCompletion } from "@/lib/company-flow";
 
 export const amountChoices: Array<{ value: BidAmountRange; label: string }> = [
   { value: "BELOW_100_MILLION", label: "~ 1억 원 미만" },
@@ -145,13 +146,13 @@ export function RegistrationPreferences({
   );
 }
 
-export function RegistrationFinished({ verified, warning }: { verified: boolean; warning?: string | null }) {
+export function RegistrationFinished({ verified, warning, fromSettings = false }: { verified: boolean; warning?: string | null; fromSettings?: boolean }) {
   return (
     <div className="space-y-5 text-center">
       <h1 className="text-grayscale-800 type-heading-7">우리 회사 등록을 마쳤어요!</h1>
       <p className="text-grayscale-600 type-body-3">{verified ? "사업자등록증명서 확인을 완료했어요." : "미인증 회사로 등록했어요. 인증은 나중에 진행할 수 있어요."}</p>
       {warning ? <p className="rounded-lg bg-grayscale-50 p-3 text-warning type-body-7">{warning}</p> : null}
-      <Link className="block rounded-lg bg-primary px-5 py-4 text-white" href="/bids">메이트 시작하기</Link>
+      {fromSettings ? <ButtonLink className="w-full" href={companyFlowCompletion({ fromSettings })} size="xxl">마이페이지로 돌아가기</ButtonLink> : <Link className="block rounded-lg bg-primary px-5 py-4 text-white" href="/bids">메이트 시작하기</Link>}
     </div>
   );
 }

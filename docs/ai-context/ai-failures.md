@@ -271,3 +271,21 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 `git log --format='%h %s'` 또는 필요한 JSON 필드만 투영해 SHA/제목/상태·변경 범위를 확인한다. Task/Context Audit·리뷰에 값 없이 사건/한계와 예방 규칙을 남긴다. 제품 코드/실제 업무 API 영향은 없다.
 - Prevention rule: Git/PR/CI 조회도 외부 원문과 같은 출력 경계다. default/full/fuller 메타데이터나 작성자·커미터 객체 전체를 출력하지 않고 필요한 필드만 명시한다.
 - Related files: `docs/development/figma-v01/tasks/POL-11.md`, `docs/development/figma-v01/reviews/POL-11-context.md`, `docs/development/figma-v01/reviews/POL-11.md`. 하네스 설정·실행 script 변경 없음.
+
+<a id="dev-16-unconfirmed-success"></a>
+
+## 2026-11-13 · DEV-16의 확인하지 못한2xx 결과
+
+- Task: 회사 신청/등록의 설정 복귀·완료 판정.
+- Expected behavior: 실제 성공 결과의 최소 식별자를 확인한 뒤 완료하고, 응답 유실/손상은 미확정과 최신 상태 확인으로 분리한다.
+- Actual failure: 예비 독립 verifier가 Major2를 발견했다. 신청 UI의 미확정 조건은0/409/5xx만 포함해 HTTP200/201의 JSON/wrapper/data 오류를 놓쳤고, 기존 HTTP 신청/번호·문서 등록은 non-empty 불완전 data도 typed 성공으로 수용했다.
+- Root cause: HTTP status와 TypeScript 반환 타입을 업무 성공의 증거로 가정하고2xx의 불완전 응답을 테스트하지 않았다. 최초505 tests PASS가 이 공백을 잡지 못했다.
+- Fix:2xx/408도 신청 미확정으로 처리하고 자동 재제출 없이 최신 상태 확인으로 연결한다. 명령별 최소 결과 ID/상태·기존 string 필드를 HTTP 경계에서 확인하며, 잘못된 등록 결과에는 후속 refresh를 하지 않는다. 기존 멱등 key/명시 재시도는 유지한다. 순수/HTTP 대역 회귀와 실제 Next·loopback 대역의201 null/잘못된 data·거짓 완료0을 검증한다.
+- Prevention rule: mutation 완료 기준은2xx만으로 판단하지 않는다. 빈/손상 wrapper·data·잘못된 식별자/대상, 명령 성공 뒤 refresh 실패를 각각 검증한다. 대역 증거를 실제 서버 통합 PASS로 올리지 않는다.
+- Related files: `src/features/company/membership-submission.ts`, `src/data/company/http-repository.ts`, `tests/company-flow.test.ts`, DEV-16 QA/리뷰. 새 라이브러리·하네스 변경 없음.
+
+
+### DEV-16 전달 단계의 공개 계정 메타데이터 출력
+
+- PR 생성 응답에서 필요한 URL/번호/refs만 투영하지 않고 structuredContent 전체를 표시해 불필요한 공개 계정 식별/프로필 필드가 포함됐다. 실제 이메일 값은 null이고 인증정보는 포함되지 않았다. 해당 값을 문서/PR에 복사하거나 재인용하지 않는다. 사용자에게 즉시 알렸으며 기존 출력이 삭제됐다고 주장하지 않는다.
+- 원인/예방: wrapper의 structuredContent도 외부 원문이다. create/get/update의 결과는 먼저 보관하고 URL/번호·head/base SHA/상태·체크에 필요한 필드만 새 객체로 투영한다. 앞선 Git 출력 예방 규칙을 PR 생성 결과에도 일관되게 적용한다. 제품/정책·실제 QA 판정은 그대로다.

@@ -121,6 +121,7 @@ src/data/
 - 실제 문서 복원에는 기존 `mate:signup-document:<account>` 키의 UUID만 보존한다. mock 문서 복원은 mock namespace를 사용하며 실제 처리 중 키를 읽거나 삭제하지 않는다.
 - 파일별 idempotency key를 유지하고, 다른 payload의 동일 키는 mock에서 409다. 실제 서버의 mutation 성공을 refresh 실패 때문에 다시 제출하지 않는다.
 - 등록 화면의 `AccountScope`는 다른 인증 계정으로 바뀌면 파일·connection·proposal 등 화면의 임시 상태를 새로 만든다. 완료 후 세션 만료만 발생한 경우에는 성공 결과와 경고를 유지한다.
+- DEV-16의 회사 flow는 공개 세션의 epoch를 조회해 명시 로그인/로그아웃과 refresh 만료를 구분한다. 계정/화면 종료 뒤 다음 업로드 요청·복원 저장·완료 반영을 막는다. 이 epoch는 화면 수명용 숫자이며 `AuthAccess`·일곱 공급원·snapshot/운영 guard·storage namespace를 바꾸지 않는다. HTTP 신청은 양수 requestId/PENDING/대상 companyId, 번호/문서 등록은 양수 companyId/membershipId와 기존 string role/verificationStatus를 확인한 뒤에만 완료/후속 refresh를 수행한다. 새로운 enum이나 서버 권한을 추정하지 않는다. 신청의2xx 손상/빈 응답·연결/timeout·409/5xx는 미확정 상태 확인이며 자동 재제출하지 않는다. 등록의 기존 멱등 key/명시 재시도는 유지한다. [검증 근거](../qa/my-company.md#dev-16-local-qa)는 mock·HTTP 대역이고 실제 wire/실행 SHA·기존 가입 QA 차단은 별도다.
 
 ## 8. 유지하는 제품/API 정책
 

@@ -7,45 +7,63 @@ import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
-import { errorMessage } from "@/data/shared/errors";
+import { ApiError, errorMessage } from "@/data/shared/errors";
 import { searchCompanies } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
 import type { CompanySearchPage } from "@/data/company/contracts";
+import { companyFlowBack, companyFlowHref, readCompanyFlow, type CompanyFlow } from "@/lib/company-flow";
+import { useCompanyFlowScope } from "@/features/company/use-flow-scope";
 
-export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) {
+export function CompanySearch({ flow }: { flow: CompanyFlow }) {
+  const initialQuery = flow.query;
   const session = useAuthSession();
+  const scope = useCompanyFlowScope();
   const access = useMemo(() => ({ getAccessToken: session.getAccessToken, refresh: session.refresh, getAccountKey: session.getAccountKey }), [session.getAccessToken, session.refresh, session.getAccountKey]);
   const [query, setQuery] = useState(initialQuery);
   const [result, setResult] = useState<CompanySearchPage | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reauthenticate, setReauthenticate] = useState(false);
+  const [resultQuery, setResultQuery] = useState(initialQuery);
   const requestVersion = useRef(0);
 
   useEffect(() => {
     if (!initialQuery || session.state.status !== "authenticated") return;
     let active = true;
+    const request = scope.capture();
     const version = ++requestVersion.current;
-    void searchCompanies(access, initialQuery).then((value) => {
-      if (active && version === requestVersion.current) setResult(value);
+    void searchCompanies(access, initialQuery, flow.page).then((value) => {
+      if (active && request.current() && version === requestVersion.current) setResult(value);
     }).catch((reason: unknown) => {
-      if (active && version === requestVersion.current) setError(errorMessage(reason));
+      if (active && request.current() && version === requestVersion.current) {
+        setError(errorMessage(reason));
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      }
     });
     return () => { active = false; };
-  }, [access, initialQuery, session.state.status]);
+  }, [access, initialQuery, flow.page, scope, session.state.status]);
 
   async function search(page = 0) {
-    const value = query.trim();
+    const value = readCompanyFlow({ query }).query;
     if (!value) return;
     const version = ++requestVersion.current;
+    const request = scope.capture();
     setBusy(true);
     setError(null);
     try {
       const next = await searchCompanies(access, value, page);
-      if (version === requestVersion.current) setResult(next);
+      if (request.current() && version === requestVersion.current) {
+        setResult(next);
+        setResultQuery(value);
+        window.history.replaceState(null, "", companyFlowHref("search", { ...flow, query: value, page: next.page }));
+      }
     } catch (reason) {
-      if (version === requestVersion.current) setError(errorMessage(reason));
+      if (request.current() && version === requestVersion.current) {
+        setError(errorMessage(reason));
+        setReauthenticate(reason instanceof ApiError && reason.status === 401);
+      }
     } finally {
-      if (version === requestVersion.current) setBusy(false);
+      if (request.current() && version === requestVersion.current) setBusy(false);
     }
   }
 
@@ -58,12 +76,12 @@ export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) 
   }
 
   return (
-    <AuthGate nextPath={initialQuery ? `/auth/company/search?query=${encodeURIComponent(initialQuery)}` : undefined}>
+    <AuthGate nextPath={companyFlowHref("search", readCompanyFlow({ from: flow.fromSettings ? "settings" : undefined, query, page: String(result?.page ?? flow.page) }))} reauthenticate={reauthenticate}>
       <AuthCard>
-        <AuthBack href="/auth/start" />
+        <AuthBack href={companyFlowBack(flow)} onNavigate={() => scope.dispose()} />
         <h1 className="mb-6 text-grayscale-800 type-heading-7">이미 등록된 회사가 있다면<br />통합 요청해볼까요?</h1>
         <form className="flex gap-2" onSubmit={(event) => { event.preventDefault(); void search(); }}>
-          <TextInput aria-label="회사명 또는 사업자등록번호" className="min-w-0 flex-1" fieldClassName="focus-within:border-primary" onValueChange={changeQuery} placeholder="회사명 또는 사업자등록번호 10자리" value={query} />
+          <TextInput aria-label="회사명 또는 사업자등록번호" className="min-w-0 flex-1" fieldClassName="focus-within:border-primary" maxLength={100} onValueChange={changeQuery} placeholder="회사명 또는 사업자등록번호 10자리" value={query} />
           <Button className="h-12 w-[106px] shrink-0 rounded-xl" disabled={!query.trim() || busy} type="submit">조회하기</Button>
         </form>
         <div className="mt-4"><AuthError message={error} /></div>
@@ -79,7 +97,7 @@ export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) 
                     <p className="mt-1 break-words text-grayscale-600 type-body-7">{company.businessNumber} · {company.baseAddress ?? "주소 정보 없음"}</p>
                     </div>
                   </div>
-                  <Link className="shrink-0 rounded-lg bg-primary-100 px-4 py-2 text-primary type-body-2 focus-visible:outline-2 focus-visible:outline-primary" href={`/auth/company/search/${company.companyId}`}>통합 요청</Link>
+                  <Link className="shrink-0 rounded-lg bg-primary-100 px-4 py-2 text-primary type-body-2 focus-visible:outline-2 focus-visible:outline-primary" href={companyFlowHref("request", { ...flow, query: resultQuery, page: result.page }, company.companyId)}>통합 요청</Link>
                 </li>
               ))}
             </ul>
@@ -95,7 +113,7 @@ export function CompanySearch({ initialQuery = "" }: { initialQuery?: string }) 
           <div className="mt-4 rounded-xl bg-grayscale-50 p-8 text-center">
             <p className="text-grayscale-800 type-body-1">우리 회사, 아직 등록 전인가요?</p>
             <p className="mt-2 text-grayscale-600 type-body-7">지금 직접 우리 회사를 등록할 수 있어요.</p>
-            <Link className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-white type-body-7" href="/auth/company/register">회사 등록하기</Link>
+            <Link className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-white type-body-7" href={companyFlowHref("register", flow)}>회사 등록하기</Link>
           </div>
         ) : null}
       </AuthCard>

@@ -56,5 +56,5 @@ export function createSessionController(repository: Pick<AuthRepository, "refres
   }
   return { getSnapshot: () => state, getServerSnapshot: () => initialSession,
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
-    setAuthentication, refresh, getAccessToken, getAccountKey, logout };
+    setAuthentication, refresh, getAccessToken, getAccountKey, getSessionEpoch: () => epoch, logout };
 }

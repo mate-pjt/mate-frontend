@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthScreen } from "@/components/auth/auth-screen";
 import { noIndexRobots } from "@/lib/metadata";
+import { companyFlowBack, companyFlowHref, readCompanyFlow, type CompanyFlowSearchParams } from "@/lib/company-flow";
 
 export const metadata: Metadata = { title: "우리 회사 등록하기", robots: noIndexRobots };
 
@@ -24,16 +25,17 @@ const methods = [
   },
 ];
 
-export default function RegisterCompanyPage() {
+export default async function RegisterCompanyPage({ searchParams }: { searchParams: Promise<CompanyFlowSearchParams> }) {
+  const flow = readCompanyFlow(await searchParams);
   return (
     <AuthScreen>
-      <AuthGate>
+      <AuthGate nextPath={companyFlowHref("register", flow)}>
         <AuthCard>
-          <AuthBack href="/auth/start" />
+          <AuthBack href={companyFlowBack(flow)} />
           <h1 className="mb-6 text-grayscale-800 type-heading-7">우리 회사를<br />어떤 방법으로 등록할까요?</h1>
           <div className="grid gap-[10px] sm:grid-cols-2">
             {methods.map((method) => (
-              <Link className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100" href={method.href} key={method.href}>
+              <Link className="flex min-h-[220px] flex-col items-center justify-center gap-4 rounded-3xl bg-grayscale-50 p-6 text-center transition-colors hover:bg-grayscale-100" href={companyFlowHref(method.recommended ? "document" : "business-number", flow)} key={method.href}>
                 <span className={`rounded-md bg-primary-100 px-2 py-1 text-primary type-body-7 ${method.recommended ? "" : "invisible"}`}>메이트 추천</span>
                 <Image src={method.icon} alt="" width={64} height={64} />
                 <span className="text-grayscale-800 type-body-1">{method.title}</span>
