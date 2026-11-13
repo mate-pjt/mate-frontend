@@ -35,7 +35,7 @@ AGENTS·feature-workflow/context-audit/ai-review·verifier.toml·placeholder con
 
 ### ai-failures.md
 
-이미지/외부 원문 출력의 기존 예방 규칙과 DEV-15 후속401 누락 이력을 확인했다. 근거 JSON/PNG에 임시 자산 주소·신원 예시·계정 자료를 넣지 않고 실패/재조회/계정 수명을 후속 QA로 보존한다. 이번 런타임 수정/검증 재작업·새 반복 실패 사례가 없어 새 항목을 만들지 않는다.
+이미지/외부 원문 출력의 기존 예방 규칙과 DEV-15 후속401 누락 이력을 확인했다. 근거 JSON/PNG에 임시 자산 주소·신원 예시·계정 자료를 넣지 않고 실패/재조회/계정 수명을 후속 QA로 보존한다. 후속 Git 검증에서 fuller 형식이 불필요한 작성자 이메일을 출력한 실제 실수가 있어 [비식별 실패/예방 기록](../../../ai-context/ai-failures.md#pol-11-git-metadata-output)을 추가했다. 값은 재인용하지 않으며 기존 출력 삭제를 주장하지 않는다. 앱 코드/하네스 설정 변경은 없다.
 
 ## 발견된 불일치
 

@@ -22,7 +22,7 @@
 
 - WBS·POL-11·DEV-16 후속 범위·coverage·기존 회사 QA·plan: 승인 결정·출처/검증과 인계 연결을 갱신한다. 원본/기존 QA prefix·Task/의존성 연결은 보존한다.
 - base/architecture/data-access: package/scripts·구조/API/DTO/mock·실행 동작 변경 없음. 새 정책은 plan/Task에 기록하며 현재 구현 설명을 바꾸지 않는다.
-- harness: Skill/agent/config/흐름 변경 없어 미갱신. ai-failures: 이번 런타임 재작업/새 반복 실패 없음, 기존 예방 규칙·실제 QA 차단 유지.
+- harness: Skill/agent/config/흐름 변경 없어 미갱신. ai-failures: 런타임 재작업은 없으나 후속 Git 검증 출력 실수의 비식별 원인/예방 기록을 추가했다. 기존 실제 QA 차단은 유지한다.
 
 ## AI Review
 
@@ -32,7 +32,7 @@
 
 ### 2. 발견된 문제
 
-Blocker/Major/Minor 없음. 미채택 추천/승인, 내부 membership/회사 간 합치기, 과거 QA/현재 기대 동작·배포 문서/실제 실행을 분리했다. 원본79/114Task/156의존성·기존 prefix/QA·타 Task 차단/예외·런타임/설정/비밀값 경계 보존을 확인했다. 전체 화면/pixel·실제 API 통합의 잔여는 아래 미실행으로 유지한다.
+제품/문서 diff의 미해결 Blocker/Major/Minor 없음. 미채택 추천/승인, 내부 membership/회사 간 합치기, 과거 QA/현재 기대 동작·배포 문서/실제 실행을 분리했다. 원본79/114Task/156의존성·기존 prefix/QA·타 Task 차단/예외·런타임/설정 경계 보존을 확인했다. 후속 Git 출력 실수는 아래 사건/예방 기록으로 남겼고 추가 문서에 실제 이메일/비밀값이 없음을 재검증했다. 전체 화면/pixel·실제 API 통합의 잔여는 아래 미실행으로 유지한다.
 
 ### 3. 누락된 검증
 
@@ -75,3 +75,11 @@ WBS 완료/다음 DEV-16 선정·체크리스트/검토 결과 기록을 반영�
 2차 독립 결과: **PASS**, Blocker/Major/Minor0. 실제 최신 diff·종료/WBS·다음 후보/선행을 재검토하고 문서 검사를 직접 재실행했다.11파일·79/114/156·886상대 링크/신규33·완료27/차단22/대기62/준비1/보류2·활성0, 해소 가능한 P0/P1 대기0/P2 첫 DEV-16 확인. 검토 지문 `20c71f5811dcf1d7d6f771447412bdca61d12032a015058265963175da79c668`.
 
 이 문단은 받은 2차 보고서를 그대로 기록한 메타데이터다. primary가 사실/범위/수치와 문서 검사·diff-check를 재확인하며, 정책/QA/선정 의미가 바뀌지 않아 이 결과 기록 자체의3차 독립 검토는 생략한다. 이후 PR receipt는 해당 추가분의 검증/리뷰를 다시 확인한다. 제품/실제 QA 미실행·차단 경계는 변하지 않는다.
+
+### 커밋 상태 재검토와 출력 예방 기록
+
+독립 지문은 `git diff --binary | shasum -a 256` 기준이며 일반 diff 지문과 구별한다. 독립 verifier가 base→3개 커밋 최종 HEAD `09017e5748fc0197832459039b76d3bf32422694`를 추가 확인해 **PASS**（Blocker/Major/Minor0）, 기록시각/2차 결과만 추가됐고 정책/QA 의미 변화 없음을 확인했다. 재현 명령 `git diff --binary 39230102d53fcce7aab5588d868c11dedd45cb43 09017e5748fc0197832459039b76d3bf32422694 | shasum -a 256`, 지문 `5a2fecc51cf72886f644f90f19b3d269ccff665df62ac68f70930ca5945837e4`다. 문서 검사/base diff-check·clean도 직접 PASS했다.
+
+그 뒤 primary의 Git fuller 출력에 불필요한 작성자 이메일이 포함돼 사용자에게 알리고 [비식별 예방 기록](../../../ai-context/ai-failures.md#pol-11-git-metadata-output)을 추가했다. 실제 값/원문을 저장하지 않고 SHA·제목·필수 JSON 필드만 조회하도록 변경한다. Context Audit/Task의 갱신 필요 설명도 맞췄으며 이 추가분은 문서 검사·두 리뷰에서 다시 확인한다. 제품/QA 정책·현재/다음은 바뀌지 않는다.
+
+이 추가4문서의 primary 재검토·독립 verifier도 **PASS**（Blocker/Major/Minor0）. 독립이12파일·79/114/156·889상대 링크/신규36·과거 prefix/범위·diff-check·추가 이메일 패턴0을 직접 확인했다. 경계는 HEAD `09017e5`+4문서, 정규 `git diff --binary 39230102d53fcce7aab5588d868c11dedd45cb43 | shasum -a 256` 지문 `4534e47f81ea89a7756f2e3cf75e8dec3c118b71df622d5f0758bf88b5e10d86`다. 이 literal 결과와 여섯 절의 현재 설명 정합성만 기록하고 문서 검사를 재실행하며, 의미 변경 없는 결과 기록 자체는 추가 독립 재검토를 생략한다.

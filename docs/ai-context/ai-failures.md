@@ -258,3 +258,16 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 두 catch의 오류 객체 전달, 성공 뒤 확인된 완료 notice+로그인 분기, 404/409 뒤401·성공 뒤401 자동 회귀3개와 합성 브라우저2사례를 추가했다. 실제 API QA 차단은 보존한다.
 - Prevention rule: 다단계 mutation→refresh/GET의 각 최종401 경로를 별도 검증한다. 성공 여부와 인증·재조회 가능 여부를 나눠 표시하며, 오류를 일반 문자열/경고로 바꿀 때 인증 정보가 사라지지 않게 한다.
 - Related files: `src/features/company/membership-cancellation.ts`, `src/components/my/my-company-client.tsx`, `tests/membership-cancellation-controller.test.ts`, DEV-15 Task/리뷰·회사 QA.
+
+<a id="pol-11-git-metadata-output"></a>
+
+## 2026-11-13 · POL-11 Git 상세 메타데이터 출력
+
+- Task: POL-11 정책 문서의 목적별 커밋 검증.
+- Expected behavior: 필요한 SHA·커밋 제목·파일/범위만 조회하고 작성자 신원 필드는 출력하지 않는다.
+- Actual failure: `git show --format=fuller --stat`의 출력에 작성자 이메일이 포함됐다. 실제 값은 이 기록/문서/PR에 복사하지 않는다. 환경파일·credential을 읽은 사건과 구분한다.
+- Root cause: 검증에 불필요한 fuller 형식을 선택해 Git 기본 작성자/커미터 필드를 출력했다.
+- Detection: primary가 도구 출력 직후 확인하고 사용자에게 알렸다. 기존 출력이 삭제됐다고 주장하지 않는다.
+- Fix: 이후 `git log --format='%h %s'` 또는 필요한 JSON 필드만 투영해 SHA/제목/상태·변경 범위를 확인한다. Task/Context Audit·리뷰에 값 없이 사건/한계와 예방 규칙을 남긴다. 제품 코드/실제 업무 API 영향은 없다.
+- Prevention rule: Git/PR/CI 조회도 외부 원문과 같은 출력 경계다. default/full/fuller 메타데이터나 작성자·커미터 객체 전체를 출력하지 않고 필요한 필드만 명시한다.
+- Related files: `docs/development/figma-v01/tasks/POL-11.md`, `docs/development/figma-v01/reviews/POL-11-context.md`, `docs/development/figma-v01/reviews/POL-11.md`. 하네스 설정·실행 script 변경 없음.
