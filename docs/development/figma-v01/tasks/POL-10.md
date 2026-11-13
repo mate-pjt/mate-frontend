@@ -198,3 +198,10 @@
 - 다음 선정: **DEV-15 자체 요구사항 Gate**. POL-10 완료 가정의 WBS 재계산에서 선행을 충족한 P0/P1 대기0이며 P2 기본 순서의 첫 eligible이다. POL-11 등 이후 독립 정책과 기존 차단/보류·예외는 유지한다. [DEV-15 첫 행동/선정 인계](DEV-15.md#dev-15-next-handoff)는 최신 Git/source/Swagger·실제 wire/실행 대응·합성 자원/사용·취소/이력 잔존/복구 범위와 자체 Brief 확인이다. 이번에는 선정/인계만 했고 DEV-15 조사/설계/구현/실제 실행을 시작하지 않았다.
 - Git 전달은 정책 판정과 별개다. 목적별 문서 commit/push·PR·최종 head의 나머지 CI/리뷰·정상 merge 조건과 이번 Chromatic 월간 한도 예외만 확인한 뒤 main/로컬 FF를 진행한다. 현재 실행 대응/실제 업무 응답·MCANCEL/기존 QA 차단, metadata 출력의 과거 한계는 그대로다. 실제 PR/최종 보고에서 최종 head/병합 SHA/로컬·원격 일치/clean을 확인한다.
 - 종료/인계 freshness: 문서 검사10파일868링크·diff-check, 독립 verifier2차/6항목 ai-review 재수행 PASS(Blocker/Major/Minor0). 이후 이 결과 receipt·실제 Git 식별자 추가만 링크/diff 검사로 유지하며 정책/상태/범위가 달라지면 다시 검토한다. Git 전달 전까지 앱/실제 업무 실행0건이며 다음 DEV-15 미착수다.
+
+### Git 전달 체크포인트 · PR 생성 시점
+
+- 목적별 commit4개: `46a96c5` 계약 조사 근거, `b67fd02` 정책/후속 검증 기준, `f85a210` 출력 재발 기록, `371bd06` 검증/다음 인계. 작업 브랜치 push 후 [PR #72](https://github.com/mate-pjt/mate-frontend/pull/72)를 main 대상으로 생성하고 `type: docs` 라벨을 적용했다. 생성 당시 head는 `371bd06bac7f097e6d75e266e9be0e105baa5ae7`, base는 `ebda651016d323680be3364708f5c1ed6818b219`다.
+- 생성 직후 원격 checks2개·Chromatic publish/Vercel은 진행 중, mergeable이며 reviewDecision/요청된 필수 리뷰 없음. repository는 일반 merge commit을 허용하고 main 보호/현재 적용 branch rules 없음까지 확인했다. 검사를 강제 성공으로 바꾸지 않으며 이번 Chromatic 월간 한도 문제만 사용자 예외다. **이 시점은 최종 CI PASS/병합 완료 기록이 아니다.**
+- 이 receipt만 추가한 커밋 뒤의 최종 head를 원격에서 다시 확인해 CI/리뷰·나머지 병합 조건을 평가한다. main이 바뀌면 차이/영향 검증을 다시 수행한다. 실제 최종 head/CI·병합 SHA·로컬/원격 main 일치/clean은 PR과 최종 보고를 따른다.
+- 후기 변경은 실제 Git 식별자/receipt뿐으로 정책·범위·WBS 상태·후속 QA를 바꾸지 않는다. 독립2차 의견에 따라 verifier/전체 정책 리뷰는 재실행하지 않고 해당 링크/문서 검사·diff-check와 6항목 ai-review의 영향 여부를 확인한다. 기존 PASS 결론과 후속 실제 QA 미실행 경계는 유지한다.

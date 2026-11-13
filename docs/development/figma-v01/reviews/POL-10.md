@@ -84,3 +84,7 @@ Documentation Update Check: 종료 근거·다음 이유/첫 행동·WBS/집계�
 Review freshness: base `ebda651016d323680be3364708f5c1ed6818b219` 대비 현재10파일, snapshot SHA256 `c4c1602a310da4f520c8017a01c982c33bad961cc61c40ab0dbd220f460a5e72`에 적용한다. 이후 이 결과 receipt/실제 Git 식별자만 추가하는 변경은 링크/diff 검사로 유지할 수 있다는 verifier 의견을 받았다. 정책/상태/범위의 의미가 바뀌면 재검토한다. 6항목 ai-review도 종료/인계 변경분에 재수행 PASS이며 이 receipt는 그 결론을 바꾸지 않는다.
 
 Developer follow-up: primary가 목적별 commit/PR·최종 CI/정상 merge·로컬 main 일치를 확인한다. 다음 DEV-15는 자체 Gate 인계만 하며 실제 시작하지 않는다.
+
+## Git receipt 추가의 검토 범위
+
+[PR #72](https://github.com/mate-pjt/mate-frontend/pull/72) 생성 뒤 Task에4개 목적별 commit·초기 head/base·라벨/진행 중 CI와 최종 재확인 절차만 추가했다. 정책·범위·상태·후속 사례를 바꾸지 않은 식별자/receipt 변경이다. 문서 링크/검증·diff-check를 다시 수행하고, ai-review6항목의 요구사항/범위 일치·검증 경계/문서·추가 결정 없음/의미 변경 없음까지 확인해 기존 PASS를 유지한다. 독립2차가 허용한 이 제한에 따라 verifier 전체 재실행은 생략하며 최종 보고에도 이유를 명시한다. 최종 head의 실제 원격 CI/리뷰/병합·로컬 일치는 별도 확인한다.
