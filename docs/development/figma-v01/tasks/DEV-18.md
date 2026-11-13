@@ -64,3 +64,12 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-18-pol-12-handoff"></a>
+
+## 2026-11-13 · POL-12 수집/비교 기준 인계
+
+- 정책: [POL-12 D1/D3·v1](POL-12.md#pol-12-contract). 명시 POST profile-enrichment-runs와 UUID Idempotency-Key·run GET, 별도 profile-change-proposals GET을 구분한다. 같은 key/active run·응답 미확정/복원은 기존 상태를 확인하며 자동 새 수집/선택 반영을 하지 않는다.
+- 추가 완료 기준: run COMPLETED/completedSteps와 source별 SUCCESS/NO_DATA/일시·영구실패/identity 불일치를 분리한다. 기본 proposal PENDING/PARTIALLY_DECIDED·page0/size1..2/전체 pagination, before/after/current·출처/기준일·item status/version/currentTargetVersion·typed null/action을 보존한다. 제안0건을 최신 자료 확보로 표시하지 않는다.
+- 수집 생성/상태 leaf와 비교 조회 leaf가 다르다. COMPANY_INFORMATION_REFRESH_REQUEST만 있는 사람의 비교 조회403을 빈 변경목록으로 바꾸지 않는다. 계정/회사/화면 교체 뒤 늦은 run/제안을 폐기하고 Figma 로딩/비교 상태·오류/명시 재시도·모바일을 확인한다.
+- [CUPD-03~07/10/17/18](../../../qa/my-company.md#pol-12-update-qa)과 실제 권한/버전/오류·수집/잔존/복구 자원은 아직 미실행·미확보다. POL-12 완료만으로 DEV-17 선행이나 자체 실제 QA Gate가 해소되지 않으며 제품 구현은 시작하지 않았다. API 존재·source/배포·실행/실응답을 따로 검증한다.

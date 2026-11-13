@@ -64,3 +64,14 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-20-pol-12-handoff"></a>
+
+## 2026-11-13 · POL-12 직접 수정 범위/계약 선행 인계
+
+- 승인: [POL-12 사용자 D2와 API별 공백](POL-12.md#pol-12-api-gaps)의 “지원 범위 분리/공백은 계약 선행”. 기존 capability POST 생성/active 중복·inactive 재활성화, PATCH의 amountKrw/assessmentYear/representativeLicense/expectedVersion, certification PATCH의 value/expectedVersion을 활용하는 범위부터 자체 Gate에서 설계한다. capability 생성까지 expectedVersion이 있다고 추정하지 않는다.
+- 추가 완료 기준: 공종명 trim/제어문자/200자·현재 업종ID, 정수 원0..20자리/정밀도·nullable 연도1900..서버 KST현재연도·대표면허 true/false/null, 인증3종 YES/NO/UNKNOWN·행없음 version0/기존 exact version·누락키를 검증한다. ADMIN_MANUAL·외부 기준일 null·현재 provenance를 보존한다.
+- 필수 계약/DTO Gate: Swagger required와 source 생성자/validation 차이·정확 금액 wire/JSON·실제 wrapper/400/404/409를 확인한다.20자리 금액을 JS number로 반올림·절삭하지 않는다. 미확보 시 해당 경계를 로컬/실제 PASS로 만들지 않는다.
+- 전화번호 PATCH는 telephoneNumber만 받고 기대 버전이 없다. 평가 DELETE도 assessmentId만 받고 기대 버전이 없다. 서버가 검사하는 수정/삭제 버전 조건·충돌/최신조회/재시도 계약을 확보하기 전 이 두 UI를 활성화하지 않는다. frontend 사전 GET은 원자 충돌 방어가 아니다.
+- 법적 기본정보/주소·업종의 일반 직접 편집은 별도 관리용 변경/필드 불변/버전·provenance 계약 선행이다. 외부 업종 제안 ACCEPT는 DEV-19이며 수기 업종 변경 API로 간주하지 않는다. 인증 증명서 값·회사 VERIFIED와 공공인증을 혼동하지 않는다. 로고는 DEV-21, OCR 적용은 DEV-26이다.
+- 권한은 COMPANY_INFORMATION_EDIT와 활성 소속·합치기 제한이며 role/직급으로 허용하지 않는다. [CUPD-10~14/17/18](../../../qa/my-company.md#pol-12-update-qa)의 취소/중복·충돌·실패·명시 재확인·후속조회/계정 경쟁/모바일은 아직 미실행이다. DEV-08 선행/실제 QA 조건·로컬 선행 예외 없음은 보존하며 구현 미착수다.

@@ -64,3 +64,12 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-19-pol-12-handoff"></a>
+
+## 2026-11-13 · POL-12 선택 반영/충돌 기준 인계
+
+- 정책: [POL-12 사용자 D1/v1](POL-12.md#pol-12-contract). Figma 비교 popup은 처음 무선택, 체크행만 업데이트, 닫기/취소·미선택은 값/미결 제안을 보존한다. 현재 팝업에 거절 버튼을 추가하지 않으며 미선택을 REJECT로 전송하지 않는다.
+- 추가 완료 기준: POST profile-change-proposals/{proposalId}/decisions의1..100 item·ACCEPT·item.version 기반 expectedVersion, 중복 item/잘못된값·완료 item을 검증한다. header.version/currentTargetVersion을 token으로 쓰지 않는다. 단일 proposal batch의 전체 검증/원자 적용과 여러 proposal 간 transaction 경계를 구분한다.100초과/여러 proposal을 자동 분할해 전체 원자 성공으로 표시하지 않고 별도 UX/계약 Gate를 거친다.
+- 409의 item/target 변경·기결정/대체/무효화·업종 최종상태 충돌은 최신값 재조회/재비교·재선택이다. 이전 선택/결정 자동 재제출·낙관적 성공 금지. 성공 뒤 후속 GET/session 실패·최종401과 명령 결과 미확정을 구분하고 계정/회사 수명을 지킨다.
+- [CUPD-07~10/17/18](../../../qa/my-company.md#pol-12-update-qa)·권한/경쟁/원복 fixture와 실제 wrapper/409/실행 대응을 자신의 Gate에서 확보한다. DEV-18 선행·DEV-08/기존 QA 차단/예외를 유지하며 이번에는 후속 기준만 기록했다.
