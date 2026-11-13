@@ -10,6 +10,7 @@ function getRepository(): CompanyRepository { return repository ??= getDataConfi
 export const searchCompanies: CompanyRepository["searchCompanies"] = (...args) => getRepository().searchCompanies(...args);
 export const getMembershipContext: CompanyRepository["getMembershipContext"] = (...args) => getRepository().getMembershipContext(...args);
 export const requestMembership: CompanyRepository["requestMembership"] = (...args) => getRepository().requestMembership(...args);
+export const cancelMembershipRequest: CompanyRepository["cancelMembershipRequest"] = (...args) => getRepository().cancelMembershipRequest(...args);
 export const previewInvitation: CompanyRepository["previewInvitation"] = (...args) => getRepository().previewInvitation(...args);
 export const resumeInvitation: CompanyRepository["resumeInvitation"] = (...args) => getRepository().resumeInvitation(...args);
 export const acceptInvitation: CompanyRepository["acceptInvitation"] = (...args) => getRepository().acceptInvitation(...args);

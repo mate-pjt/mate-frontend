@@ -2,7 +2,7 @@ import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
 import type { DocumentUploadDto } from "./api-types";
 import type { BidAmountRange, BusinessConnection, CompanyRegistrationProposal, CompanySearchPage, DocumentProcessing, DocumentUpload, InvitationContext, MembershipApplicationContext, MembershipRequest, RegistrationResult, CompanyRepository, MyMembershipRequest, CompanyOverview } from "./contracts";
-import { mapCompanyBasicProfile } from "./api-mapper";
+import { mapCompanyBasicProfile, mapMyMembershipRequest } from "./api-mapper";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -22,6 +22,17 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     body: { companyId: number; representative: boolean; positionId: number | null; proposedPositionName: string | null; message: string | null },
   ): Promise<MembershipRequest> {
     return authorizedRequest(access, "/api/v1/company-membership-requests", { method: "POST", body });
+  }
+
+  async function cancelMembershipRequest(access: AuthAccess, requestId: number, expectedVersion: number) {
+    if (!Number.isSafeInteger(requestId) || requestId <= 0 || !Number.isSafeInteger(expectedVersion) || expectedVersion <= 0) {
+      throw new ApiError(400, "MEMBERSHIP_INPUT_INVALID", "취소할 신청 정보를 다시 확인해 주세요.");
+    }
+    const request = mapMyMembershipRequest(await authorizedRequest<unknown>(access, `/api/v1/company-membership-requests/${requestId}?expectedVersion=${expectedVersion}`, { method: "DELETE" }));
+    if (request.requestId !== requestId || request.status !== "CANCELED" || request.version <= expectedVersion) {
+      throw new ApiError(0, "MEMBERSHIP_RESPONSE_INVALID", "취소 결과를 확인하지 못했어요. 최신 상태를 다시 확인해 주세요.");
+    }
+    return postCommit(access, { request });
   }
 
   function previewInvitation(token: string): Promise<InvitationContext> {
@@ -186,7 +197,7 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     }
     if (session.companyContext) return profile(session.companyContext.companyId);
     let request: MyMembershipRequest;
-    try { request = await authorizedRequest<MyMembershipRequest>(access, "/api/v1/company-membership-requests/me", { signal }); }
+    try { request = mapMyMembershipRequest(await authorizedRequest<unknown>(access, "/api/v1/company-membership-requests/me", { signal })); }
     catch (error) { if (error instanceof ApiError && error.status === 404 && error.code === "CR001") return { status: "empty" }; throw error; }
     if (request.status === "APPROVED") {
       const updated = await access.refresh(); signal?.throwIfAborted();
@@ -196,5 +207,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { searchCompanies, getMembershipContext, requestMembership, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }

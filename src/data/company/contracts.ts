@@ -170,6 +170,7 @@ export type BidAmountRange =
 
 export type MyMembershipRequest = {
   requestId: number;
+  version: number;
   company: {
     companyId: number;
     companyName: string;
@@ -183,7 +184,11 @@ export type MyMembershipRequest = {
   status: "PENDING" | "CANCELED" | "APPROVED" | "REJECTED";
   rejectionReason: string | null;
   createdAt: string;
+  updatedAt: string;
+  completedAt: string | null;
 };
+
+export type MembershipCancellationResult = { request: MyMembershipRequest; sessionWarning?: string };
 
 export type CompanyBasicProfile = {
   companyId: number;
@@ -216,6 +221,7 @@ export interface CompanyDirectoryRepository {
 export interface CompanyOnboardingRepository {
   getMembershipContext(access: AuthAccess, companyId: number): Promise<MembershipApplicationContext>;
   requestMembership(access: AuthAccess, body: { companyId: number; representative: boolean; positionId: number | null; proposedPositionName: string | null; message: string | null }): Promise<MembershipRequest>;
+  cancelMembershipRequest(access: AuthAccess, requestId: number, expectedVersion: number): Promise<MembershipCancellationResult>;
   previewInvitation(token: string): Promise<InvitationContext>;
   resumeInvitation(access: AuthAccess): Promise<InvitationContext>;
   acceptInvitation(access: AuthAccess, expectedVersion: number): Promise<{ companyId: number; membershipId: number; sessionWarning?: string }>;

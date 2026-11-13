@@ -28,7 +28,7 @@ function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile[
   return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustries: structuredClone(industries) };
 }
 type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null };
-type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
+type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
 const basicIndustryValid = (value: unknown) => isRecord(value) && typeof value.code === "string" && value.code.trim().length > 0 && typeof value.name === "string" && value.name.trim().length > 0;
@@ -112,13 +112,32 @@ function requestResultValid(value: unknown): boolean {
   if ("companyId" in value) return isCount(value.companyId) && isCount(value.membershipId) && typeof value.role === "string" && typeof value.verificationStatus === "string";
   return typeof value.status === "string";
 }
+const positiveInteger = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value > 0;
+function membershipRequestValid(value: unknown): value is MyMembershipRequest {
+  if (!isRecord(value) || !positiveInteger(value.requestId) || !positiveInteger(value.version) || !searchItemValid(value.company) || !isDate(value.createdAt) || !isDate(value.updatedAt) || typeof value.requestedRepresentative !== "boolean" || !["requestedPositionName", "proposedPositionName", "rejectionReason"].every(key => textOrNull(value[key]))) return false;
+  return ["PENDING", "APPROVED", "REJECTED", "CANCELED"].includes(String(value.status)) && (value.status === "PENDING" ? value.completedAt === null : isDate(value.completedAt));
+}
+function migrateMembershipState(value: Record<string, unknown>): boolean {
+  if (!isRecord(value.overview)) return false;
+  const request = value.overview.request;
+  const history: Record<string, MyMembershipRequest> = {};
+  if (["pending", "terminated", "approved-stale"].includes(String(value.overview.status))) {
+    if (!isRecord(request) || ["version", "updatedAt", "completedAt"].some(key => Object.hasOwn(request, key))) return false;
+    Object.assign(request, { version: 1, updatedAt: request.createdAt, completedAt: request.status === "PENDING" ? null : request.createdAt });
+    if (!membershipRequestValid(request)) return false;
+    history[request.requestId] = structuredClone(request);
+  }
+  Object.assign(value, { membershipVersion: 1, membershipRequests: history, nextMembershipRequestId: Math.max(8001, ...Object.values(history).map(item => item.requestId + 1)) });
+  return true;
+}
 function valid(value: unknown): value is CompanyState {
-  if (!isRecord(value) || value.signupEvidenceVersion !== 1 || value.basicProfileVersion !== 1 || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
+  if (!isRecord(value) || value.signupEvidenceVersion !== 1 || value.basicProfileVersion !== 1 || value.membershipVersion !== 1 || !isRecord(value.membershipRequests) || !positiveInteger(value.nextMembershipRequestId) || !isRecord(value.overview) || !isRecord(value.documents) || !isRecord(value.proposals) || !isRecord(value.requests)) return false;
+  if (!Object.entries(value.membershipRequests).every(([id, request]) => membershipRequestValid(request) && String(request.requestId) === id && request.requestId < (value.nextMembershipRequestId as number))) return false;
   const view = value.overview;
   if (view.status === "connected") {
     const p = view.profile; if (!isRecord(p) || !isCount(p.companyId) || typeof p.companyName !== "string" || typeof p.businessNumber !== "string" || !["LEGACY", "VERIFIED", "UNVERIFIED"].includes(String(p.verificationStatus)) || !textOrNull(p.representativeName) || !textOrNull(p.telephoneNumber) || !(p.establishedYear === null || isCount(p.establishedYear)) || !basicIndustriesValid(p.primaryIndustries) || !(p.address === null || (isRecord(p.address) && ["zipCode", "baseAddress", "detailAddress"].every(key => textOrNull((p.address as Record<string, unknown>)[key]))))) return false;
   } else if (["pending", "terminated", "approved-stale"].includes(String(view.status))) {
-    const r = view.request; if (!isRecord(r) || !searchItemValid(r.company) || !isCount(r.requestId) || !["PENDING", "APPROVED", "REJECTED", "CANCELED"].includes(String(r.status)) || !isDate(r.createdAt) || typeof r.requestedRepresentative !== "boolean" || !["requestedPositionName", "proposedPositionName", "rejectionReason"].every(key => textOrNull(r[key]))) return false;
+    const r = view.request; if (!membershipRequestValid(r) || JSON.stringify(value.membershipRequests[r.requestId]) !== JSON.stringify(r)) return false;
   } else if (view.status !== "empty") return false;
   if (value.connection !== null && !connectionValid(value.connection)) return false;
   const documents = value.documents; const proposals = value.proposals;
@@ -146,10 +165,12 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     let overview: CompanyOverview = { status: "empty" }; const scenario = runtime.scenario("company");
     if (scenario === "connected") overview = { status: "connected", profile: basicProfile() };
     if (["pending", "rejected", "canceled", "approved-stale"].includes(scenario)) {
-      const request: MyMembershipRequest = { requestId: 8001, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt: new Date(runtime.now()).toISOString() };
+      const createdAt = new Date(runtime.now()).toISOString();
+      const request: MyMembershipRequest = { requestId: 8001, version: 1, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt, updatedAt: createdAt, completedAt: scenario === "pending" ? null : createdAt };
       overview = { status: scenario === "pending" ? "pending" : scenario === "approved-stale" ? "approved-stale" : "terminated", request };
     }
-    return { signupEvidenceVersion: 1, basicProfileVersion: 1, overview, connection: null, documents: {}, proposals: {}, requests: {} };
+    const membershipRequests = "request" in overview ? { [overview.request.requestId]: structuredClone(overview.request) } : {};
+    return { signupEvidenceVersion: 1, basicProfileVersion: 1, membershipVersion: 1, membershipRequests, nextMembershipRequestId: "request" in overview ? overview.request.requestId + 1 : 8001, overview, connection: null, documents: {}, proposals: {}, requests: {} };
   }
   const read = (account: string) => {
     let migrated = false;
@@ -161,6 +182,10 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
         }
         if (!Object.hasOwn(value, "basicProfileVersion")) {
           if (!migrateLegacyBasicProfile(value)) return false;
+          migrated = true;
+        }
+        if (!Object.hasOwn(value, "membershipVersion")) {
+          if (!migrateMembershipState(value)) return false;
           migrated = true;
         }
       }
@@ -224,8 +249,23 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       const account = await mockAccount(runtime, access, "company"); const state = read(account); const company = companies.find(item => item.companyId === body.companyId);
       if (!company) throw new ApiError(404, "COMPANY_NOT_FOUND", "회사를 찾지 못했습니다.");
       if (state.overview.status === "connected" || state.overview.status === "pending") throw new ApiError(409, "MEMBERSHIP_EXISTS", "이미 연결되었거나 신청 대기 중입니다.");
-      const request: MyMembershipRequest = { requestId: 8001, company: structuredClone(company), requestedRepresentative: body.representative, requestedPositionName: body.positionId ? "담당자" : null, proposedPositionName: body.proposedPositionName, status: "PENDING", rejectionReason: null, createdAt: new Date(runtime.now()).toISOString() };
+      const createdAt = new Date(runtime.now()).toISOString();
+      const request: MyMembershipRequest = { requestId: state.nextMembershipRequestId++, version: 1, company: structuredClone(company), requestedRepresentative: body.representative, requestedPositionName: body.positionId ? "담당자" : null, proposedPositionName: body.proposedPositionName, status: "PENDING", rejectionReason: null, createdAt, updatedAt: createdAt, completedAt: null };
+      state.membershipRequests[request.requestId] = structuredClone(request);
       state.overview = { status: "pending", request }; write(account, state); return { requestId: request.requestId, status: request.status, company: request.company };
+    },
+    async cancelMembershipRequest(access, requestId, expectedVersion) {
+      if (!positiveInteger(requestId) || !positiveInteger(expectedVersion)) throw new ApiError(400, "MEMBERSHIP_INPUT_INVALID", "취소할 신청 정보를 다시 확인해 주세요.");
+      const account = await mockAccount(runtime, access, "company"); const state = read(account);
+      const request = state.membershipRequests[requestId];
+      if (!request) throw new ApiError(404, "CR001", "소속 신청을 찾지 못했어요.");
+      if (request.version !== expectedVersion) throw new ApiError(409, "CR004", "소속 신청이 변경됐어요. 최신 상태를 확인해 주세요.");
+      if (request.status !== "PENDING" || state.overview.status !== "pending" || state.overview.request.requestId !== requestId || !Number.isSafeInteger(request.version + 1)) throw new ApiError(409, "CR003", "이미 처리된 소속 신청이에요. 최신 상태를 확인해 주세요.");
+      const completedAt = new Date(runtime.now()).toISOString();
+      const canceled: MyMembershipRequest = { ...request, status: "CANCELED", version: request.version + 1, updatedAt: completedAt, completedAt };
+      state.membershipRequests[requestId] = structuredClone(canceled);
+      state.overview = { status: "terminated", request: canceled }; write(account, state);
+      return { request: structuredClone(canceled) };
     },
     async previewInvitation(token) {
       await mockOperation(runtime, "company");
