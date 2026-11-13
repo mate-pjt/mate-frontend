@@ -243,3 +243,26 @@
 - 실제 연결/신규 검증은 [DEV-13](../development/figma-v01/tasks/DEV-13.md#dev-13-pol-08-handoff)이 소유한다. [전용 계약 수락 표](../development/figma-v01/tasks/POL-08.md#pol-08-backend-request)의 이전/현재 포함 관계·정렬/페이지·원본키/target ID·공개/부재/누락/오류 의미 및 합성 fixture/사용·재현/해제·잔존/복구를 먼저 확보한다. 현재 계약 없는 endpoint/enum을 QA 기대값에 발명하지 않는다.
 - 후속 [HIST-01~12](../development/figma-v01/tasks/POL-08.md#pol-08-dev13-gate)는 모두 미실행이다. 기존 DETAIL-01(분류/직접 URL)·DETAIL-04(현재 정정 사실)·DETAIL-08(본문/독립 오류)의 원래 ID/이력과 연결하고 새 이력 범위를 별도 기록한다.
 - 필수 경계: 원문 번호/차수와 실제 ID,0/1/복수·차수 간격/결측·정정 횟수/최초 추정 금지, 공사/물품/용역·서로 다른 분류/회차, 마감/취소 공개본과 미공개/삭제, 다음 page/변동·중도 실패, 닫기/선택·같은 탭 전체 공고 이동·하드 리로드/뒤로 가기의 원래 URL 복귀, 키보드/모바일과 늦은 응답. API가 알려주지 않은 미수집/부재 이유를 생성하지 않고 오류를 빈 성공/기존 목록/기본 예시로 치환하지 않는다.
+
+
+<a id="pol-09-followup"></a>
+
+## 2026-11-13 · POL-09 추가 정보 제공의 후속 검증 기준 · 실제 미실행
+
+- 사용자 결정/정책: [POL-09 v1](../development/figma-v01/tasks/POL-09.md#pol-09-contract). 원문 자격사항/지시사항 본문·현장설명 일시·기준일·수집일의 추가 제공을 추진하고 backend 계약부터 확보한다. 현재 링크/필요 여부/일반 안내와의 차이를 Figma 예외로 닫지 않는다. 제품 구현은 [DEV-14 자체 Gate](../development/figma-v01/tasks/DEV-14.md#dev-14-pol-09-handoff)의 후속이다.
+- 이번 증거는 고정 중앙 정책/backend source·개발 OpenAPI GET200·두 공사 Figma metadata/관련3부분 screenshot이다. 업무 API GET/mutation·로그인·외부 원문 이동/첨부/메일·제품 mock/HTTP 대역·실제 통합 실행0건, 신규 실제 통과0건이다. 원본 QA-03 실제1통과8차단·DETAIL-02/04/09·DETAIL-07 통과 이력과 타 Task 차단/승인 예외를 보존한다.
+- backend 실제 path/query/schema·본문 형식/안전한 표시 책임·일자의 원천/정의/정밀도/갱신·null/미제공/오류·공개/분류/차수 scope·배포 version/실행 process SHA 대응·비식별 fixture/기대값·안전한 사용/잔존/복구 범위가 재개 전에 필요하다. 현재 문서200/source commit은 실행 서버/실제 응답 증명이 아니다.
+
+| 후속 사례 | 기대 검증/경계 | 연결/이번 판정 |
+| --- | --- | --- |
+| SUPP-01 · 원문 본문 | 원천/범위·format·빈/긴/여러 줄/특수문자와 계약상 허용 콘텐츠의 안전한 표시. 다른 문자열/첨부 자동 추출/디자인 예시를 원문으로 대신하지 않음 | DEV-14 신규 기준, 계약 미확보·미실행 |
+| SUPP-02 · 원문 링크 | 본문/미리보기 가능 여부와 URL 유무를 분리. 정상/null/잘못된/위험 scheme·target/rel·본문 부분실패에서도 실제 계약 준수 | DETAIL-09 회귀와 연결, 미실행 |
+| SUPP-03 · 현장설명 | 필요 여부 true/false와 실제 일시 유무/미정·date-only/offset을 독립 대조. Kotlin/프론트 `isSiteExplanationRequired`와 OpenAPI `siteExplanationRequired`의 실제 wire 키/타입 확인 | DETAIL-02/DEV-14, 실제 wire 미확인·미실행 |
+| SUPP-04 · 기준일 | backend가 정의한 대상/산출/정밀도/공고·분류 범위/결측을 확인. 게시일/최초 공개일/현재일을 임의 복사하지 않음 | DEV-14 신규 기준, 의미/계약 미확보·미실행 |
+| SUPP-05 · 수집일 | 대표/section 범위·최초/최근 시도/성공/source version·부분실패/재수집/늦은 응답의 갱신 의미. section min/max/응답시각으로 대표일 생성 금지 | DEV-14 신규 기준, 의미/계약 미확보·미실행 |
+| SUPP-06 · 시각/결측 | offset→KST·자정 경계·date-only/null/미제공/잘못된 값·업무 일시와 수집 시각의 차이를 확인. 없는 시간을00:00/현재값으로 합성하지 않음 | DETAIL-02/DEV-14, 미실행 |
+| SUPP-07 · 공개/오류 | 공사/물품/용역·공고/분류/차수·미공개/삭제/권한·본문/section 오류·재시도 경계. 관리자/raw-source 우회·오류의 빈 성공/자동 mock fallback 없음 | DEV-14, 계약/fixture 미확보·미실행 |
+| SUPP-08 · 기존 화면 회귀 | 공동수급 협정 마감·기존 일정/기관·원문 링크·상세 선택 URL·독립 section 실패를 보존. 이미 제공한 일정을 신규 누락으로 집계하지 않음 | DETAIL-02/04/09·DEV-14, 미실행 |
+| SUPP-09 · Figma/브라우저 | 공사 로그인 전2113:19107/인증회사 후2181:69353의 본문/일시/기준일/수집일, 영향 있는 모바일/키보드·긴 본문/오류를 실제 Next에서 확인. 별도 레이아웃/접근성 Task를 승인 예외로 닫지 않음 | DEV-14·DEV-54/64 소유 경계, 제품 미실행 |
+
+위 사례는 후속 기준이며 QA 실행/차단 해소 기록이 아니다. mock/HTTP 대역/실제 서버 결과를 별도로 기록하고 실제 실행 전 공통 QA 식별자/사용 범위를 확보한다. 담당 역할은 backend 계약/공개 fixture 소유자와 frontend/QA이며 개인 담당·요청 발송/접수·일정은 미확정이다.
