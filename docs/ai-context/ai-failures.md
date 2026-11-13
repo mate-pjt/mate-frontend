@@ -289,3 +289,13 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 
 - PR 생성 응답에서 필요한 URL/번호/refs만 투영하지 않고 structuredContent 전체를 표시해 불필요한 공개 계정 식별/프로필 필드가 포함됐다. 실제 이메일 값은 null이고 인증정보는 포함되지 않았다. 해당 값을 문서/PR에 복사하거나 재인용하지 않는다. 사용자에게 즉시 알렸으며 기존 출력이 삭제됐다고 주장하지 않는다.
 - 원인/예방: wrapper의 structuredContent도 외부 원문이다. create/get/update의 결과는 먼저 보관하고 URL/번호·head/base SHA/상태·체크에 필요한 필드만 새 객체로 투영한다. 앞선 Git 출력 예방 규칙을 PR 생성 결과에도 일관되게 적용한다. 제품/정책·실제 QA 판정은 그대로다.
+
+## 2026-11-13 · POL-12 Figma metadata 출력 경계 재발
+
+- Task / type: POL-12 정책 조사·Figma 설명.
+- Expected behavior: frame/상태·필요한 비식별 정책 문구만 새 객체로 투영하고 디자인 예시 신원·연락처/주소 값은 출력·보관하지 않는다.
+- Actual failure: 첫 비교 frame metadata를 선별 없이 도구 출력에 전달해 작업에 불필요한 디자인 예시 필드가 포함됐다. 해당 값은 재인용하거나 Task/QA/PR에 복사하지 않았다. 실제 계정/업무 응답·환경파일·credential을 읽은 사건과 구분한다.
+- Root cause / detection: 기존 DEV-15 예방 규칙을 첫 Figma 조회에 적용하기 전에 결과 문자열 전체를 출력했다. primary가 관련 ai-failures를 확인하고 사용자에게 수행 오류를 알렸다.
+- Fix: 이후 metadata는 지정 frame/instance ID와 정책 문구만 선별했고 사용자 설명에는 신원 필드 없는 비교 popup2상태·안내 배너 하위 screenshot을 사용했다. 로컬 Figma 증거에도 비식별 상태/문구만 저장했다. 기존 도구 출력이 삭제·무효화됐다고 주장하지 않는다.
+- Prevention rule: Figma/GitHub 도구 호출 전에 결과를 보관하고 반환할 필드 allowlist를 정한다. metadata 원문·structuredContent·임시 screenshot URL을 그대로 text/print하지 않는다. source/path 또는 노드 ID가 확인되면 필요한 하위 노드만 조회한다.
+- Related files: POL-12 조사/검토, 로컬 figma-policy-evidence.json. 제품/하네스 설정 변경 없음. 최종 verifier에서 이 수행 한계와 문서/PR의 재노출 여부를 확인한다.
