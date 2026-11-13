@@ -477,3 +477,37 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 - 네트워크: full mock 번호32/문서31 resource의 외부0, empty 외부0. hybrid30 resource 중 로컬 auth1/비loopback0·대역 로그 회사 요청0. HTTP 최종401 화면28 resource/로컬 대역6/비loopback0. 실제 OAuth·업무 API·storage 전송·메일0건이다. ResourceTiming과 대역의 method/path/status만 확인하며 헤더/토큰/원본 업무 데이터는 기록하지 않는다.
 - 실제 API 통합: **미실행**. QA-06 AUTH-14/15 0통과2차단, QA-07 AUTH-09~13 0통과5차단/기존 AUTH-17 미실행 및 변경·잔존·복구·실행 대응 재개 조건은 유지한다. 이 로컬 PASS로 실제 QA나 POL-06/DEV-08 Gate를 면제하지 않는다.
 - 증거: `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev-59`의 test/lint/build/Storybook·guard·server 로그, browser `cases.json`/AX/PNG·로컬 HTTP 대역. 초기 pnpm/Turbopack 환경 오류 발췌와 교정은 `environment-errors.md`로 구분한다. [Task](../development/figma-v01/tasks/DEV-59.md#dev-59-verification)와 [Review](../development/figma-v01/reviews/DEV-59.md)에서 최종 Gate/freshness를 확인한다.
+
+<a id="dev-57-local-qa"></a>
+
+## 2026-11-13 · DEV-57 auth 프레임·별도 달력 로컬 검증
+
+- 승인/범위: [DEV-57 D1/D2/D3](../development/figma-v01/tasks/DEV-57.md#dev-57-brief). 사용자 확정 nickname/fallback·Figma2081:64659 별도 달력, 로컬 범위 완료·실제 QA 차단 보존. 기존 AUTH-01~17·QA-04/05/08·POL-01의 날짜별 판정/재개 조건을 덮어쓰지 않는다.
+- 실행: 2026-11-13 KST, Node22.20.0/pnpm11.3.0, Next16.2.9 production build/start, Aside Chrome154/macOS·1920×1080/820×600/390×844/320×844·DPR2. 환경파일 없는 API/mock/hybrid 격리 복사본과 loopback 합성 HTTP 서버만 사용했다. 실제 OAuth·업무 API·메일/초대·운영/배포0건이다.
+- Figma는 2026-11-13 조회 시점의 변경 가능한 node이며 immutable 디자인 버전이라고 주장하지 않는다. 이번 대표 화면/측정과 추가 keyboard/error/mobile 검증을 모든 상태의 pixel PASS로 확대하지 않는다.
+
+| 로컬 case | 기대/관찰 | 판정·관찰 수준 |
+| --- | --- | --- |
+| AUI-01 | 로그인420/가입640/시작692/검색640/초대640px 구분. 시작 타일 약207.33×233.18px·간격10px/아이콘64px. 로그인/가입 전체를692px로 바꾸지 않음 | PASS · 실제 Next DOM/PNG, 프레임 표는 Task |
+| AUI-02 | mock 신규 가입 이름·HTTP 가입 응답 nickname으로 정상 인사. 탭 저장소에 입력 이름 없음 | PASS · mock/HTTP 대역 브라우저·Node. 새 Repository의 신규 mock 이름은 null |
+| AUI-03 | HTTP nickname null/누락/공백은 일반 인사, 긴 합성 이름320px에서 줄바꿈·가로 넘침0 | PASS · HTTP 대역 브라우저. 실제 응답 아님 |
+| AUI-04 | 세션 지연 중 상태 문구만/선택0, 완료 뒤 이름·선택3. 503 오류/재시도, 최종401은 로그인 안내 | PASS · HTTP 대역. 중간 도구 wait timeout은 후속 fresh snapshot으로 완료 확인, 제품 실패로 세지 않음 |
+| AUI-05 | Calendar Figma2081:64659의 2026년1월·일요일 primary/선택 원·7열/320×344px | PASS · Storybook 실제 브라우저(320×343.99px), 캡처/원본 직접 비교 |
+| AUI-06 | 실제 월/윤년·1900/2000년 윤년 차이·월말/연도/DST 이동·4~6주 | PASS · Node 날짜 테스트, 브라우저 2024-02-29 선택 |
+| AUI-07 | 최소1900-01-01의 이전 달 disabled, 오늘 이후 날짜/다음 달 disabled·ArrowRight 상한 유지 | PASS · Storybook/가입 브라우저·Node. 미래값 방어는 제출의 isDateInRange에서도 유지 |
+| AUI-08 | ArrowLeft/Home/PageUp 이동·현재 날짜 버튼에 초점, 연/월 빠른 선택·Enter/Space 선택 | PASS · Calendar 브라우저와 날짜 연산. native date input0 |
+| AUI-09 | Tab/Shift+Tab modal 내부 순환·Escape/선택 뒤 trigger 초점 복귀·선택 해제 | PASS · 실제 Next 브라우저. clear 뒤 선택 안 됨 |
+| AUI-10 | 390px popup x54..374/day32px, 320px x16..304/day27.42px, 화면/달력 넘침0 | PASS · 실제 viewport/DOM/PNG |
+| AUI-11 | 동의 전/한 필수 해제 시 가입 disabled·전체/개별 동의와 키보드 Space 복원 | PASS · mock 브라우저. 키보드는 checkbox 명시적 focus 뒤 확인 |
+| AUI-12 | 잘못된 선택 전화 입력은 제출 전 오류, 선택값 비움은 가입 가능·약관 code/version 유지 | PASS · mock/HTTP 대역/기존 계약 테스트. 정식 약관 승인 아님 |
+| AUI-13 | 가입 flow 누락은 재로그인 안내, HTTP 가입503은 폼/이름 보존, 재시도 성공 뒤 시작 이름 표시 | PASS · 로컬 HTTP 대역 브라우저 |
+| AUI-14 | 회사 검색 정상 결과·빈 결과 등록 링크·503 오류를 각각 표시, 390/320px 넘침0 | PASS · mock/HTTP 대역 브라우저. 회사 소속/통합 용어 정책은 변경하지 않음 |
+| AUI-15 | 초대 정상 정보/64px 버튼, mismatch는 수락 버튼0·계정 전환 안내 | PASS · 로컬 HTTP 대역 브라우저 |
+| AUI-16 | 초대410 만료는 오류/수락0, 수락409 충돌은 오류를 남기고 성공 화면으로 전환하지 않음 | PASS · 로컬 HTTP 대역 브라우저 |
+| AUI-17 | 합성 초대 수락 성공 뒤 완료 문구/복귀 링크, 정상 초대390/320px 넘침0 | PASS · 로컬 대역만. 실제 초대 소비/membership/팀원 화면 QA 아님 |
+| AUI-18 | auth HTTP + company mock hybrid에서 서버 nickname·mock 회사2개 표시 | PASS · 실제 Next 혼합 구성/대역 로그. 공급원/계정 격리·refresh 경쟁·권한/409 회귀는 Node 계약/구조 tests로 별도 확인 |
+
+- Figma/기능 경계: 시작 default `3140:120851`/hover `3140:121614`, 가입 `3140:119739`, 실제 검색 `3140:121777`, 실제 초대 `3141:56135`, 로그인 `2306:88681`을 구분했다. `3140:117483` section을 단일 초대 화면으로 사용하지 않는다. Google-only/네이버 준비 중, 임시 약관 안내, 역할 `VIEWER`의 현행 ‘조회자’와 소속 용어는 기존 정책/소유를 유지하는 기능 차이이며 화면 전체의 명시적 예외 승인으로 세지 않는다. 공통 헤더 이름은 DEV-56 소유다.
+- 자동 검증: `pnpm test`18파일/414건 PASS, `pnpm lint`PASS, API/mock/hybrid `pnpm build`PASS, `pnpm build-storybook`PASS. 초기 nullable 타입 오류와 label 교정 뒤 자동 검증/구성 빌드·가입 재검증의 freshness는 [검토 기록](../development/figma-v01/reviews/DEV-57.md)을 따른다. Storybook의 기존 extensionless import/큰 chunk 경고는 성공 exit0과 구분한다.
+- 실제 통합: **미실행/차단 보존**. 게시 nickname schema/source 확인은 현재 실행 SHA/실제 인증 응답과 다르다. 실제 Google 인증·가입/초대 권한·서버 날짜 validation·잔존/복구 검증은 기존 승인 자원/실행 대응을 확보한 뒤 재개한다. 이번 로컬 PASS/Chromatic 예외로 면제하지 않는다.
+- 증거: 저장소 밖 `/Users/jisung/.codex/visualizations/2026/11/13/01a1d2c3-f5a6-79e0-996f-aae00cd9be1a/dev-57`의 `browser/` AX/PNG/JSON, loopback `http-events.jsonl`(method/path/status만), 최종 test/lint/build 로그·Figma PNG/지문. 대표 [달력](../development/figma-v01/reviews/assets/DEV-57/calendar.png)·[시작](../development/figma-v01/reviews/assets/DEV-57/start.png)은 합성 데이터만 포함한다. 요청 headers/원시 인증값·실제 개인정보는 수집하지 않는다.

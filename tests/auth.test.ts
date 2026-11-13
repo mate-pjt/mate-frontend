@@ -27,6 +27,8 @@ describe("인증 Repository와 세션", () => {
     await expect(repo.completeSocialSignup(id, { name: "가상", birthDate: null, mobilePhone: null, agreementAcceptances: [] })).rejects.toMatchObject({ status: 400 });
     const session = await repo.completeSocialSignup(id, { name: "가상", birthDate: null, mobilePhone: null, agreementAcceptances: signup.requiredAgreements });
     expect(session.account.id).toBe(101);
+    expect(session.account.nickname).toBe("가상");
+    expect((await repo.refreshBrowserSession()).account.nickname).toBe("가상");
     await expect(repo.completeGoogleSession("unknown")).rejects.toMatchObject({ code: "AUTH_FLOW_INVALID" });
     const expired = createMockAuthRepository(mockRuntime(undefined, { auth: "expired" })); const flow = new URL(expired.googleAuthorizationUrl("/", ""), "https://local.test");
     await expect(expired.completeGoogleSession(flow.searchParams.get("flowId")!)).rejects.toMatchObject({ code: "AUTH_FLOW_EXPIRED" });
@@ -37,6 +39,31 @@ describe("인증 Repository와 세션", () => {
     expect(String(fetcher.mock.calls[0][0])).toContain("session-completions?flowId=synthetic%20id");
     expect(fetcher.mock.calls[0][1]?.method).toBe("POST");
     expect(new URL(repo.googleAuthorizationUrl("/my/company", "https://local.test")).searchParams.get("returnOrigin")).toBe("https://local.test");
+  });
+  it.each(["서버 이름", null, undefined])("HTTP 로그인·가입·refresh의 nickname을 보존하고 누락은 null로 정규화한다 (%s)", async (nickname) => {
+    const wire = { ...authentication(), account: { id: 1, email: "synthetic@example.test", nickname } };
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => ok(wire));
+    const repo = createHttpAuthRepository(createHttpClient("https://synthetic.test", fetcher));
+    const input = { name: "가상", birthDate: "2024-02-29", mobilePhone: null, agreementAcceptances: [{ code: "TERMS_OF_SERVICE" as const, version: "synthetic-v1" }, { code: "PRIVACY_POLICY" as const, version: "synthetic-v1" }] };
+    const sessions = [await repo.completeGoogleSession("synthetic"), await repo.completeSocialSignup("synthetic", input), await repo.refreshBrowserSession()];
+    sessions.forEach((session) => expect(session.account.nickname).toBe(nickname ?? null));
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(JSON.parse(String(fetcher.mock.calls[1][1]?.body))).toEqual(input);
+  });
+  it("잘못된 nickname 응답을 오류로 유지하고 mock으로 대체하지 않는다", async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(ok({ ...authentication(), account: { id: 1, email: "synthetic@example.test", nickname: 123 } }));
+    const repo = createHttpAuthRepository(createHttpClient("https://synthetic.test", fetcher));
+    await expect(repo.refreshBrowserSession()).rejects.toMatchObject({ status: 502, code: "INVALID_AUTH_RESPONSE" });
+  });
+  it("mock 신규 가입 이름은 메모리에서만 유지하고 새 Repository에는 복사하지 않는다", async () => {
+    const runtime = mockRuntime();
+    const repo = createMockAuthRepository(runtime);
+    const flow = new URL(repo.googleAuthorizationUrl("/", "", "signup"), "https://local.test");
+    const flowId = flow.searchParams.get("flowId")!;
+    const signup = await repo.getCurrentSocialSignup(flowId);
+    await repo.completeSocialSignup(flowId, { name: "가상 신규", birthDate: null, mobilePhone: null, agreementAcceptances: signup.requiredAgreements });
+    expect((await repo.refreshBrowserSession()).account.nickname).toBe("가상 신규");
+    expect((await createMockAuthRepository(runtime).refreshBrowserSession()).account.nickname).toBeNull();
   });
   it("전체 mock의 만료된 가상 세션은 보호 변경을 거부하고 anonymous로 전환한다", async () => {
     let now = Date.parse("2030-06-01T00:00:00Z"); const runtime = mockRuntime(undefined, {}, () => now);

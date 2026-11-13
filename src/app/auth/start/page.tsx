@@ -9,5 +9,5 @@ export const metadata: Metadata = { title: "메이트 시작하기", robots: noI
 export default async function StartPage({ searchParams }: StartPageProps) {
   const params = searchParams ? await searchParams : {};
   const next = Array.isArray(params.next) ? params.next[0] : params.next;
-  return <AuthScreen><StartChoices next={next} /></AuthScreen>;
+  return <AuthScreen width="start"><StartChoices next={next} /></AuthScreen>;
 }

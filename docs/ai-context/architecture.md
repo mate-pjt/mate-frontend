@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-12
+Last updated: 2026-11-13
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -79,6 +79,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `src/components/bids`는 URL을 검색·필터·페이지 상태로 사용하고 Repository 결과를 props로 받는다. 알림 카드는 계정별 bidAlerts 공급원을 사용한다. 맞춤공고 목록·기관 단독·결과 낙찰금액 필터 등 기존 준비 중 기능은 이번 전환으로 활성화하지 않는다.
 - `src/components/qna`는 native details/summary로 구조화된 static 답변을 렌더링한다. API endpoint·관리자 CRUD는 추측하지 않는다.
 - `src/components/icons`는 TSX 아이콘, `src/components/ui`는 폴더별 index 공개 primitive다. Sonner ToastViewport는 하나이며 화면은 showToast만 사용한다.
+- `src/components/ui/calendar`는 controlled `Calendar`/`DatePicker`와 순수 ISO 날짜 연산·Storybook 예제를 제공한다. Figma 2081:64659의 일요일 시작/선택 원·월 이동을 따르며 연/월 빠른 선택·roving focus·방향키/Home/End/PageUp/PageDown·선택 해제·modal Escape/외부 클릭/초점 복귀를 제공한다. 생년월일은 1900-01-01~브라우저 현지 오늘로 제한하며 서버 검증을 대신하지 않는다. 입찰 날짜 필터는 교체하지 않는다.
 - `.storybook`은 Next와 같은 config resolver로 snapshot을 Vite define에 주입한다. `tests/architecture.test.ts`가 UI의 구현/DTO import 및 클라이언트에서 server-only로 이어지는 경로를 검사한다.
 
 ## Asset Placement Notes
@@ -130,6 +131,7 @@ Confirmed:
 - 공개 목록 `all`·`closing`·`result`는 서버에서 `GET /api/v1/bid-notices`를 `view=ALL|CLOSING_SOON|RESULT`로 호출하고, 지역·업종 선택지는 공개 metadata API에서 받는다. 목록의 공고번호·공고명은 실제 ID와 선택적 분류번호를 보존해 `/bids/[bidId]`로 이동한다. 결과 목록의 낙찰금액 필터는 API 계약 전까지 준비 중으로 비활성이다.
 - 공개 입찰 상세는 `GET /api/v1/bid-notices/{id}`를 서버에서 조회하고 첨부·관련 공고·개찰 결과·물품 등록정보를 독립 section API로 조회한다. 본문 404/오류와 section별 오류를 구분하며 mock fallback을 사용하지 않는다. 계정별 공고 알림 설정은 로그인 상태에서 별도 브라우저 API를 사용한다.
 - 가입 화면의 서비스 이용약관·개인정보처리방침은 개발/테스트용 임시 본문이며, 사용자 결정에 따라 해당 동의로 테스트 가입 제출을 허용한다. 정식 본문·버전 도입과 이전 동의 처리 정책은 TODO다.
+- [DEV-57 결정/검증](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)에 따라 auth 폭은 로그인420/가입·검색·초대640/시작692px를 구분한다. 시작 인사는 인증 응답의 nullable nickname만 사용하고 null/누락/공백은 일반 인사, loading/error는 별도 상태로 표시한다. 가입 날짜는 별도 DatePicker를 사용한다. 공통 헤더 이름(DEV-56), 소속 용어·약관 정책과 실제 QA 차단은 별개다.
 - 회사 등록의 시공능력평가액·대표면허·3종 인증 직접 수정은 가입 전 API가 없어 준비 중 비활성이다.
 - 모든 실제 브라우저 API 통합 검증은 `docs/qa/README.md`와 기능별 펀치리스트에 기록하고 환경 준비 후 수행한다.
 

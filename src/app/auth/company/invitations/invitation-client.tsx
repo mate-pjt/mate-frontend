@@ -76,7 +76,7 @@ export function InvitationClient() {
   }
 
   if (finished) return (
-    <AuthCard className="space-y-5 text-center">
+    <AuthCard className="mx-auto max-w-[420px] space-y-5 text-center">
       <h1 className="text-grayscale-800 type-heading-7">{finished === "accepted" ? "새로운 팀에 오신 걸 환영해요!" : "초대를 거절했어요."}</h1>
       <p className="text-grayscale-600 type-body-7">{finished === "accepted" ? "회사에 합류했습니다. 메이트 서비스를 시작해 보세요." : "필요하면 회사 관리자에게 다시 초대를 요청해 주세요."}</p>
       <AuthError message={sessionWarning} />
@@ -85,33 +85,33 @@ export function InvitationClient() {
   );
 
   return (
-    <AuthCard className="space-y-5">
+    <AuthCard>
       <AuthBack href="/auth/start" />
-      <h1 className="text-grayscale-800 type-heading-7">{context?.companyName ?? "회사"}에서<br />보낸 초대가 도착했어요!</h1>
+      <h1 className="mb-6 break-words text-grayscale-800 type-heading-7">{context?.companyName ?? "회사"}에서<br />보낸 초대가 도착했어요!</h1>
       {context ? (
         <>
-          <div className="grid gap-4 rounded-xl bg-grayscale-50 p-5 sm:grid-cols-2">
-            <div><p className="text-grayscale-600 type-body-7">이름</p><p>{context.inviteeDisplayName}</p></div>
-            <div><p className="text-grayscale-600 type-body-7">직급</p><p>{context.position?.name ?? "미지정"}</p></div>
-            <div><p className="text-grayscale-600 type-body-7">역할</p><p>{roleLabels[context.role]}</p></div>
-            <div><p className="text-grayscale-600 type-body-7">만료</p><p>{new Date(context.expiresAt).toLocaleDateString("ko-KR")}</p></div>
+          <div className="grid gap-4 rounded-2xl bg-grayscale-50 p-4 text-grayscale-800 type-body-2 sm:grid-cols-2">
+            <div><p className="mb-1 text-grayscale-600 type-body-7">이름</p><p className="break-words">{context.inviteeDisplayName}</p></div>
+            <div><p className="mb-1 text-grayscale-600 type-body-7">직급</p><p className="break-words">{context.position?.name ?? "미지정"}</p></div>
+            <div><p className="mb-1 text-grayscale-600 type-body-7">역할</p><p>{roleLabels[context.role]}</p></div>
+            <div><p className="mb-1 text-grayscale-600 type-body-7">만료</p><p>{new Date(context.expiresAt).toLocaleDateString("ko-KR")}</p></div>
           </div>
           {access.state.status === "anonymous" ? (
-            <div className="space-y-3">
+            <div className="mt-[30px] space-y-3">
               <p className="text-grayscale-600 type-body-7">초대받은 Google 계정으로 로그인해 주세요.</p>
               <button className="w-full rounded-xl bg-primary px-5 py-4 text-white" onClick={() => window.location.assign(googleAuthorizationUrl(invitationPath, "alternate"))} type="button">Google로 로그인</button>
             </div>
           ) : null}
           {access.state.status === "authenticated" && context.emailMatched === false ? (
-            <div className="space-y-3">
+            <div className="mt-[30px] space-y-3">
               <AuthError message="초대받은 Google 계정이 아니에요. 초대받은 이메일 계정으로 다시 로그인해 주세요." />
               <Button className="w-full" disabled={busy} onClick={() => void switchAccount()}>다른 Google 계정으로 로그인</Button>
             </div>
           ) : null}
           {access.state.status === "authenticated" && context.emailMatched !== false ? (
-            <div className="grid grid-cols-2 gap-2">
-              <Button className="h-14" disabled={busy} onClick={() => void decide(false)} variant="secondary">초대 거절하기</Button>
-              <Button className="h-14" disabled={busy || !context.canAccept} onClick={() => void decide(true)}>초대 수락하기</Button>
+            <div className="mt-[30px] grid gap-[10px] min-[440px]:grid-cols-2">
+              <Button className="h-16 w-full" disabled={busy} onClick={() => void decide(false)} size="xxl" variant="gray">초대 거절하기</Button>
+              <Button className="h-16 w-full" disabled={busy || !context.canAccept} onClick={() => void decide(true)} size="xxl">초대 수락하기</Button>
             </div>
           ) : null}
         </>
@@ -119,7 +119,7 @@ export function InvitationClient() {
       {access.state.status === "error" ? (
         <button className="text-primary underline type-body-7" onClick={() => void access.refresh().catch(() => undefined)} type="button">로그인 상태 다시 확인하기</button>
       ) : null}
-      <AuthError message={error} />
+      {error ? <div className="mt-6"><AuthError message={error} /></div> : null}
     </AuthCard>
   );
 }
