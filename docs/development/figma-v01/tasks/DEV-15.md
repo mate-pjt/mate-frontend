@@ -179,3 +179,10 @@
 - 종료 인계 verifier3차/6항목 ai-review 재확인 PASS, unresolved Blocker/Major/Minor0. WBS26완료22차단63대기1준비2보류·POL-11 선정/미착수와 runtime/test10개 동일 해시를 확인했다. 첫 FAIL/교정·실QA12차단은 보존한다.
 - 이 receipt와 이후 실제 commit/PR/head/CI 식별자만 추가할 때는 verifier3차 의견에 따라 링크/diff·해시·영향 확인으로 freshness를 유지한다. 정책/범위/소스/판정 변경이나 충돌 수정은 해당 두 리뷰를 다시 수행한다.
 - 다음 행동: 데이터 계층→확인 UI/controller→테스트→가이드/QA/실패 예방/Task 종료의 목적별 작은 커밋, branch push·템플릿 PR/라벨·최종 CI/리뷰/정상 merge·local main FF. 실제 업무/운영 실행0이다.
+
+### PR 생성 체크포인트
+
+- 목적별7개 commit: `8abb531` 취소 계약/이력, `a6ec728` 확인/완료 UI·수명, `d49d4b0` 계약/후속401 테스트, `0058217` 데이터 가이드, `5377fac` 합성 QA 근거, `c210642` 인증 오류 예방, `9a4c252` 종료/다음 인계. branch push 후 [PR #73](https://github.com/mate-pjt/mate-frontend/pull/73)을 main 대상으로 생성하고 `type: feature`/`type: test`/`type: docs` 라벨을 적용했다.
+- 생성 당시 head `9a4c252e9c2ff132176d7a13d559255ff6f28c7f`, base `a512eae46c1ec6851d0cd9ed25387244c6213562`. 일반 merge 허용·main protected=false·적용 branch rules/rulesets 없음, requested review0/리뷰 결정 없음·MERGEABLE을 확인했다. 생성 직후 checks/Chromatic/Vercel은 진행 중이며 **최종 CI PASS/병합 기록이 아니다.**
+- 이 실제 식별자 receipt만 추가한 head에서 원격 CI/리뷰·base/head·병합 조건을 다시 확인한다. 이번 Chromatic 월간 한도만 사용자 예외이며 다른 검사/보호/실제 QA로 확대하지 않는다. 소스/test 해시·판정/정책/상태는 그대로라 verifier3차 의견에 따라 링크/문서/diff·영향 확인으로 freshness를 유지한다.
+- 최종 head/CI·병합 SHA와 로컬/원격 main 일치/clean은 실제 PR/최종 보고에서 확인한다. 이 기록은 Git 전달 중의 체크포인트이고 실제 API/운영/다음 Task 실행은0이다.
