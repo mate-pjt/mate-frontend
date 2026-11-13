@@ -221,3 +221,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 URL은 내부 파싱/다운로드 인자에만 사용하고 node ID·크기·로컬 경로·종료 코드만 출력한다. 문서/PR/receipt에 임시 URL을 복사하지 않는다. 이전 출력 삭제를 주장하지 않는다.
 - Prevention rule: 이미지 응답도 외부 원문이다. `content`를 그대로 출력하지 않고 매 응답 종류마다 허용 필드의 새 객체를 만든다.
 - Related files: `docs/development/figma-v01/tasks/POL-09.md`, `docs/development/figma-v01/reviews/POL-09-context.md`. 제품/하네스 설정 변경 없음.
+
+## 2026-11-13 - DEV-56 Figma 자산 주소 선별 누락 재발
+
+- Task: DEV-56 공통 헤더 디자인 조사.
+- Expected behavior: Figma 응답에서 필요한 node/코드·치수만 선별하고 임시 asset URL은 내부 다운로드에만 사용한다.
+- Actual failure: 초기에 전체 화면 코드의 자산 상수가 도구 출력에 포함됐다. 필터가 `www.figma.com`을 포함하지 않아 임시 URL을 놓쳤다. 실제 주소를 재기록하지 않는다. 실제 계정 credential/환경파일을 읽은 사건과 구분한다.
+- Root cause: 차단 정규식으로 전체 응답을 정화하려 했고 출력 allowlist를 먼저 구성하지 않았다.
+- Detection command or review step: primary가 원문 출력 뒤 확인·사용자에게 알렸고 read-only verifier에도 이 한계를 전달한다.
+- Fix: 이후 관련 GNB child node·치수·비식별 결과만 새 객체로 출력한다. 영속 Figma node 링크와 합성 브라우저 캡처만 문서/PR에 저장한다. 과거 도구 출력이 삭제됐다고 주장하지 않는다.
+- Prevention rule: 외부 응답은 출력할 필드와 하위 노드를 먼저 정한다. URL 차단 정규식/부분 문자열은 allowlist를 대신하지 않는다. 실제 로그인은 DOM 결과의 일치 여부와 경로/HTTP 상태만 남기고 응답 본문/헤더·이름·메일·OAuth query를 저장하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/DEV-56.md`, `docs/development/figma-v01/reviews/DEV-56-context.md`. 도구/하네스 설정 변경 없음.

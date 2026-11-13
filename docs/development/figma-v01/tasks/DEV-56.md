@@ -28,12 +28,12 @@
 
 ## 완료 기준
 
-- [ ] POL-29에서 이름/회사 없음·미연결·로딩·오류의 표시와 사용 가능한 데이터 출처를 정한다. 임의 사용자/회사명이나 새 API를 만들지 않는다.
-- [ ] 비로그인/로그인/회사 미연결/연결 상태, 알림 점·현재 메뉴·로그아웃 busy/오류를 데스크톱과 모바일에서 검증한다.
-- [ ] 메이트 소식 구현은 DEV-51로 남기고 헤더 수정을 이유로 미완료 메뉴를 동작하는 것처럼 노출하지 않는다.
-- [ ] 정상·빈·오류·권한/충돌과 접근성 중 영향 범위를 Gate에서 확정하고 자동/실제 Next 브라우저 검증 및 필요한 실제 QA를 기록한다. 미실행은 차단/이유로 남긴다.
-- [ ] 현재 package scripts에 맞는 test/lint/build·필요한 Storybook/구성 검사와 diff-check를 통과한다. mock/HTTP 대역/실제 API 결과를 구분한다.
-- [ ] Documentation Update Check, verifier/ai-review와 검토 뒤 변경의 freshness를 기록한다. 구현만으로 완료하지 않는다.
+- [x] POL-29에서 이름/회사 없음·미연결·로딩·오류의 표시와 사용 가능한 데이터 출처를 정한다. 임의 사용자/회사명이나 새 API를 만들지 않는다. — 11/13 자체 Gate D1/D2와 POL-29 후속 역링크.
+- [x] 비로그인/로그인/회사 미연결/연결 상태, 알림 점·현재 메뉴·로그아웃 busy/오류를 데스크톱과 모바일에서 검증한다. — HUI-01~17, 실제 일반 HAPI-01~06. HAPI-07~10 실제 미실행 보존.
+- [x] 메이트 소식 구현은 DEV-51로 남기고 헤더 수정을 이유로 미완료 메뉴를 동작하는 것처럼 노출하지 않는다.
+- [x] 정상·빈·오류·권한/충돌과 접근성 중 영향 범위를 Gate에서 확정하고 자동/실제 Next 브라우저 검증 및 필요한 실제 QA를 기록한다. 미실행은 차단/이유로 남긴다. — 후속 실제 QA 선택의 일반 동작 범위이며 특수4사례/실행 SHA 미확인은 별도다.
+- [x] 현재 package scripts에 맞는 test/lint/build·필요한 Storybook/구성 검사와 diff-check를 통과한다. mock/HTTP 대역/실제 API 결과를 구분한다.
+- [x] Documentation Update Check, verifier/ai-review와 검토 뒤 변경의 freshness를 기록한다. 구현만으로 완료하지 않는다. — 11/13 두 리뷰1차 PASS·종료 문서 변경 뒤 필요한 문서 검사/두 리뷰 freshness 재확인.
 
 ## 체크포인트 · 결정·인계
 
@@ -70,3 +70,47 @@
 - **기존 차단/미결 유지**: 이름+Figma 아이콘 목표 아래 결측/지연/오류·회사 없음/미연결 표시, 계정 전환/로그아웃 busy/error·알림 점·모바일/키보드·초점의 기준과 검증 범위를 자체 Gate에서 확인해야 한다. 실제 서버 실행 대응·합성 검증 자원·사용/변경·잔존/복구 허용 범위와 기존 QA-14/실제 QA·메이트 소식 소유도 보존한다. 이름/회사명/이메일 유추·새 API/기본 이름 임의 확정은 없다.
 - 다음 첫 행동: 새 대화에서 최신 main/작업트리·이 기록/완료 기준·POL-29 D2/상태표와 DEV-57 nickname 소스/검증을 읽는다. 현행 헤더/auth source·backend GitHub/개발 Swagger·해당 Figma frame을 대조하고 미결 표시/QA 범위를 추천안과 최대3질문으로 구조화한다. 수정 파일/영향·단계·위험·검증을 담은 자체 Brief를 편집 전에 제시한다. source/배포/게시 명세/실행 SHA/실응답은 별개 근거로 남긴다.
 - 앞선 질문 응답에서는 화면 현상 진단을 위해 현행 헤더/WBS와 CI 상태를 읽었다. 이번 후속은 선정/인계 문서 반영만이며 DEV-56 자체 Gate를 위한 상세 계약/Figma 재조사·요구사항/설계 Gate·구현/자동/브라우저/실제 API 검증은 시작하지 않았다. DEV-57의 Git/Chromatic 예외를 미래 DEV-56의 승인으로 이전하지 않는다. [이번 문서 검토](../reviews/DEV-57-handoff-DEV-56.md)는 제품 정합성 검증이 아니다.
+
+<a id="dev-56-brief"></a>
+
+## 2026-11-13 · 이번 착수 Brief / 결정
+
+- 시작: clean `main`·`origin/main` `dfbaae03e677ba9e2d38fa4a0e873240c39055a9`, fetch 뒤0/0·선행 POL-29/DEV-57 main 반영 확인. `feat/dev-56-header-identity` 생성. pre-existing dirty 없음.
+- 이번 승인: 사용자 요청의 DEV-56 개발·검증·두 리뷰·작은 commit/push·PR/최종 CI·정상 main 병합·로컬 FF 및 이번 Chromatic 월간 한도 예외. 실제 업무/운영/배포·다른 Task 실행은 제외하며 실제 QA 자원/허용 범위는 아래 D3를 따른다. 과거 Task의 예외를 이전하지 않는다.
+- D1 / 사용자 / 2026-11-13 / **‘추천안 확정’**: 실제 nickname+‘님’과 Figma 아이콘에서 `/my`로 이동한다. null/공백은 아이콘만, 접근성 이름은 ‘설정 및 관리’. 회사 연결 여부로 이름을 바꾸거나 회사 조회를 추가하지 않는다. loading은 ‘로그인 확인 중’, error는 ‘로그인 확인 실패’와 재시도다. 이름/회사명/이메일을 합성하지 않는다.
+- D2 / 같은 사용자·날짜 / **‘Figma대로 /my에서 제공 (추천)’**: 헤더의 별도 로그아웃을 제거하고 기존 `/my` 메뉴의 로그아웃·busy/실패/재시도를 검증한다. 기능 삭제나 헤더 별도 버튼의 화면 예외 승인이 아니다.
+- D3 / 같은 사용자·날짜 / **‘실제 QA 자원과 허용 범위 제공 후 완료’**: 로컬 단위 완료·실제 QA 차단 보존 추천은 미채택이다. 로컬 구현/검증은 진행하되 실제 서버 실행 대응·합성 계정 별칭/로그인 경로·사용/변경·잔존/종료/복구 범위가 확보되고 실제 검증하기 전 Task 완료·병합으로 세지 않는다. 자원 준비 정보를 후속 요청했다. 기존 QA-14/다른 실제 QA 이력은 보존한다.
+- 요구사항/성공 기준: Figma `2048:58606`의 GNB `2048:58683`와 `3139:52490`의 GNB `3139:52491`의56px·60px 좌우 여백·40px 로고/메뉴 간격·회색 브랜드·36px 아이콘/8px 이름 간격을 기존 토큰으로 구현한다. 비로그인/세션 loading/error·이름/null/공백·회사 미연결/연결·계정 전환/로그아웃·현재 메뉴·알림 점·320/390px·키보드/초점을 검증한다.
+- 확인한 source/패턴: `site-header.tsx`, auth contracts/HTTP/session-controller/Provider, NotificationBell, MySideMenu, 기존 static icon과 typography/token. 공개 Repository·7그룹/불변 snapshot/운영 guard·계정 격리를 유지하고 API/DTO/mock 계약을 바꾸지 않는다.
+- 현재 계약: backend dev `befe434c2b3fd80ddbc12c1d6216f738dd5ea12a`, 정책 main `c9e50ff591ae18023164e1a94581c611bf1e4f29`. GitHub 소유 응답 source·개발 OpenAPI3.1.0/v1에서 `nickname: string|null`, companyContext의 ID/role만 재확인. 게시 명세 SHA256 `30b46f3eca639a412659fe2a18f5908c6695786b4134d8319705dba095197164`. source/기존 배포 기록/게시 명세/실행 process SHA/실제 응답을 구분하며 마지막 두 항목은 아직 미확인이다.
+- 범위/설계: `site-header.tsx`만 제품 수정 후보. 기존 아이콘·ButtonLink·세션 Provider 재사용 → 이름/상태와 재시도 표시 → 헤더 중복 로그아웃 제거 → 실제 Next/자동 검증 → 문서/두 리뷰 → 승인된 Git 전달 순서. QA/Task/WBS/리뷰·architecture/plan의 필요한 설명을 갱신한다. base/data-access/harness 변경은 계약/도구 변화가 없으면 불필요하다.
+- 제외: 새 API/DTO/라이브러리·회사명 조회·메이트 소식 DEV-51 구현·DEV-57/58 제품 수정·실제 계정/업무 변경의 임의 실행·운영/배포. 시안 없는 mobile/error/keyboard 상태는 D1과 기존 접근성 패턴으로 검증하며 모든 상태의 pixel 동일 승인으로 표현하지 않는다.
+- 위험/검증: 결측 이름 유추·긴 이름 overflow·세션 loading을 비로그인으로 오인·계정 전환의 잔여 표시·중복 재시도/로그아웃을 확인한다. Node22.20.0 `pnpm test`, `pnpm lint`, `pnpm build`, `pnpm build-storybook`, `git diff --check`; 필요 구성은 CI의 api/mock/hybrid도 확인한다. 환경파일 없는 격리 Next·합성 HTTP 서버/Aside로 로컬 QA를 수행하고, 실제 통합은 D3의 자원/승인 확보 후 별도 기록한다.
+- 다음 첫 행동: D1/D2 범위의 헤더 구현. 실제 QA 자원/허용 범위 응답을 기다리며 완료·병합 Gate는 유지한다. 자동 수정0/3, 실제 업무 실행0건·새 운영 잔존/원복 대상 없음.
+
+### 실제 QA 범위의 쉬운 설명 뒤 사용자 선택
+
+- 사용자에게 실제 QA는 개발 서버의 테스트 계정으로 이름 표시·새로고침·이동·알림 건수 조회·로그아웃을 확인하는 과정이라고 설명했다. 버전 정보는 실행자가 확인 가능한 범위에서 조사하며 준비되지 않은 이름 결측/특수 오류 계정은 실제 미검증으로 남긴다.
+- 사용자 답변 **‘추천 방식으로 진행 — 로그인 화면 준비해줘’**. Google 로그인은 사용자가 직접 수행하고 Codex는 위 일반 동작을 확인한다. 업무 데이터 수정은 없다. 세션 갱신·로그아웃의 세션 교체/해제만 이번 허용 범위다. 실제 개인 정보·token/cookie/메일 등은 출력/보관하지 않는다. 특수 상태의 mock/HTTP 대역은 실제 응답으로 세지 않는다.
+- 다음 첫 행동: 환경파일 없는 격리 runtime에 DEV-56 소스를 반영해 자동/합성 QA를 병행하고, `https://local.mate-bid.com:3000`의 개발 API 로그인 화면을 준비한다. 실제 테스트 계정/표시값은 사용자 로그인 뒤 비식별 판정으로만 관찰한다. QA-14 전체/타 기능 실제 QA 면제로 확대하지 않는다.
+
+<a id="dev-56-verification"></a>
+
+## 2026-11-13 · 검증/문서·Review Gate 체크포인트
+
+- 구현: 제품 수정은 `src/components/site-header.tsx` 한 파일. 기존 nullable nickname/Provider/아이콘·토큰을 소비하고 auth/회사/알림 계약은 변경하지 않았다. 헤더의 중복 로그아웃만 제거하고 기존 `/my` 동작을 사용한다.
+- 자동: Node22.20.0 `pnpm test`414/414·`pnpm lint`·`pnpm build` api/mock/hybrid·`pnpm build-storybook` PASS. 최초 pnpm 자동 의존성 확인·Turbopack 외부 symlink 실패는 격리 복사본의 실행 옵션/의존성 clone으로 해결했다. 저장소 의존성/설정·제품 소스 자동 수정0/3. `git diff --check` PASS.
+- 로컬: [HUI-01~17](../../../qa/my-settings-home.md#dev-56-header-qa) PASS. 정상/null/공백·회사 연결/미연결·긴 이름/320/390px·loading/error/retry/busy·알림0/양수/오류·로그아웃 실패/재시도/401·keyboard/현재 메뉴를 검증했다. 전체 mock 로그인/리로드/계정 전환의 외부 브라우저 요청0건.4개 runtime의 header SHA256 `67d5577fe0a9983a79dd40420e31b8ff8d1ba2db037a7d18db5f8877dec8d07e` 일치.
+- 실제: 사용자의 Chrome 로그인 첫 회신은 배포된 `dev.mate-bid.com`의 로그인임을 확인했다. 그 탭을 수정하지 않고 이번 소스의 local Chrome 탭을 열었다. 사용자 **‘로컬 주소에서 로그인했어’** 뒤 HAPI-01~06 PASS: 이름 표시·refresh200/복원·Enter `/my`·unread-count200·mobile/keyboard·logout200·reload refresh401/이름 제거. 일반 실제 동작의 증거이며 배포 사이트의 코드나 기존 API 통합 PASS를 재사용하지 않았다.
+- 후속 D3 적용: 사용자가 수락한 쉬운 설명의 범위는 일반 실제 동작을 실행하고 준비되지 않은 특수 상태는 실제 미검증으로 남기는 방식이다. 실제 QA를 전부 다음으로 미루는 최초 로컬 완료 추천과 구분한다. HAPI-07~10(결측/회사별 계정·강제 오류/지연·다른 계정/늦은 응답·제어 알림 점)은 미실행, backend process SHA 대응은 미확인이다. 일반6사례를 이 특수4사례/QA-14 전체/기존 차단의 PASS로 확대하지 않는다.
+- 보안/복구: 실제 이름/메일/ID·응답 본문·token/cookie/인증 query는 출력/보관하지 않았다. 실제 로그인 뒤 원문 요청을 기록할 수 있는 소유 Next 임시 로그는 열람 없이 제거했다. 마지막은 logout200/refresh401·비로그인이며 업무/회사/알림 설정·메일/문서 변경 없음. 실제 Network 관찰/viewport override는 해제했다. 소유 임시 runtime/합성 세션·탭의 최종 종료를 확인한 뒤 Git 전달한다.
+- Documentation Update Check: architecture/plan·이 Task/WBS/POL-29 역링크·기존 QA/QA 인덱스·합성 캡처·리뷰를 갱신한다. base/data-access/harness/coverage는 패키지/scripts/계약·공급원·도구/소유권 변화가 없어 변경 불필요. Figma 임시 자산 주소의 출력 선별 재발은 ai-failures에 append했다. [Context Audit](../reviews/DEV-56-context.md) PASS.
+- Review Gate: [6항목 ai-review](../reviews/DEV-56.md) 1차에서 미해결 Blocker/Major 없음. 다음 첫 행동은 문서 링크/79ID·114Task·156의존성·원본/과거 QA 보존 검사와 read-only verifier다. 검토 뒤 종료 기록/WBS·다음 인계가 바뀌면 해당 문서 검증/두 리뷰를 재확인한다. 실제 Git/최종 CI·병합 결과는 승인된 전달 뒤 PR·최종 보고/외부 receipt에서 확인한다.
+
+### 로컬/일반 실제 QA Gate 종료와 다음 인계
+
+- read-only verifier1차 **PASS**, Blocker/Major/Minor0. 13개 파일 manifest `004e6d9f62ead73432fd6fdc00f39fbbcd59ebb51b83540eb95d0b954f8732ac`를 검토하고 Node22.20.0 test414/lint/diff-check·링크533개/114Task/156의존성/원본/QA prefix를 독립 재실행했다. build3구성/Storybook·로컬/실제 비식별 증거·4개 runtime 소스 일치와 정리도 확인했다. ai-review6항목도1차 PASS.
+- 최종 정리: 소유 process group4개와3000/3101/3102/4300 모두 종료/비청취, Aside 소유3탭 종료, Chrome의 임시 viewport/Network 관찰 해제·실제 session logout200/refresh401. 원문 live 요청 로그 없음. 실제 업무 변경·새 원복 대상 없음. 기존 사용자 dev 사이트 탭은 조작/종료하지 않았다.
+- 이 종료 문서/WBS·POL-10 인계는1차 검토 뒤 변경이므로 문서 검사·ai-review와 같은 verifier의 freshness 재검토를 수행한다. 제품 소스는1차 manifest와 동일하며 문서 변경만으로 앱 검사를 반복하지 않는다. 최종 원문/manifest는 저장소 밖 `/tmp/mate-dev56-20261113/qa`와 최종 보고를 참조한다.
+- 다음 하나: **POL-10**, WBS P2·DOC-001 완료. WBS 전체에서 선행 완료 조건을 충족한 대기 P0/P1이 없고 독립 정책 Gate로 진행 가능하다. [선정/첫 행동](POL-10.md#pol-10-after-dev-56)만 인계했다. POL-10 전용 정책/source/API/Figma 조사·결정/구현·실제 취소 실행은 하지 않았다.
+- 다음 첫 행동/Git 전달: 마지막 문서 freshness 통과 뒤 목적별 commit/push·PR·실제 최종 head CI/리뷰·정상 merge commit·로컬 main FF를 수행한다. 저장소 merge commit 허용·main protected=false/rulesets없음·원격 main 시작 SHA 유지 확인. 이번 Chromatic 월간 한도만 예외이며 check 강제 성공/보호 우회/직접 main push를 사용하지 않는다. 실제 SHA/PR·CI·병합/main 일치/clean은 전달 뒤 외부 receipt/PR/최종 보고로 별도 기록한다.
