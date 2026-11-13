@@ -209,3 +209,28 @@
 - 증거: 로컬 `/Users/jisung/.codex/visualizations/2026/11/12/mate-dev60/`의 test/lint·build3/Storybook·guard 로그, browser/mock/hybrid 결과·비식별 HTTP 경로/status, `final-desktop.png`·`long-320-viewport.png`. 로컬 증거는 Git 외부이며 토큰/쿠키/환경값을 저장하지 않는다.
 - 실제 재개: QA-05의 승인된 다중 업종 회사/계정·현재 실행 대응·정확한 기대 목록/안전한 권한·오류/사용·잔존/종료·복구 자원을 해당 Gate에서 확인한다. DEV-08의 대시보드/leaf6조건은 그대로다. source/문서/로컬 브라우저 PASS를 실제 통합 PASS로 승격하지 않는다.
 - PR에서 확인할 합성 화면: [데스크톱 복수 업종](assets/dev60/desktop.png), [320px 긴 이름 전체 표시](assets/dev60/long-320.png). 위 로컬 원본 캡처 중 이 두 장만 QA 증거로 Git에 포함한다. Figma 전체 화면 정합성/실서버 자료를 뜻하지 않는다.
+
+<a id="pol-10-cancellation-qa"></a>
+
+## 2026-11-13 · POL-10 취소 정책의 DEV-15 후속 QA
+
+- 근거/소유: [POL-10 사용자 확정/정책 v1](../development/figma-v01/tasks/POL-10.md#pol-10-contract)·[DEV-15 자체 Gate/완료 기준](../development/figma-v01/tasks/DEV-15.md#dev-15-pol-10-handoff)·[고정 source/개발 schema](../development/figma-v01/reviews/POL-10-sources.json). 이번은 **후속 검증 기준 작성**이며 제품/자동·브라우저·실제 API 취소 검증을 시작한 기록이 아니다.
+- 기대 상태: 본인 PENDING→명시 확인/DELETE→CANCELED(version 증가/이력 보존)→빈 `/my/company`·기존 Sonner 성공 Toast1회. Figma [대기3162:52364](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52364)/버튼3162:52414·[완료3162:52416](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52416)/toast3162:52419를 연결한다. 정확한 성공 문구는 **‘성공적으로 통합 요청을 취소했어요!’**다. metadata/문구만 확인했고 전체 pixel/반응형 검증은 미실행이다.
+- 기존 MCO4통과6차단·CDASH/가입 AUTH·로컬 BASIC/과거27화면 결과·승인 예외를 그대로 보존한다. MCO-04의 신청 취소 미제공 기대는 당시 조회 전용 범위의 이력이며, DEV-15 반영 후 영향 사례를 재검증해야 한다. 이 절의12개 후속 사례는 기존 통과/차단 건수에 합산하거나 실제 PASS로 올리지 않는다.
+
+| 사례 | 후속 기대/검증 | 이번 결과 |
+| --- | --- | --- |
+| MCANCEL-01 | 본인 일반/대표자 PENDING에만 취소. 확인 창 닫기/Escape/돌아가기·첫 진입/GET에는 DELETE0·성공 Toast0 | 미실행 — DEV-15 자체 Gate 전 |
+| MCANCEL-02 | 타인/없는 requestId는404 CR001, 관리자/review leaf도 타인 취소 불가. 비로그인/최종401·403을 빈 성공으로 바꾸지 않음. 안전한 승인 합성 권한 자원으로 검증 | 미실행 — 제품/합성 자원·업무 변경 범위 미확인 |
+| MCANCEL-03 | 같은 requestId/version snapshot→body 없는 DELETE·필수 양수 expectedVersion→같은 신청 CANCELED/증가 version·시각/이력 잔존. 활성 소속 생성/삭제0 | 미실행 — 자동/HTTP 대역/실제 결과 구분 필요 |
+| MCANCEL-04 | 당해 성공 후 빈 `/my/company`·기존 showToast로 정확 문구1회, 단일 ToastViewport/기존 표시 규칙.320/390px·키보드/초점·상태 안내, CTA→`/my/company/start`의 등록/찾기. reload/직접 URL/뒤로가기에는 성공 Toast0·CANCELED 미연결은 빈 화면 | 미실행 — Figma/실제 Next·브라우저 필요 |
+| MCANCEL-05 | 연속 클릭/Enter·늦은 중복 응답에서 mutation 중복/성공 Toast 중복0, 진행 상태/버튼 방어. 전송 후 닫기/이동을 서버 변경 취소로 가정하지 않음 | 미실행 — 중복/화면 수명 검증 필요 |
+| MCANCEL-06 | 승인·취소 경쟁에서 하나의 결과. 승인 우선→409/최신 연결 회사, 세션 반영 지연→approved-stale/명시 재조회. 취소 우선→CANCELED. 자동 DELETE 재시도/이미 생성된 소속 삭제/취소 성공 Toast0 | 미실행 — 안전한 경쟁/복구 자원 필요 |
+| MCANCEL-07 | 같은 요청 replay의 CR004/CR003→최신 GET, CANCELED/REJECTED/APPROVED 분기. 새 PENDING/새 requestId/연결 회사면 최신 상태 우선·새 신청 자동 취소0. 성공 Toast0 | 미실행 — version/상태별 자원 필요 |
+| MCANCEL-08 | version 누락/0/잘못된 타입·다른 requestId/잘못된 성공 상태·빈/잘못된 wrapper 응답은 성공/Toast로 처리하지 않음. 게시 schema success와 실제 wire isSuccess 여부를 직접 확인한 뒤 기존 HTTP 경계 적용 | 미실행 — 실제 wire/실행 대응 미확인 |
+| MCANCEL-09 | 404/403/5xx·연결 실패/응답 유실/시간 초과→오류 또는 결과 미확정→명시 상태 확인. 자동 mutation 재시도0·거짓 성공 Toast0. 조회도 실패하면 미확정 상태/재시도 유지·해제 후 복구 | 미실행 — 안전한 오류/해제 범위 필요 |
+| MCANCEL-10 | 동일 계정401 refresh1회 경계, 최종401의 복귀/보호 자료 제거. 취소 성공 뒤 refresh만 실패하면 완료+sessionWarning, 재취소0. 이미 세션 해제된 화면에 보호 자료/늦은 Toast 없음 | 미실행 — 세션/오류별 자원 필요 |
+| MCANCEL-11 | 요청 중 계정 교체/로그아웃/화면 종료에서 이전 상태/오류/Toast 폐기. mock 취소 version/이력의 reload·탭/프로필/계정 격리·기존 신청/초대/문서/멱등 replay 보존 | 미실행 — 자동/HTTP 대역/mock 증거 별도 필요 |
+| MCANCEL-12 | API/mock/hybrid의 고정 source/production guard·업로드 경계 보존, mock 영역 외부 업무 요청0. 실QA 시작/종료 snapshot·신청/취소/재신청/이력 잔존/복구·승인된 담당/방법과 실행 SHA 대응 기록 | 미실행 — DEV-15 자원/변경 승인 필수 |
+
+실제 QA는 현재 frontend/backend 실행 대응과 disposable 계정/상태별 신청, version/회사 기대값, 동시 승인 주체·안전한 오류/해제·사용/변경/잔존/종료·복구 담당/방법을 확보한 뒤 수행한다. source/게시 schema/CI test deploy 성공을 실행 process SHA/업무 응답으로 대신하지 않는다. 과거 QA-05 QA-A/QA-B 조회 승인은 취소/재신청·상태 생성 허가가 아니다. 이번 업무 API 실행0·신규 실제 통과0이고 로컬 선행/실제 QA 생략 예외도 없다. 상태는 WBS와 실제 실행 시의 사례 증거에서 관리한다.
