@@ -1,0 +1,3023 @@
+{
+  "auditId": "backend-readiness-2026-11-13",
+  "observedAt": "2026-11-13T10:27:43.601008+09:00",
+  "documentedOn": "2026-11-13 KST",
+  "documentationBase": "86df956d5ecf05aad860199ccd86ff0993a7a068",
+  "frontendSourceAtObservation": "e09fb4c74f312b17715857b23ff976d484b76140",
+  "scope": {
+    "blockedOrHeldAtObservation": 26,
+    "associatedCandidates": 14,
+    "taskCount": 40,
+    "sourceFileCount": 43,
+    "authoritativeStatus": "../README.md",
+    "productImplementation": false,
+    "businessApiIntegration": false
+  },
+  "versions": {
+    "backendDev": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "backendMain": "8f522d0876a70edf61b8f5456a11c51756f60372",
+    "policyMain": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+    "openapiUrl": "https://api-test.mate-bid.com/v3/api-docs",
+    "runningProcessSha": "unverified",
+    "businessResponses": "not executed"
+  },
+  "refsRecheckedAt": "2026-11-13 10:56 KST; backend dev/main·policy main은 관찰 ref와 동일",
+  "backendPullRequest": {
+    "number": 134,
+    "url": "https://github.com/mate-pjt/mate-backend/pull/134",
+    "merged_at": "2026-11-12T06:47:29Z",
+    "merge_commit_sha": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+    "base": "dev",
+    "head": "f9ed5ea3b30ba5e4ebc16faf21865aa72fd8ebad"
+  },
+  "backendCi": {
+    "run": {
+      "id": 43170618340,
+      "url": "https://github.com/mate-pjt/mate-backend/actions/runs/43170618340",
+      "head_sha": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "conclusion": "success",
+      "updated_at": "2026-11-12T07:20:51Z"
+    },
+    "jobs": [
+      {
+        "name": "verify",
+        "conclusion": "success",
+        "steps": []
+      },
+      {
+        "name": "publish",
+        "conclusion": "success",
+        "steps": []
+      },
+      {
+        "name": "deploy",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Deploy immutable image to test",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "name": "deploy-prod",
+        "conclusion": "skipped",
+        "steps": []
+      }
+    ],
+    "limit": "배포 기록은 실행 프로세스 SHA/실제 업무 응답 증명이 아님"
+  },
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "observedHttpStatus": 200,
+    "openapi": "3.1.0",
+    "infoVersion": "v1",
+    "pathCount": 184,
+    "operationCount": 209,
+    "sanitizedSnapshotSha256": "97f1cecf30b26fca0f3c2494436b2cafa8023da126a289b809986cb0e8a313e6",
+    "addedSince20261111": [
+      {
+        "method": "GET",
+        "path": "/api/v1/me/notification-settings"
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/v1/me/notification-settings"
+      }
+    ],
+    "removedSince20261111": [],
+    "selectedSchemas": {
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "expiresInSeconds": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AuthenticatedAccountResponse"
+          },
+          "companyContext": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CompanyContextResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "companyOnboarding": {
+            "$ref": "#/components/schemas/CompanyOnboardingResponse"
+          }
+        }
+      },
+      "AuthenticatedAccountResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "NotificationSetting": {
+        "type": "object",
+        "properties": {
+          "detailAlertsEnabled": {
+            "type": "boolean"
+          },
+          "nightAlertsEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BidNoticeListRequest": {
+        "type": "object",
+        "description": "입찰공고 목록 조회 조건",
+        "properties": {
+          "view": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "분류 행으로 조회할 목록 종류. 생략하면 기존 공고 단위 목록을 반환한다.",
+            "enum": [
+              "ALL",
+              "CLOSING_SOON",
+              "RESULT"
+            ]
+          },
+          "keyword": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "공고명, 공고기관, 수요기관, 공고번호 부분 검색어",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "bidTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CONSTRUCTION",
+                "SERVICE",
+                "GOODS"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "NORMAL",
+                "MODIFIED",
+                "CANCELLED",
+                "REBID"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "progressStates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UPCOMING",
+                "OPEN",
+                "CLOSED",
+                "RESULT_AVAILABLE",
+                "CANCELLED"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "regionCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "industryCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "contractMethods": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GENERAL",
+                "LIMITED",
+                "NOMINATION",
+                "PRIVATE"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "noticePublishedFrom": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "noticePublishedTo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "bidCloseFrom": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "투찰 마감일 시작일. KST 날짜 기준"
+          },
+          "bidCloseTo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "투찰 마감일 종료일. KST 날짜 기준"
+          },
+          "estimatedPriceMin": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "estimatedPriceMax": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "successfulBidAmountMin": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "RESULT 최종 낙찰금액 하한. 경계 포함",
+            "minimum": 0
+          },
+          "successfulBidAmountMax": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "RESULT 최종 낙찰금액 상한. 경계 포함",
+            "minimum": 0
+          },
+          "dateType": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "BID_BEGIN",
+              "PARTICIPATION_DEADLINE",
+              "BID_CLOSE"
+            ]
+          },
+          "dateFrom": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "dateTo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "amountType": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "BASE_PRICE",
+              "ESTIMATED_PRICE"
+            ]
+          },
+          "amountMin": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "amountMax": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "regionOnly": {
+            "type": "boolean"
+          },
+          "jointContract": {
+            "type": "string",
+            "enum": [
+              "ALL",
+              "REQUIRED",
+              "AVAILABLE"
+            ]
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0,
+            "description": "0부터 시작하는 page 번호",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "page 크기. 최대 100",
+            "maximum": 100,
+            "minimum": 1
+          },
+          "sort": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "정렬 조건.",
+            "enum": [
+              "bidCloseAt,asc",
+              "noticePublishedAt,desc",
+              "estimatedPrice,asc",
+              "estimatedPrice,desc",
+              "openAt,desc"
+            ]
+          }
+        }
+      }
+    },
+    "notificationSettingsPatchRequest": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
+      "required": true
+    },
+    "registeredBidListParameters": [
+      {
+        "name": "category",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "GENERAL",
+            "CORRECTED",
+            "CLOSED",
+            "RESULT_COMPLETED"
+          ]
+        }
+      },
+      {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0,
+          "minimum": 0
+        }
+      },
+      {
+        "name": "size",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1
+        }
+      }
+    ]
+  },
+  "approvedDocumentationDecision": {
+    "date": "2026-11-13 KST",
+    "decisionMaker": "이번 대화 사용자",
+    "source": "../tasks/POL-09.md#pol-09-backend-replan-approval",
+    "scope": "제안한 문서 수정안·다음 DEV-57 재개 요구사항 확인·문서 검증/리뷰/Git 전달",
+    "preserve": "기존 차단/보류와 미결 정책; DEV-57 구현은 다음 대화의 자체 Gate 이후",
+    "notApproved": [
+      "닉네임 fallback 확정",
+      "야간/전역 기능 정책 확정·자동 활성화",
+      "실제 업무 API·메일·문서 처리·운영/배포",
+      "타 Task 구현"
+    ]
+  },
+  "tasks": [
+    {
+      "task": "QA-01",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "공개 홈/목록 계약 존재",
+      "assessmentAtObservation": "새로운 계약 해소 확인 없음",
+      "remainingGate": "다양한 종류·기관·null/빈 결과의 기대값/공고와 실행 버전·브라우저 대조 준비 재확인"
+    },
+    {
+      "task": "QA-02",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "공개 3view와 기본 필터 계약 존재; RESULT 금액 필드 추가 확인",
+      "assessmentAtObservation": "일부 계약 보완, 기존 QA 전체 해소 아님",
+      "remainingGate": "현재 공개 응답·검색/페이지/경계 fixture와 영향 사례만 재검증"
+    },
+    {
+      "task": "QA-03",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "상세·결과·첨부·관련 공고 계약 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "공사/물품/용역·분류/회차·nullable·첨부/오류의 비식별 자원; POL-09 추가 필드는 별도"
+    },
+    {
+      "task": "QA-05",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "회사 검색·소속 신청 조회/명령 계약 존재",
+      "assessmentAtObservation": "API 존재와 상태별 실제 QA 준비는 별개",
+      "remainingGate": "미연결/대기/승인/거절 등 계정·회사·변경/복구 범위 재확인"
+    },
+    {
+      "task": "QA-06",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "사업자번호/가입 회사 조회·등록 계약 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "승인된 합성 사업자/회사·등록 상태와 사용/잔존/복구 범위 재확인"
+    },
+    {
+      "task": "QA-07",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "가입 문서·업로드/OCR 관련 계약 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "비식별 파일·업로드/OCR/충돌 결과·처리/복구 허용 범위 재확인"
+    },
+    {
+      "task": "QA-08",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "초대 검증/수락 및 세션 계약 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "정상/만료/불일치 초대·역할별 계정·가입/연결 변경·복구 범위 재확인"
+    },
+    {
+      "task": "QA-09",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "공고별 GET/PUT/DELETE 알림 계약 존재; 새 전역 설정은 별도",
+      "assessmentAtObservation": "전역 토글 추가로 개별 알림 QA를 통과 처리할 수 없음",
+      "remainingGate": "공고 상태/계정·등록/해제·중복/권한/오류 자원과 변경/복구 승인 재확인"
+    },
+    {
+      "task": "QA-10",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "개인 필터 GET/PUT/reset/import-company 계약 존재; 과거 Swagger 403을 현재 사유로 재사용하지 않음",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "mock reset 교정 이력과 실제 서버 결과를 구분; 경계값/계정·버전409·저장/복구 자원 재확인"
+    },
+    {
+      "task": "QA-11",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "받은 알림 목록/읽음/건수 계약 및 WS 정책 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "대상 경로·안읽음/페이지·2계정/권한/오류·실제 신호와 데이터 준비 재확인"
+    },
+    {
+      "task": "QA-12",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "맞춤 이메일 GET/PATCH와 별도 새 전역/야간 설정 존재",
+      "assessmentAtObservation": "기존 이메일 오류 QA가 자동 해소되지 않음",
+      "remainingGate": "실제 오류/권한 응답·계정·변경/복구 범위 재확인; 새 토글은 별도 범위 결정"
+    },
+    {
+      "task": "QA-13",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "이메일 인증 시작/재전송/확인 계약 존재",
+      "assessmentAtObservation": "기존 실제 QA 차단 유지",
+      "remainingGate": "합성 메일함·수신/인증/만료·OTP/오류 자원과 주소 전환/복구 승인 재확인"
+    },
+    {
+      "task": "POL-01",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "현재 정책 repo에 정식 약관/개인정보 문안의 새 승인 근거를 찾지 못함",
+      "assessmentAtObservation": "정책/문안 승인 차단 유지",
+      "remainingGate": "정식 문안·필수/선택 동의·소유/효력과 사용자 승인 필요; API 추가로 대체 불가"
+    },
+    {
+      "task": "POL-02",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "Swagger 현재 200; 개인 필터·맞춤 목록/reset 계약 존재",
+      "assessmentAtObservation": "옛 접근403 자체는 해소; 정책/실제 QA 잔여 별개",
+      "remainingGate": "저장/미저장·초기화/공급원·권한/충돌 의미와 합성 계정·실제 경계 응답을 Gate에서 확인"
+    },
+    {
+      "task": "POL-03",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "등록 목록 category 필수 GENERAL/CORRECTED/CLOSED/RESULT_COMPLETED; ALL 없음; 일괄 해제 endpoint 없음",
+      "assessmentAtObservation": "계약 공백 유지",
+      "remainingGate": "전역 detail OFF는 등록 삭제가 아님. ALL/일괄 해제의 계약 또는 별도 승인 방안 필요"
+    },
+    {
+      "task": "DEV-06",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "대상 이동 구현/로컬 검증 이력 존재",
+      "assessmentAtObservation": "남은 실제 통합 차단 유지",
+      "remainingGate": "새 설정 API를 actionPath·읽음/이동 실제 QA 통과로 전환하지 않음"
+    },
+    {
+      "task": "DEV-07",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "WS/STOMP 소스·중앙 실시간 정책 존재",
+      "assessmentAtObservation": "REST endpoint 부재 문제 아님; 실제 자원 Gate 유지",
+      "remainingGate": "실행 SHA/Origin·합성2계정/신호·오류/잔존/복구; 로컬 선행 예외 없음 보존"
+    },
+    {
+      "task": "DEV-08",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "가입 후 시공능력/인증/실적 조회 controller 및 중앙 권한 정책 존재",
+      "assessmentAtObservation": "기존 실제 자원 Gate 유지",
+      "remainingGate": "leaf권한·합성 회사/금액/자료·실행 대응·QA/복구 범위; DEV-60 완료와 별개; 로컬 선행 예외 없음"
+    },
+    {
+      "task": "DEV-09",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "지역/공동수급 query 계약은 이미 존재",
+      "assessmentAtObservation": "새 계약 추가로 풀린 차단 아님",
+      "remainingGate": "원래 L07 실제 경계 QA·정책/계정 자원 Gate와 로컬 선행 예외 부재를 확인"
+    },
+    {
+      "task": "DEV-12",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "successfulBidAmountMin/Max가 현재 Swagger·validation·SQL에 연결; RESULT 최종 낙찰금액의 포함 범위",
+      "assessmentAtObservation": "서버 계약 부재를 이유로 한 보류 재검토 가능",
+      "remainingGate": "분류별 최신 재입찰 회차·null/0·소수/원 단위·정렬/페이지/count/안전 정수와 실제 경계 응답·허용 QA 범위를 자체 Gate에서 확인"
+    },
+    {
+      "task": "DEV-13",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "이전 정정 차수 전용 계약은 현재 public bid paths에서 찾지 못함",
+      "assessmentAtObservation": "사용자의 전용 계약 선행 결정에 따라 차단 유지",
+      "remainingGate": "no-view/keyword 조합을 임의 채택하지 않고 실제 전용 계약·회신/실행/검증 자원 확보"
+    },
+    {
+      "task": "DEV-14",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "자연어 본문/현장설명 일시/기준일/공고 전체 수집일의 요청 계약 아직 미확보",
+      "assessmentAtObservation": "사용자 명시 지시로 차단 유지",
+      "remainingGate": "요청문/이미지 전달 사실만 기록. 백엔드 답변과 실제 계약·의미/버전·검증 자원 확보 전 구현 금지"
+    },
+    {
+      "task": "POL-10",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "소속 신청 DELETE 취소에 expectedVersion query 존재",
+      "assessmentAtObservation": "정책 조사 착수 가능; 원래 다음 작업 유지 중",
+      "remainingGate": "본인/대기 상태·관리자 권한/동시 승인409·목적지/재조회 범위를 별도 결정"
+    },
+    {
+      "task": "POL-11",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "회사 선택/재사용과 초대 후 흐름은 기존 계약과 UI 소유 경계 문제",
+      "assessmentAtObservation": "API 추가만으로 정책 확정 안 됨",
+      "remainingGate": "소속/등록/재사용 진입과 실패/복귀 UX 결정"
+    },
+    {
+      "task": "POL-12",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "가입 후 회사 enrichment-run·변경 제안·수기 프로필 갱신 계약 존재",
+      "assessmentAtObservation": "정책 조사 가능; 전체 요구사항 충족 증명 아님",
+      "remainingGate": "승인/적용/충돌/권한·OCR·프로필 이미지 범위; 이미지 전용 공개 계약은 확인 못함"
+    },
+    {
+      "task": "POL-13",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "문서함 목록/문서 상세/버전/삭제/업로드·접근표 계약 존재",
+      "assessmentAtObservation": "정책 조사 가능",
+      "remainingGate": "수명·권한/승인·OCR/버전·삭제/복구·안전한 문서 자원 범위 결정"
+    },
+    {
+      "task": "POL-14",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "구성원/권한/직급/초대/소속 신청 처리 계약 존재",
+      "assessmentAtObservation": "정책 조사 가능",
+      "remainingGate": "역할별 동작·마지막 관리자·동시 변경/버전·권한 UI 범위 확정"
+    },
+    {
+      "task": "POL-15",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "멤버십/회사 조회 계약 존재",
+      "assessmentAtObservation": "API 부재로 단정 불가; UX/권한 정책 후보",
+      "remainingGate": "초대 후 역할별 목적지와 접근 거절/세션 재조회 결정"
+    },
+    {
+      "task": "POL-16",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "회사 merge-case/제안/요청/승인/거절/이의·판정 계약 존재",
+      "assessmentAtObservation": "정책 조사 가능",
+      "remainingGate": "단순 소속 변경과 구분; 상태/권한/충돌·실제 합성 자원 범위 결정"
+    },
+    {
+      "task": "POL-17",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "공개 /me 계약에서 닉네임/계정 프로필/비밀번호 편집 계약을 찾지 못함",
+      "assessmentAtObservation": "닉네임 조회 추가로 편집 기능 해결 안 됨",
+      "remainingGate": "OAuth 계정의 수정 범위/프로필/비밀번호 지원과 실제 계약 결정"
+    },
+    {
+      "task": "POL-18",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "계정 탈퇴 전용 공개 계약을 찾지 못함",
+      "assessmentAtObservation": "계약/정책 필요",
+      "remainingGate": "회사 탈퇴와 계정 삭제 구분·보존/복구/마지막 관리자·사용자 승인 필요"
+    },
+    {
+      "task": "POL-19",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "GET/PATCH notification-settings 존재; 전역 OFF는 알림 생성 제외; 야간 값은 저장만",
+      "assessmentAtObservation": "새 계약을 바탕으로 정책 정합성 조사 가능",
+      "remainingGate": "야간 대상/시간대·OFF/ON 소급/대기열·이메일/내부 알림 관계·기존 값 이행과 안내 승인; 인증시간 원래 범위도 유지"
+    },
+    {
+      "task": "POL-20",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "POST /api/v1/me/notification-deletions 존재",
+      "assessmentAtObservation": "정책 조사 가능; 삭제 API 부재로 단정 불가",
+      "remainingGate": "선택/전체·건수/읽음·중복·오류/권한·삭제/복구 범위 결정"
+    },
+    {
+      "task": "POL-21",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "가입 후 회사 수기 수정 계약은 존재하지만 가입 전 상태와 권한은 별개",
+      "assessmentAtObservation": "후등록 endpoint로 가입 전 편집 가능하다고 추정 금지",
+      "remainingGate": "가입 중 수집값 수동 변경 범위·등록 단계/권한·계약 확인"
+    },
+    {
+      "task": "POL-22",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "POST /api/v1/bid-notice-filters/current/import-company 존재",
+      "assessmentAtObservation": "정책 조사 가능",
+      "remainingGate": "명시 적용/overwrite/expectedVersion·회사 권한/개인 필터 독립·합성 QA 범위 결정"
+    },
+    {
+      "task": "QA-15",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "정적 UI/접근성 회귀의 조건부 작업",
+      "assessmentAtObservation": "backend 계약 차단 아님; 보류 유지",
+      "remainingGate": "관련 UI/토큰 변경 또는 출시 회귀 요청 시 영향 사례만 선정"
+    },
+    {
+      "task": "DEV-56",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "auth account.nickname nullable string 추가; Account.name을 로그인/가입/refresh에 전달",
+      "assessmentAtObservation": "이름 공급원 차단 부분 해소; P3",
+      "remainingGate": "이름 없음/로딩/오류·계정 전환과 회사 영역 표시 승인 필요; 닉네임 편집 API가 생긴 것은 아님"
+    },
+    {
+      "task": "DEV-57",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "auth nickname 공급원 확보로 시작 인사말 재개 Gate 가능; P1",
+      "assessmentAtObservation": "다음 요구사항 확인 후보 1순위 추천; 자동 차단 해제 아님",
+      "remainingGate": "POL-29의 이름 결측/지연/오류 표시 승인 및 frame별 폭/date 표면·접근성/합성 세션 QA 범위 확정"
+    },
+    {
+      "task": "DEV-58",
+      "cohortAtObservation": "blocked-or-held",
+      "evidenceAtObservation": "API 변경이 홈의 최종 홍보 문구/시각 승인을 대신하지 않음",
+      "assessmentAtObservation": "제품/디자인 결정 차단 유지",
+      "remainingGate": "실제 제공 범위에 맞는 최종 문구·위치 승인과 CTA 상태 검증"
+    },
+    {
+      "task": "DEV-66",
+      "cohortAtObservation": "associated-candidate",
+      "evidenceAtObservation": "전역/야간 설정 API가 이제 존재; 기존 API 없음 tooltip 후보는 갱신 필요",
+      "assessmentAtObservation": "POL-19 뒤 범위/완료 기준 갱신 제안; 구현 미착수",
+      "remainingGate": "기존 자동 활성화 금지 승인 유지. 전역 연결과 야간 저장/실제 전달의 지원 수준을 나눠 새 사용자 승인 확보"
+    }
+  ],
+  "sources": [
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notificationsetting/NotificationSettingController.kt",
+      "blobSha": "b33f3c0e8175a9a86f79c61979d866d9a3175c81",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notificationsetting/NotificationSettingController.kt",
+      "sha256": "03dce2b4d2df510558d8a96d17dacd103b1f517924580de32258570665ab84a4",
+      "id": "S01"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/notificationsetting/NotificationSettingUseCase.kt",
+      "blobSha": "b98ecd9df3d4e8475a6a04945041da83bfb5126e",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/notificationsetting/NotificationSettingUseCase.kt",
+      "sha256": "4b714a6ad090f488961ae3a0ce415d07bf717bfcba5df2fc376505c1f6fc09ed",
+      "id": "S02"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/notificationsetting/NotificationSettingService.kt",
+      "blobSha": "084ff82fd5d9bf2f19dae0d48e04968af69a5ada",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/notificationsetting/NotificationSettingService.kt",
+      "sha256": "089762bc35e4cbae3dc3c2e412b02263a4126a1362ca28202b2ff3c7e3a97d52",
+      "id": "S03"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/auth/response/AuthenticationResponse.kt",
+      "blobSha": "8acfbf2583a89b5e53ac09a1270f7c0f31da7718",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/auth/response/AuthenticationResponse.kt",
+      "sha256": "86966241602fce9a8a931d35b29aedc8031911615e3f0be10f00a3d04f8b48dc",
+      "id": "S04"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/auth/LoginResult.kt",
+      "blobSha": "ff0c68b5756c9a0c3463ca027344bb8a79134eef",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/input/auth/LoginResult.kt",
+      "sha256": "164eb21a43def0815ff1d45a7f8f124af2667de5c58ea35145da04c099c48fde",
+      "id": "S05"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/BrowserSessionTransactionService.kt",
+      "blobSha": "7f694942d13933e0924f6beafcd84accf1f21d33",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/BrowserSessionTransactionService.kt",
+      "sha256": "7d5a0526732fe52a6308cc57dc66625e4ecc6f5296b85dbd855c3b4b91d6f84f",
+      "id": "S06"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/InitialBrowserSessionCompletionTransactionService.kt",
+      "blobSha": "0d806b4312498b6961cb55a7ac9f8032cd129217",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/InitialBrowserSessionCompletionTransactionService.kt",
+      "sha256": "f3b7afe73e014ef31113c94d45dc71a59c5880acd6b617e4690a91897b5ef8c5",
+      "id": "S07"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/notification/BidNoticeAlertEventDispatchPersistenceAdapter.kt",
+      "blobSha": "773973e675b639ad2fea9bda18f1d654aa602c97",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/notification/BidNoticeAlertEventDispatchPersistenceAdapter.kt",
+      "sha256": "46237aad2ff6eb72e6fca5adf2a33304f07706d286fc046f3885a0fc0e6f01f5",
+      "id": "S08"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/biddeadlinereminder/BidDeadlineReminderDeliveryPersistenceAdapter.kt",
+      "blobSha": "82e8b3e72f5c6d095c1603ad766195d1e74946a3",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/biddeadlinereminder/BidDeadlineReminderDeliveryPersistenceAdapter.kt",
+      "sha256": "ad6a379b5b7ca6ae67e46186c79d4713e6e95b4c8e9d4862e4664c6eb25d738d",
+      "id": "S09"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/biddeadlinereminder/BidDeadlineReminderCandidatePersistenceAdapter.kt",
+      "blobSha": "2d3668d72664d82aad48cf0054e7a4a6cf12da9b",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/biddeadlinereminder/BidDeadlineReminderCandidatePersistenceAdapter.kt",
+      "sha256": "9cb9e41003f13809b3b1d47ee9e7684d07ac70c4a0e932a1ab36da3e8fdbf91a",
+      "id": "S10"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt",
+      "blobSha": "c6a1cfa6068bcabfe2925d5eace82ecbfb84f5e1",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt",
+      "sha256": "7c9cedbca28a92264f8a932a6b15f1abea88e86d57bceabbd6f3082f24ff04e3",
+      "id": "S11"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryController.kt",
+      "blobSha": "0224309d7307c3756474ee78702e191f4ebe4f9f",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryController.kt",
+      "sha256": "76f0b6ebf501ee2d0e44176d3650da33366b453e7f53e0d4d7b863d15bba858b",
+      "id": "S12"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListQueryParameterValidator.kt",
+      "blobSha": "1f71c1787c983fb0cde47cfe4d3f16ba718398e6",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListQueryParameterValidator.kt",
+      "sha256": "af6d74f1dc57071d208b8d69a13e21b095f172609ec1cc57d6cb7fbef5117797",
+      "id": "S13"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQuerySpecFactory.kt",
+      "blobSha": "9e8e4313c169c98619bd9a42ce25ed05bf49cf31",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQuerySpecFactory.kt",
+      "sha256": "0e05cc96d26cb68cb70863c9488e2325d601f588aaa9bd47b4b4453ffcb6c4c6",
+      "id": "S14"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bidnoticealert/AccountBidNoticeAlertController.kt",
+      "blobSha": "164805f75f34048522dbe6ce5f8600e48da13c21",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bidnoticealert/AccountBidNoticeAlertController.kt",
+      "sha256": "19ff1b1f8a65e05a357a2718f952147da89a9c01ff7e2cb2cb1097364c2d6b4f",
+      "id": "S15"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeListRowQuerySpecFactory.kt",
+      "blobSha": "52c79459c6fad263ce23cf58974927f7212de19b",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeListRowQuerySpecFactory.kt",
+      "sha256": "22d75c75e85496abb663aee74c14854eb72d03e662aaa0cd131fdba41fac3f1a",
+      "id": "S16"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeLatestResultRowSource.kt",
+      "blobSha": "8645add02bf45c03642df4536ae57401bb5bfed6",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeLatestResultRowSource.kt",
+      "sha256": "ee7ad61247cb8b3065257d7d87a43aa00925e8384ca1f374e16496f9f738133f",
+      "id": "S17"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+      "blobSha": "9d5f6d32e2cc6d4c9ac50c76912a6383418ce947",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/membershiprequest/CompanyMembershipRequestController.kt",
+      "sha256": "7d35b7f0839e4ae1850bae79128d01df81dd2e704b3e5dd28b0402cc4f65442e",
+      "id": "S18"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companydocument/CompanyDocumentBoxController.kt",
+      "blobSha": "de7bf1ed5a3e6afb46e281c53af815732646805f",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companydocument/CompanyDocumentBoxController.kt",
+      "sha256": "354090cd49a2bcb30e04bb4981f7e9db1b9e4fc98dfa33429df39cbc528649e7",
+      "id": "S19"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companydocument/CompanyDocumentController.kt",
+      "blobSha": "76166958293afd56f9db98a41b2dfce359b26281",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companydocument/CompanyDocumentController.kt",
+      "sha256": "43929e921867ccea0221f6739a933a8bdb4184237959878387028ec8d299d074",
+      "id": "S20"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileQueryController.kt",
+      "blobSha": "317fbe4b3d070e437c8699a451a65c65c518f7e5",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileQueryController.kt",
+      "sha256": "7a0d65418ef2073ecd0613377bf585dae4dc1b0410c3a4d414f096debd9768f0",
+      "id": "S21"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileManualController.kt",
+      "blobSha": "7d61a9b2cbb1fa6668394a97f51b9112c71420ef",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileManualController.kt",
+      "sha256": "da1ed9c353eb5954b916c00e4491af0d30aa0aec68d1be0cdf9281ac3022828b",
+      "id": "S22"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileEnrichmentRunController.kt",
+      "blobSha": "14026b305338e523c00ada2611af91c4bf946fc8",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileEnrichmentRunController.kt",
+      "sha256": "92c1b2d272c4dcbd2c7798b783089a6f5f33577c2969f6555e31b4787097f51a",
+      "id": "S23"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileProposalController.kt",
+      "blobSha": "20a23cfa9a5f7c40941728ce752b7022f470c361",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/CompanyProfileProposalController.kt",
+      "sha256": "78fb5573ac0524a4a2f3d8833d683734489b013834db80fab0b299f393ece2da",
+      "id": "S24"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/CompanyMembershipController.kt",
+      "blobSha": "01697f163f108594268afb24dba6860f211ef89a",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymembership/CompanyMembershipController.kt",
+      "sha256": "1e4670eb5daa752ba95130733f6e9ae843b2f145086deffc86f1ef403c78250f",
+      "id": "S25"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymerge/CompanyMergeController.kt",
+      "blobSha": "e75a09ff950936fcbf67c2cfe92a7cadb8abd464",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companymerge/CompanyMergeController.kt",
+      "sha256": "39a39208fd9492764875383d9194b8f4cb469a8e120ba5425203b024a2399855",
+      "id": "S26"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt",
+      "blobSha": "3dfe9bdb49bca44022ad5351c1295553de635ef8",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt",
+      "sha256": "ae215908a14529be10dda10ad05bf1164df0a19a0c8a5f0fea16eb922641dabb",
+      "id": "S27"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notification/AccountNotificationController.kt",
+      "blobSha": "b0da0a980d2307c66cb4fee0c3a8fdcaefbd3723",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notification/AccountNotificationController.kt",
+      "sha256": "4e8b813e11ea8ddd02dbd8c7a72a025765698043ae51941bf8388ce3acdc305a",
+      "id": "S28"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/resources/db/migration/V135__account_notification_settings.sql",
+      "blobSha": "46f694adf81244d7c009fb680efefd1ee6165630",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/resources/db/migration/V135__account_notification_settings.sql",
+      "sha256": "745225ed3320b361265c4d596a61cc9511f6aad314a41551b55229301a1ce35f",
+      "id": "S29"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/notificationsetting/NotificationSettingControllerTest.kt",
+      "blobSha": "0c5189bcb96b0d657ec602c6300236711d729259",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/notificationsetting/NotificationSettingControllerTest.kt",
+      "sha256": "936be1e975e406c42801309bbf5d6e03461f955ba2a0d9ea78392113d784a186",
+      "id": "S30"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/application/service/notificationsetting/NotificationSettingServiceTest.kt",
+      "blobSha": "70a4faa218ba849b126c3b99e3518b0d5cd9a49a",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/application/service/notificationsetting/NotificationSettingServiceTest.kt",
+      "sha256": "586bcf485f8bbb7e03542c6a975da5c1390b0e7185c54645a9396e53ffcbefa2",
+      "id": "S31"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryControllerTest.kt",
+      "blobSha": "21897a102042a1b29c743d1de4b9ed9e28677432",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryControllerTest.kt",
+      "sha256": "8a3701e7789dd8b341c96638b619be38c80476572fcb0dc807aca34d2c2e83bc",
+      "id": "S32"
+    },
+    {
+      "repo": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapterTest.kt",
+      "blobSha": "1190b31706ef19eae57f01aca61252d00c966456",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapterTest.kt",
+      "sha256": "152bb95cb27a55bac37040f7955bd61c534ea3c51ae56d94f5c1c924aecdc35d",
+      "id": "S33"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/notification/overview.md",
+      "blobSha": "c649b3092157a091f1be54d92195e65622150ac9",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md",
+      "sha256": "cd2c31772a35f5fa5baa822af4b27e3a99086a60e5fe6202f71c3deab33923c5",
+      "id": "S34"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/auth/account-and-social-identity.md",
+      "blobSha": "131dffa2bc7bf1ddd09d5ad01d50df5ef2fb26f8",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/auth/account-and-social-identity.md",
+      "sha256": "0d5f344db233f2e2809b9259feefb50c48993bffa794d0800e7a00ed153a5206",
+      "id": "S35"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/api/bid-notices.md",
+      "blobSha": "3d2003083cd948cc4e5be625efe61002cc3b33bc",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/api/bid-notices.md",
+      "sha256": "b5f21ec4741ec2dfaef1a564166153ffeabb7a3c5cbcd098b0cdbfcbb64a1042",
+      "id": "S36"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/architecture/account-notification-realtime.md",
+      "blobSha": "cd625f7d5af94b745159ec556f695cb7a6c719ec",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/architecture/account-notification-realtime.md",
+      "sha256": "c766eb182d756f122ae95e04c6edc847b1cf0b9b9f82df886f6194b0a06c0278",
+      "id": "S37"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/overview-and-profile.md",
+      "blobSha": "d66663cd5aa6d90ba0e81aa1634e5e6258f6005e",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/overview-and-profile.md",
+      "sha256": "047c36e9078551c8c8a8bd63eb4dbbaeb251e6a4eece89e2f496c16868cda09e",
+      "id": "S38"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/registration-and-verification.md",
+      "blobSha": "85a0145715a539801cb6ce9292ecf7f2bd1751f8",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/registration-and-verification.md",
+      "sha256": "d397a0db961c8141d4afad7816049f772c8477e2db349b875b7a5dbd6ffb001d",
+      "id": "S39"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/membership-and-positions.md",
+      "blobSha": "fd56232a56a3b45c2edef78815bf045c5c413292",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/membership-and-positions.md",
+      "sha256": "b6db363a38d819299e82952d4ef5ff3ada8e724917ea73100fa209ca1d993638",
+      "id": "S40"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/company/merge-and-dispute.md",
+      "blobSha": "8bdec10917d914bc83cdf4210645af6fffb54eee",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/merge-and-dispute.md",
+      "sha256": "04405387f195d292a365752222f4ff324a6d50662037dabca2fa0aae20cf5f05",
+      "id": "S41"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/amounts-and-results.md",
+      "blobSha": "7caeeef1c9a0fd251a26388cc10e1cf24d2bf993",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/amounts-and-results.md",
+      "sha256": "71d16dea67568321a0d3343b1b1119cf306f030e56a3dded2f3bc8b1df7bb36d",
+      "id": "S42"
+    },
+    {
+      "repo": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/classification-and-list-rows.md",
+      "blobSha": "ef20ef9c66c227d8bcfadd399a76535450bd2bc6",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/classification-and-list-rows.md",
+      "sha256": "8d7c60e883cced2e510be37561d89a683b8fd4615216bdb2f6941272a1ce755b",
+      "id": "S43"
+    }
+  ],
+  "publishedOperationIndex": [
+    {
+      "method": "GET",
+      "path": "/api/v1/me/bid-notice-alerts/{bidNoticeId}",
+      "operationId": "getStatus",
+      "summary": null,
+      "tags": [
+        "account-bid-notice-alert-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/me/bid-notice-alerts/{bidNoticeId}",
+      "operationId": "activate",
+      "summary": null,
+      "tags": [
+        "account-bid-notice-alert-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/me/bid-notice-alerts/{bidNoticeId}",
+      "operationId": "deactivate",
+      "summary": null,
+      "tags": [
+        "account-bid-notice-alert-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notice-filters/current",
+      "operationId": "get",
+      "summary": null,
+      "tags": [
+        "personal-bid-notice-filter-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/bid-notice-filters/current",
+      "operationId": "save",
+      "summary": null,
+      "tags": [
+        "personal-bid-notice-filter-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-templates/{templateId}",
+      "operationId": "find",
+      "summary": null,
+      "tags": [
+        "admin-notification-template-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/admin/notification-templates/{templateId}",
+      "operationId": "update",
+      "summary": null,
+      "tags": [
+        "admin-notification-template-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/admin/notification-templates/{templateId}",
+      "operationId": "disable",
+      "summary": null,
+      "tags": [
+        "admin-notification-template-controller"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/admin/bid-notice-deadline-reminder-rules/{ruleId}",
+      "operationId": "update_1",
+      "summary": null,
+      "tags": [
+        "bid-deadline-reminder-rule-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/admin/bid-notice-deadline-reminder-rules/{ruleId}",
+      "operationId": "delete",
+      "summary": null,
+      "tags": [
+        "bid-deadline-reminder-rule-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/source-payloads",
+      "operationId": "ingest",
+      "summary": "나라장터 원본 payload 저장",
+      "tags": [
+        "나라장터 원본 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/terminal",
+      "operationId": "terminal",
+      "summary": null,
+      "tags": [
+        "nara-range-attempt-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/operations/{operation}/failures",
+      "operationId": "fail",
+      "summary": null,
+      "tags": [
+        "nara-range-operation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/operations/{operation}/completions",
+      "operationId": "complete",
+      "summary": null,
+      "tags": [
+        "nara-range-operation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/lease-renewals",
+      "operationId": "renew",
+      "summary": null,
+      "tags": [
+        "nara-range-attempt-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/initial-targets/{phase}",
+      "operationId": "create",
+      "summary": null,
+      "tags": [
+        "nara-range-initial-target-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/claim",
+      "operationId": "claim",
+      "summary": null,
+      "tags": [
+        "nara-range-attempt-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/purchase-item-collection-requests/{requestId}/failure",
+      "operationId": "fail_1",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-manual-collection-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/purchase-item-collection-requests/{requestId}/complete",
+      "operationId": "complete_1",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-manual-collection-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/purchase-item-collection-requests/{requestId}/claim",
+      "operationId": "claim_1",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-manual-collection-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/industry-master/sync-runs",
+      "operationId": "register",
+      "summary": null,
+      "tags": [
+        "industry-master-sync-run-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/industry-master/sync-runs/{syncRunId}/completion",
+      "operationId": "complete_2",
+      "summary": null,
+      "tags": [
+        "industry-master-sync-run-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/industry-master/source-payloads/{sourcePayloadId}/processing-attempts",
+      "operationId": "reprocess",
+      "summary": null,
+      "tags": [
+        "industry-source-payload-processing-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/industry-master/source-payloads/ingest",
+      "operationId": "ingest_1",
+      "summary": "업종 마스터 원문 ingest",
+      "tags": [
+        "업종 마스터 원문 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/collection-runs",
+      "operationId": "create_1",
+      "summary": "나라장터 수집 실행 묶음 생성",
+      "tags": [
+        "나라장터 수집 실행 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/{operation}/failure",
+      "operationId": "fail_2",
+      "summary": "나라장터 수집 작업 실패",
+      "tags": [
+        "나라장터 수집 실행 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/{operation}/complete",
+      "operationId": "complete_3",
+      "summary": "나라장터 수집 작업 완료",
+      "tags": [
+        "나라장터 수집 실행 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/PURCHASE_ITEM/targets",
+      "operationId": "createTargets",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/BID_RESULT/detail-targets",
+      "operationId": "create_2",
+      "summary": null,
+      "tags": [
+        "bid-notice-result-detail-target-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-result-targets/{targetId}/failures",
+      "operationId": "report",
+      "summary": null,
+      "tags": [
+        "bid-notice-result-target-failure-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-result-source-payloads",
+      "operationId": "ingest_2",
+      "summary": null,
+      "tags": [
+        "bid-notice-result-source-payload-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-result-recheck-runs",
+      "operationId": "create_3",
+      "summary": null,
+      "tags": [
+        "bid-notice-result-recheck-run-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notices/base-amount-collection-failures",
+      "operationId": "report_1",
+      "summary": "기초금액/A 단건 호출 최종 실패 보고",
+      "tags": [
+        "기초금액 수집 실패 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notice-purchase-items/source-payloads",
+      "operationId": "ingest_3",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notice-purchase-items/collection-failures",
+      "operationId": "reportFailure",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-internal-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notice-participation-regions/source-payloads",
+      "operationId": "ingest_4",
+      "summary": "공고 참가가능지역 원문 JSON 저장",
+      "tags": [
+        "공고 참가가능지역 원문 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notice-license-limits/source-payloads/ingest",
+      "operationId": "ingest_5",
+      "summary": "공고 면허제한 원문 ingest",
+      "tags": [
+        "공고 면허제한 원문 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/bid-notice-base-amounts/source-payloads",
+      "operationId": "ingest_6",
+      "summary": "기초금액/A 원문 접수",
+      "tags": [
+        "기초금액 원문 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/base-amount-recheck-runs",
+      "operationId": "create_4",
+      "summary": "기초금액 자동 재확인 Run 생성",
+      "tags": [
+        "기초금액 자동 재확인 Run 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/base-amount-collection-requests/{requestId}/claim",
+      "operationId": "claim_2",
+      "summary": "수동 수집 처리권 획득",
+      "tags": [
+        "기초금액 수동 수집 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/a-value-component-definitions/{definitionId}/rejection",
+      "operationId": "reject",
+      "summary": "A 구성항목 정의 거절",
+      "tags": [
+        "A 구성항목 정의 검토 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/a-value-component-definitions/{definitionId}/approval",
+      "operationId": "approve",
+      "summary": "A 구성항목 정의 승인",
+      "tags": [
+        "A 구성항목 정의 검토 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/nara/a-value-component-definitions/reprocess-requests/{requestId}/retry",
+      "operationId": "retry",
+      "summary": "실패한 A 구성항목 재처리 요청 수동 재시작",
+      "tags": [
+        "A 구성항목 정의 검토 내부 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/internal/v1/industry-inclusion-reconciliations",
+      "operationId": "reconcile",
+      "summary": null,
+      "tags": [
+        "industry-inclusion-reconciliation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/unverified-company-registrations",
+      "operationId": "register_1",
+      "summary": null,
+      "tags": [
+        "unverified-company-registration-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/me/notification-email-verifications",
+      "operationId": "start",
+      "summary": "대체 이메일 인증 시작",
+      "tags": [
+        "notification-email-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/me/notification-email-verifications/{verificationId}/resend",
+      "operationId": "resend",
+      "summary": "대체 이메일 인증번호 재전송",
+      "tags": [
+        "notification-email-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/me/notification-email-verifications/{verificationId}/confirm",
+      "operationId": "confirm",
+      "summary": "대체 이메일 인증 확인",
+      "tags": [
+        "notification-email-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/me/notification-deletions",
+      "operationId": "delete_1",
+      "summary": null,
+      "tags": [
+        "account-notification-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-registrations",
+      "operationId": "register_2",
+      "summary": null,
+      "tags": [
+        "company-registration-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-memberships/{membershipId}/self-demotion",
+      "operationId": "selfDemote",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-memberships/{membershipId}/leave",
+      "operationId": "leave",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-memberships/{membershipId}/change-requests",
+      "operationId": "create_5",
+      "summary": "기존 구성원 변경 요청 생성",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-requests",
+      "operationId": "create_6",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-invitations/resume",
+      "operationId": "resume",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-invitations/preview",
+      "operationId": "preview",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-invitations/decline",
+      "operationId": "decline",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-invitations/acceptance",
+      "operationId": "accept",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-change-requests/{changeRequestId}/decisions",
+      "operationId": "decide",
+      "summary": "본인 변경 요청 수락 또는 거절",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-membership-change-requests/{changeRequestId}/cancellations",
+      "operationId": "cancel",
+      "summary": "회사 담당자의 변경 요청 취소",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents",
+      "operationId": "create_7",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-documents/{documentId}/versions",
+      "operationId": "getVersions",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents/{documentId}/versions",
+      "operationId": "createVersion",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents/{documentId}/versions/{versionId}/verification-attempts",
+      "operationId": "retryVerification",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents/{documentId}/versions/{versionId}/upload-completions",
+      "operationId": "completeUpload",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents/{documentId}/versions/{versionId}/ocr-attempts",
+      "operationId": "retryOcr",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/company-documents/{documentId}/versions/{versionId}/access-tickets",
+      "operationId": "issueAccessTicket",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/profile-enrichment-runs",
+      "operationId": "create_8",
+      "summary": "회사 프로필 보강 시작",
+      "tags": [
+        "회사 프로필 보강 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/profile-change-proposals/{proposalId}/decisions",
+      "operationId": "decide_1",
+      "summary": "회사 프로필 변경 제안 결정",
+      "tags": [
+        "회사 프로필 변경 제안 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/positions",
+      "operationId": "get_1",
+      "summary": null,
+      "tags": [
+        "company-position-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/positions",
+      "operationId": "create_9",
+      "summary": "회사 custom 직급 생성",
+      "tags": [
+        "company-position-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/request",
+      "operationId": "request",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/representative-approval",
+      "operationId": "approveRepresentatives",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/rejection",
+      "operationId": "reject_1",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/proposals",
+      "operationId": "propose",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/proposal-responses",
+      "operationId": "respondToProposal",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/members/{membershipId}/decision",
+      "operationId": "decideMember",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/members/decision",
+      "operationId": "decideMembers",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/manual-settings/decision",
+      "operationId": "decideManualSettings",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/inquiries",
+      "operationId": "inquire",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/finalization",
+      "operationId": "finalize",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}/appeal",
+      "operationId": "appeal",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/membership-requests/{requestId}/rejection",
+      "operationId": "reject_2",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/membership-requests/{requestId}/approval",
+      "operationId": "approve_1",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-invitations",
+      "operationId": "findPage",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/membership-invitations",
+      "operationId": "create_10",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/membership-invitations/{invitationId}/resend",
+      "operationId": "resend_1",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/construction-capability-assessments",
+      "operationId": "capabilities",
+      "summary": "시공능력평가 조회",
+      "tags": [
+        "회사 프로필 조회 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies/{companyId}/construction-capability-assessments",
+      "operationId": "createCapability",
+      "summary": "시공능력평가 수기 생성",
+      "tags": [
+        "회사 프로필 수기 보완 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/bid-notice-filters/current/reset",
+      "operationId": "reset",
+      "summary": null,
+      "tags": [
+        "personal-bid-notice-filter-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/bid-notice-filters/current/import-company",
+      "operationId": "importCompany",
+      "summary": null,
+      "tags": [
+        "personal-bid-notice-filter-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/token/refresh",
+      "operationId": "refresh",
+      "summary": "브라우저 세션 갱신",
+      "tags": [
+        "브라우저 세션 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/social-signups",
+      "operationId": "complete_4",
+      "summary": "소셜 회원가입 완료",
+      "tags": [
+        "소셜 회원가입 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/oauth/google/session-completions",
+      "operationId": "complete_5",
+      "summary": "Google 기존 회원 로그인 완료",
+      "tags": [
+        "Google 소셜 인증 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "operationId": "logout",
+      "summary": "현재 브라우저 로그아웃",
+      "tags": [
+        "브라우저 세션 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/procurement-company-report-snapshots",
+      "operationId": "upload",
+      "summary": "조달업체 보고서 snapshot 업로드",
+      "tags": [
+        "조달업체 보고서 내부 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-templates",
+      "operationId": "list",
+      "summary": null,
+      "tags": [
+        "admin-notification-template-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/notification-templates",
+      "operationId": "create_11",
+      "summary": null,
+      "tags": [
+        "admin-notification-template-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/notification-previews",
+      "operationId": "preview_1",
+      "summary": null,
+      "tags": [
+        "admin-notification-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-dispatches",
+      "operationId": "list_1",
+      "summary": null,
+      "tags": [
+        "admin-notification-dispatch-query-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/notification-dispatches",
+      "operationId": "confirm_1",
+      "summary": null,
+      "tags": [
+        "admin-notification-dispatch-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/notification-dispatches/{dispatchId}/retries",
+      "operationId": "retry_1",
+      "summary": null,
+      "tags": [
+        "admin-notification-dispatch-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/range-collection-requests",
+      "operationId": "list_2",
+      "summary": null,
+      "tags": [
+        "nara-range-collection-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/nara/range-collection-requests",
+      "operationId": "create_12",
+      "summary": null,
+      "tags": [
+        "nara-range-collection-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/nara/range-collection-previews",
+      "operationId": "preview_2",
+      "summary": null,
+      "tags": [
+        "nara-range-collection-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/nara/purchase-item-collection-requests",
+      "operationId": "create_13",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-manual-collection-admin-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/nara/base-amount-collection-targets/{bidNoticeId}/{targetType}/resume",
+      "operationId": "resume_1",
+      "summary": null,
+      "tags": [
+        "bid-notice-base-amount-collection-target-admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/base-amount-collection-requests",
+      "operationId": "findRequests",
+      "summary": null,
+      "tags": [
+        "기초금액 수동 수집 관리자 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/nara/base-amount-collection-requests",
+      "operationId": "create_14",
+      "summary": "기초금액/A 일회성 수집 요청",
+      "tags": [
+        "기초금액 수동 수집 관리자 API"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/company-registration-disputes/{caseId}/decisions",
+      "operationId": "decide_2",
+      "summary": null,
+      "tags": [
+        "company-registration-dispute-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notice-deadline-reminder-rules",
+      "operationId": "list_3",
+      "summary": null,
+      "tags": [
+        "bid-deadline-reminder-rule-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/admin/bid-notice-deadline-reminder-rules",
+      "operationId": "create_15",
+      "summary": null,
+      "tags": [
+        "bid-deadline-reminder-rule-controller"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/account-business-connections",
+      "operationId": "create_16",
+      "summary": "사업자 연결 생성",
+      "tags": [
+        "사업자 연결 API"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/me/notifications/{notificationId}/read",
+      "operationId": "markRead",
+      "summary": null,
+      "tags": [
+        "account-notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/notification-settings",
+      "operationId": "get_2",
+      "summary": null,
+      "tags": [
+        "notification-setting-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/me/notification-settings",
+      "operationId": "change",
+      "summary": null,
+      "tags": [
+        "notification-setting-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/notification-email-settings",
+      "operationId": "get_3",
+      "summary": "알림 수신 이메일 설정 조회",
+      "tags": [
+        "notification-email-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/me/notification-email-settings",
+      "operationId": "change_1",
+      "summary": "알림 수신 이메일 전환",
+      "tags": [
+        "notification-email-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/matched-bid-notice-email-settings",
+      "operationId": "get_4",
+      "summary": null,
+      "tags": [
+        "matched-bid-email-setting-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/me/matched-bid-notice-email-settings",
+      "operationId": "change_2",
+      "summary": null,
+      "tags": [
+        "matched-bid-email-setting-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/company-memberships/{membershipId}/position",
+      "operationId": "changePosition",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/company-memberships/{membershipId}/permissions",
+      "operationId": "changePermissions",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/public-certifications/{certificationType}",
+      "operationId": "updateCertification",
+      "summary": "공공 인증 수기 수정",
+      "tags": [
+        "회사 프로필 수기 보완 API"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/companies/{companyId}/positions/{positionId}",
+      "operationId": "delete_2",
+      "summary": "회사 custom 직급 삭제",
+      "tags": [
+        "company-position-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/positions/{positionId}",
+      "operationId": "rename",
+      "summary": "회사 custom 직급 이름 변경",
+      "tags": [
+        "company-position-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-invitations/{invitationId}",
+      "operationId": "get_5",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/companies/{companyId}/membership-invitations/{invitationId}",
+      "operationId": "cancel_1",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/membership-invitations/{invitationId}",
+      "operationId": "update_2",
+      "summary": null,
+      "tags": [
+        "company-membership-invitation-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/contact-information",
+      "operationId": "updateContactInformation",
+      "summary": "회사 연락처 수정",
+      "tags": [
+        "회사 기본 정보 API"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/companies/{companyId}/construction-capability-assessments/{assessmentId}",
+      "operationId": "deleteCapability",
+      "summary": "시공능력평가 수기 삭제",
+      "tags": [
+        "회사 프로필 수기 보완 API"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/construction-capability-assessments/{assessmentId}",
+      "operationId": "updateCapability",
+      "summary": "시공능력평가 수기 수정",
+      "tags": [
+        "회사 프로필 수기 보완 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/bid-notice-preferences",
+      "operationId": "get_6",
+      "summary": null,
+      "tags": [
+        "company-bid-notice-preference-controller"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/companies/{companyId}/bid-notice-preferences",
+      "operationId": "update_3",
+      "summary": null,
+      "tags": [
+        "company-bid-notice-preference-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/progress",
+      "operationId": "progress",
+      "summary": null,
+      "tags": [
+        "nara-range-attempt-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/range-collection/attempts/{attemptId}/notices",
+      "operationId": "notices",
+      "summary": null,
+      "tags": [
+        "nara-range-detail-read-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/industry-master/sync-runs/{syncRunId}",
+      "operationId": "get_7",
+      "summary": null,
+      "tags": [
+        "industry-master-sync-run-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/industry-master/source-payloads/{sourcePayloadId}",
+      "operationId": "get_8",
+      "summary": null,
+      "tags": [
+        "industry-source-payload-processing-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/industry-master/source-payloads/{sourcePayloadId}/processing-attempts/{processingJobId}/failures",
+      "operationId": "failures",
+      "summary": null,
+      "tags": [
+        "industry-source-payload-processing-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/{operation}/readiness",
+      "operationId": "getReadiness",
+      "summary": "나라장터 수집 작업 완료 준비 상태 조회",
+      "tags": [
+        "나라장터 수집 실행 내부 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/PURCHASE_ITEM/unresolved-targets",
+      "operationId": "unresolved",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-internal-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/collection-runs/{collectionRunId}/operations/BID_RESULT/unresolved-targets",
+      "operationId": "find_1",
+      "summary": null,
+      "tags": [
+        "bid-notice-result-detail-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/bid-notices/license-limit-collection-targets",
+      "operationId": "getTargets",
+      "summary": "공고 면허제한 수집 대상 조회",
+      "tags": [
+        "공고 면허제한 수집 대상 내부 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/base-amount-collection-requests/pending",
+      "operationId": "findPending",
+      "summary": "PENDING 수동 수집 요청 조회",
+      "tags": [
+        "기초금액 수동 수집 내부 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/internal/v1/nara/a-value-component-definitions",
+      "operationId": "getReviewTargets",
+      "summary": "A 구성항목 검토 대상 조회",
+      "tags": [
+        "A 구성항목 정의 검토 내부 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/regions",
+      "operationId": "getRegions",
+      "summary": "지역 목록 조회",
+      "tags": [
+        "지역 필터 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/notifications",
+      "operationId": "findPage_1",
+      "summary": null,
+      "tags": [
+        "account-notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/notifications/unread-count",
+      "operationId": "findUnreadCount",
+      "summary": null,
+      "tags": [
+        "account-notification-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/membership-change-requests",
+      "operationId": "findMyPage",
+      "summary": "본인 대상 변경 요청 목록",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me/bid-notice-alerts",
+      "operationId": "getPage",
+      "summary": null,
+      "tags": [
+        "account-bid-notice-alert-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/industries",
+      "operationId": "getIndustries",
+      "summary": "업종 목록/검색 조회",
+      "tags": [
+        "업종 필터 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/industries/categories",
+      "operationId": "getIndustryCategories",
+      "summary": "업종 대분류 목록 조회",
+      "tags": [
+        "업종 필터 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-registration-proposals/{proposalId}",
+      "operationId": "get_9",
+      "summary": null,
+      "tags": [
+        "company-registration-proposal-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-permission-definitions",
+      "operationId": "get_10",
+      "summary": null,
+      "tags": [
+        "company-permission-definition-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-membership-requests/me",
+      "operationId": "mine",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-membership-change-requests/{changeRequestId}",
+      "operationId": "get_11",
+      "summary": "변경 요청 상세",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/company-documents/{documentId}",
+      "operationId": "getProcessing",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/company-documents/{documentId}",
+      "operationId": "delete_3",
+      "summary": null,
+      "tags": [
+        "company-document-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}",
+      "operationId": "get_12",
+      "summary": "회사 기본 정보 조회",
+      "tags": [
+        "회사 기본 정보 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/public-procurement-performances",
+      "operationId": "performances",
+      "summary": "공공조달 공사실적 조회",
+      "tags": [
+        "회사 프로필 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/public-certifications",
+      "operationId": "certifications",
+      "summary": "공공 인증 조회",
+      "tags": [
+        "회사 프로필 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/profile-enrichment-runs/{runId}",
+      "operationId": "status",
+      "summary": "회사 프로필 보강 상태 조회",
+      "tags": [
+        "회사 프로필 보강 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/profile-change-proposals",
+      "operationId": "get_13",
+      "summary": "회사 프로필 변경 제안 조회",
+      "tags": [
+        "회사 프로필 변경 제안 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/merge-cases/{caseId}",
+      "operationId": "get_14",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/merge-cases/current",
+      "operationId": "current",
+      "summary": null,
+      "tags": [
+        "company-merge-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/memberships/me",
+      "operationId": "getCurrentPermissions",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-requests",
+      "operationId": "pendingRequests",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-requests/{requestId}",
+      "operationId": "pendingRequest",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-change-requests",
+      "operationId": "findCompanyPage",
+      "summary": "회사 변경 요청 목록",
+      "tags": [
+        "company-membership-change-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/membership-application-context",
+      "operationId": "context",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/members",
+      "operationId": "findMembers",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/members/{membershipId}",
+      "operationId": "getMember",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{companyId}/documents",
+      "operationId": "findPage_2",
+      "summary": null,
+      "tags": [
+        "company-document-box-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/search",
+      "operationId": "search",
+      "summary": null,
+      "tags": [
+        "company-search-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices",
+      "operationId": "getBidNotices",
+      "summary": "입찰공고 목록 조회",
+      "tags": [
+        "입찰공고 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{id}",
+      "operationId": "getBidNotice",
+      "summary": "입찰공고 상세 조회",
+      "tags": [
+        "입찰공고 조회 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/related-notices",
+      "operationId": "get_15",
+      "summary": "같은 업종·품목 최근공고 조회",
+      "tags": [
+        "입찰공고 관련 최근공고 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/purchase-items",
+      "operationId": "get_16",
+      "summary": null,
+      "tags": [
+        "bid-notice-purchase-item-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/construction-capability-limits",
+      "operationId": "get_17",
+      "summary": "입찰공고 시공능력평가금액 제한 조회",
+      "tags": [
+        "입찰공고 시공능력 제한 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/bid-results",
+      "operationId": "getBidResults",
+      "summary": "입찰공고 개찰·낙찰 결과 조회",
+      "tags": [
+        "입찰공고 개찰·낙찰 결과 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/bid-results/{bidResultId}/participants",
+      "operationId": "getParticipants",
+      "summary": "입찰공고의 지정 개찰 결과 회차 참여업체 조회",
+      "tags": [
+        "입찰공고 개찰·낙찰 결과 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/base-amounts",
+      "operationId": "getBaseAmounts",
+      "summary": "입찰공고 기초금액 section 조회",
+      "tags": [
+        "입찰공고 기초금액 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/attachments",
+      "operationId": "getAttachments",
+      "summary": "입찰공고 첨부파일 목록 조회",
+      "tags": [
+        "입찰공고 첨부파일 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/bid-notices/{bidNoticeId}/attachments/{attachmentId}/content",
+      "operationId": "getContent",
+      "summary": "입찰공고 첨부파일 본문 조회",
+      "tags": [
+        "입찰공고 첨부파일 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/social-signups/current",
+      "operationId": "current_1",
+      "summary": "현재 소셜 가입 거래 조회",
+      "tags": [
+        "소셜 회원가입 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/oauth/google/callback",
+      "operationId": "callback",
+      "summary": "Google 소셜 인증 callback",
+      "tags": [
+        "Google 소셜 인증 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/oauth/google/authorizations",
+      "operationId": "authorize",
+      "summary": "Google 소셜 인증 시작",
+      "tags": [
+        "Google 소셜 인증 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-targets/companies",
+      "operationId": "companies",
+      "summary": null,
+      "tags": [
+        "admin-notification-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-targets/accounts",
+      "operationId": "accounts",
+      "summary": null,
+      "tags": [
+        "admin-notification-target-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-dispatches/{dispatchId}",
+      "operationId": "find_2",
+      "summary": null,
+      "tags": [
+        "admin-notification-dispatch-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/notification-dispatches/{dispatchId}/recipients",
+      "operationId": "recipients",
+      "summary": null,
+      "tags": [
+        "admin-notification-dispatch-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/range-collection-requests/{requestId}",
+      "operationId": "find_3",
+      "summary": null,
+      "tags": [
+        "nara-range-collection-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/range-collection-requests/by-key/{requestKey}",
+      "operationId": "findByKey",
+      "summary": null,
+      "tags": [
+        "nara-range-collection-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/collection-coverage",
+      "operationId": "getRange",
+      "summary": null,
+      "tags": [
+        "nara-coverage-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/collection-coverage/days/{date}",
+      "operationId": "getDay",
+      "summary": null,
+      "tags": [
+        "nara-coverage-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/base-amount-collection-targets",
+      "operationId": "findTargets",
+      "summary": null,
+      "tags": [
+        "bid-notice-base-amount-collection-target-admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/base-amount-collection-targets/{bidNoticeId}/{targetType}",
+      "operationId": "findTarget",
+      "summary": null,
+      "tags": [
+        "bid-notice-base-amount-collection-target-admin-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/nara/base-amount-collection-requests/{requestId}",
+      "operationId": "findRequest",
+      "summary": null,
+      "tags": [
+        "기초금액 수동 수집 관리자 API"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/company-registration-disputes",
+      "operationId": "getDisputes",
+      "summary": null,
+      "tags": [
+        "company-registration-dispute-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/company-registration-disputes/{caseId}",
+      "operationId": "getDispute",
+      "summary": null,
+      "tags": [
+        "company-registration-dispute-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices",
+      "operationId": "getBidNotices_1",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices/{id}",
+      "operationId": "getBidNotice_1",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices/{id}/source-traces",
+      "operationId": "getSourceTraces",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-operations-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices/{id}/quality-issues",
+      "operationId": "getQualityIssues",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-operations-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices/{id}/management-summary",
+      "operationId": "getManagementSummary",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/admin/bid-notices/{id}/audit-events",
+      "operationId": "getAuditEvents",
+      "summary": null,
+      "tags": [
+        "admin-bid-notice-operations-query-controller"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account-business-connections/current",
+      "operationId": "getCurrent",
+      "summary": "현재 사업자 연결 조회",
+      "tags": [
+        "사업자 연결 API"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/account-business-connections/current",
+      "operationId": "clearCurrent",
+      "summary": "현재 사업자 연결 해제",
+      "tags": [
+        "사업자 연결 API"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/company-memberships/{membershipId}",
+      "operationId": "remove",
+      "summary": null,
+      "tags": [
+        "company-membership-controller"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/company-membership-requests/{requestId}",
+      "operationId": "cancel_2",
+      "summary": null,
+      "tags": [
+        "company-membership-request-controller"
+      ]
+    }
+  ],
+  "limits": [
+    "날짜별 source/OpenAPI/중앙 정책 조사이며 현재 상태는 WBS만 소유한다.",
+    "선택43개 소스와26개 차단·보류/연관14개를 조사했다. 미착수 Task 전체의 완전한 요구사항/실제 통합 감사는 아니다.",
+    "테스트 코드 열람·backend CI 성공·배포 기록·실제 업무 응답을 구분한다.",
+    "실행 중 backend SHA·로그인/설정 PATCH/메일/OCR/fixture·실제 브라우저 통합은 미실행/미확인이다.",
+    "examples/실제 사용자 응답·token/cookie/환경값·원본 파일·서명 URL을 보관하지 않는다."
+  ]
+}

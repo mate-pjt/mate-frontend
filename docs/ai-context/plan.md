@@ -224,3 +224,9 @@ Final reports should include:
 ## 2026-11-13 · 원문 본문·추가 일자 제공의 계약 선행
 
 [POL-09 v1](../development/figma-v01/tasks/POL-09.md#pol-09-contract)은 사용자 결정 ‘추가 정보 제공 추진·백엔드 계약부터 정리’에 따라 원문 자격사항/지시사항 본문·현장설명 일시·기준일/수집일의 계약 요구와 [DEV-14 재개 Gate](../development/figma-v01/tasks/DEV-14.md#dev-14-pol-09-handoff)를 연결한다. 실제 공개 계약·날짜의 개별 원천/산출 의미·본문 형식/안전한 표시 책임·배포/실행 대응·검증 자원은 미확보이며 제품 구현·실제 통합은 미실행이다. 현재 Figma 차이는 승인 예외로 닫지 않는다. 기존 공동수급 협정 마감/원문 링크·기준선/감사/실제 QA·타 Task 차단/승인 예외를 보존하며 현재/다음/상태는 WBS만 관리한다.
+
+## 2026-11-13 · 백엔드 재조사 문서 반영과 재개 인계
+
+사용자가 [문서 수정안/다음 선정 반영](../development/figma-v01/tasks/POL-09.md#pol-09-backend-replan-approval)을 승인했다. [날짜별 재조사](../development/figma-v01/audits/2026-11-13-backend-readiness.md)·JSON에26개 차단/보류와 관련 후보14개·43개 고정 source를 보존하고, nickname·전역 상세/야간 저장 설정·RESULT 낙찰금액 계약과 미결 정책/실제 QA를 구분했다. DEV-57 재개 요구사항 확인의 선정/첫 행동을 인계했으며 제품 구현은 다음 대화의 자체 Gate 이후다. DEV-66에 POL-19 선행을 추가하고 기존 집계 문장을 실제 행에 맞췄다. 원본79/114Task·기존 차단/보류/QA·결정/승인 예외를 보존한다.
+
+[재개 점검 규칙](../development/figma-v01/workflow.md#backend-contract-recheck)은 source/CI배포/게시 OpenAPI/실행 SHA/실제 응답과 계약·정책·QA 자원을 나누며 API 등장/다음 선정만으로 차단을 해제하지 않는다. 기존 Status·날짜별 인계는 당시 이력이고 현재/다음/상태는 WBS만 소유한다. 앱 source/Repository/DTO/mock·패키지/실제 업무 API는 변경하지 않았다.
