@@ -120,3 +120,14 @@
 - Git 승인/계획: 이번 사용자 요청6항에 따라 목적별 작은 Conventional Commits(영어 type/한국어 설명), push·PR/라벨·최종 head CI/리뷰·정상 merge commit·main FF를 진행한다. 저장소는 merge commit을 허용한다. 이름 계약에 필요한 helper fixture 동기화는 해당 runtime commit에 묶고 실제 테스트/카탈로그/공통 문서/Task 증거는 목적을 나눈다. force push/보호 우회/직접 main push/check 강제 성공은 사용하지 않는다.
 - 전달 시각의 PR/head·CI/merge/main SHA·clean 및 자체 프로세스 정리는 저장소 밖 evidence root의 `git-delivery.json`과 실제 PR/마지막 보고로 확인한다. 이 절은 로컬 Gate 종료/전달 계획이며 미래 CI·병합을 완료했다고 기록하지 않는다. 운영/배포 직접 실행·실제 업무 데이터 변경 없음.
 - 종료 metadata(검토 결과 인용/완료·다음 선정) 뒤 문서/원본/상태·diff-check와 영향을 받는 리뷰를 다시 확인한다. source/tests 변경은 없으며 freshness 결과는 Review에 추가한다.
+
+<a id="dev-57-next-dev-56-approval"></a>
+
+## 2026-11-13 · 종료 인계 후속: 다음 DEV-56 재개 확인으로 변경
+
+- 승인자/날짜/원문: 이번 대화 사용자 / 2026-11-13 KST. **‘다음 작업을 POL-10 대신 DEV-56 재개 요구사항 확인으로 바꿔줘. WBS와 관련 작업 기록에 반영하고 기존 차단 조건은 유지해줘. DEV-56 구현은 다음 대화에서 시작할게.’** 추천이 아닌 명시 결정이며 이 문서 수정만으로 다음 Task의 Gate/구현을 시작하지 않는다.
+- 시작/Brief: clean main·origin/main `55147d7a3d78ce1ad3d914128901e03489227398`, fetch 뒤0/0, `docs/dev-57-next-dev-56` 생성. 이번 DEV-57 종료 인계의 문서 후속 하나다. WBS의 다음/첫 행동·POL-10 순서 대기·집계와 DEV-56/POL-10/이 Task의 날짜별 인계 및 검토 기록만 수정한다. 제품 코드·새 정책/API·Figma 구현·실제 QA·다른 Task 수행은 제외한다. 편집 전에 범위/단계/위험/검증을 제시했다.
+- 성공 기준/설계: 다음 하나는 DEV-56 **재개 요구사항 확인**, P3·차단 유지; POL-10 준비→대기만 반영한다. 기존 승인/체크포인트/QA·차단·79원본/114Task/156의존성을 보존하고 다음 첫 행동은 최신 Git·POL-29/DEV-57·현행 헤더/계약/Figma와 남은 표시/QA의 자체 Brief로 인계한다. 제품 설계/검증은 다음 대화의 자체 Gate에서 진행한다.
+- 승인 구분: 이번 발화는 다음 선정/인계 문서 반영 승인이다. Git 전달은 앞선 이 대화 요청6항의 동일 DEV-57 종료 인계 범위 승인에 따라 별도 문서 커밋/PR/최종 CI/정상 병합/main FF로 수행한다. 이번 Chromatic 월간 한도 예외는 동일 DEV-57 문서 후속에만 적용하며 미래 DEV-56/POL-10이나 다른 검사·실제 API/운영/배포로 확대하지 않는다.
+- 검증/문서 점검 계획: 변경 링크/명시 ID·Task/의존성/상태 집계·원본 및 과거 기록 prefix 보존·Markdown 형식·`git diff --check`, read-only verifier와 ai-review6항목을 수행한다. Markdown만 변경하므로 앱 test/lint/build/Storybook·브라우저·실제 API 검증은 미실행이며 제품 PASS를 새로 주장하지 않는다. package/구조/API/mock·하네스 변경 없음, base/architecture/data-access/plan/harness/ai-failures의 새 갱신은 불필요하다. 현행 상태는 WBS만 소유한다.
+- [검증/두 리뷰 결과](../reviews/DEV-57-handoff-DEV-56.md)와 실제 최종 Git receipt/PR/종료 보고를 각각 확인한다. 이번 기록은 문서 인계 수정이며 DEV-56 구현 완료나 실제 통합 PASS가 아니다. 자동 교정0/3, 실제 업무 실행/새 운영 잔존0. 다음 첫 행동은 문서 검증·Review Gate 후 승인된 Git 전달이며 제품 작업은 시작하지 않는다.
