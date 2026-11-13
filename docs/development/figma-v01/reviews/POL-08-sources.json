@@ -1,0 +1,412 @@
+{
+  "task": "POL-08",
+  "observedDateKst": "2026-11-13",
+  "frontend": {
+    "branch": "docs/pol-08-correction-history-policy",
+    "base": "145324ee551f7b24c555d0d21ebe5dcb7f5eb79e",
+    "initialWorktree": "clean"
+  },
+  "sources": [
+    {
+      "kind": "owning-policy",
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/overview.md",
+      "blobSha": "db87e70ee1e50f8ab799648143aaca058d47c903",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/overview.md"
+    },
+    {
+      "kind": "owning-policy",
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/domain/bid/classification-and-list-rows.md",
+      "blobSha": "ef20ef9c66c227d8bcfadd399a76535450bd2bc6",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/classification-and-list-rows.md"
+    },
+    {
+      "kind": "owning-policy",
+      "repository": "mate-pjt/mate-docs",
+      "ref": "c9e50ff591ae18023164e1a94581c611bf1e4f29",
+      "path": "docs/api/bid-notices.md",
+      "blobSha": "3d2003083cd948cc4e5be625efe61002cc3b33bc",
+      "url": "https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/api/bid-notices.md"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryController.kt",
+      "blobSha": "0224309d7307c3756474ee78702e191f4ebe4f9f",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryController.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeDetailResponse.kt",
+      "blobSha": "4892a61753bdea36ff6b544dcb2a78c39c57cad1",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeDetailResponse.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryService.kt",
+      "blobSha": "00b741ddc657600ded877fed7c5575b57103925a",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryService.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeAuthorizationConfigurer.kt",
+      "blobSha": "7793e1922220eae9ab272e5ea390a174c2adb470",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeAuthorizationConfigurer.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionResolver.kt",
+      "blobSha": "d74e116d5d8cdec79b2c51b41f99857694f4fd56",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionResolver.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/publication/BidNoticeUserPublicationGuard.kt",
+      "blobSha": "83d7c179316b9f2238ca43c0d535077aee1d3669",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/publication/BidNoticeUserPublicationGuard.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionPolicy.kt",
+      "blobSha": "c741af540ae12472c2dfcb2a54adb080f4de9903",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/classification/BidNoticeClassificationSelectionPolicy.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeListResponse.kt",
+      "blobSha": "feea4f445b743364997e317ff13693276f574bfe",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeListResponse.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeSummaryResponse.kt",
+      "blobSha": "c854f2aa668652413d2723fa9b4d0922ff7d0983",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeSummaryResponse.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt",
+      "blobSha": "c6a1cfa6068bcabfe2925d5eace82ecbfb84f5e1",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQuerySpecFactory.kt",
+      "blobSha": "9e8e4313c169c98619bd9a42ce25ed05bf49cf31",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQuerySpecFactory.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/model/BidNoticeSourceKey.kt",
+      "blobSha": "1f3aa13878a497cec04cae02e7aff53309ee23b4",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/model/BidNoticeSourceKey.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeCommonConditionFactory.kt",
+      "blobSha": "68cf50db7e119e600d7972e965efa21d3ba8ba67",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeCommonConditionFactory.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticePersistenceAdapter.kt",
+      "blobSha": "8e93bca97ede5011cfdd56fad3edf95a56bc97b7",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticePersistenceAdapter.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/query/BidNoticePageQuery.kt",
+      "blobSha": "594103f6b46d147753c934ca4c73845d48c540d0",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/application/port/out/bid/notice/query/BidNoticePageQuery.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListQueryParameterValidator.kt",
+      "blobSha": "1f71c1787c983fb0cde47cfe4d3f16ba718398e6",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListQueryParameterValidator.kt"
+    },
+    {
+      "kind": "backend-migration-source-not-executed",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/resources/db/migration/V2__init_bid_schema.sql",
+      "blobSha": "68bf7531cc6c7bff4abca00f7351a9cffc69eaa9",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/resources/db/migration/V2__init_bid_schema.sql"
+    },
+    {
+      "kind": "backend-test-source-not-executed",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapterTest.kt",
+      "blobSha": "1190b31706ef19eae57f01aca61252d00c966456",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapterTest.kt"
+    },
+    {
+      "kind": "backend-test-source-not-executed",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryControllerTest.kt",
+      "blobSha": "21897a102042a1b29c743d1de4b9ed9e28677432",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeQueryControllerTest.kt"
+    },
+    {
+      "kind": "backend-test-source-not-executed",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticePersistenceAdapterTest.kt",
+      "blobSha": "312c1fed89fa6c4c574a76772729554e4229ec25",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/test/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticePersistenceAdapterTest.kt"
+    },
+    {
+      "kind": "backend-source",
+      "repository": "mate-pjt/mate-backend",
+      "ref": "befe434c2b3fd80ddbc12c1d6216f738dd5ea12a",
+      "path": "mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapter.kt",
+      "blobSha": "e05af98bd819b88bc7722a271f2e0f2d18558faa",
+      "url": "https://github.com/mate-pjt/mate-backend/blob/befe434c2b3fd80ddbc12c1d6216f738dd5ea12a/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/BidNoticeQueryPersistenceAdapter.kt"
+    }
+  ],
+  "figma": {
+    "fileKey": "Eayi1SWD8Xq8tGBmlp5SV2",
+    "sessionId": "2fdb9b19-b2a9-4f6c-9c20-6a65482efc3a",
+    "readOnly": true,
+    "frames": [
+      {
+        "nodeId": "2208:20632",
+        "state": "이력 팝업이 열린 상세",
+        "observed": "correction_popup instance 2220:18274"
+      },
+      {
+        "nodeId": "2210:18395",
+        "state": "정정 이력 선택 팝업",
+        "observed": "3개 정정 예시와 최초 공고, 단일 선택 및 닫기/확인. 실제 이력 계약의 증거가 아님"
+      },
+      {
+        "nodeId": "2210:18751",
+        "state": "이력 선택 후 상세",
+        "observed": "선택한 이전 공고를 보고 있음을 안내하는 별도 문구"
+      }
+    ],
+    "screenshot": {
+      "nodeId": "2210:18395",
+      "width": 458,
+      "height": 534,
+      "inspected": true,
+      "localPath": "/tmp/mate-pol08-20261113/correction-popup.png"
+    }
+  },
+  "openapi": {
+    "url": "https://api-test.mate-bid.com/v3/api-docs",
+    "observedAt": "2026-11-12T23:23:53.161Z",
+    "httpStatus": 200,
+    "openapi": "3.1.0",
+    "infoVersion": "v1",
+    "summarySha256": "6e389cc2f8b85a5dde9999f8badd09d9f64bd0b823fa51d9de91bdef6b253a87",
+    "publicBidPaths": [
+      "/api/v1/bid-notices",
+      "/api/v1/bid-notices/{id}",
+      "/api/v1/bid-notices/{bidNoticeId}/related-notices",
+      "/api/v1/bid-notices/{bidNoticeId}/purchase-items",
+      "/api/v1/bid-notices/{bidNoticeId}/construction-capability-limits",
+      "/api/v1/bid-notices/{bidNoticeId}/bid-results",
+      "/api/v1/bid-notices/{bidNoticeId}/bid-results/{bidResultId}/participants",
+      "/api/v1/bid-notices/{bidNoticeId}/base-amounts",
+      "/api/v1/bid-notices/{bidNoticeId}/attachments",
+      "/api/v1/bid-notices/{bidNoticeId}/attachments/{attachmentId}/content"
+    ],
+    "historyPathsFound": [],
+    "detailQuery": [
+      "id(path)",
+      "bidClsfcNo(query,optional)"
+    ],
+    "detailResponseCodes": [
+      "200",
+      "400",
+      "500"
+    ],
+    "detailProperties": [
+      "id",
+      "classificationContext",
+      "sourceKey",
+      "header",
+      "amount",
+      "procedure",
+      "agencies",
+      "eligibility",
+      "jointSupply",
+      "schedule",
+      "originalNotice"
+    ],
+    "sourceKeyProperties": [
+      "bidNtceNo",
+      "bidNtceOrd"
+    ],
+    "headerRelevantProperties": [
+      "status",
+      "noticeChangedAt",
+      "changeReason"
+    ],
+    "runningBackendSha": "unverified",
+    "businessApiRequests": 3
+  },
+  "limitations": [
+    "전용 이력 API는 없으나 기존 no-view 목록 API로 공개 수집 차수를 조회할 경로는 있다. DB의 전체 과거 자료 존재·완전성은 확인하지 않았다.",
+    "Git source ref, 배포 OpenAPI info.version, 실제 실행 SHA, 업무 응답은 별개다.",
+    "Figma metadata는 필요한 이력 상태만 요약했다. 연락처 예시·작성자 metadata·임시 asset URL 원문을 보관하지 않는다."
+  ],
+  "contractResearch": {
+    "requestedByUser": "결정 전에 백엔드 계약을 더 조사",
+    "dedicatedHistoryEndpoint": false,
+    "existingListCandidate": {
+      "method": "GET",
+      "path": "/api/v1/bid-notices",
+      "query": {
+        "keyword": "current sourceKey.bidNtceNo",
+        "page": 0,
+        "size": 100,
+        "sort": "noticePublishedAt,desc"
+      },
+      "omitted": [
+        "view",
+        "statuses",
+        "progressStates",
+        "regionCodes",
+        "industryCodes",
+        "date filters",
+        "amount filters"
+      ],
+      "responseIdentity": [
+        "id",
+        "bidNtceNo",
+        "bidNtceOrd"
+      ],
+      "pageMetadata": [
+        "page",
+        "size",
+        "totalElements",
+        "totalPages",
+        "hasNext"
+      ],
+      "meaning": "공개·미삭제 수집 공고차수 목록. keyword는 번호/제목/기관 부분 검색이므로 응답에서 번호 exact match 필요",
+      "limits": [
+        "서버 totalElements는 부분 검색 후보 수이며 정정 이력 수가 아님",
+        "page별 요청은 같은 DB snapshot을 보장하지 않음",
+        "수집 누락·미공개·삭제 이유/전체 역사 완전성은 이 응답으로 구별하지 못함",
+        "현재 프론트 getBidList는 view를 항상 보내므로 DEV-13의 Repository 경계 확장 필요"
+      ]
+    },
+    "storage": {
+      "uniqueKey": [
+        "bid_ntce_no",
+        "bid_ntce_ord"
+      ],
+      "insert": "다른 차수는 별도 row·ID",
+      "update": "같은 번호+차수는 최신 sourceVersionAt 기준 현재 row 갱신",
+      "internalLookup": "findByBidNtceNoIn은 내부 포트/저장소 method이며 공개 HTTP endpoint가 아님",
+      "reannouncement": "previousBidNoticeId 연결은 정정 차수 목록과 별도",
+      "evidence": "V2 unique constraint; PersistenceAdapter onConflict pair / same-pair update; 기존 test source의 동일 번호 00/01 fixture. 테스트 실행은 안 함"
+    }
+  },
+  "publicReadResearch": {
+    "method": "GET only",
+    "count": 3,
+    "mutationCount": 0,
+    "authActionCount": 0,
+    "localEvidence": "/Users/jisung/.aside/u/0/sessions/2026-11-13_F2R4V2KPnx4K7k5Y/artifacts/POL-08/public-read-summary.json",
+    "runningBackendSha": "unverified",
+    "observations": [
+      {
+        "operation": "no-view page0 size20 published-desc",
+        "httpStatus": 200,
+        "isSuccess": true,
+        "totalElements": 2531,
+        "states": [
+          "NORMAL",
+          "MODIFIED",
+          "CANCELLED",
+          "REBID"
+        ],
+        "progressStates": [
+          "UPCOMING",
+          "CLOSED",
+          "CANCELLED"
+        ]
+      },
+      {
+        "operation": "no-view full-number search A size100",
+        "httpStatus": 200,
+        "isSuccess": true,
+        "totalElements": 1,
+        "hasNext": false,
+        "exactCount": 1,
+        "id": 1009629,
+        "number": "R26BK01735385",
+        "order": "001",
+        "status": "CANCELLED"
+      },
+      {
+        "operation": "no-view full-number search B size100",
+        "httpStatus": 200,
+        "isSuccess": true,
+        "totalElements": 1,
+        "hasNext": false,
+        "exactCount": 1,
+        "id": 1006585,
+        "number": "R26BK01699546",
+        "order": "002",
+        "status": "CANCELLED"
+      }
+    ],
+    "notVerified": [
+      "복수 차수 실제 양성 fixture",
+      "실제 다음 페이지·부분 검색 충돌·오류 응답",
+      "Next 제품 이력 팝업·선택/복귀 통합",
+      "현재 실행 SHA/배포 source 대응",
+      "DB 미수집/미공개/삭제 구분"
+    ]
+  },
+  "decision": {
+    "recordedAtKst": "2026-11-13 08:41 KST",
+    "approvedBy": "사용자",
+    "Q1": "전용 백엔드 계약을 먼저 마련한 뒤 이걸 구현하는걸로 하자. 백엔드 개발자한테 이 이전 차수 조회 API에 대한 요청을 보냈어.",
+    "Q2": "동일 번호의 수집 차수로 한정 (추천)",
+    "Q3": "공고 전체로 이동·뒤로 가기 복귀 (추천)",
+    "existingListCandidate": "조사상 가능성을 확인했으나 제품 조회/fallback으로 미채택",
+    "backendRequest": "사용자 요청 발송 보고. 담당 개인·티켓/접수·일정·구현/배포 ref는 미확인",
+    "implementation": "전용 계약 확인 후 DEV-13 자체 Gate에서 시작. 이번에는 미착수"
+  }
+}

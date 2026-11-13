@@ -182,3 +182,29 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 tree는 관련 경로, 파일은 필요한 코드/정책 본문, Git/CI/PR은 SHA·check·병합 조건만 투영한다. 이미 발생한 출력의 삭제/무효화를 주장하지 않는다.
 - Prevention rule: 원격 호출 전 해당 실패 규칙을 먼저 읽고 각 응답 유형의 allowlist를 정한 뒤 호출한다. 전체 structuredContent/content·중첩 원문·substring을 그대로 출력/저장하지 않는다.
 - Related files: `docs/development/figma-v01/tasks/DEV-60.md`, `docs/development/figma-v01/reviews/DEV-60-context.md`. 제품/하네스 설정 변경 없음.
+
+<a id="pol-08-output-projection"></a>
+
+## 2026-11-13 - POL-08 원격 응답/디자인 출력의 선별 누락 재발
+
+- Task: POL-08 중앙 정책/backend/Figma 조사.
+- Expected behavior: 기존 예방 규칙을 먼저 적용해 Git은 ref/SHA, Figma는 관련 이력 frame/문구만 표시한다.
+- Actual failure: 초기 branch 응답 전체에 공개 작성자/서명 메타데이터가, 넓은 Figma metadata에 불필요한 연락처 예시가 포함됐다. 실제 값은 재인용하지 않는다. 환경파일/credential을 읽은 사건과 구분한다.
+- Root cause: 필요한 필드를 추출하기 전에 여러 도구 응답을 공통 출력 경계에 그대로 넘겼고 관련 실패 기록을 끝까지 읽기 전에 조회했다. 출력 길이 제한도 필요한 범위 선별을 대신하지 못한다.
+- Detection command or review step: primary가 출력 후 확인하고 사용자에게 공개했다. Task/독립 verifier에도 잔여 한계를 전달했다.
+- Fix: 이후 ref/SHA·관련 source 본문·schema key·허용 frame 문구/비식별 공개 조회 필드만 추출한다. 문서/PR/receipt에 원문 metadata/연락처·임시 Figma asset URL을 복사하지 않는다. 이전 도구 출력이 삭제됐다고 주장하지 않는다.
+- Prevention rule: 원격 호출 전 응답 유형별 출력 allowlist를 정하고 내부 파싱 뒤 새 객체를 만든다. 전체/중첩 원문·부분 문자열을 출력하지 않는다. Figma도 기능에 필요한 하위 노드 또는 문구만 추출한다.
+- Related files: `docs/development/figma-v01/tasks/POL-08.md`, `docs/development/figma-v01/reviews/POL-08-context.md`. 제품/하네스 설정 변경 없음.
+
+<a id="pol-08-endpoint-inference"></a>
+
+## 2026-11-13 - 전용 endpoint 부재를 기능 연결 불가로 확대
+
+- Task: POL-08 정정 차수 조회 계약 조사.
+- Expected behavior: 전용 endpoint 유무와 기존 공개 API 조합으로 필요한 데이터를 얻을 수 있는지를 별도 조사한 뒤 제공 경계를 설명한다.
+- Actual failure: 전용 이력 API/상세 이력 필드가 없음을 확인한 뒤 기존 목록의 no-view 경로를 충분히 대조하지 않고 ‘연결하려면 새 backend 계약이 필요’하다고 설명해 사용자 추가 질문/조사가 발생했다.
+- Root cause: 문서의 endpoint 이름/상세 shape에 집중했고 기존 공고 단위 목록·keyword/상태 조건·차수 식별자·페이지/저장 key를 함께 읽지 않았다.
+- Detection command or review step: 사용자 ‘결정 전에 백엔드 계약을 더 조사’ 요청 후 source/Swagger·읽기 전용 공개 GET3건과 독립 verifier로 no-view 경로를 확인했다.
+- Fix: 기존 API로 공개 수집 차수를 조회할 경로가 있다는 점과 부분 검색/페이지/수집 완전성 한계를 설명하고 초기 연결 불가 판단을 정정했다. 사용자가 최종 선택한 전용 계약 선행은 별도 정책 결정으로 기록한다. 이 결정이 초기 단정을 사후 정당화하지 않는다.
+- Prevention rule: 미지원 판단 전 저장 identity→기존 조회 입력/필터→응답 식별자/페이지→공개 경계→현재 소비 계층을 대조한다. 데이터 부재/전용 계약 부재/조합 가능성/전체 이력 보장은 구분하고 제한된 성공 응답을 제품 통합 PASS로 확대하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/POL-08.md`, `docs/development/figma-v01/reviews/POL-08-sources.json`. 새 endpoint/제품 구현은 하지 않았다.
