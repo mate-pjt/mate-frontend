@@ -232,3 +232,16 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 관련 GNB child node·치수·비식별 결과만 새 객체로 출력한다. 영속 Figma node 링크와 합성 브라우저 캡처만 문서/PR에 저장한다. 과거 도구 출력이 삭제됐다고 주장하지 않는다.
 - Prevention rule: 외부 응답은 출력할 필드와 하위 노드를 먼저 정한다. URL 차단 정규식/부분 문자열은 allowlist를 대신하지 않는다. 실제 로그인은 DOM 결과의 일치 여부와 경로/HTTP 상태만 남기고 응답 본문/헤더·이름·메일·OAuth query를 저장하지 않는다.
 - Related files: `docs/development/figma-v01/tasks/DEV-56.md`, `docs/development/figma-v01/reviews/DEV-56-context.md`. 도구/하네스 설정 변경 없음.
+
+<a id="pol-10-figma-metadata-output"></a>
+
+## 2026-11-13 - POL-10 Figma 메타데이터의 예시 신원 필드 출력 재발
+
+- Task: 소속 신청 취소의 대기/완료 상태 조사.
+- Expected behavior: 기존 POL-08의 디자인 응답 allowlist 규칙을 적용해 필요한 버튼/완료 안내의 노드 ID와 문구만 표시한다.
+- Actual failure: 대기 frame metadata 원문을 도구 출력에 전달해 작업과 무관한 예시 신원/연락처 필드가 포함됐다. 값을 재인용하지 않는다. 실제 계정 응답·환경파일·credential을 읽은 사건과 구분한다.
+- Root cause: frame metadata도 외부 응답이라는 기존 규칙을 적용하지 않고 전체 문자열을 출력했다. 하위 버튼/안내 노드가 알려진 뒤에도 frame 전체 응답을 선별 없이 표시했다.
+- Detection command or review step: primary가 원문 출력 후 사용자에게 공개했고 Task/Context Audit 및 read-only verifier에 잔여 한계를 전달한다.
+- Fix: 이후 지정 버튼/toast/CTA 하위 노드의 text만 읽고 허용 필드로 출력했다. 임시 이미지 주소·원문 metadata·신원 예시는 문서/QA/PR에 복사하지 않는다. 기존 도구 출력이 삭제·무효화됐다고 주장하지 않는다.
+- Prevention rule: 디자인 metadata도 원문/부분 문자열을 그대로 출력하지 않는다. 먼저 필요한 노드 ID·상태·비식별 문구의 allowlist를 정하고 새 결과 객체로 투영한다. 기능에 불필요한 예시 신원 필드는 증거로 보관하지 않는다.
+- Related files: `docs/development/figma-v01/tasks/POL-10.md`, `docs/development/figma-v01/reviews/POL-10-context.md`. 제품·하네스 설정 변경 없음.
