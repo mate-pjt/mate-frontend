@@ -181,3 +181,31 @@
 - 사용자에게서 별도로 받은 backend 보완 완료 소식(닉네임·야간 알림·전역 상세 알림)은 기존 차단/보류 작업 전체의 현행 소스/Swagger/정책 재조사 입력이다. 이번에는 조사와 계획 제안만 수행하며 다른 Task 개발·API 변경이나 다음 작업 순서 확정을 시작하지 않는다.
 - 기록 시작: clean `main`=`e09fb4c74f312b17715857b23ff976d484b76140`·원격 main 일치에서 `docs/backend-readiness-review-20261113` 생성. 기존 dirty 없음. 이 전달 기록/DEV-14 메모·WBS 외부 조건의 사실 동기화만 편집하며 광범위한 workflow/WBS 재편은 조사 후 제안한다.
 - 이 세 문서의 동일 Task 후속 기록은 이번 대화의 명시적 POL-09 Git 전달 승인으로 검증·리뷰 후 전달한다. 다른 Task의 조사 결과를 정책 확정/차단 해제·제품 구현/그 Task의 Git 전달 승인으로 확대하지 않는다. 광범위한 재편은 계획 보고 뒤 사용자 결정을 따른다.
+
+<a id="pol-09-backend-replan-approval"></a>
+
+## 2026-11-13 · 백엔드 재조사 문서 반영과 DEV-57 인계 승인
+
+- 승인자/근거: 이번 대화 사용자. 원문 **‘제안한 문서 수정안을 반영하고 WBS의 다음 작업을 DEV-57 재개 요구사항 확인으로 바꿔줘. 기존 차단과 미결 정책은 유지하고, 검증·리뷰·커밋·PR·CI 확인·main 병합·로컬 main 동기화까지 마무리해줘. DEV-57 구현은 다음 대화에서 시작할게.’**
+- 요구사항/성공 기준: 앞선 읽기 전용 재조사의 고정 source/Swagger/중앙 정책 근거와40개 조사 항목을 날짜별 감사로 보존하고, 관련 Task의 새 근거·남은 조건 및 WBS 다음1개/첫 행동·집계/의존성·재개 규칙을 동기화한다. DEV-57은 차단 상태로 다음 재개 요구사항 확인 대상만 지정한다. 기존 차단/보류·미결 정책·실제 QA/과거 승인 예외는 보존한다.
+- 시작: clean `main`=`origin/main`=`86df956d5ecf05aad860199ccd86ff0993a7a068`; `docs/backend-readiness-handoff-20261113` 생성. 선행 전달 PR #67 반영·기존 dirty0. backend dev/main·중앙 정책 ref를 다시 확인해 앞선 조사와 동일함을 확인했다.
+- 수정 대상/단계: 날짜별 감사 Markdown/JSON·관련8개 Task·WBS·검토/Context Audit2개, workflow/task-cycle/start-prompt·plan/harness의 총18개 문서/JSON. 근거 보존 → Task/인계·WBS 보정 → 공통 재개 점검 최소 보완 → 문서 검사/두 리뷰 → 목적별 docs 커밋/PR/최종head CI/정상 병합/main FF.
+- 가정/위험: 다음 재개 확인 대상의 선정은 차단 해제/제품 착수 승인이 아니다. POL-10만 준비→대기로 돌리고 DEV-57 차단·DEV-12 보류를 유지한다. DEV-66에 POL-19 선행1개를 추가해155→156의존성, Task/원본 수는114/79 유지. 이전 관찰을 현재 부재로 반복하거나 새 API를 실제 전달/통합 PASS로 확대하는 위험을 문서 검사와 리뷰로 확인한다. 문서 범위의 blocking ambiguity는 없다.
+- 제외: 제품/테스트/설정/라이브러리, DEV-57 및 다른 Task의 자체 Brief/구현·정책 선택, 실제 로그인/업무 API·메일/문서/OCR·fixture 변경, 중앙 repo/외부 메시지·운영/배포. 닉네임 fallback·야간 실제 효력/전역 OFF/ON 정책은 확정하지 않는다.
+- 검증 계획: 현재 package scripts를 확인했다. 문서 링크/anchor·Markdown·JSON 연결/40개 조사·43개 고정 source 지문·79원본/114Task/156의존성·DAG·기존 차단/보류·기존 source/QA/baseline/coverage 무변경·허용 범위·diff-check를 검사한다. 앱 실행/패키지/빌드 영향이 없어 로컬 앱 test/lint/build/브라우저/실제 통합은 미실행으로 기록한다. read-only verifier와6항목 ai-review, Context Audit·검토 뒤 freshness를 수행한다.
+- 체크포인트: 사용자 승인/시작 기준/편집 전 Brief 기록 완료. 다음 행동은 날짜별 감사와 Task 후속 근거 반영이며 최종 검증/리뷰·Git 결과는 후속 체크포인트와 실제 PR/receipt에서 확인한다.
+
+### 문서 반영·검증 체크포인트
+
+- [날짜별 감사/JSON](../audits/2026-11-13-backend-readiness.md)·8개 Task·WBS·재개 규칙·검토/Context Audit18파일을 반영했다. DEV-57 차단 유지/다음 재개 확인, POL-10 준비→대기와 DEV-66의 POL-19 선행 추가만 현재 선정/의존성에 반영했다. 나머지 차단/보류·원본79/114Task·기존 QA/승인 이력은 유지한다.
+- 문서 검사 `validate_docs.py`·`git diff --check` PASS: 로컬 링크/anchor·JSON40개 조사/43개 고정 source 지문/209operations·114Task/156의존성/DAG·79원본/기존26차단·보류/보호 source·QA·baseline·coverage를 확인했다. 자동 수정0/3, 앱 검사/실제 통합 미실행 이유는 [검토 기록](../reviews/backend-readiness-2026-11-13.md)에 남겼다.
+- Documentation Update Check/6항목 ai-review PASS, [Context Audit](../reviews/backend-readiness-2026-11-13-context.md) WARN(후속 정책/실제 QA 확인 유지). 다음 행동은 실제18문서/증거의 read-only verifier와 종료 metadata freshness 확인이다. 문서 PASS를 DEV-57/다른 제품·실제 API PASS로 세지 않는다.
+
+<a id="pol-09-backend-replan-close"></a>
+
+### 문서 단위 종료·다음 재개 인계
+
+- [검토 기록](../reviews/backend-readiness-2026-11-13.md): 문서 검사/ai-review·read-only verifier1차 PASS, 미해결 Blocker/Major/Minor0. 이전 WBS 집계 Minor는 승인한 문서 보정으로 해결했으며 Context Audit WARN과 과거 제품 감사 FAIL/실제 QA·미결 정책을 유지한다.
+- 다음 하나는 사용자 승인에 따른 [DEV-57 재개 요구사항 확인](DEV-57.md#dev-57-resume-handoff-20261113)이다. P1·POL-29 main 반영·새 nickname 공급원이 근거이며 차단 유지 상태로 선정했다. 다음 첫 행동은 최신 main/Git·POL-29 D2/CF-03·현행 nickname 계약과 이름 결측/지연/오류 표시·frame별 폭/date 표면·합성 세션/실제 QA 범위를 확인하고, 필요한 결정/자체 Brief를 편집 전에 제시하는 것이다.
+- 이번에는 문서/선정 인계만 수행했고 DEV-57 자체 Gate/설계·구현·업무 API/실제 QA를 시작하지 않았다. DEV-14 회신/실제 계약 선행과 DEV-12 보류·기존26차단/보류·모든 승인 예외는 보존한다.
+- 1차 검토 뒤 변경은 종료/다음 인계·WBS 현재 없음/이 결과 metadata다. 문서 검사·6항목 ai-review 영향 확인을 반복하고 동일 verifier에 최종 freshness를 요청한다. 이 결과만 저장한 외부 원문/최종 지문·실제 Git receipt는 후속 전달 증거이며 새로운 제품/정책 승인이 아니다.
