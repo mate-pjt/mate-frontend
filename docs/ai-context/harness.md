@@ -66,3 +66,9 @@ verifier는 `.codex/agents/verifier.toml`의 역할 정의를 따른다. verifie
 ## 2026-11-11 · 화면·정책 정합성 근거 연결
 
 현재/다음 상태는 [WBS](../development/figma-v01/README.md), 구현 route와 state별 Figma·정책·source·브라우저/미실행 근거는 [전수 감사](../development/figma-v01/audits/2026-11-11.md)를 따른다. [workflow의 정합성 점검](../development/figma-v01/workflow.md#figma기획정책-정합성-점검)에 따라 정책상 필요한 기능 차이와 명시적 화면 예외 승인을 구별하고, 현재 GitHub/Swagger를 먼저 조회해 계약 가용성과 실제 통합 준비 상태를 나눈다. 도구/실행 script·Repository 구조 변경은 없다.
+
+## 2026-11-13 · 계약 재확인과 차단 Task 재개 인계
+
+백엔드 완료 소식 또는 차단/보류 재개 후보 선정 시 [계약 재확인 규칙](../development/figma-v01/workflow.md#backend-contract-recheck)을 적용한다. 영향 범위의 source/Swagger/중앙 정책에서 URL 외 payload·기본값/nullable·권한/오류·저장/실제 처리 의미를 확인하고, source commit/CI배포/게시 OpenAPI/실행 SHA/실제 업무 응답과 계약·정책·QA 자원 잔여를 분리한다. 과거 부재/403은 날짜별 이력으로 보존한다.
+
+다음이 **재개 요구사항 확인**으로 명시된 차단/보류 Task이면 WBS의 다음/첫 행동만 그 범위로 지정하고 상태를 유지한다. 남은 정책/자체 Brief·검증 자원 Gate 전 구현을 시작하지 않는다. [11/13 감사/승인된 인계](../development/figma-v01/audits/2026-11-13-backend-readiness.md)가 첫 적용 기록이다. Task-cycle/start-prompt와 같은 규칙을 사용하며 실제 업무 변경/Git 전달 권한은 별도 확인한다. 도구·실행 script·Repository 구조·config/agent/skill 등록 변경은 없다.
