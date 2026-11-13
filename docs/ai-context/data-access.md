@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-12
+Last updated: 2026-11-13
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -83,6 +83,7 @@ src/data/
 - `AuthSessionProvider`와 `session-controller.ts`는 메모리 access token, 같은 계정 epoch의 refresh 공유, 만료 전 갱신, 로그아웃 epoch와 늦은 응답 방어를 담당한다. 계정 교체 후에는 이전 refresh flight를 공유하지 않는다. 실제 토큰을 session/localStorage나 서버 props에 저장하지 않는다.
 - 회사 변경 후 API 구현이 세션을 갱신한다. 변경 성공 뒤 갱신만 실패하면 `sessionWarning`을 반환해 성공을 유지한다. 이 갱신의 일시적 네트워크 실패는 기존 인증 세션을 유지하며, 401/403 처리는 유지한다.
 - mock 인증은 초기 비로그인, 두 기존 가상 계정 및 신규 가입을 지원한다. 같은 callback/signup·복귀 경로 검증을 사용하고 외부 OAuth/API로 이동하지 않는다.
+- 인증 내부 `account.nickname`은 `string|null`이다. HTTP 경계는 로그인 완료·가입·refresh의 값을 보존하고, 구형 응답의 누락만 null로 정규화하며 잘못된 타입은 오류로 남긴다. 이메일·회사명·suggestedName으로 이름을 합성하지 않는다. mock 기존 두 계정은 고정 합성 이름을 제공하며 신규 가입 이름은 Repository 메모리에만 유지한다. 새 Repository/새로고침 뒤 신규 계정 이름은 null이고 탭 저장소에 가입 입력을 보존하지 않는다. [DEV-57](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)의 로컬 mock/HTTP 대역 검증과 실제 nickname 통합 미실행을 구분한다.
 - 전체 mock의 보호 요청은 가상 token 만료 시 로컬 refresh를 수행한다. 가상 세션이 만료되면 변경을 거부한다. auth API와 업무 mock의 혼합에서는 실제 token/refresh를 추가 요청하지 않는다.
 
 ## 6. 가변 mock 상태

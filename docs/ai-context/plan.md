@@ -110,6 +110,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 
 ## Status Update Rules
 
+2026-11-13 DEV-57은 [이번 사용자 결정/Brief](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)에 따라 가입용 Figma Calendar/DatePicker와 프레임별 auth 폭·타일/입력 표면·nullable nickname 경계를 구현한다. mock·HTTP 대역·실제 Next/Storybook 검증과 [실제 OAuth/가입/초대 QA의 미실행/차단](../qa/auth.md#dev-57-local-qa)을 구분한다. 약관·회사 용어·헤더/홈 소유권을 유지하며 현재/다음/상태는 WBS만 관리한다.
+
 ### 승인된 Repository 전환 단계 (2026-09-30)
 
 | 단계 | 진행 상태 | 근거 |

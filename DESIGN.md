@@ -52,6 +52,13 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 - States: default, hover, active, disabled, keyboard focus
 - Accessibility: 링크 이동은 `ButtonLink`, 동작은 `Button`을 사용한다.
 
+### Calendar / DatePicker
+
+- 기준: [Figma 2081:64659](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2081-64659), `src/components/ui/calendar`의 공개 index를 사용한다.
+- Calendar는 320px 표면·24px 안쪽 여백·32px 날짜 원·요일 7열/일요일 primary·16px 월 제목·14px 날짜를 사용한다. 월 길이에 따라 4~6주를 계산하고 선택일만 primary 원으로 표시한다.
+- 연/월 선택과 이전/다음 버튼, 방향키·Home/End·PageUp/PageDown(Shift는 연도), 선택일 roving focus를 제공한다. DatePicker는 48px 입력 표면·달력 아이콘·선택 해제와 modal Escape/외부 클릭·초점 복귀를 담당한다. 좁은 화면은 좌우 16px 안에 배치한다.
+- 생년월일의 1900-01-01~오늘 경계는 가입 화면이 전달한다. 다른 도메인의 기존 날짜 필터는 교체하지 않는다. 별도 달력 사용은 [DEV-57의 사용자 결정](docs/development/figma-v01/tasks/DEV-57.md#dev-57-brief)이며 native 유지 추천은 미채택이다.
+
 ### BidCard
 
 - Structure: category/date, title, detail list, optional selected overlay
