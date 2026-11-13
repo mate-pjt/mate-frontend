@@ -325,3 +325,36 @@
 - mock ResourceTiming의 마지막 확인은23건 모두 frontend loopback이었다. 전체 여정의 완전한 Network 캡처는 아니며 페이지 event listener가0건을 반환한 결과를 외부 요청0의 증거로 사용하지 않는다. HTTP 대역 마지막 확인은 frontend28건/loopback 대역5건이다. 설정 snapshot의7그룹 mock·기존 source/contract tests와 함께 해석한다.
 - 복구: 이번에 생성한 QA 탭2개와 mock/HTTP frontend 및 대역 프로세스만 종료했다. 저장소/실제 계정·업무 데이터는 변경하지 않았다. 합성 mock의 회사/취소 이력은 탭 범위였으며 실제 데이터 정리 작업은 없다.
 - 잔여: RCTX-15의 disposable 실제 자원/변경·잔존·복구·실행 SHA/wire, 기존 MCO4통과6차단·MCANCEL12·AUTH/QA-05/06/07/08 차단/예외를 보존한다. source commit·과거 배포 기록·현재 게시 OpenAPI를 실행 중 서버 SHA/실제 업무 응답으로 대체하지 않는다.
+
+<a id="pol-12-update-qa"></a>
+
+## 2026-11-13 · POL-12 회사 갱신·수기 수정 후속 QA 계획
+
+- 정책/결정: [POL-12 D1/D2/D3·v1](../development/figma-v01/tasks/POL-12.md#pol-12-contract), [API별 공백](../development/figma-v01/tasks/POL-12.md#pol-12-api-gaps). 이 절은 후속 개발의 수용 기준이며 **실행0건·실제0통과·18미실행**이다. 기존 MCO4통과6차단·CDASH12차단/미실행·RCTX/MCANCEL·가입 QA의 증거/차단/승인 예외는 보존한다.
+- API/권한: 회사 GET/조회 leaf, profile-enrichment-runs POST/GET와 REFRESH_REQUEST, profile-change-proposals GET/decisions POST와 CHANGE_REVIEW, capability/certification 수기와 EDIT. role/직급은 권한 검사의 대체가 아니다. source·배포 기록·게시 schema·실행 SHA·실제 응답을 각각 기록한다.
+- 준비/승인: 해당 선행 Task Gate, 배포/실행 대응·실제 wrapper/validation/오류·권한, 합성 계정/회사별 leaf·합치기 read-only·정확 숫자/자료 시점·버전 경쟁, 수집/변경·잔존/종료·복구 범위/담당이 필요하다. 전화/삭제·이미지/OCR의 보완 계약은 선행이다. 개인/운영 자료나 실제 문서를 임의 사용하지 않는다. 담당 개인·자원 준비/접수 일정은 미확인이다.
+- Figma 범위: U01의3134:66829/3135:68266, U02의3135:68996/71126/71288, U03의3135:69008/69602/70640, F04의3135:75991/78459/81589. POL-12는11frame metadata와 비교2상태/배너3하위 screenshot만 확인했다. 전체 디자인/모바일·픽셀 일치나 제품 실행 PASS가 아니다.
+- 각 사례 실행 때 docs/qa/README 양식으로 환경·source/backend 실행 대응·계정/fixture 별칭·시간/브라우저/폭·단계·기대/실제 결과·비식별 UI/Network·잔존/원복을 기록한다. mock/HTTP 대역·실제 API는 별도 집계하며 미실행을 PASS로 올리지 않는다.
+
+| ID | 후속 소유 | 준비·행동과 기대 결과 | 이번 결과 |
+| --- | --- | --- | --- |
+| CUPD-01 | DEV-17 | 알려진 평가연도/기준일·null·KST 연말 자료. 현재연도/수집시각으로 자료연도 추정 금지·null/0·자료 없음 구분 | 미실행 |
+| CUPD-02 | DEV-17 | Figma 배너/버튼과 자체 Gate의 구체 노출/해제 기준 확인.2026년에도 마지막 평가2025면 그대로 유지·페이지 조회/해 바뀜 자동 POST0·제안0/완료를 최신 보장으로 표시하지 않음 | 미실행 |
+| CUPD-03 | DEV-18 | 현재 회사/타 회사·활성/해제 소속과 REFRESH_REQUEST 유무. 명시 POST만 수집 시작·202/runId·허용/403/잠금 구분 | 미실행 |
+| CUPD-04 | DEV-18 | 같은 key 재요청·active run 공유·타 회사 key 재사용409·응답 유실/탭 복원. 기존 key/run 확인·계정/회사 격리·새 수집 자동 재생0 | 미실행 |
+| CUPD-05 | DEV-18 | PENDING/RUNNING/COMPLETED/CANCELLED,3개 source별 SUCCESS/NO_DATA/재시도/identity 불일치/영구실패. terminal 진행률과 성공 구분·기존 저장값 보존 | 미실행 |
+| CUPD-06 | DEV-18 | proposal page0/size1..2·다음 page·빈 목록·기본/exact 상태, before/after/current·source/snapshot/run/시각·typed null/REMOVE·stale/invalidated를 보존 | 미실행 |
+| CUPD-07 | DEV-18/19 | Figma 비교 기본 무선택→첫 행만 선택→닫기/적용. 무선택/닫기는 mutation0, 선택행만 업데이트·미선택 제안 보존·자동 REJECT0/거절 버튼 추가0 | 미실행 |
+| CUPD-08 | DEV-19 | 단일 proposal items1..100·중복/잘못된 item·item.version 토큰과 target/header version 차이·중간 실패. 전체 검증/원자성·여러 proposal/초과 자동분할0·부분 성공 오인0 | 미실행 |
+| CUPD-09 | DEV-19 |409: item version/기결정/대체/무효화·target stale·업종 최종 상태 충돌. 최신 current 재조회/재비교·재선택·선택 자동 재전송0 | 미실행 |
+| CUPD-10 | DEV-17~21/26 | VIEW/REFRESH/CHANGE_REVIEW/EDIT 각각 허용/금지·같은 표시 role 다른 leaf·합치기 read-only. 제한 section/명령만 안내·403을 빈 데이터/성공으로 대체하지 않음 | 미실행 |
+| CUPD-11 | DEV-20 | capability 생성 active중복/삭제 이력 재활성화·PATCH exact version/NoOp·1900/KST현재연도/null·대표면허 boolean/null·정수 원0/20자리 경계. source validation/Swagger 차이·정밀도 보존·오류/충돌 검증 | 미실행 |
+| CUPD-12 | DEV-20 | 인증3종 true/false/null와 key누락·version0/기존 exact/불일치. YES/NO/UNKNOWN·row 부재·ADMIN_MANUAL/provenance·외부 기준일 null을 구분 | 미실행 |
+| CUPD-13 | DEV-20 | 지원 입력의 취소/중복/저장 성공·명령 미확정·후속 조회 실패·다른 사용자 수정. draft/원본 구분·명시 재확인·확인된 성공 보존/경고·새로고침 재조회 | 미실행 |
+| CUPD-14 | DEV-20 | 전화번호 PATCH/평가 DELETE의 보완 전 비활성, 보완 후 stale 조건/충돌·명시 비움/비활성화/이력·재시도/원복. 현재 API에 기대 버전이 있다고 가정하지 않음 | 미실행 |
+| CUPD-15 | DEV-21 | 로고 계약 확보 전 업로드 비활성. 확보 후 JPG/PNG·합의 byte/MIME/내용 경계·교체/삭제·권한/버전·오류/잔존/이전 파일 정리·원복. 서명정보/파일원본 비노출 | 미실행 |
+| CUPD-16 | DEV-26 | 관리용 OCR 적용 계약 확보 후 company/doc version·허용 필드·근거·법적 인증·선택·충돌/실패/원복. 미선택 보존·가입 등록 재제출/자동 회사 반영0 | 미실행 |
+| CUPD-17 | 해당 DEV | 최초/후속 요청의 최종401·403/404·네트워크·손상2xx·저장 성공 뒤 session/GET 실패·계정/회사/소속/화면 경쟁. 보호값 해제·늦은 응답/중복 Toast/자동 mutation 재생0 | 미실행 |
+| CUPD-18 | 해당 DEV | 자체 Figma 상태별 실제 Next/브라우저·키보드/focus·모바일320/390px·대형자료/표·loading/empty/error/명시 retry·기존 기본정보/대시보드/가입 회귀 | 미실행 |
+
+이번 정책 문서 검증과 위18사례의 제품/mock/HTTP 대역/실제 통합 판정은 별개다. 후속 Task 시작/면제·필수 fixture 준비가 승인된 것으로 해석하지 않는다.

@@ -251,3 +251,7 @@ Final reports should include:
 ## 2026-11-13 · DEV-16 회사 흐름의 설정 복귀
 
 [이번 Brief/사용자 답변](../development/figma-v01/tasks/DEV-16.md#dev-16-brief)은 **로컬 선행·실서버 QA 차단 보존**을 승인했다. 기존 등록/찾기의 설정 문맥·검색 query/page·단계별 Back/로그인 next와 고정 완료 `/my/company`를 연결하며 가입 `/bids`/건너뛰기 next·Figma ‘통합 요청’을 유지한다. 계정 epoch/화면 수명·단일 제출과 성공/미확정 응답 검증을 보완하고, [자동/실제 Next mock·HTTP 대역 근거](../qa/my-company.md#dev-16-local-qa)를 실제 업무 API와 구분한다. 업무 API 실행0·RCTX-15/QA-05/06/07/08·기존 MCANCEL12 차단/예외를 보존한다. 현재/다음/상태와 최종 두 리뷰·Git 전달은 WBS·Task/실제 PR에서 확인한다.
+
+## 2026-11-13 · 회사 갱신·선택 반영·직접 수정의 정책 경계
+
+[POL-12 사용자 D1/D2/D3·v1](../development/figma-v01/tasks/POL-12.md#pol-12-contract)은 Figma의 처음 무선택/선택행만 업데이트·닫기/미선택 보존, 해 바뀜 배너/버튼 유지와 자료 연도·시점/최신성 구분을 확정한다. 수집 run·제안 조회/원자 결정·수기 변경의 실제 leaf/버전을 분리하고, 전화번호/평가 삭제의 기대 버전·일반 편집/로고/기존 회사 OCR 계약 공백은 먼저 보완한다. 구체 배너 노출/해제와 후속 구현·DTO/정밀도·실행/합성 QA 조건은 [후속 Gate](../development/figma-v01/tasks/POL-12.md#pol-12-handoff)와 [CUPD18 미실행 계획](../qa/my-company.md#pol-12-update-qa)에서 확인한다. 정책/문서 검토·제품 구현·실제 통합/Git 전달을 구분하고 DEV-08 및 MCO/CDASH/가입·타 Task 차단/승인 예외를 보존한다. 현재/다음/상태는 WBS만 관리한다.
