@@ -9,6 +9,8 @@ import { documentBoxFixtures, mockDocumentVersion, type MockDocumentBox } from "
 import { mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
 import { validateDocumentAccess } from "./document-detail-api";
 import { syntheticDocumentBlob } from "./document-detail-mock";
+import { mapDocumentDeletion } from "./document-deletion-api";
+import type { DocumentDeletion } from "./contracts";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -33,7 +35,7 @@ function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile[
   return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustries: structuredClone(industries) };
 }
 type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null; retryUntil?: number };
-type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version>; box?: MockDocumentBox }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
+type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version>; box?: MockDocumentBox; deletion?: DocumentDeletion }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
 const basicIndustryValid = (value: unknown) => isRecord(value) && typeof value.code === "string" && value.code.trim().length > 0 && typeof value.name === "string" && value.name.trim().length > 0;
@@ -165,6 +167,9 @@ function boxVersions(doc: CompanyState["documents"][string]): DocumentBoxVersion
   }).sort((a, b) => b.versionNumber - a.versionNumber);
 }
 function validDocumentBox(doc: Record<string, unknown>): boolean {
+  if (Object.hasOwn(doc, "deletion")) {
+    try { mapDocumentDeletion(doc.deletion); } catch { return false; }
+  }
   if (!Object.hasOwn(doc, "box")) return true;
   const box = doc.box;
   if (!isRecord(box) || !(box.companyId === null || positiveInteger(box.companyId)) || !isRecord(box.versions) || !isRecord(doc.versions)
@@ -246,7 +251,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
   }
   function document(state: CompanyState, documentId: string, versionId?: string) {
     const doc = state.documents[documentId]; const version = doc?.versions[versionId ?? doc.activeVersion];
-    if (!doc || !version) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "증명서를 찾지 못했습니다.");
+    if (!doc || doc.deletion || !version) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "증명서를 찾지 못했습니다.");
     if (doc.activeVersion !== version.versionId) throw new ApiError(409, "VERSION_CONFLICT", "새 증명서 버전이 있습니다. 다시 확인해 주세요.");
     return { doc, version };
   }
@@ -259,6 +264,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     signal?.throwIfAborted();
     if (account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐어요.");
     const state = read(account);
+    if (documentId && state.documents[documentId]?.deletion) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
     const attached = documentId ? state.documents[documentId]?.box?.companyId != null : false;
     if (attached) {
       const doc = state.documents[documentId!];
@@ -304,7 +310,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       const account = await mockAccount(runtime, access, "company", signal);
       const state = read(account);
       if (runtime.scenario("company") === "documents-denied" || state.overview.status !== "connected" || state.overview.profile.companyId !== companyId) throw new ApiError(403, "DOCUMENT_FORBIDDEN", "회사 서류를 관리할 권한이 없어요.");
-      const content = Object.values(state.documents).filter(doc => doc.box?.companyId === companyId).map(doc => {
+      const content = Object.values(state.documents).filter(doc => !doc.deletion && doc.box?.companyId === companyId).map(doc => {
         const version = boxVersions(doc).find(item => item.versionId === doc.activeVersion)!;
         const { validFrom: _from, validUntil: _until, ...item } = version;
         void _from; void _until;
@@ -316,7 +322,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       validateDocumentId(documentId);
       const account = await mockAccount(runtime, access, "company", signal);
       const state = read(account); const doc = state.documents[documentId];
-      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
+      if (!doc?.box || doc.deletion || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       if (runtime.scenario("company") === "documents-version-error" && documentId.endsWith("000000000001")) throw new ApiError(503, "DOCUMENT_UNAVAILABLE", "서류 상태를 확인하지 못했어요.");
       return boxVersions(doc);
     },
@@ -324,7 +330,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       validateDocumentId(documentId);
       const account = await mockAccount(runtime, access, "company", signal);
       const state = read(account); const doc = state.documents[documentId];
-      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
+      if (!doc?.box || doc.deletion || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       if (runtime.scenario("company") === "documents-version-error" && documentId.endsWith("000000000001")) throw new ApiError(503, "DOCUMENT_UNAVAILABLE", "서류 상태를 확인하지 못했어요.");
       return boxVersions(doc).map(version => {
         const contentType = documentId.endsWith("000000000012") ? "image/png" : "application/pdf";
@@ -336,12 +342,24 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       validateDocumentAccess(documentId, versionId, purpose);
       const account = await mockAccount(runtime, access, "company", signal);
       const state = read(account); const doc = state.documents[documentId];
-      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)
+      if (!doc?.box || doc.deletion || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)
         || runtime.scenario("company") === "documents-denied") throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했거나 원본을 볼 권한이 없어요.");
       const version = boxVersions(doc).find(item => item.versionId === versionId);
       if (!version) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "선택한 버전을 찾지 못했어요.");
       if (!["OCR_SUCCEEDED", "VERIFICATION_PENDING", "VERIFICATION_FAILED", "COMPANY_CONFIRMATION_REQUIRED", "VERIFIED", "REPLACED"].includes(version.status)) throw new ApiError(409, "VERSION_CONFLICT", "지금은 이 버전의 원본을 확인할 수 없어요.");
       return { blob: syntheticDocumentBlob(version.versionNumber, documentId.endsWith("000000000012") ? "image/png" : "application/pdf"), expiresAt: new Date(runtime.now() + 120_000).toISOString() };
+    },
+    async deleteCompanyDocument(access, documentId, signal) {
+      validateDocumentId(documentId);
+      const account = await mockAccount(runtime, access, "company", signal);
+      const state = read(account); const doc = state.documents[documentId];
+      if (!doc || runtime.scenario("company") === "documents-denied" || doc.box?.companyId != null
+        && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) {
+        throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했거나 관리할 권한이 없어요.");
+      }
+      doc.deletion ??= { deletedAt: new Date(runtime.now()).toISOString(), purgeAt: new Date(runtime.now() + 30 * 86_400_000).toISOString() };
+      write(account, state);
+      return { ...doc.deletion };
     },
     async searchCompanies(access, query, page = 0) {
       await mockAccount(runtime, access, "company"); const filtered = companies.filter(item => item.companyName.includes(query) || item.businessNumber.includes(query));
@@ -423,6 +441,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     async uploadDocumentFile(access, uploadHandle, file, signal) {
       const account = await mockAccount(runtime, access, "company", signal); const state = read(account);
       const doc = Object.values(state.documents).find(doc => doc.versions[doc.activeVersion].uploadHandle === uploadHandle); const version = doc?.versions[doc.activeVersion];
+      if (doc?.deletion) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       if (!version) throw new ApiError(400, "UPLOAD_HANDLE_INVALID", "업로드 세션을 다시 시작해 주세요.");
       if (version.expiresAt <= runtime.now()) throw new ApiError(410, "UPLOAD_EXPIRED", "업로드 세션이 만료됐습니다.");
       if (version.size !== file.size || version.contentType !== file.type) throw new ApiError(400, "FILE_MISMATCH", "업로드 파일이 변경됐습니다.");
@@ -472,6 +491,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     },
     async retryDocumentProcessing(access, documentId, versionId, kind, key, signal) {
       const account = await mockAccount(runtime, access, "company", signal); const state = read(account);
+      if (state.documents[documentId]?.deletion) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       const result = idempotent(state, key, { operation: "retry", documentId, versionId, kind }, () => {
         const { doc, version } = document(state, documentId, versionId);
         if (doc.box?.companyId != null && (runtime.scenario("company") === "documents-denied" || state.overview.status !== "connected" || state.overview.profile.companyId !== doc.box.companyId || (version.retryUntil ?? version.expiresAt + 24 * 3_600_000) <= runtime.now() || (kind === "ocr" ? version.status !== "OCR_FAILED" : version.status !== "VERIFICATION_FAILED"))) throw new ApiError(409, "RETRY_UNAVAILABLE", "현재 처리 상태는 재시도할 수 없습니다.");
@@ -486,6 +506,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     async getIndustries(keyword) { await mockOperation(runtime, "company"); return structuredClone(industries.filter(item => item.name.includes(keyword) || item.code.includes(keyword))); },
     async createVerifiedCompany(access, body, key) {
       const account = await mockAccount(runtime, access, "company"); const state = read(account);
+      if (state.documents[body.documentId]?.deletion) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       const result = idempotent(state, key, { operation: "register-document", ...body }, () => {
         const proposal = state.proposals[body.proposalId]; const { version } = document(state, body.documentId, body.versionId);
         if (!proposal || proposal.documentId !== body.documentId || proposal.versionId !== body.versionId || proposal.revision !== body.revision || version.status !== "COMPANY_CONFIRMATION_REQUIRED") throw new ApiError(409, "VERSION_CONFLICT", "회사 등록 정보가 변경됐습니다.");

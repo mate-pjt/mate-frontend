@@ -12,6 +12,7 @@ export const listCompanyDocuments: CompanyRepository["listCompanyDocuments"] = (
 export const getCompanyDocumentVersions: CompanyRepository["getCompanyDocumentVersions"] = (...args) => getRepository().getCompanyDocumentVersions(...args);
 export const getCompanyDocumentHistory: CompanyRepository["getCompanyDocumentHistory"] = (...args) => getRepository().getCompanyDocumentHistory(...args);
 export const readCompanyDocumentOriginal: CompanyRepository["readCompanyDocumentOriginal"] = (...args) => getRepository().readCompanyDocumentOriginal(...args);
+export const deleteCompanyDocument: CompanyRepository["deleteCompanyDocument"] = (...args) => getRepository().deleteCompanyDocument(...args);
 export const searchCompanies: CompanyRepository["searchCompanies"] = (...args) => getRepository().searchCompanies(...args);
 export const getMembershipContext: CompanyRepository["getMembershipContext"] = (...args) => getRepository().getMembershipContext(...args);
 export const requestMembership: CompanyRepository["requestMembership"] = (...args) => getRepository().requestMembership(...args);

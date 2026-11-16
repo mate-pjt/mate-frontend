@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-13
+Last updated: 2026-11-16
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -87,6 +87,10 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `src/components/icons`는 TSX 아이콘, `src/components/ui`는 폴더별 index 공개 primitive다. Sonner ToastViewport는 하나이며 화면은 showToast만 사용한다.
 - `src/components/ui/calendar`는 controlled `Calendar`/`DatePicker`와 순수 ISO 날짜 연산·Storybook 예제를 제공한다. Figma 2081:64659의 일요일 시작/선택 원·월 이동을 따르며 연/월 빠른 선택·roving focus·방향키/Home/End/PageUp/PageDown·선택 해제·modal Escape/외부 클릭/초점 복귀를 제공한다. 생년월일은 1900-01-01~브라우저 현지 오늘로 제한하며 서버 검증을 대신하지 않는다. 입찰 날짜 필터는 교체하지 않는다.
 - `.storybook`은 Next와 같은 config resolver로 snapshot을 Vite define에 주입한다. `tests/architecture.test.ts`가 UI의 구현/DTO import 및 클라이언트에서 server-only로 이어지는 경로를 검사한다.
+
+### 보관 서류 삭제
+
+[DEV-25 D1](../development/figma-v01/tasks/DEV-25.md#dev-25-brief)의 상세 ‘지우기’는 `DocumentDeletionDialog`/기존 BasicPopup→`features/company/document-deletion.ts`→공개 company 포트의 전체 series DELETE다. 초기 회사는 company 공급원에서 확보하고 제출/명시 재조회 때 같은 문맥을 확인한다. auth의 nullable 회사로 company mock을 대체하지 않는다. 응답의 두 시각을 검증한 뒤만 상세/Blob 해제·Sonner1회·목록 GET/유효 page 복귀를 수행한다.404/409/미확정은 자동 재삭제하지 않고, 성공 뒤 조회 실패/최종401은 확인된 성공과 구분한다. 제출 전 취소는 초점을 보존하고 제출 뒤 닫기만 상태를 재조회한다. mock optional tombstone은 계정 공간/기존 이력을 유지하며 목록·모든 version/원본/업로드/처리 재생을 차단한다. 실제 삭제/30일 파기·인증 영향 QA는 [별도 차단](../qa/company-documents.md#dev-25-local-qa)이며 서버 worker를 구현한 것은 아니다.
 
 ## Asset Placement Notes
 

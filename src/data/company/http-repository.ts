@@ -6,6 +6,7 @@ import { mapCompanyBasicProfile, mapMyMembershipRequest } from "./api-mapper";
 import { mapDocumentBoxPage, mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
 import { mapDocumentHistory, readDocumentOriginal } from "./document-detail-api";
 import { mapReplacementUpload, mapReuploadStatus } from "./document-upload-api";
+import { mapDocumentDeletion } from "./document-deletion-api";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -37,6 +38,11 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return mapDocumentHistory(await authorizedRequest<unknown>(access, `/api/v1/company-documents/${documentId}/versions`, { signal }));
   }
   const readCompanyDocumentOriginal: CompanyRepository["readCompanyDocumentOriginal"] = (...args) => readDocumentOriginal(http, ...args);
+
+  async function deleteCompanyDocument(access: AuthAccess, documentId: string, signal?: AbortSignal) {
+    validateDocumentId(documentId);
+    return mapDocumentDeletion(await authorizedRequest<unknown>(access, `/api/v1/company-documents/${documentId}`, { method: "DELETE", signal }));
+  }
 
   function searchCompanies(access: AuthAccess, query: string, page = 0): Promise<CompanySearchPage> {
     const params = new URLSearchParams({ query, page: String(page), size: "10" });
@@ -268,5 +274,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, deleteCompanyDocument, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }

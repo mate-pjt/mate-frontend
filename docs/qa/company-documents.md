@@ -179,3 +179,46 @@ DBOX-11~15/21~22는 실제 **0통과·7차단**이다. DEV-22/23의 고유12차�
 - 제품/디자인 담당: 신규 추가와 MAT-162 기존 회사 프로필 반영은 별도 결정이며 이번 사용자 D1을 확대 적용하지 않는다. 개인/일정은 미확인이다.
 - QA 자원/사용 승인 담당: 문서관리 leaf 있음/없음·계정/회사 전환·이전/진행/실패 버전을 가진 disposable 계정/회사와 개인정보 없는 유효 문서, OCR/국세청·나라장터 호출·업로드/보존/잔존/복구 범위와 실행 승인을 준비한다. 실제 자료/값을 채팅으로 요청하지 않는다.
 - 실제 재개 후 형식/무결성·10분URL/30분session·멱등/응답 유실·단일 후보/row lock·current/identity 근거·재시도 기한·계정/권한·브라우저/보조기술을 검증한다. 로컬 PASS와 Git/main 반영이 이 차단을 해소하지 않는다.
+
+<a id="dev-25-local-qa"></a>
+
+## 2026-11-16 · DEV-25 전체 삭제의 로컬 검증
+
+- 승인: [이번 사용자 D1/Brief](../development/figma-v01/tasks/DEV-25.md#dev-25-brief)의 로컬 mock·HTTP 대역 선행과 실제 삭제·30일 파기 QA 차단 유지. 실제 업무 서버/계정/문서/티켓/파일/OCR/기관/삭제·worker·외부 메시지/운영/배포0건이다.
+- 환경: branch `feat/dev-25-document-delete`, base `cef469dcd8e70c372f6572bc2b00c7df5b18adf7` 이후 DEV-25 diff. Node22.20.0/pnpm11.3.0·Next16.2.9/Aside Chromium, desktop1440×1000·mobile375×812. `.env` 없는 격리 실행본의 mock `http://127.0.0.1:3025`/회사 documents·합성 계정1, HTTP `http://127.0.0.1:3026`→loopback4325의 합성 auth/문서·68byte PNG만 사용했다.
+- 현행 source: [삭제 service](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companydocument/DeleteCompanyDocumentService.kt)·[권한/row lock/재삭제 persistence](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companydocument/CompanyDocumentDeletionPersistenceAdapter.kt)·[파기](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companydocument/CompanyDocumentPurgePersistenceAdapter.kt), dev `adc0e265`/main `4b5f31de`·중앙 main `c9e50ff5`. [배포 run43389204151](https://github.com/mate-pjt/mate-backend/actions/runs/43389204151)의 dev SHA/completed/success·Aside 개발 OpenAPI GET200/3.1.0/v1을 확인했다. 실행process SHA/실제 wire·권한/업무 응답은 별개 미확인이다.
+
+| 로컬 사례 | 근거 종류 | 조작·확인 결과 | 실제 QA 연결 |
+| --- | --- | --- | --- |
+| DBOX-DEL01 | Next HTTP 브라우저/receipt | 확인 후 Escape·돌아가기: DELETE0, dialog 제거·‘지우기’ 초점 복귀. 제출 전 취소는 상세 reload 없음 | DBOX-17/22 |
+| DBOX-DEL02 | Next 전체 mock | 이전v1 선택 뒤 전체 삭제·Enter 확정, 목록으로 이동·완료 Toast1/이력 UI0. reload 뒤 Toast0·삭제 상태 유지 | DBOX-17 |
+| DBOX-DEL03 | Next HTTP/Node | 원본 DOM/Blob 생성 뒤 확인 열기에서 revoke1·preview region0. 지연 DELETE 중 Enter2회에도 명령1/Toast1·목록 복귀 | DBOX-17/19 |
+| DBOX-DEL04 | Next HTTP | DELETE404: 완료/Toast0·현재 상태 확인만, 없는/권한 없음을 임의 완료로 바꾸지 않음 | DBOX-18 |
+| DBOX-DEL05 | Next HTTP | DELETE409: 변경 안내·명시 GET/새 확인, 자동 재삭제0 | DBOX-18/19 |
+| DBOX-DEL06 | Next HTTP/Node |408/503: 미확정·Toast0·삭제 버튼 제거. 앱 제출1회/자동 재삭제0,503 wire1·408 wire3을 관찰해 아래 전송 한계로 구분 | DBOX-18 |
+| DBOX-DEL07 | Next HTTP | 서버는 삭제했지만200의 purgeAt가 없으면 미확정/Toast0.2xx만으로 완료하지 않음 | DBOX-18 |
+| DBOX-DEL08 | Next HTTP | 명령의 최종401: 로그인 안내/완료0·기존 다운로드/보호 상세0. 기존 공통 refresh1회 뒤 두 번째401과 앱 재삭제를 구분 | DBOX-18/21 |
+| DBOX-DEL09 | Next HTTP | 삭제200 뒤 목록503: 완료와 갱신 실패 분리·상세/다운로드0, ‘목록 다시 확인’은 GET만·DELETE1 | DBOX-18 |
+| DBOX-DEL10 | Next HTTP | 삭제200 뒤 목록의 refresh/최종401: 완료 유지·로그인 CTA, 재삭제/보호 자료0 | DBOX-18/21 |
+| DBOX-DEL11 | Next HTTP | 삭제200 뒤 refresh 세션 해제: 상위 완료 notice+로그인·다운로드0. 계정 자료를 되살리거나 성공을 취소하지 않음 | DBOX-18/21 |
+| DBOX-DEL12 | Next HTTP/Node | 지연 삭제 중 페이지 이탈: request abort/dispose·이전 화면의 늦은 Toast/상세 복귀0. 서버에서 삭제가 취소됐다고 주장하지 않음 | DBOX-19/21 |
+| DBOX-DEL13 | Next mock 시각/키보드 |375px overflow0·닫기/Escape 초점 복귀·Enter 확정, desktop/mobile 캡처를 직접 확인 | DBOX-22 |
+| DBOX-DEL14 | Node controller | 계정/epoch/dispose·제출 직전 회사 변경은 늦은 완료/후속 조회 차단, company 포트와 auth nullable 회사 분리·미귀속 owner | DBOX-21 |
+| DBOX-DEL15 | Node mock/storage | factory/reload·31일 뒤 재삭제도 동일 시각, 다른 계정/영역 보존·손상 deletion은 회사 공간만 초기화. worker 실행 아님 | DBOX-18/20/21 |
+| DBOX-DEL16 | Node mock/HTTP·source 검토 | 직접 assertion: 전체 version metadata/원본·교체 candidate/handle·completion/processing/retry 차단·list count 감소·인증 상태 유지. proposal/등록 replay 차단은 owning source guard 검토 근거 | DBOX-19/20 |
+| DBOX-DEL17 | Next/Node | 삭제 후 새 metadata/원본404·목록·이력 부활 없음. 원본 URL/파일·API 응답을 mock storage로 복사하지 않음 | DBOX-19/21 |
+| DBOX-DEL18 | source 검토 |30일은 비동기 파기 대상·기존 티켓 잔여/사용자 복원 없음·근거 참조 해제와 인증 자동 강등 구분. 실제 worker/보존 결과 PASS 아님 | DBOX-20 |
+
+- 자동 검증: `pnpm test`699/699·26파일, `pnpm lint`, API/mock/hybrid Preview `pnpm build`, `pnpm build-storybook` PASS. 단독 type-check/format script는 없으며 diff/문서·두 리뷰·최종 CI는 [Task](../development/figma-v01/tasks/DEV-25.md)와 검토 기록에서 구분한다.
+- 실패/교정은 [Task 체크포인트](../development/figma-v01/tasks/DEV-25.md#dev-25-brief)에 보존한다. 자동 수정3/3 뒤 계획 검증이 통과했다. Aside의1px 합성 이미지 AX visibility 대기 한계는 DOM1/Blob revoke1·preview region0으로 확인했고 기존 원본 뷰어 전수 검증으로 확대하지 않는다. Toast는 ‘알림’ region 안에서 계수한다. 성공 후 화면 제목과 Toast가 같은 문구여서 전역 text2개를 Toast2회로 세지 않는다.
+- [desktop 캡처](dev-25-delete-desktop.png)·[mobile 캡처](dev-25-delete-mobile.png)는 합성 자료이며 Figma [상세3135:75782](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-75782)의 지우기 위치와 [완료 Toast3191:56241](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3191-56241)의 기존 스타일에 연결한다. 원문의 미인증 문구는 POL-13 D2 의미와 맞지 않아 삭제 사실만 알린다. 기능 의미의 차이이며 전체 화면 예외 승인/전수 pixel PASS가 아니다. 새 확인은 기존 BasicPopup을 구성했다.
+- Aside request 이벤트는 지원되지 않아 전체 mock의 외부 resource는 브라우저 performance origin 관찰0과 source/계약 테스트로 확인했다. packet 전수 계측으로 주장하지 않는다. loopback receipt는 비민감 method/path/status만 보존하고 header/token·원본 URL/내용을 저장하지 않는다. VoiceOver·실제 기기/Safari·실제 storage CORS/권한·장기 worker는 미실행이다.
+- 전송 한계:408 fixture에서 Chromium이 같은 body 없는 DELETE를 wire3회 전송했다. 앱 controller/Node 대역의 제출1회·자동 재삭제0과 브라우저 HTTP 전송 재시도를 구분하며 wire1회를 보장하지 않는다.401은 기존 공통 refresh 후2회, 나머지 오류/지연·성공 뒤 조회 사례는 각 DELETE1회다. 서버의 row lock/권한 있는 재삭제 동일 결과를 source로 확인했지만 실제408/응답 유실·중복 안전성은 DBOX-18의 실제 차단으로 유지한다.
+
+### DEV-25 실제 API 재개 조건 · 당시0통과/6차단
+
+DBOX-17~22는 **실제0통과·6차단**이며 그 중21/22는 기존 공통 차단과 겹친다. DEV-22~24의 고유17차단에 새17~20을 합쳐 원본22개는 **고유0통과·21차단·1대기(16)**다. 원본 미실행 계획·이전 날짜별 QA/가입/회사·DEV-08/MAT-162·각 Task 예외는 보존한다.
+
+- Backend 실행/권한·storage 담당과 QA 자원/사용 승인 담당이 현재 실행 SHA·실제 wrapper/상태/오류·leaf/owner·동시 교체/삭제/티켓의 lock 의미를 확인한다. 개인/일정은 미확인, 마지막 확인일2026-11-16이다.
+- 폐기 가능한 현재/과거/진행 version series와 두 계정/회사·권한 없음/상실·안전한 사용/삭제/잔존/복구 범위를 준비한다. 비밀값/실제 개인정보·원본은 채팅/문서로 요구하지 않는다.
+- 삭제 즉시 새 접근 배제·기발급 티켓 잔여·격리 worker의30일 이후 지연/재시도·전체 object/OCR 파기/tombstone·근거 참조 해제와 인증 상태를 실제 비식별 결과로 검증한다. 운영 worker/시간 이동·실제 삭제는 이번 D1의 승인 범위 밖이다. 로컬 PASS/main 반영은 재개 조건을 해소하지 않는다.
