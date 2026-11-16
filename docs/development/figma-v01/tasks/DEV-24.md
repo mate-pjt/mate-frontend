@@ -70,3 +70,13 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-24-pol-13-handoff"></a>
+
+## 2026-11-16 · POL-13 정책/후속 Gate 인계
+
+- [POL-13 사용자 D1/D2/D3·v1](POL-13.md#pol-13-contract)과 [DBOX 미실행 계획](../../../qa/company-documents.md#pol-13-document-qa)을 후속 기준으로 받는다.
+- 신규 POST company-documents는 계정 소유/company_id=null이다. 기존 회사 신규 문서 귀속 command로 간주하지 않는다. versions POST·replacesVersionId·단일 후보/권한·멱등/row lock은 존재하지만 후보/PUT/OCR 완료와 current 최종 교체·프로필 저장은 별개다.
+- 기존 회사의 대상 귀속/종류·최종 교체 확정·상태/권한/경쟁·실패/잔존 복구 계약 및 MAT-162 보류 영향을 확인하기 전 해당 완료 UI를 활성화하지 않는다. Backend 계약 담당과 제품/디자인이 필요한 역할이며 개인/일정·새 endpoint를 임의 확정하거나 보류 PR/가입 command를 재사용하지 않는다.
+- DEV-22 선행 뒤 DBOX-11~15/21~22로 형식·1..10×1024×1024bytes·무결성, opaque handle/PUT10분/session30분·멱등 payload·응답유실·current/candidate409·계정/복구를 검증한다. 기능 축소/로컬 선행/실제 QA 면제는 이번에 승인하지 않았고 모든 API에 expectedVersion을 일괄 요구하지 않는다.
+- 기준/인계만 수행했다. 이 Task 자체 Gate·제품/실제 API·파일/OCR/삭제·별도 Git 전달은 시작하지 않았다. 현재/다음/상태는 WBS만 관리한다.
