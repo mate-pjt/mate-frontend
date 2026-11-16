@@ -64,3 +64,27 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-27-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1/D2/D3·v1](POL-14.md#pol-14-contract). 원본 T01의 ACTIVE 팀원 목록/상세·메뉴 진입과 조회 계약을 연결하는 단위다. 보낸 초대·받은 신청의 관리 행동/목록은 DEV-29/31, 변경은 DEV-28이며 후속 화면을 무단 삭제/전면 시각 예외로 처리하지 않는다.
+- 확정 완료 기준: 현재 회사/계정/leaf로 catalog·내 권한/목록·상세를 같은 company 공급원에서 읽고, page0/기본20/size1..100·total/count·joinedAt ASC/id ASC를 보존한다. 빈 전체/빈 page·loading/오류/401/403/없는 대상·탈퇴한 대상/권한 변화·계정/회사/화면 수명과 재조회·모바일/키보드를 구분한다. role 이름만으로 허용하지 않고 페이지3/행9 capabilities의 조회 시점 의미를 유지한다.
+- D2 상세 기준: Figma3137:53331/54225의 생년월일·전화번호 자리/라벨을 남기고 **미제공**으로 표시한다. nullable 이름/이미지/lastLoginAt을 다른 개인정보·가짜 날짜로 합성하지 않는다. 상세 전체·프레임 재설계의 예외 승인으로 확대하지 않는다.
+- 현재 backend/Swagger에는 members 목록/상세·memberships/me·company-permission-definitions와 flags가 있다. 과거 ‘관리 계약 없음’을 현재 backend 부재로 반복하지 않는다. 현재 프론트 관리 route/Repository는 미연결이며 여기서는 구현하지 않았다.
+- 검증 연결: [TEAM-01~04/23/26](../../../qa/team-members.md#pol-14-team-qa), Figma3137:52702/53331/54225와 각 상태를 자체 Brief에서 대조한다. 실제 조회 자원과 구현 검증을 확보한 뒤 실제/API/mock/HTTP대역 결과를 분리한다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+
+<a id="dev-27-pol-14-selection"></a>
+
+## 2026-11-16 · POL-14 뒤 다음 Task 선정/첫 행동
+
+- [POL-14 정책 문서 종료](POL-14.md#pol-14-close)에 따라 선행을 충족하는 P2 기본 표 순서 첫 팀원 개발 단위로 선정/인계했다. 기존 P0/P1 차단과 앞선 P2의 DEV-08·DEV-24/26/MAT-162·다른 Task 선행을 바꾸지 않는다. 현재/다음/상태는 WBS만 소유한다.
+- 다음 첫 행동: 새 대화에서 최신 Git/main·이 후보의 원래 범위/완료 기준과 POL-14 D1~D3·TEAM QA 계획, 그때의 backend/개발 Swagger·Figma3137:52702/53331/54225의 목록/상세/오류/모바일 상태를 확인한다. 현재 company/leaf·page/count/ASC·3page/9row flags·nullable/미제공·계정/회사 수명과 안전한 실제 조회 계정/회사·실행 대응/사용·잔존·복구 범위를 확인해 자체 Brief·수정 파일/영향/검증을 먼저 제시한다.
+- 이번에는 POL-14 소유의 정책/후속 기준·선정/인계만 작성했다. 이 Task의 전용 조사·요구사항 확정/설계·제품/Repository·실제 업무/QA·Git 전달을 시작하지 않았다. POL-14의 Git/Chromatic 예외·정책 문서 PASS가 이 Task의 실제 자원 준비·로컬 선행/통합 면제 승인은 아니다.

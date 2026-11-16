@@ -64,3 +64,18 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-29-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1/D3·v1](POL-14.md#pol-14-contract). 원본 T02의 보내는 초대 입력/발송·목록/상세 계약이며 받는 초대 구현/QA와 별개다. 서버에 실제 계약이 있고 현재 프론트 발송 포트는 미연결이다.
+- 확정 완료 기준: email/표시 이름·대표자·positionId XOR 새 일반 직급명·preset/extra leaves·message를 현재 제약으로 검증한다. 기본 VIEWER 초과 부여는 PERMISSION_MANAGE+actor 부분집합, 새 직급 제안은 PROFILE_EDIT, 대표자 초대는 ADMIN/대표자 공석·일반 직급/preset/추가 권한 없음이다. 이미 등록된 이름은 서버가 정하고 초대 PATCH로 이메일을 바꾸지 않는다.
+- 상태/화면 기준: 같은 회사/이메일 pending 중복·활성 소속·같은 회사 대기 신청·모호한 확인 이메일을 성공으로 바꾸지 않는다. 보내는 목록/상세 page/count·서버 정렬/상태와 team ACTIVE 목록을 구별한다. 생성 성공·초대 PENDING·delivery PENDING/SENDING/SENT/FAILED/SUPERSEDED·실제 메일함 도착/수신 수락은 별개로 안내/검증한다. 실제 expiresAt를 쓰고7일/5일 예시를 화면 고정 남은 날수로 합성하지 않는다.
+- D3 연결: 만료 초대의 ‘새 초대 작성’은 이 생성 흐름으로 명시 입력/제출하며 재발송·새 생성 자동 호출은 없다. token/링크/cookie/메일 원문은 모델·저장소/로그·QA·PR에 남기지 않는다.
+- 검증 연결: [TEAM-11~13/16~17/23/26](../../../qa/team-members.md#pol-14-team-qa), Figma3137:52847/52911/52990. 수신처/메일함·계정·소비/복구 범위를 확보하기 전 실제 발송을 하지 않는다. 수락 완료 목적지 결정은 POL-15/DEV-33을 유지한다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.

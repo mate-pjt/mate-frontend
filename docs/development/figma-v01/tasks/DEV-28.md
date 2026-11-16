@@ -64,3 +64,18 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-28-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1/D2·v1](POL-14.md#pol-14-contract). 사용자 D1에 따라 **직접 변경과 대상 동의 요청의 생성/조회·본인 수락/거절·회사 취소·충돌**까지 이 Task의 완료 기준에 포함한다. 타인 직급/leaf·내보내기/자기 권한 축소·본인 대표자 취임/소속 종료의 현재 contract를 구분한다. 서비스 계정 탈퇴는 POL-18/DEV-39~40 소유다.
+- 확정 완료 기준: 행동 leaf·부여 전체 집합의 actor 부분집합·현재 role 비교를 함께 적용한다. 낮은 타인은 직접, 같은 role/대표자 대상·ADMIN 승격/대표자 지정은 허용된 대상 동의, 높은 대상/과도 부여는 금지다. 본인 변경은 별도 source 경로이며 마지막 유효 활성 ADMIN 강등/소속 종료는 서버 불변식으로 거부한다. 대표자 system 직급 정의 보호와 ADMIN 유지 본인 직급 해제를 구분한다.
+- 명령/상태 기준: 직접 expectedVersion, 동의 생성 UUID requestKey/expectedMembershipVersion/kind별 필드, 결정/취소 UUID requestKey/expectedRequestVersion을 그대로 쓴다. CREATED/REUSED/NO_CHANGE·PENDING/APPLIED/REJECTED/CANCELED/INVALIDATED를 구분한다. 같은 target/내용 재사용·알림 중복0/다른 내용 명시 취소·무응답 무기한 대기, issuer 퇴사만으로 무효화하지 않음과 target/version/직급 정의 변화·관리자 경쟁을 검증한다. 요청 생성만으로 현재 권한을 바꾸지 않는다.
+- UI/연결 기준: D2 대표자 일괄 불가 안내·버튼을 현재 직접/동의/금지에 맞추되 system 직급 수정/삭제·권한 상한/최후 관리자 제약은 유지한다. 정보 편집을 타인의 계정 생일/전화/이메일 수정으로 확대하지 않는다. 동의 상세/결정 route·알림 actionPath allowlist/현재 target 검증·loading/오류/미확정은 자체 Gate에서 먼저 설계한다. POL-04 현행 allowlist를 자동 확장하거나 알림 읽음/클릭을 동의로 처리하지 않는다.
+- 검증 연결: [TEAM-05~10/23/25/26](../../../qa/team-members.md#pol-14-team-qa). 양쪽 동의·오래된 snapshot/직급·최후 관리자 동시 변경·재전달/UUID 충돌·타 회사/계정·권한 상실/화면 수명, 확인된 성공/후속 조회 실패와 응답 미확정·자동 재변경0을 검증한다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
