@@ -25,6 +25,11 @@ export function documentBoxFixtures(now: number): Array<{ documentId: string; bo
       versions[candidateId] = candidate;
       displayedVersionId = candidateId;
     }
+    if (i === 10) {
+      current.versionNumber = 2;
+      const previousId = "40000000-0000-4000-8000-000000000011";
+      versions[previousId] = mockDocumentVersion(previousId, 1, "REPLACED", now - 86_400_000);
+    }
     return { documentId, displayedVersionId, box: { companyId: 7001, currentVersionId: currentId, versions } };
   });
 }

@@ -10,6 +10,8 @@ function getRepository(): CompanyRepository { return repository ??= getDataConfi
 export const getDocumentBoxContext: CompanyRepository["getDocumentBoxContext"] = (...args) => getRepository().getDocumentBoxContext(...args);
 export const listCompanyDocuments: CompanyRepository["listCompanyDocuments"] = (...args) => getRepository().listCompanyDocuments(...args);
 export const getCompanyDocumentVersions: CompanyRepository["getCompanyDocumentVersions"] = (...args) => getRepository().getCompanyDocumentVersions(...args);
+export const getCompanyDocumentHistory: CompanyRepository["getCompanyDocumentHistory"] = (...args) => getRepository().getCompanyDocumentHistory(...args);
+export const readCompanyDocumentOriginal: CompanyRepository["readCompanyDocumentOriginal"] = (...args) => getRepository().readCompanyDocumentOriginal(...args);
 export const searchCompanies: CompanyRepository["searchCompanies"] = (...args) => getRepository().searchCompanies(...args);
 export const getMembershipContext: CompanyRepository["getMembershipContext"] = (...args) => getRepository().getMembershipContext(...args);
 export const requestMembership: CompanyRepository["requestMembership"] = (...args) => getRepository().requestMembership(...args);

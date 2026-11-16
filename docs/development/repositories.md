@@ -94,7 +94,7 @@ pnpm dev
 | personalFilters | default, slow, conflict, error |
 | notificationSettings | default, slow, expired, blocked, error |
 
-서류함 `/my/documents`의 `documents`는 합성25개/현재·후보·처리/기간 경계, `documents-empty`는 연결 회사0건, `documents-denied`는 목록 leaf 거절과 metadata 허용 차이, `documents-version-error`는 한 문서의 보유/기간 조회 실패다. 모두 회사 공급원이 mock일 때만 사용한다. 신규 가입 문서는 등록 성공 뒤에만 같은 회사 목록에 나타나며 원본/업로드/삭제 기능은 후속 Gate에서 연결한다. [DEV-22 로컬 QA](../qa/company-documents.md#dev-22-local-qa)와 실제 통합 차단을 구분한다.
+서류함 `/my/documents`의 `documents`는 합성25개/현재·후보·처리/기간 경계, `documents-empty`는 연결 회사0건, `documents-denied`는 목록 leaf 거절과 metadata 허용 차이, `documents-version-error`는 한 문서의 보유/기간 조회 실패다. 모두 회사 공급원이 mock일 때만 사용한다. 신규 가입 문서는 등록 성공 뒤에만 같은 회사 목록에 나타나며 원본 상세는 DEV-23에서 연결하고 업로드/삭제는 후속 Gate다. [DEV-22 로컬 QA](../qa/company-documents.md#dev-22-local-qa)와 실제 통합 차단을 구분한다. 상세 `/my/documents/[documentId]?version=<UUID>&page=<목록 UI page>`에서 exact 버전/이력·기본 PDF/이미지 뷰어와 명시 원본 다운로드를 확인할 수 있다. `documents`의 11번째 합성 문서는 현재v2/이전v1,12번째는 PNG 사례다. 원본은 메모리에서만 생성하며 실파일/티켓을 저장하지 않는다. `documents-denied`는 metadata 허용·원본404를 재현한다. 실제 HTTP는 티켓/GET·MIME/크기·만료/CORS가 모두 충족돼야 하며 [DEV-23 QA](../qa/company-documents.md#dev-23-local-qa)는 loopback 대역/실제 API 차단을 구분한다.
 
 목록은 `src/data/config.ts`의 mockScenarios가 기준이다. 오타·없는 그룹·API 공급원에 시나리오를 지정하면 설정 오류다. 실패는 무작위가 아니다. processing-failed는 최초 OCR 실패 후 재시도 성공, conflict는 기존 회사 처리 선택을 재현한다. 회사 초기 상태는 해당 공간에 저장 상태가 없을 때 적용한다.
 

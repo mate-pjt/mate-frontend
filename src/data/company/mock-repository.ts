@@ -7,6 +7,8 @@ import { signupCertificationTypes } from "./contracts";
 import { documentVersionStatuses, type DocumentBoxVersion, type DocumentVersionStatus } from "./contracts";
 import { documentBoxFixtures, mockDocumentVersion, type MockDocumentBox } from "./document-box-mock";
 import { mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
+import { validateDocumentAccess } from "./document-detail-api";
+import { syntheticDocumentBlob } from "./document-detail-mock";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -293,6 +295,29 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
       if (runtime.scenario("company") === "documents-version-error" && documentId.endsWith("000000000001")) throw new ApiError(503, "DOCUMENT_UNAVAILABLE", "서류 상태를 확인하지 못했어요.");
       return boxVersions(doc);
+    },
+    async getCompanyDocumentHistory(access, documentId, signal) {
+      validateDocumentId(documentId);
+      const account = await mockAccount(runtime, access, "company", signal);
+      const state = read(account); const doc = state.documents[documentId];
+      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
+      if (runtime.scenario("company") === "documents-version-error" && documentId.endsWith("000000000001")) throw new ApiError(503, "DOCUMENT_UNAVAILABLE", "서류 상태를 확인하지 못했어요.");
+      return boxVersions(doc).map(version => {
+        const contentType = documentId.endsWith("000000000012") ? "image/png" : "application/pdf";
+        return { ...version, contentType, sizeBytes: syntheticDocumentBlob(version.versionNumber, contentType).size,
+          pageCount: contentType === "application/pdf" ? 1 : null, uploaderDisplayName: version.versionNumber === 1 ? null : "가상 업로더" };
+      });
+    },
+    async readCompanyDocumentOriginal(access, documentId, versionId, purpose, signal) {
+      validateDocumentAccess(documentId, versionId, purpose);
+      const account = await mockAccount(runtime, access, "company", signal);
+      const state = read(account); const doc = state.documents[documentId];
+      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)
+        || runtime.scenario("company") === "documents-denied") throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했거나 원본을 볼 권한이 없어요.");
+      const version = boxVersions(doc).find(item => item.versionId === versionId);
+      if (!version) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "선택한 버전을 찾지 못했어요.");
+      if (!["OCR_SUCCEEDED", "VERIFICATION_PENDING", "VERIFICATION_FAILED", "COMPANY_CONFIRMATION_REQUIRED", "VERIFIED", "REPLACED"].includes(version.status)) throw new ApiError(409, "VERSION_CONFLICT", "지금은 이 버전의 원본을 확인할 수 없어요.");
+      return { blob: syntheticDocumentBlob(version.versionNumber, documentId.endsWith("000000000012") ? "image/png" : "application/pdf"), expiresAt: new Date(runtime.now() + 120_000).toISOString() };
     },
     async searchCompanies(access, query, page = 0) {
       await mockAccount(runtime, access, "company"); const filtered = companies.filter(item => item.companyName.includes(query) || item.businessNumber.includes(query));

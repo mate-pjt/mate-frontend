@@ -93,3 +93,47 @@ API 약어: A=`GET /api/v1/companies/{companyId}/documents`, B=`GET /api/v1/comp
 - **실제0통과·8차단, 실행0건**. 나머지 DBOX-07~20 14개는 기존 후속 Task의 대기/미실행이다. 로컬14개 PASS와 원본22개 계획/미실행 이력은 서로 다른 집계다.
 - 필요한 역할: backend 실행/계약 담당과 합성 권한 계정/회사·문서 자원 담당. 개인/일정은 미확인, 마지막 확인일2026-11-16이다. 현재 frontend/backend 실행 SHA 대응·실제 wrapper/상태/기간·서버 권한/귀속·후보/current·권한 상실/삭제 경계의 비식별 fixture와 안전한 조회/사용/보존/복구 범위가 재개 조건이다. 비밀값/원문을 문서나 채팅으로 요구하지 않는다.
 - 이번 D2가 승인한 것은 로컬 구현/검증 선행이다. 실제 업무 API/티켓/파일 처리·MAT-162/DEV-08 또는 다른 Task의 QA 면제가 아니며, main 반영과 실제 API 통합 PASS도 별도다.
+
+
+<a id="dev-23-local-qa"></a>
+
+## 2026-11-16 · DEV-23 상세/이력/원본의 로컬 검증
+
+- 승인: [DEV-23 사용자 D1/D2](../development/figma-v01/tasks/DEV-23.md#dev-23-brief). **로컬 구현/검증 선행·실제 API QA 차단 보존**, PDF 기본 뷰어/이미지 확대·축소·최근활동 준비 중. DEV-22/다른 Task의 승인 승계가 아니다. 기존 POL-13 원본22미실행·DEV-22 로컬14/실제8차단·가입/회사·DEV-08/MAT-162 및 후속 계약 Gate를 보존한다.
+- 실행: `feat/dev-23-document-detail`, base `a55fdfc1140e61f6ab36627ad39a3b98fd947d8c` 이후 DEV-23 diff. Node22.20.0/pnpm11.3.0·Next16.2.9, Aside Chromium·1440×1000(일부1100)/375×812. Origin `http://127.0.0.1:3023`, 전체 mock `company=documents`와 loopback4323의 합성 HTTP 응답/파일 서버만 사용했다. 실제 업무 API/티켓/원본/OCR/삭제·외부 메시지/운영/배포0건이다.
+- 계약 근거: [DEV-23 소유 source/명세](../development/figma-v01/tasks/DEV-23.md#dev-23-sources), dev `adc0e265ef0e2aa78ccb376e1fa322edd664b290`/main `4b5f31de578c41e698dda9c99e66149b7292f031` 유지·Aside 개발 OpenAPI GET200/3.1.0/v1. [기존 배포 run43389204151](https://github.com/mate-pjt/mate-backend/actions/runs/43389204151)의 dev SHA·completed/success를 현재 재확인했다. source/배포 기록·게시 명세와 현재 실행 SHA·실제 응답/권한·원본/CORS는 별개이며 마지막 항목은 미확인이다.
+- 증거: [데스크톱 PDF](dev-23-document-desktop.png), [모바일 상세](dev-23-document-mobile.png), [없는 선택 버전](dev-23-document-missing.png). 로컬 재현 서버/검사·build 로그·합성 mock PDF/PNG 화면은 `/Users/jisung/.codex/visualizations/2026/11/16/01a1e330-e792-7d52-8ae4-3775597d1194/dev23-evidence/`다. 요청 집계는 method/path/purpose/count만 확인했고 token/header·서명 URL/원문을 증거에 남기지 않았다. 다운로드 내용 검사는 이 서버가 만든 합성 버전 표식만 사용했다.
+
+| 로컬 ID | 연결 실제 case | 실행·관찰 | 로컬 판정 |
+| --- | --- | --- | --- |
+| DBOX-DL01 | 07/21 | 비로그인·세션 확인 상태/401 뒤 보호 filename·iframe 숨김. 이전v1 선택→다운로드401→로그인 next의 같은 version 보존을 최종 관찰 | PASS |
+| DBOX-DL02 | 07/10 | current v2/REPLACED v1·번호순 이력, 업로드/최종수정·크기/MIME·nullable 페이지수/업로더 표시명. metadata는 GET versions만 사용하고 추출값 GET/목록 leaf를 추가 요구하지 않음(Node/HTTP) | PASS |
+| DBOX-DL03 | 08/10 | v1 선택 후 기존 원본 표시 해제/URL 변경. mock697bytes·HTTP651bytes 실제 다운로드 이벤트와 합성 v1 표식 일치, HTTP DOWNLOAD 티켓1+원본 `/original/1` GET1 | PASS |
+| DBOX-DL04 | 05/10 | HTTP 이전 버전 만료·current 미확인/페이지수 null·표시명 null을 구분. 기존 KST/미래/잘못된 날짜 계약 테스트 전체를 함께 통과했으며 날짜로 원본 권한을 합성하지 않음 | PASS |
+| DBOX-DL05 | 08/10 | 선택 version이 사라지면404 안내/원본 버튼 없음·current fallback0. invalid document/version은400 안내·versions/티켓0요청. 정상 재조회로 복구 | PASS |
+| DBOX-DL06 | 08/22 | 실제 Next 전체 mock·HTTP의 PDF 원본을 메모리 blob iframe/기본 브라우저 뷰어에서 표시. 합성 문서/1페이지·네이티브 도구를 screenshot/접근성 tree로 확인 | PASS |
+| DBOX-DL07 | 08/22 | mock PNG 실제 decode/naturalWidth>0·이미지 확대100→125%를 키보드 Enter로 조작, 이미지 영역만 scroll·375px 문서폭360. JPEG 실파일·다른 기기 표시는 미실행 | PASS(명시 PNG 범위) |
+| DBOX-DL08 | 07/10 | metadata403/404/503·sizeBytes null 손상 응답을 권한/없는 문서/오류로 구분하고 파일 정보를 노출하지 않음. Node/mock의 관리 leaf 거절은 metadata 허용·원본404 | PASS |
+| DBOX-DL09 | 08/09 | 티켓404/409/503 각각 POST1/원본GET0·구분 안내, 상태 충돌 뒤 명시 metadata 재조회에 같은 선택v1 유지. 실제 서버 권한 집행 증명은 아님 | PASS |
+| DBOX-DL10 | 08/09 | storage403·잘못된 MIME·CORS 거절은 오류 유지/거짓 완료0·fallback/자동 재발급0. HTTP 각 티켓1+GET1. Node의 빈/손상·10MiB 초과/stream 오류·안전 URL도 통과 | PASS |
+| DBOX-DL11 | 09 | 이미 만료된 티켓은 GET0, 합성1.5초 티켓 표시 만료 뒤 iframe0·자동 POST0, 지연 GET은 만료에 중단/오류·재발급0. Node 가짜Clock의2분·전송 정체/만료를 별도 검증 | PASS |
+| DBOX-DL12 | 21 | 지연 DOWNLOAD 중 v1→v2 선택: old POST1/후속 원본GET0·다운로드 안내0. Node에서 중복 클릭·dispose/늦은 응답·계정/회사 scope/Abort·StrictMode cleanup 재마운트·URL 해제를 확인 | PASS |
+| DBOX-DL13 | 21 | HTTP 합성 account2/company7002 및 같은 account/company 교체의 refresh/하드 리로드 뒤 이전 filename/iframe0·티켓0, metadata404. in-flight 계정/회사 경쟁은 Node 증거와 구분 | PASS |
+| DBOX-DL14 | 22 | 목록2페이지→키보드 상세 진입→같은 page2 복귀·목록 제목 초점, 상세/버전 선택 h1 초점·role/status/alert·375px overflow 없음(360≤375)을 관찰 | PASS |
+| DBOX-DL15 | 09/21 | mock 외부resource0·HTTP 비loopback resource0, sessionStorage 서명/원문0. mock 원본 요청 전후 company 공간 동일·실제 auth+회사 mock의 token/refresh 추가 호출0(Node) | PASS |
+| DBOX-DL16 | 21/22 | async 상세/목록을 실제 Next에서 조회/하드 리로드·3구성 빌드. 운영 mock build와 hybrid Preview artifact의 production start는 명시 오류/exit1로 예상 차단 | PASS |
+
+### Figma/정책/화면과 명시 승인 경계
+
+- `3135:75782`/`3135:83161` 두 frame의 design context·screenshot을 확인했다. breadcrumb/1100px 폭·흰20px 카드/24px padding·26px 제목·회색 metadata4칸·미리보기/서류정보/버전기록/최근활동 배치를 기존 토큰·Button/RightArrow·Add/Minus로 표현한다. 원본 screenshot을 제품 자산으로 사용하지 않았다.
+- D2의 명시 선택: PDF는 브라우저 기본 뷰어(브라우저별 툴바 차이), 이미지는 확대/축소, 최근 활동은 제공 준비 중이다. 최근 활동 API/감사 로그를 만들지 않았고 두 번째 frame의 업로드 완료 Toast를 재생하지 않는다. 모든 frame/pixel/브라우저 일치 승인은 아니다.
+- 정책상 기능 의미: 문서 status/current·만료 미확인과 회사 인증/반영을 구분한다. 기존의 고정 ‘인증’·‘무기한’·예시 활동을 실제 결과로 합성하지 않는다. 지우기/다시 업로드는 후속 Task라 비활성이다. D2와 다른 전체 화면 예외 승인을 주장하지 않는다.
+- 네이티브 PDF 도구는 이미 접근한 bytes를 저장/인쇄할 수 있다. 앱의 새 PREVIEW/DOWNLOAD 요청은 티켓을 새로 검사하며 표시 만료/Blob URL 해제가 이미 저장한 파일의 폐기나 다운로드 회수를 보장하지는 않는다. UI는 ‘다운로드 시작’을 안내하고 OS 저장 완료를 선언하지 않는다.
+- 초기 HMR의 stale ref로 버전 선택이 수행되지 않은 도구 관찰과 짧은 loading snapshot은 PASS로 세지 않았다. fresh snapshot/실제 선택·최종 상태로 재현해 위 DL01/05를 확인했다. source 실패로 위장하거나 미완료 화면을 통과 처리하지 않았다.
+- 접근성은 DOM/접근성 tree·키보드/초점으로 확인했다. 실제 VoiceOver 음성·Safari/Firefox/모바일 실기기·실제 JPEG/비합성 파일은 미실행이다. 공통 헤더/목록의 기존 영역을 별개 디자인 재작업으로 확대하지 않았다.
+
+### 실제 API의 남은 차단 · DBOX-07~10/21~22
+
+- 이번 실제 **0통과·6차단/업무 실행0건**. DEV-22의8차단 중21/22와 중복2개를 제외해 두 후속의 실제 고유 집계는 **0통과·12차단**, DBOX-11~20의 **10대기/미실행**이다. 원본22계획과 DEV-22 당시8차단/다른14대기의 날짜별 이력은 보존한다.
+- 마지막 확인일2026-11-16. 필요한 역할은 backend 실행/권한·storage 계약 담당과 비식별 합성 계정/회사/파일·안전한 조회/티켓 발급·사용/보존/복구 담당이다. 개인/일정은 미확인이다. 현재 실행 SHA/실제 wrapper·현재/이전 managed object·leaf/owner/ACTIVE 권한·2분 만료·실제 MIME/크기/CORS·안전한 오류 및 회수·복구 자원을 확보한 뒤 해당 case를 재개한다. 비밀값이나 원문을 채팅/문서로 요청하지 않는다.
+- D1은 이번 로컬 선행만 허용한다. main 반영·실제 원본 통합 PASS/회수 보장·운영/배포·가입 QA/다른 Task의 예외로 확대하지 않는다. 테스트 소스 열람/HTTP 대역·mock/실제 통합을 별도로 판단한다.

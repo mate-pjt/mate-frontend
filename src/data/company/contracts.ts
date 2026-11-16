@@ -147,6 +147,15 @@ export type DocumentBoxPage = {
   totalPages: number;
 };
 
+export type DocumentHistoryVersion = DocumentBoxVersion & {
+  contentType: string;
+  sizeBytes: number;
+  pageCount: number | null;
+  uploaderDisplayName: string | null;
+};
+export type DocumentAccessPurpose = "PREVIEW" | "DOWNLOAD";
+export type DocumentOriginal = { blob: Blob; expiresAt: string };
+
 export type CompanyRegistrationProposal = {
   proposalId: string;
   revision: number;
@@ -265,6 +274,8 @@ export interface CompanyDocumentRepository {
   getDocumentBoxContext(access: AuthAccess, signal?: AbortSignal): Promise<{ companyId: number | null }>;
   listCompanyDocuments(access: AuthAccess, companyId: number, page?: number, size?: number, signal?: AbortSignal): Promise<DocumentBoxPage>;
   getCompanyDocumentVersions(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentBoxVersion[]>;
+  getCompanyDocumentHistory(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentHistoryVersion[]>;
+  readCompanyDocumentOriginal(access: AuthAccess, documentId: string, versionId: string, purpose: DocumentAccessPurpose, signal?: AbortSignal): Promise<DocumentOriginal>;
   createDocumentUpload(access: AuthAccess, file: File, idempotencyKey: string): Promise<DocumentUpload>;
   createDocumentVersion(access: AuthAccess, documentId: string, replacesVersionId: string, file: File, idempotencyKey: string): Promise<DocumentUpload>;
   retryDocumentProcessing(access: AuthAccess, documentId: string, versionId: string, kind: "ocr" | "verification", idempotencyKey: string): Promise<{ status: string }>;

@@ -20,7 +20,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`notification-email-recipient.md`](./notification-email-recipient.md): 알림 수신 주소 선택, 대체 주소 인증·재전송·전환
 - [`my-settings-home.md`](./my-settings-home.md): 설정 및 관리 첫 화면, 알림 설정 진입·로그아웃·로그인 복귀
 - [`my-company.md`](./my-company.md): 나의 회사 정보의 미연결·신청·연결 상태와 회사 선택 진입
-- [`company-documents.md`](./company-documents.md): POL-13의 계약 경계/DBOX22 미실행 계획과 DEV-22 `/my/documents`의 로컬 mock/HTTP 대역·브라우저 증거. 가입 AUTH/실제 API 사례와 구분
+- [`company-documents.md`](./company-documents.md): POL-13의 계약 경계/DBOX22 미실행 계획과 DEV-22 목록·DEV-23 상세/원본의 로컬 mock/HTTP 대역·브라우저 증거. 가입 AUTH/실제 API 사례와 구분
 - [`qna.md`](./qna.md): 자주 묻는 질문의 정책 문구·아코디언·모바일·의견 배너
 - 이후 기능마다 `docs/qa/<기능-slug>.md`를 하나씩 만들고 아래 목록에 추가한다.
 
@@ -41,7 +41,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 | 자주 묻는 질문 | `/qna` | [11_자주묻는질문, 2314:31201](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-31201) | [qna.md](./qna.md) | 목 기반 브라우저 화면 7건 통과, Q&A API 없음 |
 | 설정 및 관리 첫 화면 | `/my` | [9.0.0 설정 및 관리, 3139:52490](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3139-52490) | [my-settings-home.md](./my-settings-home.md) | 2026-09-28 기존 화면 7건 통과, 새 회사 메뉴 재확인 대기 |
 | 나의 회사 정보 | `/my/company`, `/my/company/start` | [미연결 3162:51271](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-51271) 외 3개 상태 | [my-company.md](./my-company.md) | 2026-11-02 QA-05 조회 4통과·6차단（이전 0통과·5차단·5대기 보존）. 상태별 계정/회사·검색 fixture/신청 변경·복구·실행 버전 잔여로 전체 통합 차단. AUTH-07 부분 확인/08 차단 별도 |
-| 가입 후 서류함 | `/my/documents`(DEV-22 목록)·후속 상세/처리 별도 | [서류함 3135:75612](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-75612) 외 POL-13 지정 상태 | [company-documents.md](./company-documents.md#dev-22-local-qa) | 2026-11-16 DEV-22 사용자 로컬 선행 범위의 mock/HTTP 대역·실제 Next/모바일/키보드 검사. 실제 DBOX-01~06/21~22는0통과·8차단, 나머지14대기/미실행. 기존22미실행 계획·가입/회사 QA·회사 추가/OCR 계약 Gate 보존 |
+| 가입 후 서류함 | `/my/documents`·`/my/documents/[documentId]`(DEV-22/23)·후속 처리 별도 | [서류함 3135:75612](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-75612) 외 POL-13 지정 상태 | [company-documents.md](./company-documents.md#dev-22-local-qa) | 2026-11-16 DEV-22/23 각각의 사용자 로컬 선행 범위·실제 Next/mock/loopback HTTP·모바일/키보드. DEV-23은[상세 근거](./company-documents.md#dev-23-local-qa)와 실제6차단이며 두 후속 고유 실제0통과·12차단/다른10대기. 당시 DEV-22 8차단/다른14대기·원본22계획·가입/회사 QA/추가·OCR 계약 Gate 보존 |
 
 새 Figma 기능이나 화면을 구현할 때 실제 통합 테스트가 미뤄졌다면 해당 기능의 펀치리스트 파일을 즉시 만든다. 위 목록의 `미작성`은 검증 완료를 뜻하지 않는다. 기능이 늘면 같은 표에 행을 추가한다. 하나의 화면에서 정상·빈 상태·오류·권한·모바일 등 서로 다른 결과가 나오면 별도 case ID를 쓴다.
 
