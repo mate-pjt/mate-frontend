@@ -180,3 +180,12 @@ Blocker0 / Major0 / Minor0. 무관 변경·새 라이브러리·secret/개인정
 - 이후 변경은 WBS 완료/현재 없음·집계/종료 인계, POL-12 종료 체크포인트와 이 실제 검토 결과 기록뿐이다. 문서 검사·primary ai-review 재검토와 독립 freshness 대상으로 다시 전달한다. 최종 독립 판정은 수행 후 로컬 `pol-12-mat-287/verifier-final.md`와 최종 보고를 따르며 새 결과를 선기록하지 않는다.
 - 종료 검사 최초28/29: 아직 생성되지 않은 최종 독립 보고서 링크1건이 실패했다. 미래 보고서 경로를 미실행으로 명시한 파일명으로 바꿨으며 기록/정책·검사기를 우회하지 않았다. 자동 문서 수정1/3, 재검증 결과는 아래에 기록한다.
 - 교정 뒤 `validate_docs.py --final` **29/29 PASS**. 종료 상태 집계·현재 없음/다음 POL-13 준비·개발 후속 미착수를 포함한4파일 최종 검사와 diff-check를 확인했다. [최종 결과](/Users/jisung/.codex/visualizations/2026/11/13/01a1d3df-d6dc-7381-ac07-ba024b2566f1/pol-12-mat-287/validation-final.json). primary ai-review 여섯 항목/관련 context-audit를 종료 diff에 다시 적용해 PASS·미해결 문제0을 확인했다. 이후 제품/정책/기록 내용 변경 없이 독립 freshness에 전달한다.
+
+### PR 전달 중 출력 오류 후 갱신·재검토 범위
+
+- 위4파일 최종 freshness PASS와 blob은 당시 diff의 근거다. PR #77의 `commits` 중첩 객체 조회에 불필요한 작성자 필드가 포함되는 수행 오류가 이후 발생했다. 사용자에게 즉시 알렸고 실제 값은 문서/PR/QA에 복사하지 않는다. 기존 도구 출력의 삭제/무효화는 주장하지 않는다.
+- Documentation Update Check를 다시 수행했다. 기존 재발 기록/출력 예방 규칙에 따라 `docs/ai-context/ai-failures.md`를 추가해 최종 변경은 Markdown5파일이다. POL-12의 수행 체크포인트와 이 검토 기록도 보완한다. runtime·패키지·하네스 변경0, WBS 상태/선행·MAT-287 응답 대기와 다음 POL-13 미착수는 불변이다.
+- 후속5파일 diff에 링크/ID·상태·보존/범위·Markdown/diff-check 검사와 ai-review 여섯 항목/관련 context-audit·독립 verifier를 다시 적용한다. 기존 도구 출력 한계는 별도 보존하며 이 기록 추가를 과거 오류 제거로 세지 않는다. Git 전달은 새 최종 head의 CI를 다시 확인한다.
+- 실제5파일 재검증: `validate_docs.py --final` **29/29 PASS**, 자동 문서 교정1/3 유지. primary는 실제 추가 diff와 전체 범위/검증을 다시 확인했다. 관련 context-audit는 수행 오류의 `ai-failures.md` 갱신 필요 판단을 수정했고 package/구조/하네스·정책/선행 변경 없음은 유지한다.
+- ai-review 재검토 요약(5파일): **리뷰 요약**은 문서 요구 충족 PASS, **발견된 문제**는 출력 수행 오류/잔여 한계를 위에 보존하고 문서 diff의 미해결 Blocker/Major/Minor0, **누락된 검증**은 영향 없는 앱/실제 API 미실행과 새 head 원격 CI 확인 예정, **문서 갱신 필요 여부**는 예방 기록 포함5파일 반영 완료, **개발자 확인 필요**는 추가 결정 없음, **추천 수정 방향**은 독립5파일 재검토 뒤 별도 예방 기록 커밋/정상 push·새 head CI 확인이다.
+- 독립5파일 freshness 결과는 수행 후 로컬 `pol-12-mat-287/verifier-delivery.md`와 최종 PR/보고를 따른다. 해당 추가 diff를 전달한 뒤 제품/문서를 수정하지 않는다.
