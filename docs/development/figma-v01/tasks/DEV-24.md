@@ -91,3 +91,59 @@
 - 다음 첫 행동: 최신 Git/main·POL-13·기존 업로드/opaque handle·목록/상세 결과를 확인하고, 그때의 backend GitHub/개발 Swagger에서 기존 회사 귀속/최종 교체·권한/상태·오류/잔존/복구 계약과 실행 SHA·합성 계정/파일·사용/보존/복구 범위를 대조한다. 자체 요구사항 Gate/Brief·수정 대상/영향/검증을 편집 전에 제시하고, 부족한 계약은 제품 착수 전에 차단/필요 결정으로 남긴다. API 존재·closed PR/기획 보류·가입 command로 완료를 추정하지 않는다.
 - DEV-23의 exact 버전/명시 원본·페이지 복귀와 D1 로컬 선행/D2 기본 뷰어는 이번에 완료된 선행 결과다. 이를 DEV-24의 로컬 선행·화면/실제 API 실행·Git/Chromatic 예외 승인으로 확대하지 않는다.
 - **선정/인계만 수행했다.** DEV-24 전용 source/API/Figma 조사·정책 결정·설계·구현·검증·업무 요청/파일 처리·별도 Git 전달은 시작하지 않았다.
+
+<a id="dev-24-investigation"></a>
+
+## 2026-11-16 · 요구사항 Gate 조사 체크포인트
+
+- 시작 환경: `main`/`6f6b25b49926645358247d6199937d61ee72c059`, `git status --short --branch` 변경0. `git fetch origin main` 뒤 로컬/원격 SHA 일치, DEV-22/23 선행 main 반영 확인. 기존 DEV-24 branch/미커밋 작업 없음. 조사 branch `feat/dev-24-document-upload`를 같은 HEAD에서 만들었으며 무관한 변경/reset/stash 없음.
+- 이번 승인: 사용자 2026-11-16 요청의 DEV-24 하나·검증/두 리뷰·목적별 commit/push·PR/최종 CI·조건 충족 시 정상 merge/로컬 main FF. 이번 Chromatic 월간 한도만 예외. 실제 업무 API/파일/OCR/외부 기관 처리·삭제·운영/배포·다음 Task 실행 승인은 포함하지 않는다. 과거 Task의 로컬 선행/실제 QA 예외를 승계하지 않는다.
+- 확인한 현행 근거: backend dev `adc0e265ef0e2aa78ccb376e1fa322edd664b290`/main `4b5f31de578c41e698dda9c99e66149b7292f031`, 중앙 main `c9e50ff591ae18023164e1a94581c611bf1e4f29`. 개발 OpenAPI GET200/3.1.0/v1. [배포 run](https://github.com/mate-pjt/mate-backend/actions/runs/43389204151)은 dev SHA/completed/success. 실행process SHA/실제 업무 응답·합성 계정/파일·변경/잔존/복구 범위는 미확인, 업무 API/파일 처리0건.
+- 새 소스 관찰: [초기 생성](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/companydocument/CompanyDocumentUploadPersistenceAdapter.kt)은 계정 owner/`company_id=null`. 그러나 [BusinessVerificationDocumentTransitionPolicy](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/businessverification/BusinessVerificationDocumentTransitionPolicy.kt)의 `matchesVerifiedCompanyIdentity`/`applyAcceptedVersionTransition`은 **기존 회사의 attached candidate**에 대해 사업자번호·회사/identity 인증·기존 current 근거를 검사한 뒤 새 version VERIFIED·이전 current REPLACED·회사/identity 근거와 current pointer 교체/candidate 해제를 같은 transaction에서 수행한다. 전용 최종확정 endpoint가 없다는 이유로 이 지원 범위까지 계약 부재로 간주하지 않는다. 신규 회사 귀속·회사 프로필 변경과 구분하며 현재 실행/통합 PASS는 아니다.
+- 제품 경계: 서류함 신규 series를 기존 회사에 연결하는 관리 계약은 확인되지 않았다. 가입 회사 등록의 미귀속 문서 연결은 별개이며 재사용을 가정하지 않는다. `documentType`은 `BUSINESS_REGISTRATION`, PDF/JPG/PNG·1..10×1024×1024bytes/PUT10분/session30분이다. MAT-162는 현재도 Backlog/기획 보류·구현 금지이고 닫힌 backend PR80은 미병합이다.
+- blocking 질문: 기존 문서 재업로드만 현행 서버 전이로 로컬 선행하고 신규 추가·실제 API 통합은 차단으로 보존할지, 전체 계약 전 제품 구현을 기다릴지 사용자 결정을 요청했다. 사용자의 ‘회사 귀속 계약을 쉽게 설명’ 요청에는 합성 예시로 답했으며 **범위 결정/승인 답변으로 간주하지 않는다**. 설명용 enum 오기는 즉시 정정했다. 아직 제품 Brief/설계/편집 미착수.
+- 선별 조사 증거: 로컬 `dev24-evidence/receipt.json`과 관련 Kotlin source는 이번 세션의 visualization 폴더에 저장했다. source/배포/게시 명세/실행/실제 응답을 구분한다. GitHub branch 응답의 공개 작성자 메타데이터를 선별 없이 출력한 수행 오류를 사용자에게 알렸고 이후 allowlist만 출력한다. 값을 Task/QA/PR에 재인용하지 않으며 기존 출력 삭제를 주장하지 않는다.
+- 다음 행동: 사용자 답변을 기다리며 read-only context-audit/기존 구현 패턴 확인만 진행한다. 답변 후 확정 Brief·수정 파일/영향/단계/위험/검증을 편집 전에 제시한다. 최종 상태는 WBS 한 곳에서 관리한다.
+
+<a id="dev-24-brief"></a>
+
+## 2026-11-16 · 사용자 결정과 Implementation Brief
+
+- 결정자/원문: 2026-11-16 사용자, 쉬운 회사 귀속/endpoint 예시 설명 후 **‘재업로드만 로컬 선행·신규 추가/실통합 차단 (추천)’** 선택. 위 질문은 이제 확정됐으며 과거 DEV-22/23의 승인을 확대 적용한 것이 아니다.
+- 요구사항: 기존 회사 문서의 재업로드를 목록/상세에서 기존 업로드·OCR/진위 상태와 연결한다. 신규 series 추가·회사정보 변경/MAT-162·삭제/DEV-25·실제 서버 파일/OCR/외부 기관 처리·운영/배포·다음 Task 구현 제외.
+- 성공 기준: 정확한 MIME/확장자·1..10×1024×1024bytes, 후보 생성→opaque handle PUT→completion→상태/버전 재조회. 기존 current 보존·명시 재시도/멱등 키·세션/오류·후보 경쟁/계정/화면 수명·비저장, 서버에서 해당 version의 VERIFIED/current가 확인된 뒤만 교체 완료/목록·상세 재조회. 재조회/reload·다른 후보는 자신의 성공 Toast로 재생하지 않는다.
+- 확인한 파일/패턴: 공개 company client/Document 포트·HTTP descriptor/private map·회사 계정별 mock, document-box/detail/original, UploadPopup/native dialog·Sonner·기존 토큰, flow-scope/세션 epoch. 신규 library/endpoint·공급원 그룹/snapshot/guard·가입 회사 등록 흐름은 추가하거나 변경하지 않는다.
+- 수정 계획: `features/company/document-reupload.ts`와 `components/my/document-reupload-dialog.tsx` 추가, 목록/상세 연결. `data/company/{contracts,client,http-repository,mock-repository}.ts`와 새 업로드/상태 mapper에 optional signal·응답 검증·안전한 재업로드 상태를 추가. `ui/popup/popup.tsx`는 기존 default를 보존한 옵션/반응형 보완. 재업로드 계약/controller·mock/HTTP 테스트, Task/QA/WBS·coverage/architecture/data-access/plan·검토 기록 갱신. 범위가 바뀌면 먼저 기록한다.
+- Figma 근거: [재업로드 frame3135:75938](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-75938)의 하위 [upload_popup3189:118415](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3189-118415) design context와 실제 screenshot을 확인했다.640px·24px padding/close·최근30일 안내·drop/file select·체크리스트·닫기/업로드 footer를 기존 Popup과 토큰으로 구성한다. 상태/오류/처리 안내는 현행 계약의 필요 기능이며 다른 화면 전체의 Figma 예외를 승인한 것은 아니다.
+- 검증 계획: Node22.20.0/실제 scripts의 `pnpm test`, `pnpm lint`, API/mock/hybrid Preview `pnpm build`, 공유 Popup 영향의 `pnpm build-storybook`, `git diff --check`. 합성 파일의 실제 Next mock·loopback HTTP 대역 브라우저, 경계/응답 유실/중복/실패·권한/계정·현재 버전 보존·완료/비저장을 확인한다. DBOX-11~15/21~22 실제 통합은 사용자 승인대로 차단 보존하며 실행 SHA·합성 자원/변경·잔존/복구·사용 승인 뒤 별도 재개한다.
+- 위험/가정: 관리 권한은 서버 leaf가 최종 판단한다. 신규 추가 계약 부재를 기존 attached replacement의 최종 전이 부재로 확대하지 않는다. MAT-162의 회사 프로필 변경을 활성화하지 않고 opaque handle·파일 원문/추출값/서명 URL을 storage/로그/문서에 저장하지 않는다. 같은 요청의 명시 재시도와 새 파일의 새 명령을 구분한다. 자동 수정 한도0/3에서 시작한다.
+- 다음 행동: 승인 Brief와 위 편집 계획에 따라 재업로드만 구현한다. source/배포/명세/실행·mock/HTTP 대역/실제 통합과 Git 전달 판정은 계속 분리한다.
+
+<a id="dev-24-verification"></a>
+
+## 2026-11-16 · 구현/검증 체크포인트와 문서 갱신
+
+- branch/기준 HEAD: `feat/dev-24-document-upload`/`6f6b25b49926645358247d6199937d61ee72c059`+이번 Task 변경뿐이다. 기존 미커밋 변경0/무관한 변경 혼합0·업무 API/실제 파일/OCR/기관/삭제0건.
+- 구현: 안전한 `DocumentReuploadStatus`/검증된 replacement descriptor·optional signal, 순수 재업로드 controller와 native dialog/기존 UploadPopup, 목록/상세·현재 버전 URL/재조회와 Sonner1회를 연결했다. mock의 기존 current/단일 후보·키/payload/기간/계정 경계와 최종 교체를 서버 소스 의미에 맞췄다. 가입 회사 등록/새 library/7공급원·snapshot/hybrid/production guard·전역 storage schema·profile 적용/MAT-162·삭제는 변경하지 않았다.
+- 자동 검증: Node22.20.0/pnpm11.3.0 `pnpm test`653/653(24파일), `pnpm lint`, API/mock/hybrid Preview `pnpm build`, `pnpm build-storybook` PASS. 실제 `.env`를 복사하지 않은 격리 snapshot에 로컬 node_modules를 clone해 빌드/Next를 실행했다. 테스트/소스 지문과 로그는 세션 `dev24-evidence`에 남긴다. 이번 실제 package scripts8개를 확인했고 type-check/format 명령을 만들지 않았다.
+- 실패/교정: 첫615회귀 중3개는 기존 테스트의 미사용 네 번째 문자열 인자가 새 optional signal과 충돌한 원인이었다. 인자 제거 뒤 새 응답 유실 테스트의 spy 원본 함수 캡처를 교정해 전수652가 통과했다. 브라우저에서 숨겨진 입력의 초기 초점과 dialog unmount 전 close 순서를 교정하고 Escape 뒤 trigger 복귀를 재통과했다. PUT 주소403 갱신/session410 재선택도 별도 회귀로 확인했다. 실패에 따른 수정은 테스트2회·브라우저 초점1회인3/3이며 이후 최종 재검증은 PASS다. 세 번째 수정 뒤 계속 실패한 검사는 없다.
+- 브라우저/통합: [DBOX-RL01~18](../../../qa/company-documents.md#dev-24-local-qa)에 실제 Next mock·loopback HTTP와 Node/source 증거를 구분했다. 미확정/오류·PUT 재시도·최종401/409·OCR 재시도·진행 중 닫기/회사 전환·mobile/초점·상세 새 version·storage/리소스를 검증했다. 최초 socket 단절의 wire completion2회는 Chromium 전송 재시도 관찰로 남기고, 앱 대역의 자동 재제출0/202 파손 실제 completion1회와 구별한다.
+- 미실행: 신규 series 회사 귀속·실제 엔진/기관/파일/API·실행 SHA·실제 권한/두 계정·10분/30분/24시간 경계/복구와 VoiceOver/실제 기기는 차단/미실행이다. DBOX-11~15/21~22 실제0통과·7차단, 기존12와 합친 고유17차단/5대기를 보존한다. source의 문서 교체/인증 근거·시각 전이를 회사명/주소 등 프로필 반영으로 확대하지 않는다.
+- Documentation Update Check: architecture/data-access/repositories에 공개 상태 모델·신호/오류·후보/current·저장소 경계, plan/coverage/QA/Task/WBS에 승인 단위/추적/남은 차단을 반영한다. base는 package/scripts/runtime 불변, harness는 규칙/역할/구성 불변이라 수정 불필요다. ai-failures에는 원격 출력/enum 설명 교정·native dialog 종료의 실제 재발/예방을 기록했다. 감사 자체는 read-only이며 확인된 사실 동기화는 이번 승인 Task의 문서 편집으로 수행했다.
+- 다음 행동: 문서 링크/ID·의존성/범위/기준선·기존 QA/형식/diff-check와 context-audit, primary ai-review 여섯 섹션·read-only verifier. 통과 뒤 승인 로컬 단위 판정/원래 잔여 차단과 다음 하나를 WBS에 남기고 metadata freshness 검토 후 목적별 Git 전달한다. 다른 Task 구현은 시작하지 않는다.
+
+- primary diff 검토 중 예방 보완: optional retryUntil의 손상 검증/회사 공간만 초기화하는 회귀와 pagehide/popstate/pageshow 복귀 시 dialog 종료 상태를 함께 비우는 수명을 보완했다. 최종653 tests·lint·3구성/Storybook build(소스256파일 snapshot 일치)와 실제 페이지 이탈/뒤로 복귀·재진입·정상 교체/reload를 재확인했다. 이전 검증을 후속 source의 PASS로 재사용하지 않았다. 소유한 두 Next/합성 API 프로세스와 브라우저 탭을 종료했고3224/3225/4324 listener0을 확인했다.
+
+<a id="dev-24-close"></a>
+
+## 2026-11-16 · 승인 로컬 단위 판정·잔여와 다음 하나
+
+- D1 로컬 단위 **PASS**: 기존 회사 서류 재업로드/명시 처리 재시도·오류/미확정/계정·회사/탐색/만료 수명·후보/current·목록/상세 URL/Toast·opaque handle/비저장을 구현/검증했다. test653/24파일·lint·API/mock/hybrid/Storybook build·로컬18사례·최종 문서56검사/context-audit·primary ai-review 여섯 섹션과 독립 verifier 모두 PASS, 미해결 Blocker/Major/Minor 없음.
+- 원래 DEV-24 전체와 구분: 신규 series의 기존 회사 귀속/실패 잔존/복구 계약과 실제7사례·실행 SHA/합성 자원·권한/기관/파일/시간/복구는 차단을 유지한다. 원래 신규 추가를 완료로 세지 않아 WBS의 Task 전체는 차단이며 로컬 재업로드 단위만 전달한다. MAT-162·회사 프로필 적용/삭제·운영/배포는 이번에 수행하지 않았다. 담당은 Backend 계약/실행, 제품/디자인, QA 자원/사용·잔존·복구 역할이며 개인/일정은 미확인이다. 재개 때 최신 소스/명세/실행/자원·승인과 신규 귀속 계약을 확보하고 자체 Gate에서 남은 범위를 정한다.
+- 다음은 [DEV-25 하나](DEV-25.md#dev-25-dev-24-handoff)다. WBS 우선순위/기본 순서와 DEV-23 선행 충족을 확인해 선정했고 앞선 정책/자원·DEV-08/DEV-19 및 기존 차단을 유지했다. DEV-25의 삭제 확인/명령/완료·오류/계정/목록·원본·잔여/복구 기준을 다음 자체 Gate에서 확인한다. **선정/인계만** 했고 구현·전용 조사/실제 삭제는 시작하지 않았다.
+- Git 전달은 이번 사용자 최초 요청으로 승인됐다. 목적별 작은 commit/push·PR 템플릿/type 라벨·실제 최종 head CI/리뷰·정상 merge/로컬 main FF를 진행하며 이번 Chromatic 월간 한도만 예외다. 실제 결과는 최종 PR/종료 보고와 이 세션 `dev24-evidence/delivery.json`에 기록하고 force/직접 main push/보호 우회/검사 강제 성공은 하지 않는다.
+- 종료/인계 metadata는 문서 검사와 primary ai-review를 재확인하고 독립 verifier freshness에 다시 제출한다. source/test는 첫 독립 PASS의 지문과 동일하며 검토 뒤 바뀐 것은 위 종료/인계 문서뿐이다. 최종 freshness와 Git 결과를 검토/외부 receipt에서 확인한다.
+
+## 2026-11-16 · Git 전달 체크포인트
+
+- [PR #81 · 기존 회사 서류 재업로드 연결](https://github.com/mate-pjt/mate-frontend/pull/81)을 `feat/dev-24-document-upload`→`main`으로 생성했다. 최초 전달은6개 목적별 commit/head `1558dfe8e67a8ef78b15ff56bc34a74184a99d3a`, feature/test/docs 라벨이다. 실제 PR 연결 metadata만 추가했으며 source/test는 독립 PASS/빌드 지문과 동일하다. 최종 문서 연결 commit 뒤 head의 CI/원격 리뷰·정상 merge/로컬 main FF와 clean·SHA 일치는 실제 PR/종료 보고 및 세션 `dev24-evidence/delivery.json`에 기록한다. 이번 Chromatic 월간 한도 예외와 실제 QA/신규 추가 차단을 유지한다.

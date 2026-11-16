@@ -307,3 +307,11 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Root cause: 앞선 Git/PR 출력 예방 규칙을 중첩 `commits` 객체에 적용하지 않았다. 상위 필드 지정만으로 하위 객체까지 최소화된다고 가정했다.
 - Fix / prevention: 이후 조회는 SHA·검사 이름/상태·결과 등 필요한 값만 `--jq` 또는 새 객체로 투영한다. 커밋 정보가 필요하면 GraphQL에서 `oid`/`messageHeadline`만 요청하고 author/committer 객체를 포함하지 않는다. 사용자 식별 정보가 붙는 중첩 필드는 호출 전 schema와 출력 allowlist를 함께 확인한다.
 - Related files / review: POL-12 후속 작업·검토 기록에 수행 한계와 추가 문서 범위를 남기고, 변경 뒤 문서 검사/ai-review·독립 verifier 및 실제 최종 PR head의 CI를 다시 확인한다. 제품/하네스 설정 변경 없음.
+
+## 2026-11-16 · DEV-24 조사 출력과 native dialog 종료
+
+- Task: DEV-24 재업로드 Gate 조사/로컬 검증.
+- Actual failure: 첫 GitHub branch 응답에서 불필요한 공개 작성자/서명 메타데이터를 선별 없이 도구 출력에 전달했다. 원문 값은 재인용하거나 Task/QA/PR에 저장하지 않았고 사용자에게 공개했다. 환경파일/credential/실제 업무 API를 조회한 사건과 구분하며 기존 출력 삭제를 주장하지 않는다.
+- Root cause / prevention: 중첩 structuredContent도 원문이라는 기존 규칙을 첫 조회에 적용하지 못했다. 이후 모든 원격 응답은 내부 파싱 뒤 ref/SHA·경로·필요한 source 본문/비식별 계약·PR/CI 상태만 새 객체로 출력했다. 설명용 업로드 enum도 실제 owning source와 대조해 BUSINESS_REGISTRATION으로 즉시 정정했다. 예시를 실행 계약으로 제시하기 전 enum/필드를 확인한다.
+- Browser failure / fix: conditional dialog를 먼저 unmount하니 native 초점 복귀가 사라졌다. 연결된 dialog에서 controller dispose→close→React 종료 순서를 사용하고 Escape 뒤 trigger 초점 복귀를 실제 브라우저에서 재확인했다. 숨겨진 파일 입력의 초기 초점도 실제 닫기 버튼으로 바로잡았다.
+- Verification corrections: optional AbortSignal과 충돌하던 기존 테스트의 불필요한 문자열 인자를 제거했고, 새 응답 유실 테스트는 spy 전에 원본 함수를 보관하도록 고쳤다. 최종653 tests/lint·3구성/Storybook build와 로컬 QA를 재확인했다. 제품/하네스 설정을 넓히거나 실제 QA 차단을 해제한 것은 아니다.

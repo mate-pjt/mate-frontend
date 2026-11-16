@@ -134,6 +134,8 @@ src/data/
 
 - 등록/초대 수락 후 API 구현은 refresh, mock 구현은 mock 회사 상태를 갱신한다. 화면이 직접 post-mutation refresh를 호출하지 않는다.
 - HTTP 업로드는 SHA-256·파일 metadata·멱등성 키로 업로드 세션을 만들고, 내부 descriptor의 method/header/URL로 `PUT`(credentials omit)한다. 화면에는 document/version ID와 opaque uploadHandle만 반환한다.
+- DEV-24의 기존 문서 교체는 `createDocumentVersion`의 exact document/current UUID·SHA/metadata/같은 멱등 키를 사용한다. `document-upload-api.ts`가 replacement 응답의 ID/status/버전·세션과 PUT descriptor를 검증하고, `getDocumentReuploadStatus`는 기존 processing GET에서 추출값 없이 별도 상태 모델만 반환한다. 교체/PUT/completion/처리 재시도의 optional AbortSignal은 기존 가입 호출과 호환되며 실제 공급원/endpoint를 새로 만들지 않는다. PUT 주소 거절/만료는 같은 요청의 URL 갱신과 session410 뒤 명시 재선택을 구분한다. 응답 유실·손상2xx·실패는 current/이력 재조회 전 성공이 아니다.
+- [DEV-24의 서버 소스 확인](../development/figma-v01/tasks/DEV-24.md#dev-24-investigation): 신규 POST는 미귀속 owner 문서를 만든다. 기존 회사 attached candidate는 공식 검증/동일 identity·인증 근거 current 검사를 통과하면 서버가 이전 version REPLACED·새 VERIFIED/current·회사/identity 근거와 인증 시각을 원자 변경한다. 회사명/주소 등 프로필값 반영과 MAT-162는 별개다. mock은 동일 회사의 current/후보와 단일 후보·서로 다른 payload의 멱등 충돌·기간/명시 재시도·교체 전 기존 current를 보존하며, 회사 가입의 COMPANY_CONFIRMATION_REQUIRED 흐름은 유지한다. 새 파일 원문·이름/전체 hash·서명 descriptor는 저장하지 않고 요청 동등성용 signature만 남긴다. 신규 추가·실제 통합 차단은 사용자 D1 범위 밖으로 보존한다.
 - mock 업로드는 외부 전송 없이 상태만 변경한다. 완료 → processing → 등록 제안 또는 실패, 재시도, 버전 충돌을 지원한다.
 - 실제 문서 복원에는 기존 `mate:signup-document:<account>` 키의 UUID만 보존한다. mock 문서 복원은 mock namespace를 사용하며 실제 처리 중 키를 읽거나 삭제하지 않는다.
 - 파일별 idempotency key를 유지하고, 다른 payload의 동일 키는 mock에서 409다. 실제 서버의 mutation 성공을 refresh 실패 때문에 다시 제출하지 않는다.

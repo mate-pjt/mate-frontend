@@ -13,6 +13,7 @@ import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { documentPeriod, documentStatusLabel, koreanDate, loadDocumentBox, type DocumentBoxResult, type DocumentBoxRow } from "@/features/company/document-box";
 import { documentDetailPath, documentListPath } from "@/features/company/document-detail";
+import { DocumentReuploadButton } from "./document-reupload-dialog";
 
 type Result = DocumentBoxResult | { status: "loading" } | { status: "error"; message: string } | { status: "unauthorized" | "denied" };
 
@@ -91,16 +92,16 @@ function AuthenticatedDocuments({ getAccessToken, refresh, getAccountKey, getSes
           <p className="mb-4 type-body-7 text-grayscale-600" role="status">전체 {result.page.totalElements.toLocaleString("ko-KR")}개 · 최근 변경순</p>
           {result.page.totalElements === 0 ? <EmptyDocument /> : result.page.content.length === 0 ? (
             <Message title="이 페이지에는 서류가 없어요."><Button variant="outline" onClick={() => reload(0)}>첫 페이지로 돌아가기</Button></Message>
-          ) : <ul className="flex flex-col gap-3" aria-label="회사 서류 목록">{result.page.content.map(item => <DocumentRow key={item.documentId} item={item} now={now} page={initialPage} />)}</ul>}
+          ) : <ul className="flex flex-col gap-3" aria-label="회사 서류 목록">{result.page.content.map(item => <DocumentRow key={item.documentId} item={item} now={now} page={initialPage} onChanged={() => reload()} />)}</ul>}
           {result.page.totalPages > 1 && result.page.content.length > 0 && <div className="mt-6 flex justify-center"><Pagination ariaLabel="서류함 페이지" page={page + 1} totalPages={result.page.totalPages} onPageChange={next => reload(next - 1)} /></div>}
-          <p className="mt-5 type-body-7 text-grayscale-600" id="document-actions-help">미리보기에서 상세·버전 이력을 확인할 수 있어요. 다시 업로드는 준비 중이에요. 문서 처리·보유·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
+          <p className="mt-5 type-body-7 text-grayscale-600" id="document-actions-help">미리보기에서 상세·버전 이력을 확인할 수 있어요. 기존 서류의 다시 업로드를 지원해요. 신규 서류 추가는 준비 중이에요. 문서 처리·보유·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
         </>
       )}
     </DocumentsShell>
   );
 }
 
-function DocumentRow({ item, now, page }: { item: DocumentBoxRow; now: number; page: number }) {
+function DocumentRow({ item, now, page, onChanged }: { item: DocumentBoxRow; now: number; page: number; onChanged: () => void }) {
   const versions = item.versions;
   return (
     <li className="flex flex-col gap-4 rounded-xl bg-primary-100 p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -120,7 +121,7 @@ function DocumentRow({ item, now, page }: { item: DocumentBoxRow; now: number; p
       </div>
       <div className="flex shrink-0 flex-wrap gap-2" aria-describedby="document-actions-help">
         <ButtonLink variant="outline" href={documentDetailPath(item.documentId, item.versionId, page)} aria-label={`${item.filename} v${item.versionNumber} 상세·미리보기`}>미리보기</ButtonLink>
-        <Button disabled>다시 업로드</Button>
+        <DocumentReuploadButton documentId={item.documentId} onChanged={onChanged} />
       </div>
     </li>
   );

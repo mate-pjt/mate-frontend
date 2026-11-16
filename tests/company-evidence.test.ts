@@ -18,7 +18,7 @@ async function proposal(repo: ReturnType<typeof createMockCompanyRepository>) {
   const file = new File(["synthetic evidence"], "synthetic.pdf", { type: "application/pdf" });
   const upload = await repo.createDocumentUpload(access, file, "upload-evidence");
   await repo.uploadDocumentFile(access, upload.uploadHandle, file);
-  await repo.completeDocumentUpload(access, upload.documentId, upload.versionId, "complete-evidence");
+  await repo.completeDocumentUpload(access, upload.documentId, upload.versionId);
   let processing = await repo.getDocumentProcessing(access, upload.documentId);
   for (let i = 0; i < 3 && !processing.proposalId; i++) processing = await repo.getDocumentProcessing(access, upload.documentId);
   return repo.getRegistrationProposal(access, processing.proposalId!);

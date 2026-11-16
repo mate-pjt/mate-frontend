@@ -156,3 +156,10 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 - `company=pending`은 실제 version/시각을 가진 합성 신청으로 시작한다. 본인 대기 화면에서 확인 후 취소하면 CANCELED/version 증가 이력을 보존하고 회사 화면은 비운다. reload에서는 완료 Toast를 재생하지 않는다. 기존 start의 등록/찾기로 재신청하면 새 ID를 사용하고 이전 취소 이력은 남는다.
 - 회사 공간의 `membershipVersion: 1`이 구형 합성 신청만 이관한다. 문서/초대·멱등 replay와 계정/탭/프로필 namespace는 유지하며 실제 API 자료를 mock에 복사하지 않는다. source 선택/전역 schema/시나리오 이름의 변경은 없다.
 - [DEV-15 로컬 검증](../qa/my-company.md#dev-15-local-qa)의 HTTP 대역은 합성 서버만 사용했다. 실제 계정/취소·재신청·권한/경쟁/복구는 승인 자원과 실행 대응 확보 전 차단이며 기존 실제 QA를 대체하지 않는다.
+
+## 10. 기존 회사 문서 재업로드 · DEV-24
+
+- 사용자 D1의 범위는 기존 서류 재업로드의 로컬 선행이다. 빈 서류함의 신규 추가·실제 서버 업로드/OCR·회사 프로필 반영/MAT-162·삭제는 포함하지 않는다. 목록/상세의 ‘다시 업로드’는 서버 최신 current를 기준으로 같은 series에 후보를 만든다.
+- PDF/JPG(JPEG)/PNG·MIME/확장자 일치·1..10×1024×1024bytes를 확인하고, 파일/멱등 키/opaque handle은 열린 화면 메모리에서만 유지한다. PUT 주소 만료는 같은 파일/키로 갱신하고 session410은 현재 상태 확인/명시 재선택이다. 새로고침 뒤 처리 중인 후보는 GET으로 복원하며 전송 대기 후보의 파일/이전 키는 자동 복원하거나 새 명령으로 대체하지 않는다.
+- `documents` mock은 기존 current를 유지하다 새 후보의 OCR/진위 확인 뒤 VERIFIED/current와 이전 REPLACED를 함께 변경한다. 원문·입력 파일명/서명·추출 개인정보를 저장하지 않고, 미리보기는 기존 합성 원본 생성 규칙을 따른다. 가입의 미귀속 문서/최종 등록 흐름과 일곱 공급원·storage namespace는 유지한다.
+- 서버가 회사/identity의 인증 근거 version·인증 시각을 갱신하는 것과 회사명/주소 등 프로필값을 반영하는 것은 다르다. [DEV-24 Brief](figma-v01/tasks/DEV-24.md#dev-24-brief)와 [로컬 QA/실제 차단](../qa/company-documents.md#dev-24-local-qa)을 구분한다.

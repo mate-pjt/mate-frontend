@@ -440,6 +440,12 @@ export type UploadPopupProps = React.HTMLAttributes<HTMLDivElement> & {
     onCancel?: () => void;
     onConfirm?: () => void;
     onSelectFile?: () => void;
+    onRemoveFile?: () => void;
+    notice?: React.ReactNode;
+    statusMessage?: React.ReactNode;
+    selectedMessage?: React.ReactNode;
+    confirmLabel?: string;
+    confirmDisabled?: boolean;
 };
 
 export function UploadPopup({
@@ -449,6 +455,12 @@ export function UploadPopup({
     onCancel,
     onConfirm,
     onSelectFile,
+    onRemoveFile,
+    notice,
+    statusMessage,
+    selectedMessage,
+    confirmLabel = "업로드 하기",
+    confirmDisabled = false,
     ...props
 }: UploadPopupProps) {
     const ready = Boolean(file);
@@ -460,7 +472,7 @@ export function UploadPopup({
                 <PopupActions
                     actions={[
                         { label: "닫기", onClick: onCancel, tone: "secondary" },
-                        { label: "업로드 하기", disabled: !ready, onClick: onConfirm },
+                        { label: confirmLabel, disabled: !ready || confirmDisabled, onClick: onConfirm },
                     ]}
                 />
             }
@@ -471,10 +483,11 @@ export function UploadPopup({
                 <PopupHeader onClose={onClose} />
                 <div className="flex w-full flex-col gap-4">
                     <div className="rounded-[12px] bg-primary-100 p-5 text-primary-400 type-body-2">
-                        조회된 정보와 일치하는지, 직인이 잘 보이는지 마지막으로 확인해 주세요!
+                        {notice ?? "조회된 정보와 일치하는지, 직인이 잘 보이는지 마지막으로 확인해 주세요!"}
                     </div>
+                    {statusMessage}
                     <div className="flex w-full flex-col gap-2">
-                        <UploadDropzone file={file} onSelectFile={onSelectFile} />
+                        <UploadDropzone file={file} onSelectFile={onSelectFile} onRemoveFile={onRemoveFile} selectedMessage={selectedMessage} />
                     </div>
                     <NoticeCard title="확인해주세요!">
                         <div className="flex flex-col gap-4">
@@ -505,17 +518,20 @@ export function UploadPopup({
 function UploadDropzone({
     file,
     onSelectFile,
-}: Pick<UploadPopupProps, "file"> & { onSelectFile?: () => void }) {
+    onRemoveFile,
+    selectedMessage,
+}: Pick<UploadPopupProps, "file" | "onSelectFile" | "onRemoveFile" | "selectedMessage">) {
     if (!file) {
         return (
             <div className="flex w-full flex-col items-center rounded-[16px] border border-dashed border-grayscale-200 bg-grayscale-50 px-6 py-20 text-center">
-                <div className="flex w-full flex-col items-center gap-6 px-20">
-                    <div className="flex w-[292px] flex-col items-center gap-1">
+                <div className="flex w-full flex-col items-center gap-6 sm:px-20">
+                    <div className="flex w-full max-w-[292px] flex-col items-center gap-1">
                         <p className="text-grayscale-700 type-body-1">파일을 여기에 드롭하거나 클릭하여 선택하세요</p>
                         <p className="text-grayscale-600 type-body-7">PDF, JPG, PNG 파일만 업로드 가능 (최대 10MB)</p>
                     </div>
                     <button
                         onClick={onSelectFile}
+                        disabled={!onSelectFile}
                         className="rounded-[8px] bg-primary-400 px-4 py-2 text-white type-body-2"
                         type="button"
                     >
@@ -531,22 +547,23 @@ function UploadDropzone({
             <div className="flex flex-1 flex-col gap-5">
                 <div className="rounded-[8px] bg-white p-4 shadow-[0_0_12px_#f1f3f5]">
                     <div className="flex w-full items-center justify-between">
-                        <div className="flex items-start gap-5">
+                        <div className="flex min-w-0 flex-1 items-start gap-5">
                             <span className="size-10 rounded-[8px] bg-primary-300" />
-                            <div className="w-[249px]">
+                            <div className="min-w-0 flex-1">
                                 <p className="truncate text-grayscale-800 type-body-2">{file.name}</p>
                                 <p className="text-grayscale-600 type-body-7">{file.size}</p>
                             </div>
                         </div>
-                        <CloseIcon aria-hidden className="size-6 text-grayscale-700" focusable="false" />
+                        {onRemoveFile ? <button type="button" onClick={onRemoveFile} aria-label="선택한 파일 지우기" className="shrink-0"><CloseIcon aria-hidden className="size-6 text-grayscale-700" /></button>
+                            : <CloseIcon aria-hidden className="size-6 text-grayscale-700" focusable="false" />}
                     </div>
                 </div>
-                <div className="flex flex-1 flex-col items-center justify-center gap-1 px-20 text-center">
+                <div className="flex flex-1 flex-col items-center justify-center gap-1 sm:px-20 text-center">
                     <CheckBadge size={36} />
                     <p className="text-grayscale-700 type-body-1">
-                        서류 확인 준비 완료!
+                        {selectedMessage ?? <>서류 확인 준비 완료!
                         <br />
-                        이제 1초 만에 회사 정보를 불러올게요.
+                        이제 1초 만에 회사 정보를 불러올게요.</>}
                     </p>
                 </div>
             </div>

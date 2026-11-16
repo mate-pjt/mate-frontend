@@ -5,6 +5,7 @@ import type { BidAmountRange, BusinessConnection, CompanyRegistrationProposal, C
 import { mapCompanyBasicProfile, mapMyMembershipRequest } from "./api-mapper";
 import { mapDocumentBoxPage, mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
 import { mapDocumentHistory, readDocumentOriginal } from "./document-detail-api";
+import { mapReplacementUpload, mapReuploadStatus } from "./document-upload-api";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -117,8 +118,10 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     replacesVersionId: string,
     file: File,
     idempotencyKey: string,
+    signal?: AbortSignal,
   ): Promise<DocumentUpload> {
-    return createDocumentUploadRequest(access, `/api/v1/company-documents/${documentId}/versions`, file, idempotencyKey, replacesVersionId);
+    validateDocumentId(documentId); validateDocumentId(replacesVersionId);
+    return createDocumentUploadRequest(access, `/api/v1/company-documents/${documentId}/versions`, file, idempotencyKey, replacesVersionId, signal);
   }
 
   async function createDocumentUploadRequest(
@@ -127,14 +130,18 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     file: File,
     idempotencyKey: string,
     replacesVersionId?: string,
+    signal?: AbortSignal,
   ): Promise<DocumentUpload> {
+    signal?.throwIfAborted();
     const account = access.getAccountKey();
     const checksum = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
+    signal?.throwIfAborted();
     if (account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐습니다. 다시 시도해 주세요.");
     const sha256 = Array.from(new Uint8Array(checksum), (byte) => byte.toString(16).padStart(2, "0")).join("");
-    const result = await authorizedRequest<DocumentUploadDto>(access, path, {
+    const raw = await authorizedRequest<DocumentUploadDto>(access, path, {
       method: "POST",
       idempotencyKey,
+      signal,
       body: {
         ...(replacesVersionId ? { replacesVersionId } : { documentType: "BUSINESS_REGISTRATION" }),
         originalFilename: file.name,
@@ -143,6 +150,8 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
         sha256,
       },
     });
+    signal?.throwIfAborted();
+    const result = replacesVersionId ? mapReplacementUpload(raw, path.split("/").at(-2)!) : raw;
     if (account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐습니다. 다시 시도해 주세요.");
     const uploadHandle = crypto.randomUUID();
     uploads.set(uploadHandle, { upload: result.upload, account });
@@ -155,30 +164,40 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     versionId: string,
     kind: "ocr" | "verification",
     idempotencyKey: string,
+    signal?: AbortSignal,
   ): Promise<{ status: string }> {
     const suffix = kind === "ocr" ? "ocr-attempts" : "verification-attempts";
     return authorizedRequest(access, `/api/v1/company-documents/${documentId}/versions/${versionId}/${suffix}`, {
-      method: "POST", idempotencyKey,
+      method: "POST", idempotencyKey, signal,
     });
   }
 
-  async function uploadDocumentFile(access: AuthAccess, uploadHandle: string, file: File): Promise<void> {
+  async function uploadDocumentFile(access: AuthAccess, uploadHandle: string, file: File, signal?: AbortSignal): Promise<void> {
+    signal?.throwIfAborted();
     const handle = uploads.get(uploadHandle);
     if (!handle || handle.account !== access.getAccountKey()) throw new ApiError(400, "UPLOAD_HANDLE_INVALID", "업로드 세션이 변경됐습니다. 파일을 다시 선택해 주세요.");
     const upload = handle.upload;
     if (upload.method.toUpperCase() !== "PUT") throw new ApiError(0, "UPLOAD_METHOD", "지원하지 않는 파일 업로드 방식입니다.");
     let response: Response;
     try {
-      response = await http.fetch(upload.url, { method: "PUT", headers: upload.headers, body: file, credentials: "omit" });
+      response = await http.fetch(upload.url, { method: "PUT", headers: upload.headers, body: file, credentials: "omit", signal, referrerPolicy: "no-referrer", redirect: "error" });
     } catch {
+      signal?.throwIfAborted();
       throw new ApiError(0, "UPLOAD_NETWORK_ERROR", "파일을 업로드하지 못했습니다. 다시 시도해 주세요.");
     }
     if (!response.ok) throw new ApiError(response.status, "UPLOAD_FAILED", "파일 업로드에 실패했습니다. 다시 시도해 주세요.");
     uploads.delete(uploadHandle);
+    signal?.throwIfAborted();
+    if (handle.account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐습니다.");
   }
 
-  function completeDocumentUpload(access: AuthAccess, documentId: string, versionId: string): Promise<{ status: string }> {
-    return authorizedRequest(access, `/api/v1/company-documents/${documentId}/versions/${versionId}/upload-completions`, { method: "POST" });
+  function completeDocumentUpload(access: AuthAccess, documentId: string, versionId: string, signal?: AbortSignal): Promise<{ status: string }> {
+    return authorizedRequest(access, `/api/v1/company-documents/${documentId}/versions/${versionId}/upload-completions`, { method: "POST", signal });
+  }
+
+  async function getDocumentReuploadStatus(access: AuthAccess, documentId: string, signal?: AbortSignal) {
+    validateDocumentId(documentId);
+    return mapReuploadStatus(await authorizedRequest<unknown>(access, `/api/v1/company-documents/${documentId}`, { signal }), documentId);
   }
 
   function getDocumentProcessing(access: AuthAccess, documentId: string): Promise<DocumentProcessing> {
@@ -249,5 +268,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }
