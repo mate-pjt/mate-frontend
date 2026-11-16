@@ -3,11 +3,33 @@ import type { AuthAccess, HttpClient } from "../shared/http";
 import type { DocumentUploadDto } from "./api-types";
 import type { BidAmountRange, BusinessConnection, CompanyRegistrationProposal, CompanySearchPage, DocumentProcessing, DocumentUpload, InvitationContext, MembershipApplicationContext, MembershipRequest, RegistrationResult, CompanyRepository, MyMembershipRequest, CompanyOverview } from "./contracts";
 import { mapCompanyBasicProfile, mapMyMembershipRequest } from "./api-mapper";
+import { mapDocumentBoxPage, mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
   const apiRequest = http.request;
   const uploads = new Map<string, { upload: DocumentUploadDto["upload"]; account: string | null }>();
+  async function getDocumentBoxContext(access: AuthAccess, signal?: AbortSignal) {
+    signal?.throwIfAborted();
+    const account = access.getAccountKey();
+    const session = await access.refresh({ preserveOnError: true });
+    signal?.throwIfAborted();
+    if (!session || account !== access.getAccountKey()) throw new ApiError(401, "SESSION_INVALID", "로그인이 필요합니다.");
+    const companyId = session.companyContext?.companyId ?? null;
+    if (companyId !== null && (!Number.isSafeInteger(companyId) || companyId <= 0)) throw new ApiError(0, "COMPANY_MISMATCH", "회사 정보를 확인하지 못했어요.");
+    return { companyId };
+  }
+
+  async function listCompanyDocuments(access: AuthAccess, companyId: number, page = 0, size = 20, signal?: AbortSignal) {
+    validateDocumentBoxQuery(companyId, page, size);
+    const params = new URLSearchParams({ page: String(page), size: String(size) });
+    return mapDocumentBoxPage(await authorizedRequest<unknown>(access, `/api/v1/companies/${companyId}/documents?${params}`, { signal }), page, size);
+  }
+
+  async function getCompanyDocumentVersions(access: AuthAccess, documentId: string, signal?: AbortSignal) {
+    validateDocumentId(documentId);
+    return mapDocumentBoxVersions(await authorizedRequest<unknown>(access, `/api/v1/company-documents/${documentId}/versions`, { signal }));
+  }
   function searchCompanies(access: AuthAccess, query: string, page = 0): Promise<CompanySearchPage> {
     const params = new URLSearchParams({ query, page: String(page), size: "10" });
     return authorizedRequest(access, `/api/v1/companies/search?${params}`);
@@ -220,5 +242,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }

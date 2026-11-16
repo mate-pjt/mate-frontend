@@ -4,6 +4,9 @@ import { isCount, isDate, isRecord } from "../mock/validation";
 import type { AuthAccess } from "../shared/http";
 import type { BusinessConnection, CompanyBasicProfile, CompanyOverview, CompanyRegistrationProposal, CompanyRepository, CompanySearchItem, DocumentUpload, InvitationContext, MyMembershipRequest, RegistrationResult, SignupCompanyProfile } from "./contracts";
 import { signupCertificationTypes } from "./contracts";
+import { documentVersionStatuses, type DocumentBoxVersion, type DocumentVersionStatus } from "./contracts";
+import { documentBoxFixtures, mockDocumentVersion, type MockDocumentBox } from "./document-box-mock";
+import { mapDocumentBoxVersions, validateDocumentBoxQuery, validateDocumentId } from "./document-box-api-mapper";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -28,7 +31,7 @@ function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile[
   return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustries: structuredClone(industries) };
 }
 type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null };
-type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version> }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
+type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version>; box?: MockDocumentBox }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
 const basicIndustryValid = (value: unknown) => isRecord(value) && typeof value.code === "string" && value.code.trim().length > 0 && typeof value.name === "string" && value.name.trim().length > 0;
@@ -142,14 +145,35 @@ function valid(value: unknown): value is CompanyState {
   if (value.connection !== null && !connectionValid(value.connection)) return false;
   const documents = value.documents; const proposals = value.proposals;
   return Object.entries(documents).every(([id, d]) => isRecord(d) && d.documentId === id && typeof d.activeVersion === "string" && isRecord(d.versions) && Object.hasOwn(d.versions, d.activeVersion) && Object.entries(d.versions).every(([versionId, v]) => {
-    if (!isRecord(v) || v.versionId !== versionId || !["UPLOAD_PENDING", "OCR_PROCESSING", "OCR_FAILED", "COMPANY_CONFIRMATION_REQUIRED", "VERIFIED", "REPLACED"].includes(String(v.status)) || typeof v.uploaded !== "boolean" || typeof v.retried !== "boolean" || typeof v.uploadHandle !== "string" || !isCount(v.versionNumber) || !isCount(v.polls) || typeof v.expiresAt !== "number" || !Number.isFinite(v.expiresAt) || !isCount(v.size) || typeof v.contentType !== "string" || !textOrNull(v.proposalId)) return false;
+    if (!isRecord(v) || v.versionId !== versionId || !["UPLOAD_PENDING", ...documentVersionStatuses].includes(String(v.status)) || typeof v.uploaded !== "boolean" || typeof v.retried !== "boolean" || typeof v.uploadHandle !== "string" || !isCount(v.versionNumber) || !isCount(v.polls) || typeof v.expiresAt !== "number" || !Number.isFinite(v.expiresAt) || !isCount(v.size) || typeof v.contentType !== "string" || !textOrNull(v.proposalId)) return false;
     const proposal = typeof v.proposalId === "string" ? proposals[v.proposalId] : null;
     return v.proposalId === null || (isRecord(proposal) && proposal.documentId === id && proposal.versionId === versionId);
-  })) && Object.entries(proposals).every(([id, p]) => {
+  }) && validDocumentBox(d)) && Object.entries(proposals).every(([id, p]) => {
     if (!isRecord(p) || p.proposalId !== id || !proposalValid(p) || typeof p.documentId !== "string" || typeof p.versionId !== "string") return false;
     const doc = documents[p.documentId];
     return isRecord(doc) && isRecord(doc.versions) && Object.hasOwn(doc.versions, p.versionId);
   }) && Object.values(value.requests).every(r => isRecord(r) && typeof r.signature === "string" && requestResultValid(r.result));
+}
+function boxVersions(doc: CompanyState["documents"][string]): DocumentBoxVersion[] {
+  if (!doc.box) return [];
+  return Object.values(doc.box.versions).map(metadata => {
+    const version = doc.versions[metadata.versionId];
+    return { ...metadata, status: (version.status === "UPLOAD_PENDING" ? "UPLOAD_READY" : version.status) as DocumentVersionStatus, current: doc.box!.currentVersionId === version.versionId };
+  }).sort((a, b) => b.versionNumber - a.versionNumber);
+}
+function validDocumentBox(doc: Record<string, unknown>): boolean {
+  if (!Object.hasOwn(doc, "box")) return true;
+  const box = doc.box;
+  if (!isRecord(box) || !(box.companyId === null || positiveInteger(box.companyId)) || !isRecord(box.versions) || !isRecord(doc.versions)
+    || !(box.currentVersionId === null || typeof box.currentVersionId === "string" && Object.hasOwn(doc.versions, box.currentVersionId))
+    || Object.keys(box.versions).length !== Object.keys(doc.versions).length) return false;
+  try {
+    for (const [id, metadata] of Object.entries(box.versions)) {
+      if (!Object.hasOwn(doc.versions, id) || !isRecord(metadata) || metadata.versionId !== id) return false;
+      mapDocumentBoxVersions([metadata]);
+    }
+    return true;
+  } catch { return false; }
 }
 type PendingInvitation = { context: InvitationContext; accountKey: string | null; status: "pending" | "accepted" | "declined" };
 function validInvitation(value: unknown): value is PendingInvitation | null {
@@ -163,14 +187,21 @@ function fingerprint(value: unknown) { let hash = 2166136261; for (const char of
 export function createMockCompanyRepository(runtime: MockRuntime): CompanyRepository {
   function initial(): CompanyState {
     let overview: CompanyOverview = { status: "empty" }; const scenario = runtime.scenario("company");
-    if (scenario === "connected") overview = { status: "connected", profile: basicProfile() };
+    if (scenario === "connected" || scenario.startsWith("documents")) overview = { status: "connected", profile: basicProfile() };
     if (["pending", "rejected", "canceled", "approved-stale"].includes(scenario)) {
       const createdAt = new Date(runtime.now()).toISOString();
       const request: MyMembershipRequest = { requestId: 8001, version: 1, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt, updatedAt: createdAt, completedAt: scenario === "pending" ? null : createdAt };
       overview = { status: scenario === "pending" ? "pending" : scenario === "approved-stale" ? "approved-stale" : "terminated", request };
     }
     const membershipRequests = "request" in overview ? { [overview.request.requestId]: structuredClone(overview.request) } : {};
-    return { signupEvidenceVersion: 1, basicProfileVersion: 1, membershipVersion: 1, membershipRequests, nextMembershipRequestId: "request" in overview ? overview.request.requestId + 1 : 8001, overview, connection: null, documents: {}, proposals: {}, requests: {} };
+    const documents: CompanyState["documents"] = {};
+    if (["documents", "documents-denied", "documents-version-error"].includes(scenario)) {
+      for (const fixture of documentBoxFixtures(runtime.now())) {
+        documents[fixture.documentId] = { documentId: fixture.documentId, activeVersion: fixture.displayedVersionId, box: fixture.box,
+          versions: Object.fromEntries(Object.values(fixture.box.versions).map(version => [version.versionId, { versionId: version.versionId, versionNumber: version.versionNumber, status: version.status, uploaded: true, polls: 0, retried: false, uploadHandle: "synthetic-unused", expiresAt: runtime.now(), size: 1, contentType: "application/pdf", proposalId: null }])) };
+      }
+    }
+    return { signupEvidenceVersion: 1, basicProfileVersion: 1, membershipVersion: 1, membershipRequests, nextMembershipRequestId: "request" in overview ? overview.request.requestId + 1 : 8001, overview, connection: null, documents, proposals: {}, requests: {} };
   }
   const read = (account: string) => {
     let migrated = false;
@@ -224,9 +255,11 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     const result = idempotent(state, key, { operation: "upload", documentId, replacesVersionId, size: file.size, type: file.type, modified: file.lastModified }, () => {
       if (file.size < 1 || file.size > 10 * 1024 * 1024 || !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) throw new ApiError(400, "FILE_INVALID", "업로드 파일 형식과 크기를 확인해 주세요.");
       const id = documentId ?? crypto.randomUUID(); const previous = documentId ? document(state, documentId, replacesVersionId).version : null;
-      if (previous) previous.status = "REPLACED";
+      if (previous && !state.documents[id].box?.currentVersionId) previous.status = "REPLACED";
       const version: Version = { versionId: crypto.randomUUID(), versionNumber: (previous?.versionNumber ?? 0) + 1, status: "UPLOAD_PENDING", uploaded: false, polls: 0, retried: false, uploadHandle: crypto.randomUUID(), expiresAt: runtime.now() + 30 * 60_000, size: file.size, contentType: file.type, proposalId: null };
-      const doc = state.documents[id] ?? { documentId: id, activeVersion: version.versionId, versions: {} }; doc.activeVersion = version.versionId; doc.versions[version.versionId] = version; state.documents[id] = doc;
+      const doc = state.documents[id] ?? { documentId: id, activeVersion: version.versionId, versions: {}, box: { companyId: null, currentVersionId: null, versions: {} } }; doc.activeVersion = version.versionId; doc.versions[version.versionId] = version;
+      if (doc.box) doc.box.versions[version.versionId] = mockDocumentVersion(version.versionId, version.versionNumber, "UPLOAD_READY", runtime.now());
+      state.documents[id] = doc;
       return uploadResult(id, version);
     }); write(account, state); return result;
   }
@@ -235,6 +268,32 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     return { companyId: profile.companyId, membershipId: 9101, role: "ADMIN", verificationStatus: profile.verificationStatus };
   }
   return {
+    async getDocumentBoxContext(access, signal) {
+      const account = await mockAccount(runtime, access, "company", signal);
+      const view = read(account).overview;
+      return { companyId: view.status === "connected" ? view.profile.companyId : null };
+    },
+    async listCompanyDocuments(access, companyId, page = 0, size = 20, signal) {
+      validateDocumentBoxQuery(companyId, page, size);
+      const account = await mockAccount(runtime, access, "company", signal);
+      const state = read(account);
+      if (runtime.scenario("company") === "documents-denied" || state.overview.status !== "connected" || state.overview.profile.companyId !== companyId) throw new ApiError(403, "DOCUMENT_FORBIDDEN", "회사 서류를 관리할 권한이 없어요.");
+      const content = Object.values(state.documents).filter(doc => doc.box?.companyId === companyId).map(doc => {
+        const version = boxVersions(doc).find(item => item.versionId === doc.activeVersion)!;
+        const { validFrom: _from, validUntil: _until, ...item } = version;
+        void _from; void _until;
+        return { ...item, documentId: doc.documentId, documentType: "BUSINESS_REGISTRATION" };
+      }).sort((a, b) => b.modifiedAt.localeCompare(a.modifiedAt) || b.documentId.localeCompare(a.documentId));
+      return { content: content.slice(page * size, (page + 1) * size), page, size, totalElements: content.length, totalPages: Math.ceil(content.length / size) };
+    },
+    async getCompanyDocumentVersions(access, documentId, signal) {
+      validateDocumentId(documentId);
+      const account = await mockAccount(runtime, access, "company", signal);
+      const state = read(account); const doc = state.documents[documentId];
+      if (!doc?.box || doc.box.companyId !== null && (state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId)) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 찾지 못했어요.");
+      if (runtime.scenario("company") === "documents-version-error" && documentId.endsWith("000000000001")) throw new ApiError(503, "DOCUMENT_UNAVAILABLE", "서류 상태를 확인하지 못했어요.");
+      return boxVersions(doc);
+    },
     async searchCompanies(access, query, page = 0) {
       await mockAccount(runtime, access, "company"); const filtered = companies.filter(item => item.companyName.includes(query) || item.businessNumber.includes(query));
       return { content: structuredClone(filtered.slice(page * 10, (page + 1) * 10)), page, size: 10, totalElements: filtered.length, totalPages: Math.ceil(filtered.length / 10) };
@@ -360,6 +419,8 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
         if (!industries.some(item => item.code === body.primaryIndustryCode) || (proposal.conflict?.decisionRequired && !body.conflictChoice)) throw new ApiError(400, "REGISTRATION_INVALID", "업종과 기존 회사 처리 방법을 확인해 주세요.");
         version.status = "VERIFIED"; proposal.revision += 1;
         const result = register(state, true, proposal.businessNumber);
+        const box = state.documents[body.documentId].box;
+        if (box && body.conflictChoice !== "REUSE_EXISTING") { box.companyId = result.companyId; box.currentVersionId = body.versionId; }
         if (state.overview.status === "connected") { state.overview.profile.telephoneNumber = body.telephoneNumber; }
         return body.conflictChoice === "REUSE_EXISTING" ? { ...result, conflict: { caseId: 1, type: "MERGE", status: "PENDING" } } : result;
       }); write(account, state); return result;
