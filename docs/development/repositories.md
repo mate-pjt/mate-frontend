@@ -88,11 +88,13 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
 | notificationSettings | default, slow, expired, blocked, error |
+
+서류함 `/my/documents`의 `documents`는 합성25개/현재·후보·처리/기간 경계, `documents-empty`는 연결 회사0건, `documents-denied`는 목록 leaf 거절과 metadata 허용 차이, `documents-version-error`는 한 문서의 보유/기간 조회 실패다. 모두 회사 공급원이 mock일 때만 사용한다. 신규 가입 문서는 등록 성공 뒤에만 같은 회사 목록에 나타나며 원본/업로드/삭제 기능은 후속 Gate에서 연결한다. [DEV-22 로컬 QA](../qa/company-documents.md#dev-22-local-qa)와 실제 통합 차단을 구분한다.
 
 목록은 `src/data/config.ts`의 mockScenarios가 기준이다. 오타·없는 그룹·API 공급원에 시나리오를 지정하면 설정 오류다. 실패는 무작위가 아니다. processing-failed는 최초 OCR 실패 후 재시도 성공, conflict는 기존 회사 처리 선택을 재현한다. 회사 초기 상태는 해당 공간에 저장 상태가 없을 때 적용한다.
 
