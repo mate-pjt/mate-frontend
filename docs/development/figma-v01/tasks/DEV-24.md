@@ -143,3 +143,7 @@
 - 다음은 [DEV-25 하나](DEV-25.md#dev-25-dev-24-handoff)다. WBS 우선순위/기본 순서와 DEV-23 선행 충족을 확인해 선정했고 앞선 정책/자원·DEV-08/DEV-19 및 기존 차단을 유지했다. DEV-25의 삭제 확인/명령/완료·오류/계정/목록·원본·잔여/복구 기준을 다음 자체 Gate에서 확인한다. **선정/인계만** 했고 구현·전용 조사/실제 삭제는 시작하지 않았다.
 - Git 전달은 이번 사용자 최초 요청으로 승인됐다. 목적별 작은 commit/push·PR 템플릿/type 라벨·실제 최종 head CI/리뷰·정상 merge/로컬 main FF를 진행하며 이번 Chromatic 월간 한도만 예외다. 실제 결과는 최종 PR/종료 보고와 이 세션 `dev24-evidence/delivery.json`에 기록하고 force/직접 main push/보호 우회/검사 강제 성공은 하지 않는다.
 - 종료/인계 metadata는 문서 검사와 primary ai-review를 재확인하고 독립 verifier freshness에 다시 제출한다. source/test는 첫 독립 PASS의 지문과 동일하며 검토 뒤 바뀐 것은 위 종료/인계 문서뿐이다. 최종 freshness와 Git 결과를 검토/외부 receipt에서 확인한다.
+
+## 2026-11-16 · Git 전달 체크포인트
+
+- [PR #81 · 기존 회사 서류 재업로드 연결](https://github.com/mate-pjt/mate-frontend/pull/81)을 `feat/dev-24-document-upload`→`main`으로 생성했다. 최초 전달은6개 목적별 commit/head `1558dfe8e67a8ef78b15ff56bc34a74184a99d3a`, feature/test/docs 라벨이다. 실제 PR 연결 metadata만 추가했으며 source/test는 독립 PASS/빌드 지문과 동일하다. 최종 문서 연결 commit 뒤 head의 CI/원격 리뷰·정상 merge/로컬 main FF와 clean·SHA 일치는 실제 PR/종료 보고 및 세션 `dev24-evidence/delivery.json`에 기록한다. 이번 Chromatic 월간 한도 예외와 실제 QA/신규 추가 차단을 유지한다.
