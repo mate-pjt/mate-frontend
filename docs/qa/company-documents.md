@@ -137,3 +137,45 @@ API 약어: A=`GET /api/v1/companies/{companyId}/documents`, B=`GET /api/v1/comp
 - 이번 실제 **0통과·6차단/업무 실행0건**. DEV-22의8차단 중21/22와 중복2개를 제외해 두 후속의 실제 고유 집계는 **0통과·12차단**, DBOX-11~20의 **10대기/미실행**이다. 원본22계획과 DEV-22 당시8차단/다른14대기의 날짜별 이력은 보존한다.
 - 마지막 확인일2026-11-16. 필요한 역할은 backend 실행/권한·storage 계약 담당과 비식별 합성 계정/회사/파일·안전한 조회/티켓 발급·사용/보존/복구 담당이다. 개인/일정은 미확인이다. 현재 실행 SHA/실제 wrapper·현재/이전 managed object·leaf/owner/ACTIVE 권한·2분 만료·실제 MIME/크기/CORS·안전한 오류 및 회수·복구 자원을 확보한 뒤 해당 case를 재개한다. 비밀값이나 원문을 채팅/문서로 요청하지 않는다.
 - D1은 이번 로컬 선행만 허용한다. main 반영·실제 원본 통합 PASS/회수 보장·운영/배포·가입 QA/다른 Task의 예외로 확대하지 않는다. 테스트 소스 열람/HTTP 대역·mock/실제 통합을 별도로 판단한다.
+
+<a id="dev-24-local-qa"></a>
+
+## 2026-11-16 · DEV-24 기존 문서 재업로드 로컬 검증
+
+- 승인: [사용자 D1/Brief](../development/figma-v01/tasks/DEV-24.md#dev-24-brief)의 **재업로드만 로컬 선행·신규 추가/실통합 차단**. 아래는 실제 Next mock/loopback HTTP와 Node 계약 검사이며 실제 업무 API/파일/OCR/외부 기관 처리0건이다. 신규 회사 귀속·회사 프로필 적용/MAT-162·삭제와 기존 가입/회사 QA의 판정을 바꾸지 않는다.
+- 환경: Node22.20.0/pnpm11.3.0, 실제 환경파일을 복사하지 않은 격리 snapshot. Aside 실제 브라우저의 mock `127.0.0.1:3224`/HTTP `127.0.0.1:3225`→합성 API/storage `127.0.0.1:4324`, 1440px desktop·390×844 좁은 화면. 파일은 합성 `synthetic.pdf`·형식 오류 파일뿐이다. 로컬 HTTP 서버는 OCR/진위를 합성 상태로 전이하며 실제 엔진·기관 호출을 하지 않는다.
+- source 확인: [기존 회사 attached candidate의 서버 원자 전이](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/businessverification/BusinessVerificationDocumentTransitionPolicy.kt)와 [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)를 확인했다. 신규 series 회사 귀속은 여전히 미확인이다. 원본 계획의 API 약어 I 중 기존 attached candidate 최종 교체는 이 소스 관찰로 보완하며, 실제 실행/회사 프로필 적용 계약으로 확대하지 않는다.
+
+| ID | 환경/조작 | 결과와 한계 |
+| --- | --- | --- |
+| DBOX-RL01 | Figma3135:75938/하위3189:118415 context·screenshot/실제 Next popup |640px popup·닫기/안내·선택·체크리스트/footer를 기존 컴포넌트/토큰으로 연결. 상태/오류 안내 추가, 다른 화면/모든 상태 픽셀 일치 판정 아님 |
+| DBOX-RL02 | Node byte1/10×1024×1024/초과·MIME/확장자, 브라우저 잘못된 확장자 | 파일 요청 전 거절·alert/업로드 비활성. 정확 byte 전수는 Node, 실제 서버 파일 무결성/진위는 미실행 |
+| DBOX-RL03 | 실제 Next mock 목록→파일선택→업로드/처리→현재 재조회 | 처리 동안 기존 current·프로필 유지, 새 current·이전 REPLACED와 목록v2 확인 |
+| DBOX-RL04 | 실제 HTTP versions POST→PUT→completion→GET/이력 | replacesVersionId/SHA·신규 companyId/documentType 추가0. PUT Authorization/Cookie 없음·checksum 일치, current1 유지 뒤v2 갱신/완료 Toast 실제1회 |
+| DBOX-RL05 | PUT503 뒤 같은 요청 명시 재시도 | 후보1·create2/PUT2/completion1, 같은 key 동등성은 Node로도 확인. 실패를 교체 완료로 안내하지 않음 |
+| DBOX-RL06 | 서버 접수 뒤 completion202 JSON 파손→현재 상태 확인 | 미확정 안내 뒤 명시 GET/이력, create/completion 각1·새 key 자동 생성0. 네트워크 유실은 Node 대역도 검증 |
+| DBOX-RL07 | versions409 | 현재v1 유지·파일/attempt 해제·PUT0·완료 Toast0. 조회 후 명시 재선택 |
+| DBOX-RL08 | 후보는 생성했으나201 필수 ID/descriptor 파손 | 미확정 안내·PUT0·완료 Toast0, 같은 요청 확인 경로 보존 |
+| DBOX-RL09 | 최종 status401 | 로그인 복귀 링크/파일 선택·제출 비활성, create/PUT0·완료 Toast0. 실제 인증/권한 철회는 미실행 |
+| DBOX-RL10 | OCR_FAILED/canRetry 기한→명시 OCR 재시도 | ocr-attempts1·기존 current 유지 후v2 확인/Toast. verification 분기·기한/형식은 Node/source로 보완하며 실제 기관 실패는 미실행 |
+| DBOX-RL11 |1.8초 create 응답 대기 중 닫기 | 늦은 응답 뒤 PUT/completion0·current1 유지, 화면 부활/완료 안내0. 서버 후보가 이미 생성됐을 수 있어 원복 완료로 설명하지 않음 |
+| DBOX-RL12 | 파일 선택 뒤 refresh에서 회사 전환 | 이전 dialog/파일 제거, create/PUT0·거짓 Toast0. Node에서 계정 교체/중복/타 계정 공간도 검증 |
+| DBOX-RL13 |390×844·키보드 Escape | dialog358px·가로 overflow 없음·닫기 초점·Escape 후 trigger 초점 복귀 재통과. 실제 기기/VoiceOver 발화는 미실행 |
+| DBOX-RL14 | 과거v1 상세에서 다시 업로드 | 최신 currentv2를 기준으로v3 생성, 새 version URL/현재 표시/버전 이력 갱신. 목록 page1 보존 |
+| DBOX-RL15 | 합성 파일 전송 뒤 storage/리소스 관찰 | 파일명/원문/서명·업로드 URL의 sessionStorage 저장0, 관찰된 non-loopback resource0. 서버 대역의 upstream 호출0이며 실제 운영 전송 증거가 아님 |
+| DBOX-RL16 | Node PUT 주소403/같은 key·session410·손상 descriptor | URL 갱신과 세션 만료 뒤 명시 재선택을 분리, 410에서 재전송 루프/거짓 완료 없음. 실제10분/30분 대기는 미실행 |
+| DBOX-RL17 | Node payload bytes/키·단일 후보·오래된 current·중복/계정/취소·손상 retryUntil | 동등 요청 수렴/다른 payload409·이전 current 보존, 늦은 PUT/완료 callback 차단. 새 기한 손상은 해당 회사 공간만 초기화. 실제 두 계정/row lock 경합은 미실행 |
+| DBOX-RL18 | 페이지 이탈/뒤로 복귀→재진입·교체 뒤 hard reload | 열린 화면의 요청/파일을 버리고 다시 열 수 있으며 현재v2는 유지·완료 Toast 재생0. BFCache 분기는 source에서 pagehide/pageshow persisted로 방어하고 모든 브라우저 캐시 상태의 전수 검증은 아님 |
+
+- 로컬 산출물: 이 세션 visualization의 `dev24-evidence/`에 source/명세 선별 receipt·Kotlin 근거·HTTP case별 비민감 method/path/결과·빌드 로그·격리 실행본을 보존했다. [desktop](dev-24-reupload-desktop.png)·[mobile](dev-24-reupload-mobile.png)은 합성 브라우저 화면이다. 서명 URL/header/checksum·인증값/원문 metadata를 증거에 복사하지 않았다.
+- 전달 계층 관찰: 최초 socket 단절 fixture에서 Chromium이 body 없는 completion 요청을 wire에서2회 보낸 것을 기록했다. 앱 코드의 자동 재제출0과 브라우저의 전송 재시도를 구별한다. 합성 서버를202 파손 응답으로 바꾼 RL06은 completion1회였으며, 실제 백엔드의 completion 멱등/응답 유실 복구는 DBOX-12/15의 실제 차단으로 남긴다.
+- 자동 검증: `pnpm test`653/653(24파일·재업로드38사례 포함), `pnpm lint`, API/mock/hybrid Preview `pnpm build`, `pnpm build-storybook` PASS. Storybook 기존 extensionless import/chunk-size 안내는 비차단. 문서 검사/두 리뷰와 최종 PR CI는 Task/검토 기록에서 확인한다.
+
+### DEV-24 실제 API 재개 조건 · 당시0통과/7차단
+
+DBOX-11~15/21~22는 실제 **0통과·7차단**이다. DEV-22/23의 고유12차단에 새11~15를 합쳐 원본22개 중 **고유0통과·17차단·5대기(16~20)**이며 앞선 원본 계획/날짜별 결과를 수정하지 않는다.
+
+- Backend 계약/실행 담당: 소스 SHA→배포 기록→현재 실행 SHA/실제 wrapper·권한/오류·교체/근거 전이 대응을 확인한다. 신규 series의 기존 회사 귀속/실패 잔존/복구 계약을 확보한다. 새 endpoint나 MAT-162 재개를 임의 확정하지 않는다.
+- 제품/디자인 담당: 신규 추가와 MAT-162 기존 회사 프로필 반영은 별도 결정이며 이번 사용자 D1을 확대 적용하지 않는다. 개인/일정은 미확인이다.
+- QA 자원/사용 승인 담당: 문서관리 leaf 있음/없음·계정/회사 전환·이전/진행/실패 버전을 가진 disposable 계정/회사와 개인정보 없는 유효 문서, OCR/국세청·나라장터 호출·업로드/보존/잔존/복구 범위와 실행 승인을 준비한다. 실제 자료/값을 채팅으로 요청하지 않는다.
+- 실제 재개 후 형식/무결성·10분URL/30분session·멱등/응답 유실·단일 후보/row lock·current/identity 근거·재시도 기한·계정/권한·브라우저/보조기술을 검증한다. 로컬 PASS와 Git/main 반영이 이 차단을 해소하지 않는다.
