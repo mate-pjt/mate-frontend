@@ -124,6 +124,14 @@ export const documentVersionStatuses = [
   "COMPANY_CONFIRMATION_REQUIRED", "VERIFIED", "REPLACED", "DELETED", "PURGED",
 ] as const;
 export type DocumentVersionStatus = typeof documentVersionStatuses[number];
+export type DocumentReuploadStatus = {
+  documentId: string;
+  versionId: string;
+  status: DocumentVersionStatus;
+  current: boolean;
+  canRetry: boolean;
+  retryExpiresAt: string | null;
+};
 export type DocumentBoxVersion = {
   versionId: string;
   versionNumber: number;
@@ -277,10 +285,11 @@ export interface CompanyDocumentRepository {
   getCompanyDocumentHistory(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentHistoryVersion[]>;
   readCompanyDocumentOriginal(access: AuthAccess, documentId: string, versionId: string, purpose: DocumentAccessPurpose, signal?: AbortSignal): Promise<DocumentOriginal>;
   createDocumentUpload(access: AuthAccess, file: File, idempotencyKey: string): Promise<DocumentUpload>;
-  createDocumentVersion(access: AuthAccess, documentId: string, replacesVersionId: string, file: File, idempotencyKey: string): Promise<DocumentUpload>;
-  retryDocumentProcessing(access: AuthAccess, documentId: string, versionId: string, kind: "ocr" | "verification", idempotencyKey: string): Promise<{ status: string }>;
-  uploadDocumentFile(access: AuthAccess, uploadHandle: string, file: File): Promise<void>;
-  completeDocumentUpload(access: AuthAccess, documentId: string, versionId: string): Promise<{ status: string }>;
+  createDocumentVersion(access: AuthAccess, documentId: string, replacesVersionId: string, file: File, idempotencyKey: string, signal?: AbortSignal): Promise<DocumentUpload>;
+  retryDocumentProcessing(access: AuthAccess, documentId: string, versionId: string, kind: "ocr" | "verification", idempotencyKey: string, signal?: AbortSignal): Promise<{ status: string }>;
+  uploadDocumentFile(access: AuthAccess, uploadHandle: string, file: File, signal?: AbortSignal): Promise<void>;
+  completeDocumentUpload(access: AuthAccess, documentId: string, versionId: string, signal?: AbortSignal): Promise<{ status: string }>;
+  getDocumentReuploadStatus(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentReuploadStatus>;
   getDocumentProcessing(access: AuthAccess, documentId: string): Promise<DocumentProcessing>;
   getRegistrationProposal(access: AuthAccess, proposalId: string): Promise<CompanyRegistrationProposal>;
   createVerifiedCompany(access: AuthAccess, body: {

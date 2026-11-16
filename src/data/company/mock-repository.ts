@@ -32,7 +32,7 @@ function signupProfile(number = companies[0].businessNumber, empty = false, docu
 function basicProfile(companyId = 7001, verificationStatus: CompanyBasicProfile["verificationStatus"] = "VERIFIED", number = companies[0].businessNumber): CompanyBasicProfile {
   return { companyId, companyName: companies.find(item => item.companyId === companyId)?.companyName ?? "가상 메이트 기업", businessNumber: number, representativeName: "가상 대표", verificationStatus, address: { zipCode: "00000", baseAddress: "서울특별시 가상로 1", detailAddress: null }, telephoneNumber: null, establishedYear: 2020, primaryIndustries: structuredClone(industries) };
 }
-type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null };
+type Version = { versionId: string; versionNumber: number; status: string; uploaded: boolean; polls: number; retried: boolean; uploadHandle: string; expiresAt: number; size: number; contentType: string; proposalId: string | null; retryUntil?: number };
 type CompanyState = { signupEvidenceVersion: 1; basicProfileVersion: 1; membershipVersion: 1; membershipRequests: Record<string, MyMembershipRequest>; nextMembershipRequestId: number; overview: CompanyOverview; connection: BusinessConnection | null; documents: Record<string, { documentId: string; activeVersion: string; versions: Record<string, Version>; box?: MockDocumentBox }>; proposals: Record<string, CompanyRegistrationProposal>; requests: Record<string, { signature: string; result: unknown }> };
 const textOrNull = (value: unknown) => value === null || typeof value === "string";
 const industryValid = (value: unknown) => value === null || (isRecord(value) && typeof value.code === "string" && typeof value.name === "string");
@@ -147,7 +147,8 @@ function valid(value: unknown): value is CompanyState {
   if (value.connection !== null && !connectionValid(value.connection)) return false;
   const documents = value.documents; const proposals = value.proposals;
   return Object.entries(documents).every(([id, d]) => isRecord(d) && d.documentId === id && typeof d.activeVersion === "string" && isRecord(d.versions) && Object.hasOwn(d.versions, d.activeVersion) && Object.entries(d.versions).every(([versionId, v]) => {
-    if (!isRecord(v) || v.versionId !== versionId || !["UPLOAD_PENDING", ...documentVersionStatuses].includes(String(v.status)) || typeof v.uploaded !== "boolean" || typeof v.retried !== "boolean" || typeof v.uploadHandle !== "string" || !isCount(v.versionNumber) || !isCount(v.polls) || typeof v.expiresAt !== "number" || !Number.isFinite(v.expiresAt) || !isCount(v.size) || typeof v.contentType !== "string" || !textOrNull(v.proposalId)) return false;
+    if (!isRecord(v) || v.versionId !== versionId || !["UPLOAD_PENDING", ...documentVersionStatuses].includes(String(v.status)) || typeof v.uploaded !== "boolean" || typeof v.retried !== "boolean" || typeof v.uploadHandle !== "string" || !isCount(v.versionNumber) || !isCount(v.polls) || typeof v.expiresAt !== "number" || !Number.isFinite(v.expiresAt) || !isCount(v.size) || typeof v.contentType !== "string" || !textOrNull(v.proposalId)
+      || !(v.retryUntil === undefined || typeof v.retryUntil === "number" && Number.isFinite(v.retryUntil))) return false;
     const proposal = typeof v.proposalId === "string" ? proposals[v.proposalId] : null;
     return v.proposalId === null || (isRecord(proposal) && proposal.documentId === id && proposal.versionId === versionId);
   }) && validDocumentBox(d)) && Object.entries(proposals).every(([id, p]) => {
@@ -252,18 +253,41 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
   function uploadResult(documentId: string, version: Version): DocumentUpload {
     return { documentId, versionId: version.versionId, versionNumber: version.versionNumber, status: version.status, uploadHandle: version.uploadHandle, sessionExpiresAt: new Date(version.expiresAt).toISOString() };
   }
-  async function createUpload(access: AuthAccess, file: File, key: string, documentId?: string, replacesVersionId?: string) {
-    const account = await mockAccount(runtime, access, "company"); const state = read(account);
-    const result = idempotent(state, key, { operation: "upload", documentId, replacesVersionId, size: file.size, type: file.type, modified: file.lastModified }, () => {
+  async function createUpload(access: AuthAccess, file: File, key: string, documentId?: string, replacesVersionId?: string, signal?: AbortSignal) {
+    const account = await mockAccount(runtime, access, "company", signal);
+    const digest = documentId ? Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", await file.arrayBuffer()))) : null;
+    signal?.throwIfAborted();
+    if (account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐어요.");
+    const state = read(account);
+    const attached = documentId ? state.documents[documentId]?.box?.companyId != null : false;
+    if (attached) {
+      const doc = state.documents[documentId!];
+      if (runtime.scenario("company") === "documents-denied" || state.overview.status !== "connected" || state.overview.profile.companyId !== doc.box!.companyId) throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 관리할 수 없어요.");
+      const existing = state.requests[key]?.result as DocumentUpload | undefined;
+      if (existing && (doc.activeVersion !== existing.versionId || doc.versions[existing.versionId]?.status !== "UPLOAD_READY")) throw new ApiError(409, "IDEMPOTENCY_CONFLICT", "업로드 요청의 상태가 변경됐어요.");
+    }
+    const result = idempotent(state, key, { operation: "upload", documentId, replacesVersionId, size: file.size, type: file.type, ...(documentId ? { name: file.name, digest } : { modified: file.lastModified }) }, () => {
       if (file.size < 1 || file.size > 10 * 1024 * 1024 || !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) throw new ApiError(400, "FILE_INVALID", "업로드 파일 형식과 크기를 확인해 주세요.");
-      const id = documentId ?? crypto.randomUUID(); const previous = documentId ? document(state, documentId, replacesVersionId).version : null;
+      const id = documentId ?? crypto.randomUUID();
+      const existing = state.documents[id];
+      if (attached && existing.box!.currentVersionId !== replacesVersionId) throw new ApiError(409, "VERSION_CONFLICT", "현재 문서가 변경됐어요.");
+      if (attached && existing.activeVersion !== replacesVersionId) {
+        const candidate = existing.versions[existing.activeVersion];
+        const terminal = ["OCR_FAILED", "REUPLOAD_REQUIRED", "VERIFICATION_REJECTED"].includes(candidate.status)
+          || candidate.status === "VERIFICATION_FAILED" && (candidate.retryUntil ?? candidate.expiresAt + 24 * 3_600_000) <= runtime.now()
+          || candidate.status === "UPLOAD_READY" && candidate.expiresAt <= runtime.now();
+        if (!terminal) throw new ApiError(409, "VERSION_CONFLICT", "진행 중인 교체 후보가 있어요.");
+      }
+      const previous = documentId ? attached ? existing.versions[replacesVersionId!] : document(state, documentId, replacesVersionId).version : null;
       if (previous && !state.documents[id].box?.currentVersionId) previous.status = "REPLACED";
-      const version: Version = { versionId: crypto.randomUUID(), versionNumber: (previous?.versionNumber ?? 0) + 1, status: "UPLOAD_PENDING", uploaded: false, polls: 0, retried: false, uploadHandle: crypto.randomUUID(), expiresAt: runtime.now() + 30 * 60_000, size: file.size, contentType: file.type, proposalId: null };
+      const version: Version = { versionId: crypto.randomUUID(), versionNumber: Math.max(0, ...Object.values(existing?.versions ?? {}).map(v => v.versionNumber)) + 1, status: attached ? "UPLOAD_READY" : "UPLOAD_PENDING", uploaded: false, polls: 0, retried: false, uploadHandle: crypto.randomUUID(), expiresAt: runtime.now() + 30 * 60_000, size: file.size, contentType: file.type, proposalId: null };
       const doc = state.documents[id] ?? { documentId: id, activeVersion: version.versionId, versions: {}, box: { companyId: null, currentVersionId: null, versions: {} } }; doc.activeVersion = version.versionId; doc.versions[version.versionId] = version;
       if (doc.box) doc.box.versions[version.versionId] = mockDocumentVersion(version.versionId, version.versionNumber, "UPLOAD_READY", runtime.now());
       state.documents[id] = doc;
       return uploadResult(id, version);
-    }); write(account, state); return result;
+    });
+    if (attached && Date.parse(result.sessionExpiresAt) <= runtime.now()) throw new ApiError(410, "UPLOAD_SESSION_EXPIRED", "업로드 세션이 만료됐어요.");
+    write(account, state); return result;
   }
   function register(state: CompanyState, verified: boolean, businessNumber: string): RegistrationResult {
     const profile = basicProfile(7101, verified ? "VERIFIED" : "UNVERIFIED", businessNumber); state.overview = { status: "connected", profile };
@@ -395,19 +419,41 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       }); write(account, state); return result;
     },
     createDocumentUpload: (access, file, key) => createUpload(access, file, key),
-    createDocumentVersion: (access, documentId, versionId, file, key) => createUpload(access, file, key, documentId, versionId),
-    async uploadDocumentFile(access, uploadHandle, file) {
-      const account = await mockAccount(runtime, access, "company"); const state = read(account);
+    createDocumentVersion: (access, documentId, versionId, file, key, signal) => createUpload(access, file, key, documentId, versionId, signal),
+    async uploadDocumentFile(access, uploadHandle, file, signal) {
+      const account = await mockAccount(runtime, access, "company", signal); const state = read(account);
       const doc = Object.values(state.documents).find(doc => doc.versions[doc.activeVersion].uploadHandle === uploadHandle); const version = doc?.versions[doc.activeVersion];
       if (!version) throw new ApiError(400, "UPLOAD_HANDLE_INVALID", "업로드 세션을 다시 시작해 주세요.");
       if (version.expiresAt <= runtime.now()) throw new ApiError(410, "UPLOAD_EXPIRED", "업로드 세션이 만료됐습니다.");
       if (version.size !== file.size || version.contentType !== file.type) throw new ApiError(400, "FILE_MISMATCH", "업로드 파일이 변경됐습니다.");
       version.uploaded = true; write(account, state);
     },
-    async completeDocumentUpload(access, documentId, versionId) {
-      const account = await mockAccount(runtime, access, "company"); const state = read(account); const { version } = document(state, documentId, versionId);
+    async completeDocumentUpload(access, documentId, versionId, signal) {
+      const account = await mockAccount(runtime, access, "company", signal); const state = read(account); const { version } = document(state, documentId, versionId);
       if (!version.uploaded) throw new ApiError(409, "UPLOAD_INCOMPLETE", "파일 업로드를 먼저 완료해 주세요.");
-      if (version.status === "UPLOAD_PENDING") version.status = "OCR_PROCESSING"; write(account, state); return { status: version.status };
+      if (["UPLOAD_PENDING", "UPLOAD_READY"].includes(version.status)) version.status = "OCR_PROCESSING"; write(account, state); return { status: version.status };
+    },
+    async getDocumentReuploadStatus(access, documentId, signal) {
+      validateDocumentId(documentId);
+      const account = await mockAccount(runtime, access, "company", signal); const state = read(account);
+      const { doc, version } = document(state, documentId);
+      if (!doc.box || doc.box.companyId === null || state.overview.status !== "connected" || doc.box.companyId !== state.overview.profile.companyId || runtime.scenario("company") === "documents-denied") throw new ApiError(404, "DOCUMENT_NOT_FOUND", "서류를 관리할 수 없어요.");
+      if (["OCR_PROCESSING", "VERIFICATION_PENDING"].includes(version.status)) {
+        version.polls++;
+        if (version.polls >= 2) {
+          if (runtime.scenario("company") === "processing-failed" && !version.retried) { version.status = "OCR_FAILED"; version.retryUntil = runtime.now() + 24 * 3_600_000; }
+          else {
+            const previous = doc.box.currentVersionId;
+            if (previous && previous !== version.versionId) doc.versions[previous].status = "REPLACED";
+            version.status = "VERIFIED"; doc.box.currentVersionId = version.versionId;
+            doc.box.versions[version.versionId].modifiedAt = new Date(runtime.now()).toISOString();
+          }
+        } else version.status = "VERIFICATION_PENDING";
+      }
+      const retryExpiresAt = ["OCR_FAILED", "VERIFICATION_FAILED"].includes(version.status) ? new Date(version.retryUntil ?? version.expiresAt + 24 * 3_600_000).toISOString() : null;
+      write(account, state);
+      return { documentId, versionId: version.versionId, status: version.status as DocumentVersionStatus, current: doc.box.currentVersionId === version.versionId,
+        canRetry: retryExpiresAt !== null && Date.parse(retryExpiresAt) > runtime.now(), retryExpiresAt };
     },
     async getDocumentProcessing(access, documentId) {
       const account = await mockAccount(runtime, access, "company"); const state = read(account); const { version } = document(state, documentId);
@@ -424,10 +470,12 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       }
       write(account, state); return { documentId, versionId: version.versionId, status: version.status, failureCode: version.status === "OCR_FAILED" ? "MOCK_OCR_FAILED" : null, canRetry: version.status === "OCR_FAILED", proposalId: version.proposalId, extractedFields: version.proposalId ? { businessNumber: "1234567890", companyName: "가상 메이트 기업", representativeName: "가상 대표", openingDate: "2020-01-01", businessAddress: "서울특별시 가상로 1" } : null };
     },
-    async retryDocumentProcessing(access, documentId, versionId, kind, key) {
-      const account = await mockAccount(runtime, access, "company"); const state = read(account);
+    async retryDocumentProcessing(access, documentId, versionId, kind, key, signal) {
+      const account = await mockAccount(runtime, access, "company", signal); const state = read(account);
       const result = idempotent(state, key, { operation: "retry", documentId, versionId, kind }, () => {
-        const { version } = document(state, documentId, versionId); if (!version.status.endsWith("FAILED")) throw new ApiError(409, "RETRY_UNAVAILABLE", "현재 처리 상태는 재시도할 수 없습니다.");
+        const { doc, version } = document(state, documentId, versionId);
+        if (doc.box?.companyId != null && (runtime.scenario("company") === "documents-denied" || state.overview.status !== "connected" || state.overview.profile.companyId !== doc.box.companyId || (version.retryUntil ?? version.expiresAt + 24 * 3_600_000) <= runtime.now() || (kind === "ocr" ? version.status !== "OCR_FAILED" : version.status !== "VERIFICATION_FAILED"))) throw new ApiError(409, "RETRY_UNAVAILABLE", "현재 처리 상태는 재시도할 수 없습니다.");
+        if (!version.status.endsWith("FAILED")) throw new ApiError(409, "RETRY_UNAVAILABLE", "현재 처리 상태는 재시도할 수 없습니다.");
         version.retried = true; version.polls = 0; version.status = "OCR_PROCESSING"; return { status: version.status };
       }); write(account, state); return result;
     },

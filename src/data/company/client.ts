@@ -30,6 +30,7 @@ export const retryDocumentProcessing: CompanyRepository["retryDocumentProcessing
 export const uploadDocumentFile: CompanyRepository["uploadDocumentFile"] = (...args) => getRepository().uploadDocumentFile(...args);
 export const completeDocumentUpload: CompanyRepository["completeDocumentUpload"] = (...args) => getRepository().completeDocumentUpload(...args);
 export const getDocumentProcessing: CompanyRepository["getDocumentProcessing"] = (...args) => getRepository().getDocumentProcessing(...args);
+export const getDocumentReuploadStatus: CompanyRepository["getDocumentReuploadStatus"] = (...args) => getRepository().getDocumentReuploadStatus(...args);
 export const getRegistrationProposal: CompanyRepository["getRegistrationProposal"] = (...args) => getRepository().getRegistrationProposal(...args);
 export const getIndustries: CompanyRepository["getIndustries"] = (...args) => getRepository().getIndustries(...args);
 export const createVerifiedCompany: CompanyRepository["createVerifiedCompany"] = (...args) => getRepository().createVerifiedCompany(...args);
