@@ -59,3 +59,7 @@ Minor2의 조치: 개발 가이드의 ‘목록404’를 목록200에서 해당 
 Result: **PASS**, 미해결 Blocker/Major/Minor0. 최초 Minor2와 WBS 최상단 현재 행을 정밀화한 뒤 독립 문서1311/1311·diff-check, 현재 없음/DEV-25 완료/POL-14 준비·집계33/23/55/1/2와 원본79/114Task/156의존·기존 QA/승인 예외를 재확인했다. source/test261파일 불일치0·최초 diff 지문 동일이다. 문서 변경만이므로 앱/브라우저는 반복하지 않았으며 POL-14 전용 조사/정책/제품 실행0·실제 삭제/worker QA6차단을 유지했다. parent는 현재/다음 표와 상태 행 일치2개 검사까지 보완해 문서1313/1313을 재확인했다.
 
 이후 추가되는 것은 이 최종 결과 영수증과 실제 commit/PR/Git 전달 metadata뿐이다. 소스/정책/범위·판정을 바꾸지 않고 문서 검사·primary 확인을 다시 하므로 독립 재실행은 생략한다. verifier도 이 제한된 후속 기록의 처리 기준을 명시했다. 소스/정책/판정이 달라지면 두 리뷰를 다시 수행한다. 소유 Next2/합성 API1·브라우저 탭2는 종료했고3025/3026/4325 listener0을 확인했다.
+
+### PR 연결 metadata · 2026-11-16
+
+[PR #82](https://github.com/mate-pjt/mate-frontend/pull/82)의 실제 URL·최초4개 commit/head·승인된 전달/CI 확인 위치만 Task에 추가했다. 소스/테스트·정책/로컬 판정/실제6차단·POL-14 인계는 동일하다. primary는 여섯 검토 항목/새 링크·원본 범위·diff-check/문서 검사를 재확인했고 PASS다. 독립 재실행은 위 최종 freshness의 행정 metadata 기준에 따라 생략하며 앱 명령도 변경 영향이 없어 반복하지 않는다. 최종 head·CI/원격 리뷰/정상 merge·main FF 결과는 실제 PR/종료 보고와 세션 delivery receipt에서 확인한다.
