@@ -70,6 +70,14 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 조치/검증: 이후 GitHub는 SHA/계약·check 필드만 파싱하고 Figma는 frame ID/일반 상태·라벨만 추출한다. Task/검토/PR에 작성자·예시 개인정보/원문 응답을 복사하지 않았다. 기존 출력의 삭제나 무노출 PASS를 뜻하지 않는다.
 - 기존 예방 규칙을 유지하며 디자인 metadata도 같은 출력 경계로 다룬다. [조사/제한](../development/figma-v01/tasks/POL-14.md#pol-14-investigation)·[검토](../development/figma-v01/reviews/POL-14.md). 제품/하네스 설정 변경 없음.
 
+## 2026-11-16 · 정책 검증에서 이전 도구 세션 임시 경로 가정
+
+- Task/기대: POL-14 확정 시 공개 OpenAPI 재조회 지문은 도구가 반환한 현재 증거 경로를 사용하고 앞선 영구 기록의 지문과 비교한다.
+- 실패/원인: 새 대화의 Aside 저장 root를 이전 세션으로 가정해 파일 존재 검사 실패. 새 경로로 수정한 뒤에도 이전 세션 원문이 남아 있다고 가정해 FileNotFoundError가 이어졌다. 제품/서버 계약 실패가 아니라 증거 수명 오판이다.
+- 수정/재검증: 현재 원문을 작업 증거 폴더로 복사하고 Task에 보존된 기존 SHA256과 비교했다. 경로 검사 자동 수정2/3·세 번째 실행 PASS, OpenAPI 지문 동일·TEAM26/결정3/후속7 연결 PASS. 실패 원문에 포함된 불필요 경로/메타데이터는 여기 재인용하지 않는다.
+- 예방: 임시 세션의 절대 경로/파일 잔존을 다음 대화의 근거로 가정하지 않는다. 도구가 반환한 현재 경로를 즉시 기록/작업 증거로 복사하고 문서의 고정 URL·commit/내용 지문을 복구 기준으로 둔다. 공개 계약 증거 외 env/자격/업무 개인정보를 읽거나 복사하는 규칙으로 확대하지 않는다.
+- 관련: [확정 정책 검증](../development/figma-v01/tasks/POL-14.md#pol-14-verification)·[검토](../development/figma-v01/reviews/POL-14.md). 제품/하네스 설정 변경 없음.
+
 ## Failure Entry Template
 
 ```md
