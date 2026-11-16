@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { MyDocumentsClient } from "@/components/my/my-documents-client";
 import { noIndexRobots } from "@/lib/metadata";
+import { documentListPage } from "@/features/company/document-detail";
 
 export const metadata: Metadata = {
   title: "서류함",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   robots: noIndexRobots,
 };
 
-export default function MyDocumentsPage() {
-  return <MyDocumentsClient />;
+export default async function MyDocumentsPage({ searchParams }: { searchParams: Promise<{ page?: string | string[] }> }) {
+  const query = await searchParams;
+  return <MyDocumentsClient initialPage={documentListPage(query.page)} />;
 }

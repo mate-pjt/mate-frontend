@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { AddIcon, RightArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -11,14 +12,15 @@ import { ApiError, errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { documentPeriod, documentStatusLabel, koreanDate, loadDocumentBox, type DocumentBoxResult, type DocumentBoxRow } from "@/features/company/document-box";
+import { documentDetailPath, documentListPath } from "@/features/company/document-detail";
 
 type Result = DocumentBoxResult | { status: "loading" } | { status: "error"; message: string } | { status: "unauthorized" | "denied" };
 
-export function MyDocumentsClient() {
+export function MyDocumentsClient({ initialPage = 1 }: { initialPage?: number }) {
   const { state, refresh, getAccessToken, getAccountKey, getSessionEpoch } = useAuthSession();
   if (state.status === "authenticated") {
-    return <AuthenticatedDocuments getAccessToken={getAccessToken} getAccountKey={getAccountKey} refresh={refresh} getSessionEpoch={getSessionEpoch}
-      key={`${state.authentication.account.id}:${getSessionEpoch()}:${state.authentication.companyContext?.companyId ?? "none"}`} />;
+    return <AuthenticatedDocuments getAccessToken={getAccessToken} getAccountKey={getAccountKey} refresh={refresh} getSessionEpoch={getSessionEpoch} initialPage={initialPage}
+      key={`${state.authentication.account.id}:${getSessionEpoch()}:${state.authentication.companyContext?.companyId ?? "none"}:${initialPage}`} />;
   }
   return (
     <DocumentsShell>
@@ -32,13 +34,14 @@ export function MyDocumentsClient() {
   );
 }
 
-function AuthenticatedDocuments({ getAccessToken, refresh, getAccountKey, getSessionEpoch }: AuthAccess & { getSessionEpoch: () => number }) {
+function AuthenticatedDocuments({ getAccessToken, refresh, getAccountKey, getSessionEpoch, initialPage }: AuthAccess & { getSessionEpoch: () => number; initialPage: number }) {
+  const router = useRouter();
   const [result, setResult] = useState<Result>({ status: "loading" });
-  const [page, setPage] = useState(0);
+  const page = initialPage - 1;
   const [attempt, setAttempt] = useState(0);
   const [now, setNow] = useState(Date.now);
   const heading = useRef<HTMLHeadingElement>(null);
-  const focusAfterLoad = useRef(false);
+  const focusAfterLoad = useRef(initialPage > 1);
 
   useEffect(() => {
     const update = () => setNow(Date.now());
@@ -68,8 +71,8 @@ function AuthenticatedDocuments({ getAccessToken, refresh, getAccountKey, getSes
   function reload(nextPage = page) {
     focusAfterLoad.current = true;
     setResult({ status: "loading" });
-    setPage(nextPage);
-    setAttempt(current => current + 1);
+    if (nextPage !== page) router.push(documentListPath(nextPage + 1));
+    else setAttempt(current => current + 1);
   }
 
   return (
@@ -88,16 +91,16 @@ function AuthenticatedDocuments({ getAccessToken, refresh, getAccountKey, getSes
           <p className="mb-4 type-body-7 text-grayscale-600" role="status">전체 {result.page.totalElements.toLocaleString("ko-KR")}개 · 최근 변경순</p>
           {result.page.totalElements === 0 ? <EmptyDocument /> : result.page.content.length === 0 ? (
             <Message title="이 페이지에는 서류가 없어요."><Button variant="outline" onClick={() => reload(0)}>첫 페이지로 돌아가기</Button></Message>
-          ) : <ul className="flex flex-col gap-3" aria-label="회사 서류 목록">{result.page.content.map(item => <DocumentRow key={item.documentId} item={item} now={now} />)}</ul>}
+          ) : <ul className="flex flex-col gap-3" aria-label="회사 서류 목록">{result.page.content.map(item => <DocumentRow key={item.documentId} item={item} now={now} page={initialPage} />)}</ul>}
           {result.page.totalPages > 1 && result.page.content.length > 0 && <div className="mt-6 flex justify-center"><Pagination ariaLabel="서류함 페이지" page={page + 1} totalPages={result.page.totalPages} onPageChange={next => reload(next - 1)} /></div>}
-          <p className="mt-5 type-body-7 text-grayscale-600" id="document-actions-help">미리보기와 다시 업로드는 준비 중이에요. 문서 처리·보유·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
+          <p className="mt-5 type-body-7 text-grayscale-600" id="document-actions-help">미리보기에서 상세·버전 이력을 확인할 수 있어요. 다시 업로드는 준비 중이에요. 문서 처리·보유·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
         </>
       )}
     </DocumentsShell>
   );
 }
 
-function DocumentRow({ item, now }: { item: DocumentBoxRow; now: number }) {
+function DocumentRow({ item, now, page }: { item: DocumentBoxRow; now: number; page: number }) {
   const versions = item.versions;
   return (
     <li className="flex flex-col gap-4 rounded-xl bg-primary-100 p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -116,7 +119,7 @@ function DocumentRow({ item, now }: { item: DocumentBoxRow; now: number }) {
         )}
       </div>
       <div className="flex shrink-0 flex-wrap gap-2" aria-describedby="document-actions-help">
-        <Button variant="outline" disabled>미리보기</Button>
+        <ButtonLink variant="outline" href={documentDetailPath(item.documentId, item.versionId, page)} aria-label={`${item.filename} v${item.versionNumber} 상세·미리보기`}>미리보기</ButtonLink>
         <Button disabled>다시 업로드</Button>
       </div>
     </li>
