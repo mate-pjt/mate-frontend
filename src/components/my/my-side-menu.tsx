@@ -9,6 +9,7 @@ import { useAuthSession } from "@/features/auth/session";
 
 const menuItems: SideMenuItem[] = [
   { value: "company", label: "나의 회사 정보", icon: "company" },
+  { value: "documents", label: "서류함", icon: "clip" },
   { value: "team", label: "함께하는 팀원", icon: "person", disabled: true },
   { value: "merge", label: "나의 회사 통합", icon: "add", disabled: true },
   { value: "bid-alerts", label: "알림 설정 공고", icon: "calendar", disabled: true },
@@ -45,6 +46,7 @@ export function MySideMenu({ value }: { value: "company" | "settings" }) {
         items={menuItems.map((item) => item.value === "logout" ? { ...item, label: logoutBusy ? "로그아웃 중..." : item.label, disabled: logoutBusy } : item)}
         onValueChange={(next) => {
           if (next === "company") router.push("/my/company");
+          if (next === "documents") router.push("/my/documents");
           if (next === "settings") router.push("/my");
           if (next === "logout") void handleLogout();
         }}

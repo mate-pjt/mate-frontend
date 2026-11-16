@@ -133,6 +133,8 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 - For the Figma v0.1 backlog, update the WBS current/next/status and the task record from evidence. Keep the Completed, In Progress, and Next entries below as dated history; add a dated milestone only when useful, without duplicating live task status.
 - If the state is uncertain or depends on product/team priority, do not guess; ask the developer with a recommended update.
 
+2026-11-16 DEV-22는 [이번 D1/D2](../development/figma-v01/tasks/DEV-22.md#dev-22-brief)의 기존 API 조합·로컬 선행 범위에서 `/my/documents` 목록/메뉴·후보/current·KST 기간·권한/오류·가입 문서 귀속 mock을 연결했다. [로컬 QA](../qa/company-documents.md#dev-22-local-qa)는 자동 계약·실제 Next mock/loopback HTTP와 실제 DBOX8차단/후속14대기를 구분한다. 실제 업무 API/파일 처리0·기존 가입/회사/DEV-08 및 MAT-162/다른 Task 예외를 보존하며 현재/다음/판정·Git 전달은 WBS·검토/실제 PR에서만 확인한다.
+
 ## Requirement Structuring
 
 Before implementation, write:

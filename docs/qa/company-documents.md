@@ -54,3 +54,42 @@ API 약어: A=`GET /api/v1/companies/{companyId}/documents`, B=`GET /api/v1/comp
 | 미실행 | 미확인 | 미정 | 미정 | 정책 계획만 작성, 실제 처리/변경0건 |
 
 실제 검증 때 각 ID에 실행 식별자·단계·비민감 Network/화면 증거·실패/복구를 추가한다. Backend unit/HTTP 대역·mock 브라우저·실제 통합·운영 파기를 분리하고 기존 가입 QA 상태를 덮어쓰지 않는다. 정책 결정의 완료와 기능 전체 통합 PASS·Git/main 반영은 별도 판정이다.
+
+<a id="dev-22-local-qa"></a>
+
+## 2026-11-16 · DEV-22 목록의 로컬 검증
+
+- 승인: [이번 DEV-22 D1/D2](../development/figma-v01/tasks/DEV-22.md#dev-22-brief)의 기존 API 조합·**로컬 선행/실서버 QA 차단 보존**. 원본 POL-13 계획22개는 당시 미실행 이력으로 보존한다. 이 승인을 DEV-23~26/가입·회사 QA로 확대하지 않는다.
+- 실행: `feat/dev-22-document-box`, 시작 SHA `433200f` 이후 이번 소스 diff, Node22.20.0/pnpm11.3.0·Next16.2.9·Aside Chromium. Origin `http://127.0.0.1:3022`, 데스크톱1440×1000·모바일375×812. mock 회사 `documents`/합성 계정1·2, HTTP는 loopback4322의 합성 응답 서버만 사용했다. 실제 업무 서버·OAuth/파일/OCR/티켓/삭제0건이다.
+- API 근거: backend dev `adc0e265ef0e2aa78ccb376e1fa322edd664b290`, main `4b5f31de578c41e698dda9c99e66149b7292f031` 유지·개발 OpenAPI3.1.0/v1 GET200(Aside). 일반 Python GET403은 접근 경로별 관찰이다. [기존 배포 run](https://github.com/mate-pjt/mate-backend/actions/runs/43389204151)의 verify/publish/deploy success·prod skipped를 재확인했다. source/CI 배포 기록/게시 명세와 현재 실행 프로세스 SHA·실제 업무 응답/권한 fixture는 별개이며 마지막 항목들은 미확보다.
+- 증거: [데스크톱](dev-22-documents-desktop.png)·[모바일](dev-22-documents-mobile.png)·[빈 목록](dev-22-documents-empty.png). 재현 서버/명령·요청 집계는 로컬 `/Users/jisung/.codex/visualizations/2026/11/16/01a1e304-db24-7432-baf1-3a3d9f270bc4/dev22-evidence/`에 보관한다. 로그/스크린샷은 합성 이름·문서명과 비민감 path/count만 포함하며 header/token·서명·원문은 저장하지 않는다.
+
+| 로컬 ID | 연결 실제 case | 실행·관찰 | 로컬 판정 |
+| --- | --- | --- | --- |
+| DBOX-L01 | 01/22 | 비로그인 진입→복귀 next 유지 로그인 안내, 가상 로그인 후 목록·my 메뉴의 서류함 진입/마이페이지 복귀. HTTP 대역에서도 로그인 링크 최종 화면 확인 | PASS |
+| DBOX-L02 | 01 | 합성25개 첫20/끝5·총 문서수25·최근 변경순·이전/다음 비활성·페이지 이동 후 제목 초점. Node에서size1/100·상한/offset·잘못된 page 검증 | PASS |
+| DBOX-L03 | 01/03 | HTTP에서 page1 유지 중 문서수1로 감소→전체1개/현재 page0행·첫 페이지 복귀. 해당 빈 page 목록1/버전0요청 | PASS |
+| DBOX-L04 | 02/06 | 표시 후보v2/OCR 처리·실패와 기존current v1 보유를 함께 표시. exact ID/current/status 변경 경쟁은 확인 필요, 최대 번호로 current 추정 없음 | PASS |
+| DBOX-L05 | 03 | 정상0건의 회색 미보유 행, 목록403의 권한 안내,503·손상content/null의 오류/명시 재시도 구분. 오류→정상 재시도 뒤20행 복원 | PASS |
+| DBOX-L06 | 04/21 | Node에서 다른 회사403/다른 계정404·미귀속 owner와 관리 leaf 차이, 실제 auth+회사 mock의 token/refresh 호출0 검증. 실제 권한 집행 증명은 아님 | PASS |
+| DBOX-L07 | 05 | KST 당일까지 기간 내/다음날 만료·어제/오늘/null·미래validFrom·손상/역전/윤년. 화면에서 만료·미확인·시작 전·확인 필요를 보유/처리와 분리 | PASS |
+| DBOX-L08 | 06 | mock의 업로드 대기/OCR 처리·성공·실패/재업로드/진위 확인·실패·거절/회사정보 확인/VERIFIED 표기·독립 회사 인증 안내. 성공문구를 회사정보 반영 완료로 바꾸지 않음 | PASS |
+| DBOX-L09 | 01/05 | loopback 실제 HTTP 경유 목록1+버전20·동시최대4, 끝page는 버전5·빈page0. 해당 page 밖 자동 조회/자동 polling 없음 | PASS |
+| DBOX-L10 | 03/21 | 한 버전503은 보유/기간 확인 필요, 버전403·401은 전체 목록 숨김과 권한/로그인 안내. current mismatch도 부분 확인 필요 | PASS |
+| DBOX-L11 | 21 | mock 계정1의 합성 표식은 계정2/새로고침에 미노출. HTTP 지연 조회 중 화면 이탈→회사7002 재진입 후0행 유지·이전 응답 부활 없음. Node에서 계정/회사 scope·Abort/epoch 후 후속 조회 차단 | PASS |
+| DBOX-L12 | 04 | Node에서 신규 미귀속 업로드는 회사 목록0건→가입 등록 성공 뒤 같은document/version 귀속/새 Repository 복원·기간null. 기존계정/다른 계정·진행/멱등 회귀도 전체 test에 포함 | PASS |
+| DBOX-L13 | 22 | 모바일375px에서 scrollWidth360≤innerWidth375·문서/버튼/기간 줄바꿈·읽기 순서. 키보드 Enter 메뉴/새로고침·제목 초점·상태/alert·목록과 페이지 접근성 이름 확인 | PASS |
+| DBOX-L14 | 21/22 | 전체 mock 관찰의 외부resource0건, 혼합 mock의 인증 추가 요청0(Node). 실제 production mock build와 혼합 Preview 결과물 production start가 각각 명시 오류/exit1로 차단됨 | PASS |
+
+### Figma·정책·화면의 대응과 한계
+
+- `3135:75612`: 미보유 회색 행/사업자등록증명서, `3135:75734`: 보유 primary100 행/체크 아이콘/등록일·두 버튼 slot을 design context와 이미지로 확인했다. 흰20px 카드·1100px 콘텐츠·24px padding과 기존 grayscale/type/Button·로컬 exact 체크 SVG/Add·오른쪽 화살표를 재사용했다. 원본 screenshot을 제품 자산으로 사용하지 않았다.
+- count/정렬·현재/후보·기간/오류/페이지는 POL-13/DEV-22 완료 기준의 기능 상태를 추가한 것이다. 두 버튼은 DEV-23/24 소유로 준비 중 비활성이고, 신규 추가/상세/원본/업로드·삭제를 이번에 구현했다고 세지 않는다. 헤더는 기존 DEV-56의 nickname 정책을 유지한다. 이 범위 연결을 화면 전체의 예외 승인/모든 frame의 픽셀 일치로 확대하지 않는다.
+- 초기 CLI의 일회성 Aside 탭이 닫혀 지속 조작되지 않아 동일 Aside MCP REPL로 이어갔다. 초기 SPA/로그인·빠른 reload 관찰은 전환/로딩 상태였으며 최종 상태를 기다려 다시 확인했다. 임시 도구 관찰을 제품 실패나 PASS로 세지 않았다.
+- 보조기술은 DOM/접근성 tree·role/키보드/초점으로 확인했다. 실제 VoiceOver 음성 청취·다른 브라우저/실기기·실제 storage/권한 회수/실서버 날짜는 미실행이다.
+
+### 실제 API의 남은 차단 · DBOX-01~06/21~22
+
+- **실제0통과·8차단, 실행0건**. 나머지 DBOX-07~20 14개는 기존 후속 Task의 대기/미실행이다. 로컬14개 PASS와 원본22개 계획/미실행 이력은 서로 다른 집계다.
+- 필요한 역할: backend 실행/계약 담당과 합성 권한 계정/회사·문서 자원 담당. 개인/일정은 미확인, 마지막 확인일2026-11-16이다. 현재 frontend/backend 실행 SHA 대응·실제 wrapper/상태/기간·서버 권한/귀속·후보/current·권한 상실/삭제 경계의 비식별 fixture와 안전한 조회/사용/보존/복구 범위가 재개 조건이다. 비밀값/원문을 문서나 채팅으로 요구하지 않는다.
+- 이번 D2가 승인한 것은 로컬 구현/검증 선행이다. 실제 업무 API/티켓/파일 처리·MAT-162/DEV-08 또는 다른 Task의 QA 면제가 아니며, main 반영과 실제 API 통합 PASS도 별도다.

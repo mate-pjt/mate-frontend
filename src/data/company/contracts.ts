@@ -118,6 +118,35 @@ export type DocumentProcessing = {
   extractedFields: { businessNumber: string; companyName: string; representativeName: string; openingDate: string; businessAddress: string } | null;
 };
 
+export const documentVersionStatuses = [
+  "UPLOAD_READY", "OCR_PENDING", "OCR_PROCESSING", "OCR_RETRY_WAIT", "OCR_FAILED", "REUPLOAD_REQUIRED",
+  "OCR_SUCCEEDED", "VERIFICATION_PENDING", "VERIFICATION_FAILED", "VERIFICATION_REJECTED",
+  "COMPANY_CONFIRMATION_REQUIRED", "VERIFIED", "REPLACED", "DELETED", "PURGED",
+] as const;
+export type DocumentVersionStatus = typeof documentVersionStatuses[number];
+export type DocumentBoxVersion = {
+  versionId: string;
+  versionNumber: number;
+  filename: string;
+  uploadedAt: string;
+  modifiedAt: string;
+  status: DocumentVersionStatus;
+  current: boolean;
+  validFrom: string | null;
+  validUntil: string | null;
+};
+export type DocumentBoxItem = Omit<DocumentBoxVersion, "validFrom" | "validUntil"> & {
+  documentId: string;
+  documentType: string;
+};
+export type DocumentBoxPage = {
+  content: DocumentBoxItem[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+};
+
 export type CompanyRegistrationProposal = {
   proposalId: string;
   revision: number;
@@ -233,6 +262,9 @@ export interface CompanyOnboardingRepository {
 }
 
 export interface CompanyDocumentRepository {
+  getDocumentBoxContext(access: AuthAccess, signal?: AbortSignal): Promise<{ companyId: number | null }>;
+  listCompanyDocuments(access: AuthAccess, companyId: number, page?: number, size?: number, signal?: AbortSignal): Promise<DocumentBoxPage>;
+  getCompanyDocumentVersions(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentBoxVersion[]>;
   createDocumentUpload(access: AuthAccess, file: File, idempotencyKey: string): Promise<DocumentUpload>;
   createDocumentVersion(access: AuthAccess, documentId: string, replacesVersionId: string, file: File, idempotencyKey: string): Promise<DocumentUpload>;
   retryDocumentProcessing(access: AuthAccess, documentId: string, versionId: string, kind: "ocr" | "verification", idempotencyKey: string): Promise<{ status: string }>;
