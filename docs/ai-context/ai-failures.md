@@ -315,3 +315,12 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Root cause / prevention: 중첩 structuredContent도 원문이라는 기존 규칙을 첫 조회에 적용하지 못했다. 이후 모든 원격 응답은 내부 파싱 뒤 ref/SHA·경로·필요한 source 본문/비식별 계약·PR/CI 상태만 새 객체로 출력했다. 설명용 업로드 enum도 실제 owning source와 대조해 BUSINESS_REGISTRATION으로 즉시 정정했다. 예시를 실행 계약으로 제시하기 전 enum/필드를 확인한다.
 - Browser failure / fix: conditional dialog를 먼저 unmount하니 native 초점 복귀가 사라졌다. 연결된 dialog에서 controller dispose→close→React 종료 순서를 사용하고 Escape 뒤 trigger 초점 복귀를 실제 브라우저에서 재확인했다. 숨겨진 파일 입력의 초기 초점도 실제 닫기 버튼으로 바로잡았다.
 - Verification corrections: optional AbortSignal과 충돌하던 기존 테스트의 불필요한 문자열 인자를 제거했고, 새 응답 유실 테스트는 spy 전에 원본 함수를 보관하도록 고쳤다. 최종653 tests/lint·3구성/Storybook build와 로컬 QA를 재확인했다. 제품/하네스 설정을 넓히거나 실제 QA 차단을 해제한 것은 아니다.
+
+## 2026-11-16 · DEV-25 문맥 분리·취소 초점과 출력 경계
+
+- Actual failure: 새 삭제 UI가 auth의 nullable 회사 문맥을 company mock의 연결 회사로 취급해 정상 mock 확인을403으로 막았다. 취소 때 일괄 상세 reload도 native trigger 초점을 제목으로 옮겼다. 초기 테스트는 auth/company 문맥 차이와 실제 초점 조합을 놓쳤다.
+- Fix/prevention: 초기 회사는 공개 company 포트에서 확보하고 제출/명시 조회 때 같은 회사인지 확인한다. 미귀속 owner도 회사 목록을 추측하지 않는다. 제출 전 취소는 화면/초점을 유지·원본 controller 재활성화, 제출 뒤 닫기만 상태를 조회한다. 기존 DEV-15 예방 규칙에 따라 dialog의 최종401을 상세에도 전달해 보호 자료를 숨기고 확인된 성공은 별도로 유지한다. 최종699 tests/실제 Next mock·loopback QA를 구분해 확인한다.
+- Verification corrections: 병렬 생성한 rejection을 순차로 await해 unhandled3건이 난 테스트는 Promise.all로 즉시 matcher를 부착했다. render 초기 controller 콜백의 ref 접근은 완료 state→effect의 native close/탐색으로 옮겼다. 자동 수정3/3 뒤 전수 재검증을 수행했다.
+- Output limitation: 첫 Figma 응답에서 임시 asset 주소를 선별 없이 출력했고 Aside 대화형 CLI 시작도 불필요한 계정 식별 metadata를 자동 출력했다. 사용자에게 공개했으며 실제 값을 Task/QA/PR에 재인용하지 않는다. 환경파일/credential·실제 계정/업무 응답 조회와 구분하며 기존 출력 삭제를 주장하지 않는다. 외부/CLI 응답은 실행 전 출력 필드와 자동 startup metadata를 확인·필터링하고, 후속 출력은 node/비식별 상태·method/path/status만 사용한다.
+- Evidence boundary: Aside 일회 REPL/탭 수명·스크린샷 session 경로·1px 이미지 AX 가시성/미지원 request 이벤트는 도구 한계로 기록한다. mock 외부 resource 관찰0을 packet 전수 계측으로 올리지 않는다.408의 wire3회/401의 공통 인증 재요청2회를 앱의 자동 재삭제와 구분하고 실제 통합 차단을 유지한다. Toast는 알림 region 안에서 세어 같은 성공 제목과의 전역 text2개를 오판하지 않는다.
+- Related files: DEV-25 Task/검토·DBOX-DEL QA, document-deletion controller/dialog·상세, 두 삭제 회귀 파일. 새 library/하네스·전역 config/storage 정책 변경 없음.
