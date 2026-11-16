@@ -14,6 +14,7 @@ import { documentPeriod, documentStatusLabel } from "@/features/company/document
 import { canReadDocumentOriginal, documentDetailPath, documentFileSize, documentListPath, documentTimestamp, documentVersionLabel, downloadFilename, loadDocumentDetail } from "@/features/company/document-detail";
 import { createDocumentOriginalController, type OriginalState } from "@/features/company/document-original";
 import { DocumentOriginalViewer } from "./document-original-viewer";
+import { DocumentReuploadButton } from "./document-reupload-dialog";
 
 type Props = { documentId: string; versionId: string | null; listPage: number };
 type Result = { status: "loading" } | { status: "ready"; versions: DocumentHistoryVersion[]; selected: DocumentHistoryVersion }
@@ -67,13 +68,13 @@ function AuthenticatedDetail({ documentId, versionId, listPage, getAccessToken, 
       <Message error={result.status === "error"} title={result.status === "loading" ? "서류 정보를 확인하고 있어요." : result.message}>
         {result.status === "error" && (result.statusCode === 401 ? <LoginLink documentId={documentId} versionId={versionId} listPage={listPage} /> : <Button variant="outline" onClick={reload}>다시 확인하기</Button>)}
       </Message></Card> : <VersionContent key={`${result.selected.versionId}:${attempt}`} version={result.selected} versions={result.versions} documentId={documentId}
-        access={{ getAccessToken, getAccountKey, refresh }} isCurrent={isCurrent} onSelect={select} onReload={reload} cancelOriginalRef={cancelOriginalRef}
+        access={{ getAccessToken, getAccountKey, refresh }} isCurrent={isCurrent} onSelect={select} onReload={reload} cancelOriginalRef={cancelOriginalRef} listPage={listPage}
         onUnauthorized={() => setResult({ status: "error", statusCode: 401, message: "로그인이 필요해요." })} />}
   </DetailShell>;
 }
 
-function VersionContent({ version, versions, documentId, access, isCurrent, onSelect, onReload, onUnauthorized, cancelOriginalRef }: {
-  version: DocumentHistoryVersion; versions: DocumentHistoryVersion[]; documentId: string; access: AuthAccess; isCurrent: () => boolean;
+function VersionContent({ version, versions, documentId, access, isCurrent, onSelect, onReload, onUnauthorized, cancelOriginalRef, listPage }: {
+  version: DocumentHistoryVersion; versions: DocumentHistoryVersion[]; documentId: string; access: AuthAccess; isCurrent: () => boolean; listPage: number;
   onSelect: (version: DocumentHistoryVersion) => void; onReload: () => void; onUnauthorized: () => void; cancelOriginalRef: React.RefObject<() => void>;
 }) {
   const [original, setOriginal] = useState<OriginalState>({ status: "idle" });
@@ -127,7 +128,8 @@ function VersionContent({ version, versions, documentId, access, isCurrent, onSe
         <div className="flex flex-wrap gap-2" aria-describedby="document-edit-help">
           <Button variant="tertiary" disabled>지우기</Button>
           <Button variant="secondary" disabled={!allowed || busy} onClick={() => void controller.request("DOWNLOAD")}>다운로드</Button>
-          <Button disabled>다시 업로드</Button>
+          <DocumentReuploadButton documentId={documentId} onOpen={() => { controller.dispose(); controller.activate(); setOriginal({ status: "idle" }); }}
+            onChanged={versionId => { window.history.replaceState(null, "", documentDetailPath(documentId, versionId, listPage)); onReload(); }} />
         </div>
       </div>
       <dl className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -136,7 +138,7 @@ function VersionContent({ version, versions, documentId, access, isCurrent, onSe
         <Metadata label="파일크기">{documentFileSize(version.sizeBytes)}</Metadata>
         <Metadata label="업로드한 사람">{version.uploaderDisplayName?.trim() || "미확인"}</Metadata>
       </dl>
-      <p id="document-edit-help" className="mt-4 type-body-7 text-grayscale-600">지우기와 다시 업로드는 준비 중이에요. 문서 검증·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
+      <p id="document-edit-help" className="mt-4 type-body-7 text-grayscale-600">다시 업로드는 선택한 이전 버전이 아닌 최신 현재 문서를 기준으로 진행해요. 지우기는 준비 중이에요. 문서 검증·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
     </Card>
     <div className="mt-4 grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
       <Card>
