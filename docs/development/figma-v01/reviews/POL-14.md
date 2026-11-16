@@ -96,3 +96,62 @@ D1 현행 leaf/capabilities·대상 동의 채택/DEV-28 포함, D2 생일/전�
 - 직접 재실행한 문서 검사4파일/437링크·원본79/Task114/의존156·고정5/후속7, 계약32경로/37operation/67schema·15leaf/행9/page3, diff-check 모두 PASS. 2차 대상 문서집합 SHA256 `ed139e1fb0846c2fb5f2092534131bad67e7f64fe2e1c86111897d4d0ddf104e`.
 - 자체 ai-review도 source 링크·WBS 차단/집계·재개와 Draft 경계를 다시 읽었으며 위 여섯 섹션의 조사 한정 결론을 유지한다. Task 전체는 사용자3결정 전 미완료다.
 - 이후 이 절은 실제 검토 결과/지문만 붙인 종료 metadata다. 정책·source 해석·범위/상태·승인/QA/재개 조건을 바꾸지 않아 두 리뷰를 재귀적으로 재실행하지 않는다. 문서 검사/diff-check는 다시 실행한다. 정책 답변·내용 변경 뒤에는 최종 산출물에 두 리뷰를 다시 실행해야 한다.
+
+
+## 2026-11-16 · D1~D3 확정 뒤 최종 검토 입력
+
+[확정 Brief/승인 원문](../tasks/POL-14.md#pol-14-brief)·[정책 v1](../tasks/POL-14.md#pol-14-contract)·[후속 기준](../tasks/POL-14.md#pol-14-handoff)·[검증](../tasks/POL-14.md#pol-14-verification)과 TEAM26 계획을 대상에 추가한다. 앞선 조사 한정/정책 차단/Draft 판정은 당시 이력이며 사용자3선택으로 해당 요구사항 Gate가 해소됐다. 기존 Git 전달/이번 Chromatic 한도 예외는 여전히 최초 승인 범위다.
+
+### Context Audit Report · 확정 산출물
+
+- **결론: PASS.** 현재 코드/하네스와 이번 문서 사이 사실 불일치 없음. 제품/실제 통합 PASS가 아니다.
+- **확인한 코드베이스 사실:** package.json8scripts/pnpm11.3.0·Next16.2.9/React19.2.4·Node pin22.20.0/현재 shell26.5.0·strict TypeScript, 실제 team 메뉴/route/관리 포트 미연결·현재 backend/게시 API 존재를 구별했다. 실행 코드/설정 변경0.
+- **base.md:** package/scripts·명령/런타임 규칙 변경 없어 유지. 실제 최종 head 원격 CI를 로컬 미실행과 구분한다.
+- **architecture.md:** routes/components/features/public data 경계·현재 준비 중 설명과 일치. 정책 채택을 신규 코드 구조/제품 완료로 쓰지 않았다.
+- **data-access.md:** 실제7개 선택 그룹/static qna·현재 company 공개 포트·DTO/HTTP·snapshot/운영 guard·저장소/업로드 경계는 그대로다. 후속 구현은 그 규칙을 따른다.
+- **plan.md:** 확정 정책의 날짜별 연결만 추가, live current/next/status는 WBS 한 곳. 원본79/114Task/156의존·과거 QA 이력 보존 확인.
+- **harness.md:** 실제3Skill/verifier/placeholder config와 일치. 새 Skill/agent/hook/하네스 동작 추가 없음.
+- **ai-failures.md:** 메타데이터 출력 재발 이력은 유지하고 실제 발생한 임시 증거 경로의 연속2실패/교정과 예방만 추가했다. 가공된 실패/해결은 기록하지 않았다.
+- **발견된 불일치:** Major/Minor 사실 불일치 없음. 이전 source 경로 Minor는 고정29링크로 해결. Figma 예외는 D2·만료 행동은 D3로 승인 범위를 특정했다.
+- **개발자 확인 필요 사항:** 정책 D1~D3 추가 확인 불필요. 실제 QA 자원/실행 대응·사용/잔존/복구·후속 자체 Brief/알림 안전 경로·POL-15 목적지는 별도 Gate로 유지한다.
+- **추천 수정 방향:** 최종 두 리뷰 뒤 WBS/Task 종료·DEV-27 인계만 반영하고 freshness/최종 PR head 검증과 정상 Git 전달을 마친다.
+
+### ai-review · 확정 정책 전체
+
+#### 1. 리뷰 요약
+
+사용자의 최초 단일 Task/Git 요청·3개 선택 원문, 원래 완료 기준, 현재 status/full diff·신규 TEAM QA, 관련 프론트/고정 source·현재 공개 명세와 package.json·실제 문서/계약 검사 결과를 다시 확인했다. 정책/후속 기준·QA 계획의 확정 범위가 요구사항에 맞고 실행 코드·다른 기능을 시작하지 않았다. 현재 확정 산출물 검토에 미해결 Blocker/Major 없음. 최종 PASS와 Git 전달은 종료/freshness 및 실제 최종 PR head에서 확정한다.
+
+#### 2. 발견된 문제
+
+정책/문서 diff의 미해결 Blocker/Major/Minor 없음. 실제 발생한 임시 세션 증거 경로 실패2회는 기록 지문/현재 파일로 교정·재검증했다. 앞선 불필요 메타데이터 출력은 실패 기록에 공개됐으며 이후 검토 결과가 과거 출력을 삭제/무노출로 만드는 것은 아니다.
+
+#### 3. 누락된 검증
+
+문서 전용이므로 로컬 앱 test/lint/build/Storybook·제품 브라우저/mock/HTTP대역은 실행하지 않았다. 공개 OpenAPI200/동일 지문·source/배포 기록은 실제 업무 응답/실행 SHA·메일 수신/팀원 변경 통합 검증이 아니다. TEAM26은 실제0통과·26대기/실행 Gate 미확보다. 기존 QA-08/가입/회사/문서/다른 Task 차단·예외는 그대로다. 최종 PR head 원격 CI는 push 후 확인한다.
+
+#### 4. 문서 갱신 필요 여부
+
+WBS/Task·후속7기록·TEAM QA/색인·plan 날짜별 연결과 검토/실패 기록을 반영했다. 원본/coverage·후속 원문·기존 QA/결정/차단·승인 예외는 보존한다. package/scripts·폴더/API/mock/DTO 규칙·하네스 설정 변경이 없어 base/architecture/data-access/harness 갱신 불필요다. 종료/다음 선정 metadata 뒤 영향 문서검사와 review freshness가 필요하다.
+
+#### 5. 개발자 확인 필요
+
+D1~D3와 commit/push·PR/CI·정상 merge/main FF·이번 Chromatic 월간 한도 예외는 이미 승인됐다. 동일 승인을 다시 묻지 않는다. 후속 DEV의 실제 계정/메일·업무 실행/복구와 알림 route·POL-15 목적지 등은 각 자체 Gate이며 이번 문서 작업의 미결 정책으로 숨기거나 임의 확정하지 않는다.
+
+#### 6. 추천 수정 방향
+
+read-only verifier의 확정 diff 검토를 받고 필요한 수정/재검증 뒤 종료/WBS와 다음 DEV-27 인계만 갱신한다. 검토 뒤 내용이 바뀌면 두 리뷰를 재실행하고, 결과 식별자만 붙이는 trivial metadata는 범위/사유를 기록한다. 실제 최종 head의 CI·리뷰/병합 조건을 확인해 작은 커밋을 보존하는 정상 merge와 local main FF까지 수행한다.
+
+
+### 확정 전체 read-only verifier · 종료 전
+
+- Result: **PASS — POL-14 확정 정책/문서 산출물 범위**. D1~D3 원문/결정자·시각, v1/한정 예외·후속7소유·TEAM26, 제품/실제 통합·다른 Task 미실행을 확인했다. Blocker/Major/Minor0, 추가 정책 승인 불필요.
+- 직접 재실행: 문서14/621링크·79/114/156·고정5/후속7 원문, 계약32/37/67·15leaf/행9/page3, 정책 지문 동일/결정3/후속7/TEAM26·실제0대기26, diff-check 모두 PASS. runtime/package/config0·앱/실제 업무 미실행 사유도 확인했다.
+- 대상: HEAD3538b5f 위 확정14문서, 집합 SHA256 `67143e7ca490f28b0bd51bacd4a0cd235a6c2b01f9a6072111ba49fb737034b3`. 종료/WBS/DEV-27 선정·인계 뒤 freshness를 다시 확인한다. Git 최종 head CI/정상 병합은 이 리뷰와 별도다.
+
+### 종료/freshness 재검토 최종 결과
+
+- read-only verifier **PASS — 종료 metadata/다음 선정까지 포함한 POL-14 정책/문서 단위**. 완료4기준·WBS POL-14 완료/DEV-27 준비·집계34/23/54/1/2·first action과 미실행/차단·소유 범위를 재확인했다. Blocker/Major/Minor0, 추가 정책 승인 불필요.
+- 직접 재검증:14문서/627링크·79/114/156·고정5/후속7, 계약32/37/67·15leaf/행9/page3, 정책 지문/3결정/후속7/TEAM26, diff-check PASS. 별도 Markdown table340행 형식 검사도 PASS. TEAM 실제0통과26대기·제품/업무/메일0·미확인 실행 SHA/실제 wrapper 경계를 유지한다.
+- 대상 문서집합 SHA256 `596a665bada32e6a8d8739ef7b09dab853580b1004bbd49711f969d5e142c1d9`. 자체 ai-review도 종료 checkbox/선정·집계/인계와 현재 diff를 다시 검토해 위 여섯 섹션의 확정 결론을 유지한다.
+- 이 절은 실제 결과/지문/검증 수만 기록한다. 정책·범위·상태·승인/QA·인계 조건을 바꾸지 않아 두 리뷰를 재귀 실행하지 않는다. 문서/diff 검사는 다시 실행하며 이후 내용 변경 시 재검토한다. 실제 최종 PR head CI·리뷰/정상 병합/main FF는 PR #83과 최종 보고에서 확인한다.
