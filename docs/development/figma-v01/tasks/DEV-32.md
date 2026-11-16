@@ -64,3 +64,17 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-32-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1·v1](POL-14.md#pol-14-contract). 원본 T04의 회사 공용 일반 직급 목록/생성·이름 변경/미사용 삭제다. 가입·초대의 새 직급 제안과 관리 CRUD의 별도 권한을 구별한다.
+- 확정 완료 기준: 조회 LIST_VIEW, 변경 POSITION_MANAGE·회사 범위와 현재 version. 이름은 trim 후1..30자·제어문자/대표자 예약어/활성 중복 금지, 대표자 system 정의는 rename/삭제 불가다. 이름 변경은 같은 ID를 참조하는 전체 구성원에 반영되고 개별 타인 프로필 변경으로 취급하지 않는다.
+- rename name/expectedVersion·DELETE query expectedVersion을 사용하며 CP001~005·다른 회사/손상/오래된 version·사용중 ACTIVE 구성원·경쟁 생성/변경을 검증한다. 삭제는 soft delete와 과거 참조 보존, 같은 이름 신규 ID는 이전 직급 복구가 아니다. 사용중 직급을 먼저 임의 이동시키거나 삭제하지 않는다.
+- 검증 연결: [TEAM-21~23/26](../../../qa/team-members.md#pol-14-team-qa), Figma3137:53220/53254/53288. 실제 검증은 disposable 일반 직급·참조 소속/권한·변경/잔존/복구 범위가 필요하다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.

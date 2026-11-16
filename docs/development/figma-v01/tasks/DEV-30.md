@@ -64,3 +64,18 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-30-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1/D3·v1](POL-14.md#pol-14-contract). 원본 T02의 기존 초대 재발송/취소·현재 상태·version·메일 결과를 관리하며 새 초대 생성은 DEV-29 흐름을 사용한다.
+- 확정 완료 기준: **미만료 PENDING만** 재발송/취소한다. expiresAt 경과·EXPIRED는 해당 버튼/명령 대신 **새 초대 작성**을 안내한다. DB PENDING 잔존으로 source resend가 가능한 창도 UI에서 이용하지 않는다. 사용자 선택이 backend 상태/만료 규칙을 바꾼 것은 아니다. 완료/거절/취소 상태에 PENDING 명령을 보내지 않는다.
+- 재발송은 최신 expectedVersion과 현재 leaf/부여 재검사를 따르고 새 token/deliveryVersion/now+7일·기존 대기 delivery SUPERSEDED를 확인한다. 이전 링크/일회성 handoff·수락/만료/취소 경쟁, 표시 직전/요청 중 만료·단말 시계와 최종 서버 거부를 검증한다. 만료를 자동 연장하거나 완료된 기존 초대를 부활시키지 않는다.
+- 오류/확인 기준: CI003 상태·CI004 version·권한/404·응답 유실·메일 실패와 DB 명령 성공을 구분해 최신 상태/메일 결과를 명시 재조회한다. 자동 재발송/취소·새 초대0, 중복 클릭/늦은 결과·계정/회사/화면 종료를 방어한다.
+- 검증 연결: [TEAM-14~17/23/26](../../../qa/team-members.md#pol-14-team-qa), Figma3137:52911/52990와 만료/최종 상태. 실제 소모 가능한 초대/수신처/시간·복구 범위의 Gate를 유지한다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.

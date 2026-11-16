@@ -42,10 +42,10 @@
 
 ## 완료 기준
 
-- [ ] 행동별 권한·마지막 관리자·회사/계정 범위를 기록한다
-- [ ] 초대 만료/재발송/중복·합류/직급 변경 충돌·현재 계약을 확정한다
-- [ ] 원문/소유 소스·버전·결정자·시각·선택/보류 이유를 기록한다. 추천안은 승인으로 간주하지 않는다.
-- [ ] 근거 있는 기존 승인 또는 필요한 개발자 결정을 확보하고, 후속 개발의 범위/완료 기준/차단을 갱신한다. 정책 작업도 Review Gate를 수행한다.
+- [x] 행동별 권한·마지막 관리자·회사/계정 범위를 기록한다
+- [x] 초대 만료/재발송/중복·합류/직급 변경 충돌·현재 계약을 확정한다
+- [x] 원문/소유 소스·버전·결정자·시각·선택/보류 이유를 기록한다. 추천안은 승인으로 간주하지 않는다.
+- [x] 근거 있는 기존 승인 또는 필요한 개발자 결정을 확보하고, 후속 개발의 범위/완료 기준/차단을 갱신한다. 정책 작업도 Review Gate를 수행한다.
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -201,3 +201,110 @@ GitHub branch 원문 응답의 작성자 메타데이터와 Figma 첫 metadata�
 - 정책/제품 범위 보존: 승인받은 경우에만 화면 예외를 해당 상태에 연결한다. POL-15는 수신 완료 목적지, DEV-33은 그 연결의 별도 Gate다. 이번 조사로 목적지/새 알림 경로를 임의 승인하거나 실제 수신/권한 변경 자원을 확보했다고 판단하지 않는다.
 - 다음 별도 후보: DEV-27. P0/P1의 기존 차단, P2 앞선 회사 갱신의 DEV-08·DEV-24/26/MAT-162 조건을 보존하면 표 순서상 첫 팀원 조회 단위다. **POL-14 최종 PASS 뒤** 최신 source/Swagger·목록/상세 Figma·계정/회사/leaf/9행flags/빈·page·오류·nullable/미제공·실제 조회 QA 자원과 사용/잔존/복구 범위를 확인하는 자체 Gate가 첫 행동이다. 지금 DEV-27 조사/Brief·설계/구현·Git 전달은 시작하지 않는다.
 - 전달 계획: 현재 조사 기록만 검증/리뷰한 작은 문서 커밋·Draft PR로 보존할 수 있다. D1~D3와 최종 정책 Gate 전에는 ready/merge로 진행하지 않는다. 실제 PR/head·CI 결과는 PR/종료 보고에서 확인하고 추가 문서 변경 때 freshness를 재확인한다.
+
+
+<a id="pol-14-brief"></a>
+
+## 2026-11-16 · 사용자3결정 뒤 확정 Brief와 실행 체크포인트
+
+- 답변 수신 확인: 2026-11-16 23:01 KST, 결정자 이번 대화 사용자. D1 **“현행 계약과 동의 절차 채택 (추천)”**, D2 **“미제공 표시·행동별 안내 허용 (추천)”**, D3 **“만료 후 새 초대 작성 (추천)”**를 명시 선택했다. 이전 조사/차단·Draft PR 기록은 당시 이력으로 보존하며 새 결정으로 요구사항 Gate를 해소한다. 이전 최종 보고의 ‘Git 승인을 다시 요청’은 오기로 정정한다. Git 전달 승인은 최초 요청부터 유효하며 반복 승인받지 않는다.
+- Git 재개: `docs/pol-14-team-policy`/`3538b5fc3305eedcc511515f09d720cf1f17a8d0`, local/remote branch 동일·작업트리 clean, `git fetch origin main` 뒤 local/remote main `960fb14d1a38b19b7bd64942e52c4bf3da19fd8c` 동일. [Draft PR #83](https://github.com/mate-pjt/mate-frontend/pull/83)·type: docs·2개 조사 커밋을 보존한다. backend dev/중앙 main 재조회 SHA는 최초 조사와 같다.
+- 요구사항/유형: POL-14 하나의 정책 결정·문서 작업이다. T01~T04의 권한/동의/최후 관리자·초대/합류/직급 계약과 D2/D3 한정 화면 기준을 확정하고 후속 DEV/QA의 소유·완료/재개 조건을 연결한다.
+- 성공 기준: 3결정 원문/결정자·확인시각과 고정 source·게시 명세/실행 미확인 구별, 행동별 권한/회사·계정/상태·version·충돌·정보 최소화, frame/상태별 예외 범위, DEV-27~33 소유·QA 계획/기존 차단 보존, 문서 검사/Documentation Update Check·최종 두 리뷰 PASS. 정책 완료와 제품·실제 통합·Git 전달을 구분한다.
+- In scope/수정 파일: 이 Task·WBS·`reviews/POL-14.md`, `DEV-27.md`~`DEV-33.md`의 인계 append, `docs/qa/team-members.md`·QA README, ai-context plan의 날짜별 연결. 앞선 조사에서 기록한 ai-failures는 이력으로 유지한다.
+- Out of scope: src/public/tests·Repository/DTO/mock/API 데이터 흐름의 구현·라이브러리/설정, backend/중앙 문서 편집, POL-15 목적지·POL-16 합치기·POL-18 서비스 탈퇴 결정, 실제 업무 조회/변경·초대/메일/직급·문서 처리·운영/배포·다음 Task 실행. 이번 사용자3선택은 제품 구현·QA 자원/실행·로컬 선행 예외를 승인하지 않는다.
+- 확인한 파일/패턴: AGENTS·feature-workflow/ai-review/context-audit·verifier·WBS/workflow/task-cycle/DOC-001·baseline/coverage·ai-context6문서와 package.json, my-side-menu/company contracts/client/auth contracts·현재 routes, 고정 중앙 정책/backend29 source 링크·개발 OpenAPI32경로37operation/67schema·Figma12frame metadata, QA index/template·QA-08의 기존 초대 차단. 상태는 WBS만 소유하고 task append/QA 사례로 증거를 이어가는 기존 패턴을 따른다.
+- 가정: 기존 source의 유효 leaf/catalog·version/멱등 계약을 그대로 따르고 미래 endpoint·필드를 만들지 않는다. 새 route/동의 요청 상세 시각 설계·반응형 시안은 후속 자체 Gate이며 D2/D3를 화면 전체 예외로 확대하지 않는다. 현재 정책 문서에 남은 blocking ambiguity 없음.
+- 단계/영향: 확정 결정·정책 v1 → 후속7Task의 소유/완료/차단과 TEAM QA26 연결 → 문서/계약 구조 검사·Context Audit → ai-review·read-only verifier → 종료/WBS·다음 DEV-27 인계 뒤 freshness → 목적별 docs 커밋/PR 최종 head CI·정상 merge commit/main FF. 제품 런타임 영향 없음.
+- 위험/검증: role/직급 권한 유추, 대표자 system 직급과 본인 소속 변경 혼동, 동의 생성과 적용·초대 저장과 메일 수신 혼동, 만료 DB 경합·과거 QA 예외 확대를 막는다. `python3 /tmp/mate-pol-14/validate_docs.py`, `python3 /tmp/mate-pol-14/check_contract.py`, `git diff --check`와 변경범위/원본·후속 원문·상태/의존/79개 커버리지·Markdown·민감 literal을 검사한다. package.json의8scripts는 변하지 않았다. 문서 전용이라 로컬 앱 test/lint/build/Storybook·제품 브라우저/mock/HTTP대역·실제 업무 통합은 미실행하며 원격 CI는 실제 최종 head에서 따로 확인한다.
+
+<a id="pol-14-contract"></a>
+
+## 확정 정책 v1 · 2026-11-16
+
+위 [현행 조사](#pol-14-investigation)의 고정 source/계약 관찰을 **D1의 후속 개발 기준**으로 채택한다. 그 안의 ‘확정 전/답변 대기’는 앞선 시점 이력이다. 아래 표의 새 결정과 화면 예외를 함께 적용하며, 새 source/명세 변경은 후속 Gate에서 다시 확인한다.
+
+| 결정 | 확정 내용·근거 | 한계/후속 소유 |
+| --- | --- | --- |
+| D1 | 사용자 원문 ‘현행 계약과 동의 절차 채택 (추천)’. 15leaf/최소2·preset/계산 role, 현재 capabilities·직접/동의/금지·최후 관리자·회사/계정 범위와 source의 초대/합류/직급/version 계약 채택 | 동의 요청 생성/조회·본인 수락/거절·회사 취소·충돌·직접 변경/적용 구분은 DEV-28 기준에 포함. backend·실제 통합이 이번에 완료됐다는 판정 아님 |
+| D2 | 사용자 원문 ‘미제공 표시·행동별 안내 허용 (추천)’. 상세 생년월일·전화번호의 자리/라벨 유지, 값은 **미제공**. 대표자 일괄 변경 불가 문구·버튼은 현재 직접 변경/대상 동의/금지 조건에 맞춤 | 아래 frame/상태에 한정된 명시 화면 예외. 개인정보 추론·입력/조회 API 신설, 상세 전체 재설계·대표자 권한 제한 해제 승인 아님 |
+| D3 | 사용자 원문 ‘만료 후 새 초대 작성 (추천)’. **미만료 PENDING만** 기존 재발송/취소, expiresAt 경과·EXPIRED에는 해당 명령을 제공하지 않고 **새 초대 작성** 안내 | DB PENDING 잔존/재발송 가능 창을 UI가 사용하지 않음. 새 초대는 명시 입력/제출 후 현재 서버 권한·중복 검사. 자동 재발송/취소·새 생성 없음, backend 상태/만료 규칙 변경 아님 |
+
+### 행동별 권한·소속과 최후 관리자
+
+- API 허용 원천은 같은 회사 ACTIVE 소속의 현재 leaf다. category는 탐색, preset은 선택 시작점, role은 실제 집합에서 계산한 요약이다. ADMIN=현재 전체15leaf, AGENT=두 조회+회사정보3leaf, VIEWER=두 조회이며 유효 집합은 최소2개를 포함한다. VIEWER/AGENT의 추가 직원관리 leaf를 role 이름으로 막거나 다른 행동까지 허용하지 않는다.
+- 각 행동의 필요 leaf·부여 집합의 actor 부분집합, 대상보다 높은/같은/낮은 등급, 대표자, 본인 조건을 함께 적용한다. 서버 capabilities는 진입 안내이며 최종 제출 시 현재 권한/version·회사 변경 잠금·관리자 수를 재검사한다. READ_ONLY_MEMBER 등 읽기 가능/변경 금지를 보존하고 프론트 UI를 서버 보안 검사로 대신하지 않는다.
+- 일반 타인: 낮은 대상은 직접 변경 가능, 같은 대상은 동의, 높은 대상은 금지다. 일반 비관리자의 ADMIN 승격·대표자 지정을 ADMIN이 요청해도 대상 수락 전 적용되지 않는다. 대표자 대상은 ADMIN만 동의 요청할 수 있다. 자신은 별도 self-demotion/leave·대표자 공석 시 본인 취임 계약을 사용한다.
+- 대표자 **system 직급 정의의 이름 변경/삭제 불가**와 대표자 **소속의 동의 변경/본인 해제**는 다르다. 대표자는 같은 회사 일반 직급을 지정해 ADMIN을 유지하며 직급만 해제할 수 있고, 마지막 ADMIN이어도 이 해제는 가능하다. ADMIN까지 줄이거나 소속을 끝내면 다른 유효 활성 ADMIN이 남아야 한다. 합치기 미반영/거절 대상 등을 단순 ACTIVE 행/표시 이름만으로 관리자 수에 포함하지 않는 중앙 불변식을 따른다.
+- 목록/상세·권한은 회사/계정/소속 ID·version 문맥을 유지한다. 계정/회사/화면·권한 상실 뒤 이전 응답/선택/Toast를 재사용하지 않으며 과거 소속의 본인 변경 결과 열람을 현재 회사 전체 조회 권한으로 확대하지 않는다.
+
+### 직접 변경·대상 동의·정보 최소화
+
+- membership 직접 변경은 각 endpoint의 expectedVersion, 동의 생성은 requestKey UUID/expectedMembershipVersion/kind와 종류별 필드, 결정·취소는 requestKey/expectedRequestVersion을 그대로 사용한다. 상태 변경에 보편적 새 expectedVersion·멱등 header를 추가하지 않는다.
+- 동의 outcome CREATED/REUSED/NO_CHANGE를 구분한다. 유효 대상별 PENDING 하나·같은 내용 재사용/알림 중복 없음, 다른 제안은 기존 요청 명시 취소 뒤 작성한다. PENDING은 **시간 만료·무응답 자동 적용 없음**, 대상 본인만 수락/거절, 현재 자격 있는 회사 담당자만 취소한다. 정당한 발행자의 퇴사/권한 상실만으로 폐기하지 않되 target/version·직급 정의 변화·관리자 불변식은 다시 검사한다.
+- 최종 APPLIED와 REJECTED/CANCELED/INVALIDATED, 직접 명령 성공/동의 요청 생성/이미 동일 상태를 별도 안내한다. source에 있는 409/no-change/replay 의미를 일반 성공으로 뭉개지 않는다. timeout/연결/5xx·손상2xx는 명시 조회로 상태를 확인하고 자동 재변경/동의/발송하지 않는다.
+- 팀원 편집은 회사 소속의 직급/권한·정의된 관리 행동이다. 계정 이름·이메일·생일/전화 같은 개인 프로필을 대신 수정하지 않는다. nullable 이름/이미지/lastLoginAt은 결측 그대로 구분하고 타 개인정보로 합성하지 않는다. D2의 ‘미제공’은 미연결값의 고정 표시이며 서버의 빈 문자열/임의 날짜로 저장하지 않는다.
+- 동의 요청 상세/결정의 구체 route·알림 actionPath allowlist/대상 재검증 연결은 DEV-28의 자체 UI·안전 경로 Gate에서 제시한다. 현재 POL-04 allowlist에 없는 경로를 정책 채택만으로 허용하지 않으며 알림 읽음/클릭을 수락으로 처리하지 않는다. 완료 목적지 POL-15/DEV-33와 회사 간 합치기 POL-16은 별도다.
+
+### 초대·합류·직급의 확정 경계
+
+- 일반 초대/승인은 기존 활성 일반 직급 또는 새 직급 이름 한 가지, VIEWER 초과 권한은 추가 leaf·부분집합, 직급 제안/변경은 source의 PROFILE_EDIT 조건을 따른다. 대표자 가입 초대/승인은 ADMIN·대표자 공석·대표자 요청 여부·별도 일반 직급/preset/추가 leaf 없음 조건이며 기존 구성원 대표자 지정과 구분한다.
+- 같은 회사/확인 이메일의 PENDING 중복, 활성 소속·같은 회사 대기 신청·모호한 확인 이메일, 수신자 Google 확인 이메일 불일치·회사 변경 잠금을 현재 오류로 처리한다. 초대 PATCH로 이메일을 바꾸거나 등록 계정 이름을 임의 덮어쓰지 않는다.
+- 초대7일은 source 유효기간이며 UI는 실제 expiresAt/status를 사용한다. 미만료 PENDING 재발송은 새 링크·deliveryVersion·만료를 만들고 구 대기 발송은 SUPERSEDED다. 수신의 짧은 수명/일회성 handoff와 비공개 token/링크를 저장소·로그/QA/PR에 남기지 않는다. D3는 만료 DB 확정 전후 차이와 관계없이 UI에서 만료된 기존 초대 관리 명령을 막는 기준이다. 단말 시계/요청 중 만료 경합의 표시와 최종 서버 거부도 DEV-30에서 확인한다.
+- 초대 상태와 delivery PENDING/SENDING/SENT/FAILED/SUPERSEDED는 별개다. 생성/재발송 명령 성공·메일 어댑터 전송 성공·실제 수신함 도착/수락을 각각 확인한다. 실패·응답 유실 뒤 자동 새 초대/재발송은 없고 상태/최신 version 조회 뒤 명시 행동이다.
+- 신청 검토는 REVIEW leaf이며 requested/applied 직급·권한과 PENDING/CANCELED/APPROVED/REJECTED 이력을 보존한다. 승인 권한/직급 수정/VIEWER 초과/대표자 제약과 계정/회사 잠금·동시 취소/이미 처리·승인 소속 생성/다른 pending 정리를 검증한다. 거절은 trim 후1..300자 사유다. 가입 초대/신청과 이미 소속된 구성원의 동의 요청을 섞지 않는다.
+- 직급은 회사 공용 ID다. 이름은 trim 후1..30자·제어문자/대표자 예약어/활성 중복을 거부한다. rename은 해당 ID의 모든 참조에 반영, system 정의 수정/삭제·ACTIVE 사용중 삭제/다른 회사 직급은 거부한다. rename/삭제는 현재 version, soft delete는 과거 이력 보존이며 같은 이름 신규 ID는 과거 직급 복구가 아니다. 신청/초대의 새 직급 제안과 POSITION_MANAGE CRUD 권한은 서로 다르다.
+
+### Figma frame·상태와 명시 예외
+
+| frame/상태 | 대조한 기준·후속 책임 | 승인/한계 |
+| --- | --- | --- |
+| [3137:52702](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52702) 팀원 목록 | 목록·역할/직급/가입·최근 로그인과 ACTIVE 서버 목록은 DEV-27, 보낸 초대/받은 신청은 DEV-29/31 소유 | 역할/직급 권한 유추 금지는 D1의 기능 기준. 화면 전체 예외/후속 카드 삭제 승인 없음 |
+| [3137:53331](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53331)·[3137:54225](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-54225) 상세 | DEV-27은 생년월일/전화 자리·라벨 유지/미제공. DEV-28은 대표자 일괄 금지 안내를 해당 행동별 직접/동의/금지로 교정 | **D2의 명시 한정 화면 예외**. 대표자 system 정의 보호·현재 leaf/최후 관리자 규칙은 유지 |
+| [3137:52847](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52847)·[3137:52911](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52911)·[3137:52990](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52990) 초대/재발송/취소 | DEV-29/30은 미만료 PENDING과 실제 expiresAt·delivery 상태. 만료는 새 초대 작성 안내 | D3는 만료 상태 행동 기준. Figma ‘5일 후 만료’ 예시를 고정하지 않으며 초대/취소 화면 전체 시각 예외는 없음 |
+| [3137:53069](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53069)·[3137:53154](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53154)·[3137:53193](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53193) 합류/검토/거절 | DEV-31은 신청 상태·요청/실제 승인값·직급/leaf·대표자·거절 사유와 동시 처리 구분 | D1 채택·별도 화면 전체 예외 없음 |
+| [3137:53220](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53220)·[3137:53254](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53254)·[3137:53288](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53288) 직급 관리/추가 | DEV-32는 공유 직급·system 정의와 사용중 삭제/version·중복을 구별 | 기존 보호 문구와 D1을 유지. system 정의 보호를 대표자 소속 일괄 변경 금지로 확대하지 않음 |
+
+Figma 조사 범위는 위12frame metadata/상태·라벨이다. 모든 child/prototype·pixel 검증을 한 것은 아니다. 미표현 loading/empty/error·동의 제안/결정 화면과 새 route는 후속 자체 Gate에서 실제 node/state·기능 기준과 연결한다. D2/D3를 그 전체 화면의 포괄 예외로 사용하지 않는다.
+
+<a id="pol-14-handoff"></a>
+
+## 후속 개발/QA의 소유와 재개 기준
+
+| 소유 | 확정 인계 기준 | 검증/실행 Gate |
+| --- | --- | --- |
+| DEV-27 | ACTIVE 목록/상세·현재 company/leaf/catalog·서버 page/count/ASC·nullable·D2 미제공/페이지·행 capabilities. 관리 포트/메뉴 연결과 상태별 접근을 같은 company 공급원으로 설계 | TEAM-01~04/23/26. 실제 조회 계정·회사/실행 대응·승인 범위, Figma 상태·원격 계약을 자체 Brief에서 확인 |
+| DEV-28 | 타인 직급/전체 leaf·직접/동의/금지, self-demotion/대표자 취임·소속 종료의 현재 계약/마지막 관리자, 요청 생성/조회/수락·거절/취소/무효/동시성·알림 안전 경로의 기준. 서비스 계정 탈퇴와 구분 | TEAM-05~10/23/25/26. target 동의·현재 소속/version/직급 변경·관리자 경쟁·멱등/no-change·actual QA 변경/잔존/복구 자원 필수 |
+| DEV-29 | 일반/대표자 초대 입력·검증/서버 제약, 보내는 목록/상세·page/count·명령/메일 상태·수신 연결·비밀 링크 비노출 | TEAM-11~13/16~17/23/26. 수신처/메일함·회사/계정·변경/소비/잔존/복구·서버 실행 대응 확보 전 실제 발송 없음 |
+| DEV-30 | 미만료 PENDING 재발송/취소·새 version/링크/만료·delivery 구분·D3 만료 후 새 초대 작성. 생성은 DEV-29 흐름 재사용 | TEAM-14~17/23/26. 만료 DB 경합/수락 경쟁·이전 링크/시간·응답 유실·서버 거부 검증 |
+| DEV-31 | 신청 목록/상세·현재 REVIEW/편집/부여 제약·대표자·최신 version 승인/사유 거절·취소/다른 회사 가입 경합·소속/상태 재조회 | TEAM-18~20/23/26. reviewer/신청자/합성 신청·변경/복구/실행 대응과 기존 AUTH/QA-05 차단 유지 |
+| DEV-32 | 같은 회사 공유 직급 목록/생성/이름 변경/미사용 삭제·system불가·사용중/중복/다른 회사·현재 version/soft delete와 과거 참조 | TEAM-21~23/26. disposable 일반 직급/참조 소속·권한·변경/잔존/복구 범위 필수 |
+| DEV-33 | POL-15에서 별도로 결정할 수락 완료 목적지/폴백·계정/회사/현재 권한·안전 복귀, DEV-27 실제 화면에 연결 | TEAM-24/23 및 기존 AUTH-16/17. POL-15·DEV-27 선행 전 목적지 변경/구현 없음 |
+
+공통: [TEAM26 미실행 계획](../../../qa/team-members.md#pol-14-team-qa)은 원본 QA-08 AUTH-16의0통과1차단·초대 AUTH-17 미실행과 다른 회사/가입·문서/DEV-08/MAT-162 차단을 대체하지 않는다. 7개 공급원·static qna/immutable snapshot·HTTP/DTO 경계·운영 mock guard/탭 격리는 그대로이며 새 팀원 공급원·fallback·실제 데이터의 mock 복사는 없다. 모든 후속 Task는 자신의 Brief/수정 파일·검증/실제 자원 Gate가 필요하며 이번 정책/Git/Chromatic 예외로 로컬 선행·통합 면제를 받지 않는다.
+
+
+<a id="pol-14-verification"></a>
+
+## 2026-11-16 · 확정 정책 검증 체크포인트
+
+- 사용자3결정 뒤 source branch를 다시 확인했고 backend `adc0e265…`/중앙 `c9e50ff…`는 조사 때와 같다. 개발 OpenAPI GET200·3.1.0/v1을 다시 받았으며 전체 원문 SHA256 `85b38b6e43ad45807a1d8c66153767c53876220dbf84852cbc4fa53d832917ba`는 앞선 기록과 동일하다. 실행 프로세스/실제 업무 응답을 증명한 것은 아니다.
+- `python3 /tmp/mate-pol-14/validate_docs.py` PASS: 확정 정책/후속 기준·QA를 포함한 변경14파일·로컬 링크/anchor615·원본79/Task114/의존156·고정5파일 byte/후속7원문·상태/순환/허용 범위·민감 literal. `python3 /tmp/mate-pol-14/check_contract.py` PASS:32경로37operation/67schema·15leaf/행9/page3·지원/미지원 필드·정렬/version 구조. `git diff --check` PASS.
+- 정책/QA 추가 검사: 이전 Aside 세션 경로를 가정해 새 파일 존재 assertion 실패 → 새 세션 반환 경로로 수정했으나 이전 원문 파일도 사라져 FileNotFoundError → 현재 원문을 작업 증거 폴더에 복사하고 **Task에 보존한 기존 SHA256**과 비교해 PASS. 이 경로 검사 자동 수정2/3·세 번째 실행 성공이며 앱/정책 계약 실패가 아니다. 첫 두 실패를 지우거나 통과로 세지 않는다.
+- `python3 /tmp/mate-pol-14/check_policy.py` PASS: OpenAPI 지문 무변경·D1~D3 원문3개/후속7연결·TEAM-01~26 연속/유일·26미실행 대기·실제 통과0. 앞으로 임시 세션 경로를 다시 찾지 않고 `/tmp/mate-pol-14/confirmed-openapi.json`과 기록 지문으로 검증한다.
+- 로컬 앱 test/lint/build/Storybook·제품/브라우저/mock/HTTP대역·실제 업무/메일·권한/직급·운영/배포0. 문서 전용 검증 대체 규칙으로 영향 없는 앱 검사는 생략하며 실제 QA26은 대기/실행 Gate 미확보다. 조사 head의 이전 원격 CI 성공과 앞으로 바뀔 최종 PR head의 CI 결과를 구별한다.
+- Documentation Update Check: WBS/Task·후속7기록·QA 계획/색인·plan의 날짜별 정책 연결·검토/실패 기록을 갱신했다. base/architecture/data-access/harness는 실행/의존성·폴더/API/mock/DTO 규칙·하네스 설정 변화가 없어 유지한다. 원본79/114Task/156의존·baseline/coverage·모든 기존 QA/결정/차단·승인 예외는 보존했다.
+- 다음 행동: 확정 전체 diff의 Context Audit·자체 ai-review·read-only verifier → 종료/WBS/DEV-27 인계 → 문서/freshness 재검토 → 목적별 commit/push·PR #83 본문/ready·최종 head CI/리뷰·정상 merge/main FF. 다음 Task의 조사/설계/구현·실제 업무는 시작하지 않는다.
+
+
+<a id="pol-14-close"></a>
+
+## 2026-11-16 · 정책 문서 단위 종료와 DEV-27 선정/인계
+
+- 종료 기록 확인: 2026-11-16 23:10 KST. 사용자3선택의 정책 v1·행동별 권한/회사·계정·최후 관리자/직접·대상 동의·초대/합류/직급·version/충돌, D2 한정 화면 예외·D3 만료 후 새 초대, 후속7Task 기준·TEAM26 계획을 문서로 확정했다. 원래4개 완료 기준을 이 단위의 증거로 닫는다. 상태는 WBS만 소유한다.
+- 확정 산출물 검사:14문서/로컬621링크·79원본/114Task/156의존·고정5/후속7·문서/계약/정책 QA 검사·diff-check와 Context Audit·여섯 섹션 ai-review·독립 verifier PASS, 미해결 Blocker/Major/Minor0. 이전 조사 한정 리뷰·정책 대기/두 실패/교정 이력은 보존한다. 이 종료/WBS/DEV-27 선정 metadata 뒤 문서 검사와 두 리뷰 freshness를 다시 확인한다.
+- 판정 경계: 정책/문서·QA 계획 단위 PASS다. **제품/Repository/UI 구현·실제 업무/API/메일·권한/직급·문서 처리·운영/배포0**, TEAM 실제0통과26대기/실행 Gate 미확보다. source/게시 명세·배포 기록을 실행 SHA/업무 응답·실제 통합 PASS로 올리지 않는다. 기존 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행, 가입/회사/문서·DEV-08/MAT-162/타Task 차단과 예외는 유지한다.
+- Documentation Update Check 완료: WBS/Task·후속7기록·TEAM QA/index·plan 날짜별 연결·검토/실패 기록을 갱신했다. package/scripts·폴더/API/mock/DTO 규칙·하네스 설정 변화가 없어 base/architecture/data-access/harness는 유지했다. 원본/coverage/기준선과 후속7기록의 기존 원문·모든 이전 QA를 보존했다.
+- Git 전달은 같은 [PR #83](https://github.com/mate-pjt/mate-frontend/pull/83)으로 이어간다. 초기2개 조사 커밋을 보존하고 정책·QA 계획·검증/인계·증거 경로 실패 기록을 목적별 docs 커밋으로 분리한다. 실제 최종 head의 CI/리뷰/병합 조건·Chromatic 한도 예외와 정상 merge commit/main FF·local/remote SHA/clean은 최종 PR/종료 보고에서 별도 확인한다. 이 정책 PASS가 Git 전달 완료 선언은 아니다.
+- 다음 하나: [DEV-27 인계](DEV-27.md#dev-27-pol-14-selection). WBS의 기존 P0/P1 차단/대기 선행과 앞선 P2 회사 갱신 DEV-08·DEV-24/26/MAT-162 조건을 유지한 채, POL-14 선행을 충족하는 P2 기본 표 순서 첫 독립 개발 단위다. 정책 완료/이번 Git 예외를 실제 자원 준비·로컬 선행 승인으로 해석하지 않는다.
+- 다음 첫 행동: 새 대화에서 최신 main/이 정책·DEV-27 후보 정의/TEAM-01~04/23/26과 당시 현행 backend/Swagger·Figma 목록/상세 상태를 확인한다. 현재 회사/leaf/3page·9row flags·page/count/ASC·nullable/D2 미제공·계정/회사 수명·실제 조회 자원/실행 대응·사용/잔존/복구 범위를 확인한 뒤 자체 Brief·수정 파일·영향·검증을 먼저 제시한다. **선정/인계만 했으며 DEV-27의 전용 조사·Brief/설계·구현·실제 QA·별도 Git 전달은 시작하지 않는다.**

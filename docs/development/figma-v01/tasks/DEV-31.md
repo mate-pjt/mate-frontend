@@ -64,3 +64,18 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+
+<a id="dev-31-pol-14-handoff"></a>
+
+## 2026-11-16 · POL-14 확정 정책/계약 인계
+
+- 인계 근거: [POL-14 D1·v1](POL-14.md#pol-14-contract). 원본 T03의 회사 신청 목록/상세·검토/승인·사유 거절이다. 신청자가 본인 PENDING을 취소하는 DEV-15·가입 요청/회사 간 통합과 구분한다.
+- 확정 완료 기준: 현재 REVIEW leaf와 같은 회사 ACTIVE 소속을 검사하고 VIEWER 목록 leaf만으로 신청 내용을 읽지 않는다. 서버 page/count/순서(CREATED_AT ASC/id ASC)를 보존하고 요청값과 실제 applied 직급/role/permissions/소속 ID·상태/version/이력을 구별한다.
+- 승인 기준: 원래 신청 직급에서 바꾸려면 PROFILE_EDIT, VIEWER 초과는 PERMISSION_MANAGE+actor 부분집합. 대표자 승인에는 원래 대표자 신청·ADMIN·현재 대표자 공석, 별도 일반 직급/preset/추가 leaf 없음이 필요하다. 원자 소속 생성·다른 pending 정리를 조회로 확인한다. 현재 요청의 다른 상태/버전을 자동 재승인하지 않는다.
+- 거절은 trim 후1..300자 사유/expectedVersion으로 수행한다. 본인 취소·다른 담당자 처리·다른 회사 활성 가입/권한 변화·대표자 경쟁과 401/403/404/409/미확정·후속 조회 실패·계정/회사/화면 수명을 검증한다.
+- 검증 연결: [TEAM-18~20/23/26](../../../qa/team-members.md#pol-14-team-qa), Figma3137:53069/53154/53193. 회사·reviewer/신청자·합성 신청의 사용/변경·잔존/복구·실행 대응을 확보한다.
+
+- 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
+- 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
+- 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
