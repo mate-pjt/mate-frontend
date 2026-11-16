@@ -236,6 +236,8 @@ export type MyMembershipRequest = {
 
 export type MembershipCancellationResult = { request: MyMembershipRequest; sessionWarning?: string };
 
+export type DocumentDeletion = { deletedAt: string; purgeAt: string };
+
 export type CompanyBasicProfile = {
   companyId: number;
   companyName: string;
@@ -284,6 +286,7 @@ export interface CompanyDocumentRepository {
   getCompanyDocumentVersions(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentBoxVersion[]>;
   getCompanyDocumentHistory(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentHistoryVersion[]>;
   readCompanyDocumentOriginal(access: AuthAccess, documentId: string, versionId: string, purpose: DocumentAccessPurpose, signal?: AbortSignal): Promise<DocumentOriginal>;
+  deleteCompanyDocument(access: AuthAccess, documentId: string, signal?: AbortSignal): Promise<DocumentDeletion>;
   createDocumentUpload(access: AuthAccess, file: File, idempotencyKey: string): Promise<DocumentUpload>;
   createDocumentVersion(access: AuthAccess, documentId: string, replacesVersionId: string, file: File, idempotencyKey: string, signal?: AbortSignal): Promise<DocumentUpload>;
   retryDocumentProcessing(access: AuthAccess, documentId: string, versionId: string, kind: "ocr" | "verification", idempotencyKey: string, signal?: AbortSignal): Promise<{ status: string }>;

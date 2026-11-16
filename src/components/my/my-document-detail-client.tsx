@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { RightArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { readCompanyDocumentOriginal, type DocumentHistoryVersion } from "@/data/company/client";
+import { readCompanyDocumentOriginal, type DocumentDeletion, type DocumentHistoryVersion } from "@/data/company/client";
 import { ApiError } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
@@ -15,40 +15,56 @@ import { canReadDocumentOriginal, documentDetailPath, documentFileSize, document
 import { createDocumentOriginalController, type OriginalState } from "@/features/company/document-original";
 import { DocumentOriginalViewer } from "./document-original-viewer";
 import { DocumentReuploadButton } from "./document-reupload-dialog";
+import { DocumentDeletionDialog } from "./document-deletion-dialog";
 
 type Props = { documentId: string; versionId: string | null; listPage: number };
 type Result = { status: "loading" } | { status: "ready"; versions: DocumentHistoryVersion[]; selected: DocumentHistoryVersion }
-  | { status: "error"; statusCode: number; message: string };
+  | { status: "error"; statusCode: number; message: string } | { status: "deleted"; deletion: DocumentDeletion };
 
 export function MyDocumentDetailClient(props: Props) {
+  const [completed, setCompleted] = useState<{ documentId: string; account: string | null; epoch: number } | null>(null);
   const query = useSearchParams();
   const selectedIds = query.getAll("version");
   const currentProps = { ...props, versionId: selectedIds.length === 0 ? null : selectedIds.length === 1 ? selectedIds[0] : "invalid" };
   const { state, refresh, getAccessToken, getAccountKey, getSessionEpoch } = useAuthSession();
   if (state.status === "authenticated") return <AuthenticatedDetail {...currentProps} getAccessToken={getAccessToken} getAccountKey={getAccountKey} refresh={refresh} getSessionEpoch={getSessionEpoch}
+    onCommitted={() => setCompleted({ documentId: props.documentId, account: getAccountKey(), epoch: getSessionEpoch() })}
     key={`${state.authentication.account.id}:${getSessionEpoch()}:${state.authentication.companyContext?.companyId ?? "none"}:${props.documentId}:${currentProps.versionId}`} />;
+  if (completed?.documentId === props.documentId && completed.epoch === getSessionEpoch() && (getAccountKey() === null || completed.account === getAccountKey())) {
+    return <DetailShell listPage={props.listPage}><Card><h1 className="mb-6 type-heading-3 text-grayscale-800">서류 삭제는 완료됐어요</h1>
+      <Message title="다시 로그인한 뒤 최신 서류함을 확인해 주세요."><ButtonLink href={`/auth?mode=login&next=${encodeURIComponent(documentListPath(props.listPage))}`}>로그인하기</ButtonLink></Message></Card></DetailShell>;
+  }
   return <DetailShell listPage={props.listPage}><h1 className="mb-6 type-heading-3 text-grayscale-800">서류 상세</h1>
     <Message error={state.status === "error"} title={state.status === "anonymous" ? "로그인하면 서류를 확인할 수 있어요." : state.status === "error" ? "로그인 상태를 확인하지 못했어요." : "로그인 상태를 확인하고 있어요."}>
       {state.status === "anonymous" ? <LoginLink {...currentProps} /> : state.status === "error" && <Button variant="outline" onClick={() => void refresh().catch(() => undefined)}>다시 시도하기</Button>}
     </Message></DetailShell>;
 }
 
-function AuthenticatedDetail({ documentId, versionId, listPage, getAccessToken, getAccountKey, refresh, getSessionEpoch }: Props & AuthAccess & { getSessionEpoch: () => number }) {
+function AuthenticatedDetail({ documentId, versionId, listPage, onCommitted, getAccessToken, getAccountKey, refresh, getSessionEpoch }: Props & AuthAccess & {
+  onCommitted: () => void; getSessionEpoch: () => number;
+}) {
   const [result, setResult] = useState<Result>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const cancelOriginalRef = useRef<() => void>(() => undefined);
+  const deletedRef = useRef<DocumentDeletion | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const closeDeletion = useCallback((refresh: boolean) => {
+    setDeleteOpen(false);
+    if (refresh && !deletedRef.current) { setResult({ status: "loading" }); setAttempt(value => value + 1); }
+  }, []);
   const [scopeEpoch] = useState(getSessionEpoch);
   const [scopeAccount] = useState(getAccountKey);
   const isCurrent = () => scopeEpoch === getSessionEpoch() && scopeAccount === getAccountKey();
 
   useEffect(() => {
+    if (deletedRef.current) return;
     const controller = new AbortController();
     void loadDocumentDetail({ getAccessToken, getAccountKey, refresh }, documentId, versionId, controller.signal,
       () => scopeEpoch === getSessionEpoch() && scopeAccount === getAccountKey()).then(value => {
-      if (!controller.signal.aborted) setResult({ status: "ready", ...value });
+      if (!controller.signal.aborted && !deletedRef.current) setResult({ status: "ready", ...value });
     }).catch(error => {
-      if (controller.signal.aborted || scopeEpoch !== getSessionEpoch() || scopeAccount !== getAccountKey()) return;
+      if (controller.signal.aborted || deletedRef.current || scopeEpoch !== getSessionEpoch() || scopeAccount !== getAccountKey()) return;
       const statusCode = error instanceof ApiError ? error.status : 0;
       setResult({ status: "error", statusCode, message: statusCode === 401 ? "로그인이 필요해요." : statusCode === 403 ? "서류 정보를 볼 권한이 없어요."
         : statusCode === 404 ? "서류 또는 선택한 버전을 찾지 못했거나 볼 권한이 없어요." : statusCode === 400 ? "서류 주소를 확인해 주세요." : "서류 정보를 불러오지 못했어요. 다시 시도해 주세요." });
@@ -64,18 +80,25 @@ function AuthenticatedDetail({ documentId, versionId, listPage, getAccessToken, 
     window.history.replaceState(null, "", documentDetailPath(documentId, version.versionId, listPage));
   }
   return <DetailShell listPage={listPage} onLeave={() => cancelOriginalRef.current()}>
-    {result.status !== "ready" ? <Card><h1 ref={heading} tabIndex={-1} className="mb-6 type-heading-3 text-grayscale-800 focus:outline-none">서류 상세</h1>
+    {result.status === "deleted" ? <Card><h1 ref={heading} tabIndex={-1} className="mb-6 type-heading-3 text-grayscale-800 focus:outline-none">서류를 삭제했어요.</h1>
+      <Message title="이전 버전을 포함한 서류 전체가 삭제됐어요. 최신 서류함은 다시 확인할 수 있어요.">
+        <p>삭제 시각: {documentTimestamp(result.deletion.deletedAt)}<br />파기 대상 예정: {documentTimestamp(result.deletion.purgeAt)}</p>
+        <p>실제 파기는 지연될 수 있어요. 사용자 복원은 제공하지 않아요. 이미 저장한 파일이나 발급된 원본 접근의 즉시 회수는 보장하지 않아요.</p>
+      </Message></Card> : result.status !== "ready" ? <Card><h1 ref={heading} tabIndex={-1} className="mb-6 type-heading-3 text-grayscale-800 focus:outline-none">서류 상세</h1>
       <Message error={result.status === "error"} title={result.status === "loading" ? "서류 정보를 확인하고 있어요." : result.message}>
         {result.status === "error" && (result.statusCode === 401 ? <LoginLink documentId={documentId} versionId={versionId} listPage={listPage} /> : <Button variant="outline" onClick={reload}>다시 확인하기</Button>)}
       </Message></Card> : <VersionContent key={`${result.selected.versionId}:${attempt}`} version={result.selected} versions={result.versions} documentId={documentId}
-        access={{ getAccessToken, getAccountKey, refresh }} isCurrent={isCurrent} onSelect={select} onReload={reload} cancelOriginalRef={cancelOriginalRef} listPage={listPage}
+        access={{ getAccessToken, getAccountKey, refresh }} isCurrent={isCurrent} onSelect={select} onReload={reload} cancelOriginalRef={cancelOriginalRef} listPage={listPage} onDelete={() => setDeleteOpen(true)}
         onUnauthorized={() => setResult({ status: "error", statusCode: 401, message: "로그인이 필요해요." })} />}
+    {deleteOpen && <DocumentDeletionDialog documentId={documentId} listPage={listPage} onClose={closeDeletion}
+      onUnauthorized={() => { cancelOriginalRef.current(); if (!deletedRef.current) setResult({ status: "error", statusCode: 401, message: "로그인이 필요해요." }); }}
+      onCommitted={deletion => { deletedRef.current = deletion; cancelOriginalRef.current(); setResult({ status: "deleted", deletion }); onCommitted(); }} />}
   </DetailShell>;
 }
 
-function VersionContent({ version, versions, documentId, access, isCurrent, onSelect, onReload, onUnauthorized, cancelOriginalRef, listPage }: {
+function VersionContent({ version, versions, documentId, access, isCurrent, onSelect, onReload, onUnauthorized, onDelete, cancelOriginalRef, listPage }: {
   version: DocumentHistoryVersion; versions: DocumentHistoryVersion[]; documentId: string; access: AuthAccess; isCurrent: () => boolean; listPage: number;
-  onSelect: (version: DocumentHistoryVersion) => void; onReload: () => void; onUnauthorized: () => void; cancelOriginalRef: React.RefObject<() => void>;
+  onSelect: (version: DocumentHistoryVersion) => void; onReload: () => void; onUnauthorized: () => void; onDelete: () => void; cancelOriginalRef: React.RefObject<() => void>;
 }) {
   const [original, setOriginal] = useState<OriginalState>({ status: "idle" });
   const [now, setNow] = useState(Date.now);
@@ -126,7 +149,7 @@ function VersionContent({ version, versions, documentId, access, isCurrent, onSe
           <p className="mt-2 type-body-3 text-grayscale-600">회사 정보와 실적 조회에 필요한 사업자등록증명 서류</p>
         </div>
         <div className="flex flex-wrap gap-2" aria-describedby="document-edit-help">
-          <Button variant="tertiary" disabled>지우기</Button>
+          <Button variant="tertiary" onClick={() => { controller.dispose(); controller.activate(); setOriginal({ status: "idle" }); onDelete(); }}>지우기</Button>
           <Button variant="secondary" disabled={!allowed || busy} onClick={() => void controller.request("DOWNLOAD")}>다운로드</Button>
           <DocumentReuploadButton documentId={documentId} onOpen={() => { controller.dispose(); controller.activate(); setOriginal({ status: "idle" }); }}
             onChanged={versionId => { window.history.replaceState(null, "", documentDetailPath(documentId, versionId, listPage)); onReload(); }} />
@@ -138,7 +161,7 @@ function VersionContent({ version, versions, documentId, access, isCurrent, onSe
         <Metadata label="파일크기">{documentFileSize(version.sizeBytes)}</Metadata>
         <Metadata label="업로드한 사람">{version.uploaderDisplayName?.trim() || "미확인"}</Metadata>
       </dl>
-      <p id="document-edit-help" className="mt-4 type-body-7 text-grayscale-600">다시 업로드는 선택한 이전 버전이 아닌 최신 현재 문서를 기준으로 진행해요. 지우기는 준비 중이에요. 문서 검증·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
+      <p id="document-edit-help" className="mt-4 type-body-7 text-grayscale-600">다시 업로드는 최신 현재 문서를 기준으로 진행해요. 지우기는 선택한 버전뿐 아니라 이전 버전을 포함한 서류 전체를 삭제해요. 문서 검증·유효기간과 회사 인증·회사정보 반영은 각각 다른 상태예요.</p>
     </Card>
     <div className="mt-4 grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
       <Card>
