@@ -299,3 +299,11 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Fix: 이후 metadata는 지정 frame/instance ID와 정책 문구만 선별했고 사용자 설명에는 신원 필드 없는 비교 popup2상태·안내 배너 하위 screenshot을 사용했다. 로컬 Figma 증거에도 비식별 상태/문구만 저장했다. 기존 도구 출력이 삭제·무효화됐다고 주장하지 않는다.
 - Prevention rule: Figma/GitHub 도구 호출 전에 결과를 보관하고 반환할 필드 allowlist를 정한다. metadata 원문·structuredContent·임시 screenshot URL을 그대로 text/print하지 않는다. source/path 또는 노드 ID가 확인되면 필요한 하위 노드만 조회한다.
 - Related files: POL-12 조사/검토, 로컬 figma-policy-evidence.json. 제품/하네스 설정 변경 없음. 최종 verifier에서 이 수행 한계와 문서/PR의 재노출 여부를 확인한다.
+
+## 2026-11-16 · POL-12 전달 중 PR 커밋 작성자 메타데이터 출력
+
+- Task: MAT-287 연결 문서 후속의 PR #77/최종 CI 확인.
+- Actual failure / detection: `gh pr view --json commits`를 선택한 결과에 필요한 SHA/제목 외 작성자 신원 필드까지 포함됐다. primary가 즉시 확인해 사용자에게 알렸다. 값은 재인용하거나 문서/PR/QA에 복사하지 않았으며 기존 출력이 삭제됐다고 주장하지 않는다. 환경파일·credential 조회와 구분한다.
+- Root cause: 앞선 Git/PR 출력 예방 규칙을 중첩 `commits` 객체에 적용하지 않았다. 상위 필드 지정만으로 하위 객체까지 최소화된다고 가정했다.
+- Fix / prevention: 이후 조회는 SHA·검사 이름/상태·결과 등 필요한 값만 `--jq` 또는 새 객체로 투영한다. 커밋 정보가 필요하면 GraphQL에서 `oid`/`messageHeadline`만 요청하고 author/committer 객체를 포함하지 않는다. 사용자 식별 정보가 붙는 중첩 필드는 호출 전 schema와 출력 allowlist를 함께 확인한다.
+- Related files / review: POL-12 후속 작업·검토 기록에 수행 한계와 추가 문서 범위를 남기고, 변경 뒤 문서 검사/ai-review·독립 verifier 및 실제 최종 PR head의 CI를 다시 확인한다. 제품/하네스 설정 변경 없음.

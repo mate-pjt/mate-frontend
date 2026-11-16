@@ -2,6 +2,8 @@
 
 [현재 상태·우선순위는 WBS에서 확인](../README.md) · [운영 규칙](../workflow.md) · [기준선](../baseline.md)
 
+> 2026-11-13 정책·조사 기록은 당시 이력으로 보존한다. 이후 API 전수 확인·설명 정정과 외부 요청은 [2026-11-16 MAT-287 연결·재개 조건](#pol-12-mat-287-handoff)을 함께 읽는다. 이전의 버전 필수화·직접 편집 대상 설명을 현재 API 부재의 근거로 반복하지 않는다.
+
 ## 작업 정의
 
 - 유형: 정책 결정
@@ -181,6 +183,8 @@
 
 ## API별 부족한 필드와 후속 선행 계약
 
+> 아래의 ‘현재/이번’은 2026-11-13 조사 당시를 가리킨다. 전화번호의 기대 버전, Figma 비활성 필드, 희망금액 기존 API, 회사 프로필 사진에 관한 [11/16 재확인·정정](#pol-12-mat-287-handoff)이 후속 재개 판단의 추가 근거다. 당시 표·발송0건 기록을 삭제하거나 현재 발송 결과로 덮어쓰지 않는다.
+
 아래는 현재 조사한 source·게시 명세의 공백이다. backend 전체에 기능이 불가능하다는 단정이나 새로운 endpoint/필드명 확정이 아니다. 보완 요청의 소유 역할은 backend API/정책 담당이며 개인·접수/일정은 미확인이다. 이번 외부 요청 발송/수정0건이다.
 
 | 현행 API/영역 | 있는 계약 | 부족한 계약·쉽게 말한 영향 / 재개 근거 |
@@ -227,3 +231,50 @@
 
 - 다음 첫 행동: 새 대화에서 최신 Git/main·WBS·POL-13 정의/완료 기준·POL-12의 F04 연결과 관련 가입/회사 QA를 읽고 현재 문서함 목록/버전·유효/보관·접근/다운로드·삭제/재업로드/OCR 적용 소유 source·개발 Swagger를 대조한 뒤 자체 정책 Brief/파일/검증 계획을 편집 전에 제시한다. 다음 Task의 조사/결정/구현·업무 API/파일 처리는 이번에 실행하지 않는다.
 - 종료 diff에는 이 체크리스트/WBS·POL-13 인계·Minor 교정과 검토/검사 이력만 추가했다. 후속 코드/문서가 바뀌면 해당 검사·리뷰를 다시 수행한다. 최종 독립 결과는 [검토 기록](../reviews/POL-12.md)과 실제 PR/로컬 receipt를 따른다.
+
+<a id="pol-12-mat-287-handoff"></a>
+
+## 2026-11-16 · MAT-287 연결·응답 대기 범위와 다음 인계
+
+### 후속 요청·승인과 시작 체크포인트
+
+- 사용자 원문: “좋아. MAT-287을 POL-12 작업 기록에 연결하고, 백엔드 답변을 기다려야 하는 범위와 다음에 진행할 Task를 정리해줘. 다음 Task는 아직 시작하지 마.” POL-12의 문서 연결·범위 정리와 다음 하나의 선정/인계만 수행한다. 결정자/날짜는 이 대화 사용자 / 2026-11-16 KST다.
+- 시작: clean `main` / `39bf3a069cec963047976b83c2d720df6c5bcdff`, `git fetch origin main`·FF 확인 후 로컬/원격 동일. [정책 PR #76](https://github.com/mate-pjt/mate-frontend/pull/76)의 main 반영을 확인하고 `docs/pol-12-mat-287-handoff`에서 이어간다. 선행/무관 미커밋 변경은 없었다.
+- 편집 대상은 이 기록·WBS·POL-13 선정/인계·POL-12 검토 기록의 Markdown4개다. 제품/DTO/mock/패키지/설정/QA 실행·기준선/coverage·정책 D1/D3 변경은 없다. 같은 대화 최초 POL-12 요청6항의 commit/push·PR·최종 CI·정상 병합/main FF 승인과 이번 문서 반영 승인을 구분해 적용한다. Git 전달은 실제 업무 API·운영/배포·다음 Task 실행 승인이 아니다.
+
+### 외부 요청과 근거 수준
+
+- [MAT-287 · 회사 정보 직접 편집·프로필 사진 API 계약 보완](https://linear.app/mate-pjt/issue/MAT-287/backend-회사-정보-직접-편집프로필-사진-api-계약-보완)을 사용자 요청으로 Linear MCP에서 등록하고 다시 조회해 본문·라벨·프로젝트를 검증했다. 2026-11-16 후속 조회에서 댓글0건을 확인했으며 담당자 답변·접수 확인·제공 일정은 아직 확보하지 못했다. 이슈 등록을 백엔드 구현 승인/완료·계약 확보로 세지 않는다.
+- 11/16 전수 확인 기준: backend dev `adc0e265ef0e2aa78ccb376e1fa322edd664b290`, main `4b5f31de578c41e698dda9c99e66149b7292f031`; 두 ref의 운영 Kotlin/Java1,991개 내용 동일. 게시 [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)184paths/209operations와 소스209routes가 일치했다. [필드별 조사 결과](/Users/jisung/.codex/visualizations/2026/11/13/01a1d3df-d6dc-7381-ac07-ba024b2566f1/company-api-audit-20261116/field-api-map.json)는 당시 고정 근거다. 실행 중 서버 SHA와 실제 회사 변경·업로드 통합은 미확인/미실행이다.
+- [현재 회사 조회 응답](https://github.com/mate-pjt/mate-backend/blob/adc0e265ef0e2aa78ccb376e1fa322edd664b290/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/response/CompanyBasicProfileResponse.kt)은 `primaryIndustries` 배열과 구형 `primaryIndustry`를 함께 제공한다. MAT-159 당시 단일 주 업종 설명을 현재 조회가 단일값만 지원한다는 뜻으로 재사용하지 않는다. 조회 목록과 임의 직접 편집/저장 계약은 별개다.
+
+### MAT-287에서 답변을 기다리는 범위
+
+| 후속 소유 Task | 항목·화면 근거 | 필요한 답변·재개 근거 |
+| --- | --- | --- |
+| DEV-20 | 주력 업종 — [Figma3135:69602](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-69602) | 기존 회사의 직접 선택·추가·삭제·저장 API, 업종 식별자·선택 개수·대표 구분/보유 업종과의 관계·재조회 계약. 등록 시 단일 선택이나 외부 업종 제안 ACCEPT를 임의 목록 저장으로 대체하지 않음 |
+| DEV-20 | 주소 — 같은 직접 편집 frame | 공식 증빙 주소의 직접 수정 허용 여부, 운영 주소 분리 여부와 증빙/수기 출처 우선순위. 허용 필드의 변경/조회 계약 또는 불허 시 대체 흐름. UI가 편집 가능하다는 이유로 법적 정보 변경 정책을 확정하지 않음 |
+| DEV-20 | 설립 연월 — 같은 frame의 연도/월 선택 | 현재 `establishedYear` 외 월의 저장/조회·미확인 표현, 설립일과 증명서 개업일의 의미·유효 범위·직접 수정 허용 계약. 모르는 월/날짜를 추정하지 않음 |
+| DEV-21 | 회사 프로필 사진 — [Figma3135:70640](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-70640) ‘프로필 사진 업로드’, JPG/PNG·최대5MB | 회사에 연결되는 업로드·교체·조회, 파일/용량 검증·권한·실패 시 기존 이미지 처리. `Company.logoUrl` 모델만으로 API가 있다고 보지 않으며 개인 Google `profileImageUrl`·사업자 문서 업로드와 구분 |
+
+공통으로 method/path·요청/응답 예시·미전달/빈 값/null·권한·검증/오류·저장 후 재조회·Swagger 반영·제공 가능 시점이 필요하다. 개인 담당자나 날짜를 추정하지 않는다. 기존 정책과 다른 결정이 필요하면 결정자·날짜·근거를 확보한 해당 Task의 Gate에서 판단한다.
+
+### 기존 API 재사용·설명 정정과 별도 조건
+
+- 전화번호는 `PATCH /api/v1/companies/{companyId}/contact-information`의 `telephoneNumber`로 수정 가능하다. 시공능력/대표면허의 평가별 POST/PATCH, 인증3종 PATCH, 희망금액 GET/PATCH `…/bid-notice-preferences`도 재사용 대상이다. 이 항목들을 전화번호 PATCH에 모두 추가하거나 중복 API를 만들도록 요청하지 않았다.
+- **버전 설명 정정:** `expectedVersion` 부재 자체는 API 호출 불가나 무조건 보완해야 할 필드의 근거가 아니다. 충돌 검사·마지막 저장 우선 등 동시 변경 동작은 Backend가 보장하고 계약으로 알린다. Frontend는 계약에 맞게 요청·오류/재조회 UX를 연결한다. 11/13의 전화번호/평가 삭제 ‘기대 버전 보완 전 활성화 금지’ 설명을 일괄 필수 조건으로 확대하지 않는다. 구체 방식은 후속 자체 Gate에서 확인하며 이번에 모든 API의 버전 필수화나 기존 UI 활성화를 확정하지 않았다.
+- 회사명·대표자명·사업자등록번호는 위 Figma 직접 편집 화면에서 비활성이다. 이 필드의 일반 직접 편집 API가 필요하다는 앞선 설명은 정정하며 MAT-287 요청에서 제외했다. 화면 차이에 대한 별도 예외 승인으로 세지 않는다.
+- DEV-08의 실행 SHA 대응·합성 회사/계정·사용/변경/잔존/복구 자원과 로컬 선행 예외 없음은 그대로다. MAT-287 답변만으로 DEV-17/20/21 및 DEV-18→17·DEV-19→18·DEV-26→19/24 선행을 해소하지 않는다. DEV-17의 배너 노출/해제 세부 기준은 별도 자체 Gate다.
+- 기존 회사의 OCR/증명서 교체 반영은 **MAT-287 범위가 아니다**. MAT-162의 기획 보류·닫힌 PR을 재개하지 않는다. POL-13의 서류 생명주기 정책, DEV-24 업로드와 DEV-26의 기존 회사 적용 계약을 각각 확인해야 하며 가입 등록 command를 회사 수정에 재사용하지 않는다.
+
+### 답변 도착 후 첫 행동과 다음 하나
+
+1. MAT-287의 실제 답변·관련 정책 결정·제공 일정과 해당 commit을 확인한다. 완료 소식만으로 프론트 활성화하지 않는다.
+2. [계약 재확인 규칙](../workflow.md#backend-contract-recheck)에 따라 영향 필드의 최신 source·게시 Swagger·요청/응답·권한/오류를 대조하고 소스 commit, 배포 기록, 실행 SHA, 실제 응답을 각각 기록한다.
+3. DEV-20/21 중 해당 항목의 계약과 기존 선행/정책·합성 검증 자원·변경/복구 승인까지 충족한 범위만 자체 Brief/검증 계획을 제시한다. 지원 API는 검증 대상으로 유지하고 미결 항목은 분리한다. WBS 상태는 그때 근거와 함께 판단한다.
+
+- 다음 하나는 **POL-13 · 서류함 생명주기·접근·삭제 계약**을 유지한다. WBS의 DOC-001 선행 완료·P0/P1 해소 가능한 대기0·P2 앞선 회사 DEV의 선행/계약 미충족을 재확인했다. MAT-287을 POL-13 전체의 선행으로 새로 추가하지 않는다.
+- 다음 첫 행동은 [POL-13 인계](POL-13.md#pol-13-mat-287-handoff)에서 최신 Git/WBS·기존 정의/완료 기준·서류함 소유 계약과 관련 QA를 확인하고 자체 정책 Brief/검증 계획을 제시하는 것이다. 이번에는 그 신규 조사·정책 선택·설계/구현·실제 파일/OCR 처리를 시작하지 않는다.
+- 문서 검증/정합성 감사·verifier/ai-review 결과와 후속 freshness는 [11/16 검토 기록](../reviews/POL-12.md#pol-12-mat-287-review)에 남긴다. 앱 test/lint/build·브라우저·실제 업무 API는 제품 영향0인 문서 후속이라 미실행하며 기존 CUPD18·실제 QA 차단을 보존한다.
+- 종료 체크포인트: working 문서21/21·primary ai-review/관련 context-audit PASS, 독립 verifier의 현재4파일 검토 PASS·Blocker/Major/Minor0을 확인했다. WBS 종료 메타데이터/이 검토 결과 기록 뒤 최종 문서 검사와 독립 freshness를 다시 확인한다. 정책 D1/D3·기존 선행/QA/보류는 그대로이며 다음 POL-13은 인계만 수행했다. commit/PR·최종 head CI·병합/main 동일 SHA·clean은 실제 전달 결과로 구분한다.
+- 전달 중 후속: [PR #77](https://github.com/mate-pjt/mate-frontend/pull/77) 조회의 중첩 커밋 객체에 불필요한 작성자 메타데이터가 포함된 수행 오류를 사용자에게 알렸다. 값은 복사/재인용하지 않고 [예방 기록](../../../ai-context/ai-failures.md)에 원인·출력 allowlist를 추가해 문서 범위를5파일로 보완했다. 앞선4파일 PASS는 당시 diff에만 적용하며 추가 기록 후 검사/두 리뷰와 실제 새 최종 head CI를 다시 확인한다. 정책/제품·백엔드 응답 대기·다음 인계 범위는 바뀌지 않는다.
