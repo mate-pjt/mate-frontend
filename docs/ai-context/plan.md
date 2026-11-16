@@ -267,3 +267,7 @@ Final reports should include:
 ## 2026-11-16 · DEV-23 상세/원본의 로컬 단위
 
 [이번 D1/D2·Brief](../development/figma-v01/tasks/DEV-23.md#dev-23-brief)는 로컬 선행/실제 API 차단 보존과 PDF 기본 뷰어·이미지 확대/축소/최근활동 준비 중을 확정했다. 상세/버전 URL·파일 metadata·명시 티켓/원본 GET·Blob 수명/오류·목록 page 복귀를 같은 company 공급원에 연결한다. [QA](../qa/company-documents.md#dev-23-local-qa)는 실제 Next mock/loopback HTTP와 DBOX-07~10/21~22 실제 차단을 구분하며 원본 계획/DEV-22·가입/회사/DEV-08 및 MAT-162/DEV-24~26 계약 Gate를 보존한다. 현재/다음/판정과 Git 전달은 WBS·Task/검토·실제 PR에서 확인한다.
+
+## 2026-11-16 · DEV-24 재업로드의 로컬 선행 범위
+
+[사용자 D1/Brief](../development/figma-v01/tasks/DEV-24.md#dev-24-brief)는 **재업로드만 로컬 선행·신규 추가/실통합 차단**을 확정했다. 회사 귀속된 기존 series의 후보 생성/PUT·OCR/진위·현재 버전 확인, 명시 재시도·멱등/오류/계정·화면 수명과 목록/상세 갱신을 연결한다. 전용 최종확정 endpoint 부재를 기존 attached candidate의 서버 원자 교체 부재로 확대하지 않는다. 신규 series 회사 귀속과 MAT-162 회사 프로필 적용·DEV-25 삭제는 별도 Gate다. [로컬 검증과 실제 차단](../qa/company-documents.md#dev-24-local-qa)을 분리하고 기존 가입/회사·DEV-08 및 Task별 예외를 보존한다. 현재/다음/상태는 WBS만 소유하며 Git/main 반영은 실제 PR/최종 보고에서 확인한다.

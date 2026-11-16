@@ -144,3 +144,7 @@ QA-17은 원본 일부를 새로 구현하는 Task가 아니라 이번 전체 �
 ## 2026-11-13 · POL-11 재사용/복귀·Figma 문구 결정 연결
 
 M06/CF-15의 기존 POL-11→DEV-16/QA-05 연결과 79개 원본 행·기준선은 유지한다. [사용자 D1/D2](tasks/POL-11.md#pol-11-decisions)에 따라 기존 /auth 등록·찾기 재사용/설정 문맥·고정 완료 /my/company, 가입 기존 /bids를 정했다. Figma ‘통합 요청’을 유지하고 설명을 추가하지 않으며 용어 변경 추천은 미채택이다. [DEV-16 후속 범위/Gate](tasks/DEV-16.md#dev-16-pol-11-handoff)·[RCTX-01~15](../../qa/my-company.md#pol-11-return-qa)는 향후 검증 기준으로 제품 구현/실제 통합 PASS가 아니다. 현재/다음/상태는 WBS만 관리하며 기존 QA/차단·승인 예외와 Task/의존성 연결을 보존한다.
+
+## 2026-11-16 · DEV-24 재업로드 로컬 단위 연결
+
+F03/C02의 [DEV-24 사용자 D1](tasks/DEV-24.md#dev-24-brief)은 기존 회사 series의 재업로드만 로컬 선행하고 신규 추가/실제 통합 차단을 보존한다. [안전한 상태/명시 업로드·재시도/현재 버전 확인의 QA](../../qa/company-documents.md#dev-24-local-qa)를 연결하며 F03 신규 추가·DEV-25 삭제와 F04/DEV-26·MAT-162를 완료로 세지 않는다. 원본79개 행·114Task·156의존성·기준선/QA/정책·타 Task 예외를 보존하고 현재/다음/상태는 WBS만 관리한다.
