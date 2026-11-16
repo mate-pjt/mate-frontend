@@ -73,3 +73,13 @@
 - 추가 완료/재개 기준: 대상 companyId와 documentId/version·추출 필드/출처/기준일·신뢰/적용 가능 필드, 법적 identity/인증 유지·별도 검증/권한, profile 기대 버전·원자 선택 적용/충돌·실패/미확정·잔존/복구를 backend 계약으로 먼저 확보한다. 가입 등록을 재제출해 회사 갱신으로 간주하지 않는다.
 - 적용 UI는 POL-12 D1의 선택행만 반영·미선택/닫기 보존과 인증 UNKNOWN/null·정확 금액/provenance 원칙을 따른다. 모든 OCR 추출값을 자동 덮어쓰거나 문서 처리 성공을 회사 반영 성공으로 표시하지 않는다.
 - 문서 생명주기/접근·삭제/다운로드 정책은 POL-13, 추가/버전 업로드는 DEV-24, 프로필 결정/경쟁은 DEV-19다. 기존 선행 POL-12/DEV-19/DEV-24 및 가입 QA-06/07의 차단/예외를 보존한다. [CUPD-16/17/18](../../../qa/my-company.md#pol-12-update-qa)과 합성 문서/사용·처리·잔존·복구 범위 확보 전 구현/문서 처리·실제 QA를 시작하지 않았다.
+
+<a id="dev-26-pol-13-handoff"></a>
+
+## 2026-11-16 · POL-13 정책/후속 Gate 인계
+
+- [POL-13 사용자 D1/D2/D3·v1](POL-13.md#pol-13-contract)과 [DBOX 미실행 계획](../../../qa/company-documents.md#pol-13-document-qa)을 후속 기준으로 받는다.
+- POL-12/DEV-19/DEV-24 선행과 [POL-12 F04](POL-12.md#pol-12-mat-287-handoff)를 유지한다. MAT-162는11/16 현재 기획 보류·구현/branch 재사용/PR 재개 금지이며 MAT-287의 일반 편집/프로필 사진 범위와 별개다.
+- OCR 성공·서류함 보유·가입 registration-proposal을 기존 회사 선택 반영 승인/계약으로 세지 않는다. 제품/디자인의 처리 흐름 결정과 Backend의 대상 company/document version·적용 필드·profile/출처 근거·권한/동시성·결측/수기 우선순위·인증 유지/실패 복구 계약 확보 후 자체 Gate를 연다.
+- DBOX-16/21과 POL-12/CUPD의 관련 기준·실행/합성 자원/변경/잔존/복구 범위로 선택·동시 변경/재업로드·조회 일관성을 검증한다. 새 endpoint·개인/일정을 정하거나 계약 대기를 숨긴 로컬/실제 PASS·QA 면제를 추가하지 않는다.
+- 기준/인계만 수행했다. 이 Task 자체 Gate·제품/실제 API·파일/OCR/삭제·별도 Git 전달은 시작하지 않았다. 현재/다음/상태는 WBS만 관리한다.

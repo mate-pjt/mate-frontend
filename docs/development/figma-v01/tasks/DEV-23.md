@@ -64,3 +64,13 @@
 - Review Gate: 미실행. verifier와 ai-review의 결과/대상 diff·후속 변경 재검토 여부를 기록.
 - 커밋/PR: 없음. 추후 커밋할 때 하나의 목적·영어 type/한국어 메시지, 런타임/테스트/문서는 가능한 별도 커밋.
 - 다음 작업 인계: WBS에서 선택. 이 단위의 필수 검증 PASS 전에 다른 기능으로 자동 전환하지 않는다.
+
+<a id="dev-23-pol-13-handoff"></a>
+
+## 2026-11-16 · POL-13 정책/후속 Gate 인계
+
+- [POL-13 사용자 D1/D2/D3·v1](POL-13.md#pol-13-contract)과 [DBOX 미실행 계획](../../../qa/company-documents.md#pol-13-document-qa)을 후속 기준으로 받는다.
+- DEV-22 선행 뒤 metadata(미귀속 owner/ACTIVE 소속)와 원본/추출값(문서관리 권한)의 차이를 보존한다. current/후보/과거·nullable 기간·업로드/수정 시각/표시명을 구분하고, 버전 이력을 열람/삭제 수행자까지 있는 감사 로그로 표시하지 않는다.
+- 선택 version의 access-tickets PREVIEW/DOWNLOAD·exact managed object/허용 상태·2분 수명/서명 비저장·오류/목록 복귀를 연결한다. 실제 티켓 발급/합성 원본 열람은 별도 자원·실행/보존/복구 범위 확보 뒤 검증한다.
+- 완료 증거는 DBOX-07~10/21~22의 권한/404/409·만료/이전 버전·계정 전환·접근성과 영향 자동/실제 검사·두 리뷰다. 기존 가입 QA를 실제 통합 PASS로 승계하지 않는다.
+- 기준/인계만 수행했다. 이 Task 자체 Gate·제품/실제 API·파일/OCR/삭제·별도 Git 전달은 시작하지 않았다. 현재/다음/상태는 WBS만 관리한다.

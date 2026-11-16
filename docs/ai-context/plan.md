@@ -255,3 +255,8 @@ Final reports should include:
 ## 2026-11-13 · 회사 갱신·선택 반영·직접 수정의 정책 경계
 
 [POL-12 사용자 D1/D2/D3·v1](../development/figma-v01/tasks/POL-12.md#pol-12-contract)은 Figma의 처음 무선택/선택행만 업데이트·닫기/미선택 보존, 해 바뀜 배너/버튼 유지와 자료 연도·시점/최신성 구분을 확정한다. 수집 run·제안 조회/원자 결정·수기 변경의 실제 leaf/버전을 분리하고, 전화번호/평가 삭제의 기대 버전·일반 편집/로고/기존 회사 OCR 계약 공백은 먼저 보완한다. 구체 배너 노출/해제와 후속 구현·DTO/정밀도·실행/합성 QA 조건은 [후속 Gate](../development/figma-v01/tasks/POL-12.md#pol-12-handoff)와 [CUPD18 미실행 계획](../qa/my-company.md#pol-12-update-qa)에서 확인한다. 정책/문서 검토·제품 구현·실제 통합/Git 전달을 구분하고 DEV-08 및 MCO/CDASH/가입·타 Task 차단/승인 예외를 보존한다. 현재/다음/상태는 WBS만 관리한다.
+
+
+## 2026-11-16 · POL-13 서류함 정책 경계
+
+[POL-13 사용자 D1/D2/D3·v1](../development/figma-v01/tasks/POL-13.md#pol-13-contract)은 현행 소유권/권한·보유/처리/인증/기간 구분과 날짜 결측 미확인, series 전체 삭제/30일 뒤 비동기 파기 대상·사용자 복원 없음, 지원 계약과 기존 회사 귀속/교체 최종확정·OCR 반영 계약 대기를 분리한다. 목록 후보/current·metadata/원본 권한 차이·2분 티켓·감사 범위를 보존하며 MAT-162 기획 보류를 재개하지 않는다. [DEV-22~26 인계](../development/figma-v01/tasks/POL-13.md#pol-13-handoff)와 [DBOX22 미실행 계획](../qa/company-documents.md#pol-13-document-qa)은 제품/실제 API 통합 PASS가 아니다. 기존 가입/회사 QA·DEV-08 자원 Gate와 Task별 승인 예외를 유지하고 현재/다음/상태는 WBS만 관리한다.
