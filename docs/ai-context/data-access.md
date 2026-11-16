@@ -114,7 +114,15 @@ src/data/
 - 현재 page의 N개 문서만 versions GET으로 보완하며 최대4건 동시 요청이다. 빈 page는 추가 요청0건, 실패는 행별 보유/기간 확인 필요다.401/403이면 전체 보호 자료를 숨기고 자동 polling/fallback/재시도는 없다. exact version/current/status가 요청 사이 달라지면 다시 확인해야 하며 최대 버전 번호로 current를 만들지 않는다. 계정/회사·epoch/화면 수명과 AbortSignal로 이전 응답·후속 요청을 폐기한다.
 - `validUntil`의 KST 당일까지 포함·그 뒤 만료, 미래 validFrom/결측/잘못된 기간을 구분한다. 화면의 날짜 재계산은 로컬 타이머/화면 복귀이며 API polling이 아니다. 파일 보유/처리/기간과 회사 인증·프로필 반영은 독립이다.
 - mock의 기존 company 문서에 optional `box` metadata/회사 귀속/current 참조를 함께 저장한다. 새 미귀속 업로드는 회사 목록에 없고 신규 회사 등록 성공 후 같은 문서만 귀속시킨다. 알려진 구형 문서에 귀속·current·기간을 추론해 추가하지 않으며 기존 namespace/진행·멱등 replay를 보존한다. managed 교체 후보는 기존 current를 보존한다. mock metadata는 합성 파일명만 사용하고 실제 파일 이름/원문·API 응답을 복사하지 않는다.
-- `documents`/`documents-empty`/`documents-denied`/`documents-version-error`는 명시적 회사 mock 시나리오다. [로컬 mock/HTTP 대역](../qa/company-documents.md#dev-22-local-qa)은 실제 DBOX 통합 차단을 해소하지 않는다. 원본 티켓/상세 UI·업로드/삭제·기존 회사 OCR 적용은 DEV-23~26의 별도 Gate다.
+- `documents`/`documents-empty`/`documents-denied`/`documents-version-error`는 명시적 회사 mock 시나리오다. [로컬 mock/HTTP 대역](../qa/company-documents.md#dev-22-local-qa)은 실제 DBOX 통합 차단을 해소하지 않는다. 원본 티켓/상세 UI는 아래 DEV-23 후속을 따르며 업로드/삭제·기존 회사 OCR 적용은 DEV-24~26의 별도 Gate다.
+
+### 가입 후 서류 상세/원본 · DEV-23
+
+- 같은 company Document 포트의 `getCompanyDocumentHistory`는 기존 versions GET을 상세 전용으로 매핑한다. `DocumentHistoryVersion`은 최소 목록 모델에 contentType/sizeBytes·nullable pageCount/uploaderDisplayName을 추가하며 account ID/추출값/서명은 제외한다. current/후보/REPLACED와 nullable 기간·업로드/최종수정의 의미는 POL-13을 따른다. 화면은 처리/추출값 GET을 상세 metadata 조회에 추가하지 않는다.
+- URL의 exact version을 선택/로그인 복귀/새로고침 기준으로 사용한다. 명시 버전이 사라지면 오류이며 current로 대체하지 않는다. 버전 선택은 metadata를 재조회하지만 티켓/원본을 자동 요청하지 않는다. 계정·회사/epoch·선택·화면 수명은 각각 반영 전에 확인한다.
+- `readCompanyDocumentOriginal`은 선택 version의 PREVIEW/DOWNLOAD 티켓 POST와 storage GET을 HTTP 내부에서 수행하고 `{blob, expiresAt}`만 반환한다. 티켓 URL은 https 또는 loopback http·자격증명/fragment 없음·유효 만료를 검증하고, 원본 GET은 credentials omit/cache no-store/referrer no-referrer/redirect error다. MIME3종·1..10MiB/stream 상한·전송/만료/중단을 검사한다. 서명 URL은 저장·로그·오류/Toast·공개 모델에 넣지 않는다. metadata와 원본의 권한 집행은 별도 서버 검사이며 role/업로더 이름으로 허용하지 않는다.
+- 원본 메모리 Blob URL은 선택/명시 탐색·계정/회사/epoch·화면 종료/만료에 해제하고, HTTP 전송도 티켓 만료 때 중단한다. 오류/만료 뒤 자동 재발급·polling/fallback은 없다. 앱 다운로드 버튼은 DOWNLOAD로 새로 검사하며 브라우저 기본 PDF 도구의 저장/인쇄는 이미 표시한 bytes의 기능이다. 이미 저장한 파일의 삭제나 기발급 원본의 즉시 회수는 보장하지 않는다. 다운로드 완료 안내는 브라우저 시작 확인이며 OS 저장 완료를 주장하지 않는다.
+- mock은 기존 회사 공간/귀속/current·진행·멱등 replay를 유지하고 합성 PDF/PNG만 메모리에서 생성한다. 실제 선택 파일/티켓/Blob은 저장하지 않는다. 기존 `documents`에 현재v2/REPLACED v1과 PNG 사례를 추가하고 `documents-denied`의 metadata 허용/원본404 차이를 유지한다. 새 시나리오·전역 schema/namespace 변경은 없다. [로컬 mock/HTTP 대역](../qa/company-documents.md#dev-23-local-qa)은 실제 DBOX-07~10/21~22의 차단을 대체하지 않는다.
 
 기본정보의 내부 모델은 `primaryIndustries` 배열이다. HTTP mapper는 목록 필드가 있으면 빈 배열까지 그대로 사용하고, 필드가 없을 때만 `primaryIndustry`의 유효한 단일값/null을 목록/빈 목록으로 호환한다. null/비배열/결측·잘못된 행·동일 코드의 이름 충돌을 빈 성공으로 바꾸지 않는다. 정확 중복은 제거하고 서버 순서/원문을 보존한다. legacy 대표값을 목록에 추가하거나 대표/부업종을 만들지 않는다. mock 기본정보는 복수 목록을 제공하고 `basicProfileVersion: 1`이 구형 단일값만 변환한다. 가입용 단일 선택 계약과 전역 MockStore schema/계정 namespace·문서/멱등 replay는 유지한다. 실제 QA-05/DEV-08 차단은 [DEV-60 로컬 검증](../development/figma-v01/tasks/DEV-60.md#dev-60-verification)으로 해소되지 않는다.
 

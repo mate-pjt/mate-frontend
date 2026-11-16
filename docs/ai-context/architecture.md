@@ -60,7 +60,8 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 ## Source Area Notes
 
 - `src/app`은 route와 shell, `src/components`는 UI와 사용자 행동 조합을 담당한다. endpoint·DTO·HTTP/mock 구현은 직접 import하지 않는다.
-- `/my/documents`는 기존 my 메뉴에서 진입하는 가입 후 회사 서류함이다. `features/company/document-box.ts`가 공개 company client의 현재 page/버전 조회를 동시4건으로 조합하고 KST 기간을 계산한다. 목록용 내부 모델은 상세/원본 이력 모델과 구분하며 준비 중인 미리보기/재업로드를 실행하지 않는다. [DEV-22 로컬 검증](../qa/company-documents.md#dev-22-local-qa)은 실제 업무 API 통합과 별개다.
+- `/my/documents`는 기존 my 메뉴에서 진입하는 가입 후 회사 서류함이다. `features/company/document-box.ts`가 공개 company client의 현재 page/버전 조회를 동시4건으로 조합하고 KST 기간을 계산한다. 목록용 내부 모델은 상세/원본 이력 모델과 구분하며 미리보기는 DEV-23 상세로 연결하고 재업로드는 준비 중 비활성이다. [DEV-22 로컬 검증](../qa/company-documents.md#dev-22-local-qa)은 실제 업무 API 통합과 별개다.
+- [DEV-23](../development/figma-v01/tasks/DEV-23.md#dev-23-brief)의 `/my/documents/[documentId]`는 버전 URL을 단일 선택 기준으로 metadata를 다시 확인하고 목록 page를 보존한다. 별도 상세 이력 모델은 파일형식/크기·nullable 페이지수/업로더 표시명만 추가하고 업로더 ID·추출값을 복사하지 않는다. `features/company/document-original.ts`는 중복/계정·회사·선택·탐색/화면 수명과 만료의 Abort/Blob URL 해제를 담당한다. HTTP 내부의 티켓/원본 GET 뒤 메모리 Blob만 공개하며 새 원본 요청은 명시 클릭이다. PDF 기본 뷰어·이미지 확대/축소와 최근활동 준비 중은 사용자 D2의 범위별 선택이며 삭제/업로드/OCR는 후속 Gate다. [로컬 QA](../qa/company-documents.md#dev-23-local-qa)는 실제 원본/권한·storage GET/CORS 통합 PASS가 아니다.
 - `src/data/<domain>/contracts.ts`는 화면용 입력·출력과 Repository 인터페이스다. 함수·객체 factory에 HTTP 클라이언트·세션 접근·mock runtime을 주입하며 BaseRepository·상속·IoC는 없다.
 - `client.ts` 또는 `server.ts`만 구현을 선택한다. 7개 공급원 그룹과 혼합 제약은 `config.ts`가 검사한다. 실제 API 실패는 오류로 전파하고 fallback하지 않는다.
 - `src/data/bids/server.ts`와 `src/data/qna/server.ts`는 `server-only`다. 홈·목록·상세는 같은 bids 공급원, Q&A는 API 없는 static 구현을 사용한다. 서버 공개 mock은 불변 합성 fixture이며 사용자별 가변 상태를 서버 전역에 두지 않는다.
