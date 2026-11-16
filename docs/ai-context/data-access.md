@@ -142,6 +142,14 @@ src/data/
 - 등록 화면의 `AccountScope`는 다른 인증 계정으로 바뀌면 파일·connection·proposal 등 화면의 임시 상태를 새로 만든다. 완료 후 세션 만료만 발생한 경우에는 성공 결과와 경고를 유지한다.
 - DEV-16의 회사 flow는 공개 세션의 epoch를 조회해 명시 로그인/로그아웃과 refresh 만료를 구분한다. 계정/화면 종료 뒤 다음 업로드 요청·복원 저장·완료 반영을 막는다. 이 epoch는 화면 수명용 숫자이며 `AuthAccess`·일곱 공급원·snapshot/운영 guard·storage namespace를 바꾸지 않는다. HTTP 신청은 양수 requestId/PENDING/대상 companyId, 번호/문서 등록은 양수 companyId/membershipId와 기존 string role/verificationStatus를 확인한 뒤에만 완료/후속 refresh를 수행한다. 새로운 enum이나 서버 권한을 추정하지 않는다. 신청의2xx 손상/빈 응답·연결/timeout·409/5xx는 미확정 상태 확인이며 자동 재제출하지 않는다. 등록의 기존 멱등 key/명시 재시도는 유지한다. [검증 근거](../qa/my-company.md#dev-16-local-qa)는 mock·HTTP 대역이고 실제 wire/실행 SHA·기존 가입 QA 차단은 별도다.
 
+### 보관 문서 전체 삭제 · DEV-25
+
+- 공개 company Document 포트의 `deleteCompanyDocument(access, documentId, signal?)`는 version 선택과 무관한 series 전체 명령이다. HTTP는 UUID 검증 뒤 기존 보호 DELETE만 보내고 body/expectedVersion·추측한 멱등 키를 추가하지 않는다. `document-deletion-api.ts`가 필수 timezone 시각 `deletedAt`/그보다 뒤의 `purgeAt`만 검증/복사한다.2xx/빈·손상 wrapper/data/404를 삭제 성공으로 만들지 않는다. 기존401 refresh 한 번의 재인증 외 앱의 자동 재삭제는 없다.
+- controller는 초기 company 포트 문맥을 확보하고 제출/명시 재조회 때 같은 회사인지 확인한다. auth가 API이고 company가 mock인 조합에서도 인증 응답의 회사/role로 문서 권한·귀속을 판단하지 않는다. 계정/epoch·화면 종료·Abort와 제출 중복을 방어하고 실패 뒤 명시 상태 GET만 허용한다. 다시 삭제하려면 닫고 새 확인을 거친다.
+- 검증된 성공 뒤만 상세/원본 메모리 URL을 해제하고 기존 Toast를1회 표시한 뒤 최신 목록 GET/유효 page로 이동한다. 성공 뒤 목록 실패/최종401/세션 해제는 완료를 보존하며 재로그인·목록 재확인으로 분리한다. 미확정 상태의404는 권한/없는 문서가 합쳐질 수 있어 성공이 아니다. 이미 저장한 파일/기발급 티켓의 즉시 회수나 회사 인증 자동 강등·정확한 파기 완료 시각을 약속하지 않는다.
+- mock 문서의 optional `deletion`은 합성 두 시각만 저장한다. 기존 schema/namespace·다른 계정/영역·멱등 이력/버전을 보존하고 권한 있는 재삭제는 같은 시각 결과다. 삭제 문서는 목록/모든 version metadata·원본/업로드 handle·completion/processing/retry·proposal/등록 replay에서 제외한다. 손상된 새 metadata는 회사 공간만 초기화한다. worker/실제 원본/OCR 파기를 모사하거나 회사 인증을 바꾸지 않는다.
+- [DEV-25 로컬 QA](../qa/company-documents.md#dev-25-local-qa)는 Node 계약·실제 Next mock/loopback HTTP만 포함한다. 실제 DBOX-17~22·현재 실행 SHA/실제 권한·disposable 문서/사용·삭제·잔존·복구·장기 worker 파기는 사용자 D1대로 차단을 보존한다.
+
 ## 8. 유지하는 제품/API 정책
 
 - 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다. 당시 미연결이던 금액 직접 범위의 후속 연결은 아래 DEV-11 기록을 따른다.

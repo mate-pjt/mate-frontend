@@ -94,7 +94,7 @@ pnpm dev
 | personalFilters | default, slow, conflict, error |
 | notificationSettings | default, slow, expired, blocked, error |
 
-서류함 `/my/documents`의 `documents`는 합성25개/현재·후보·처리/기간 경계, `documents-empty`는 연결 회사0건, `documents-denied`는 목록 leaf 거절과 metadata 허용 차이, `documents-version-error`는 한 문서의 보유/기간 조회 실패다. 모두 회사 공급원이 mock일 때만 사용한다. 신규 가입 문서는 등록 성공 뒤에만 같은 회사 목록에 나타나며 원본 상세는 DEV-23에서 연결하고 업로드/삭제는 후속 Gate다. [DEV-22 로컬 QA](../qa/company-documents.md#dev-22-local-qa)와 실제 통합 차단을 구분한다. 상세 `/my/documents/[documentId]?version=<UUID>&page=<목록 UI page>`에서 exact 버전/이력·기본 PDF/이미지 뷰어와 명시 원본 다운로드를 확인할 수 있다. `documents`의 11번째 합성 문서는 현재v2/이전v1,12번째는 PNG 사례다. 원본은 메모리에서만 생성하며 실파일/티켓을 저장하지 않는다. `documents-denied`는 metadata 허용·원본404를 재현한다. 실제 HTTP는 티켓/GET·MIME/크기·만료/CORS가 모두 충족돼야 하며 [DEV-23 QA](../qa/company-documents.md#dev-23-local-qa)는 loopback 대역/실제 API 차단을 구분한다.
+서류함 `/my/documents`의 `documents`는 합성25개/현재·후보·처리/기간 경계, `documents-empty`는 연결 회사0건, `documents-denied`는 목록 leaf 거절과 metadata 허용 차이, `documents-version-error`는 한 문서의 보유/기간 조회 실패다. 모두 회사 공급원이 mock일 때만 사용한다. 신규 가입 문서는 등록 성공 뒤에만 같은 회사 목록에 나타나며 원본 상세는 DEV-23, 기존 문서 재업로드는 DEV-24, 전체 삭제는 DEV-25의 승인된 로컬 범위를 따른다. 신규 추가·실제 업무 처리/삭제는 별도 Gate다. [DEV-22 로컬 QA](../qa/company-documents.md#dev-22-local-qa)와 실제 통합 차단을 구분한다. 상세 `/my/documents/[documentId]?version=<UUID>&page=<목록 UI page>`에서 exact 버전/이력·기본 PDF/이미지 뷰어와 명시 원본 다운로드를 확인할 수 있다. `documents`의 11번째 합성 문서는 현재v2/이전v1,12번째는 PNG 사례다. 원본은 메모리에서만 생성하며 실파일/티켓을 저장하지 않는다. `documents-denied`는 metadata 허용·원본404를 재현한다. 실제 HTTP는 티켓/GET·MIME/크기·만료/CORS가 모두 충족돼야 하며 [DEV-23 QA](../qa/company-documents.md#dev-23-local-qa)는 loopback 대역/실제 API 차단을 구분한다.
 
 목록은 `src/data/config.ts`의 mockScenarios가 기준이다. 오타·없는 그룹·API 공급원에 시나리오를 지정하면 설정 오류다. 실패는 무작위가 아니다. processing-failed는 최초 OCR 실패 후 재시도 성공, conflict는 기존 회사 처리 선택을 재현한다. 회사 초기 상태는 해당 공간에 저장 상태가 없을 때 적용한다.
 
@@ -163,3 +163,10 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 - PDF/JPG(JPEG)/PNG·MIME/확장자 일치·1..10×1024×1024bytes를 확인하고, 파일/멱등 키/opaque handle은 열린 화면 메모리에서만 유지한다. PUT 주소 만료는 같은 파일/키로 갱신하고 session410은 현재 상태 확인/명시 재선택이다. 새로고침 뒤 처리 중인 후보는 GET으로 복원하며 전송 대기 후보의 파일/이전 키는 자동 복원하거나 새 명령으로 대체하지 않는다.
 - `documents` mock은 기존 current를 유지하다 새 후보의 OCR/진위 확인 뒤 VERIFIED/current와 이전 REPLACED를 함께 변경한다. 원문·입력 파일명/서명·추출 개인정보를 저장하지 않고, 미리보기는 기존 합성 원본 생성 규칙을 따른다. 가입의 미귀속 문서/최종 등록 흐름과 일곱 공급원·storage namespace는 유지한다.
 - 서버가 회사/identity의 인증 근거 version·인증 시각을 갱신하는 것과 회사명/주소 등 프로필값을 반영하는 것은 다르다. [DEV-24 Brief](figma-v01/tasks/DEV-24.md#dev-24-brief)와 [로컬 QA/실제 차단](../qa/company-documents.md#dev-24-local-qa)을 구분한다.
+
+## 11. 보관 문서 전체 삭제 · DEV-25
+
+- 상세의 ‘지우기’는 선택한 이전 version만이 아닌 전체 series 삭제다. 확인/돌아가기·Escape, 중복 억제·삭제 결과/후속 목록 조회를 구분한다. 문서관리 leaf/미귀속 owner는 서버가 판단하며 role 이름으로 허용하지 않는다.
+- `documents` mock에서 전체 삭제 후 목록은200으로 해당 행을 제외하고, 개별 이력/원본/업로드/처리는404이며, 같은 계정의 재삭제는 같은 deletedAt/purgeAt다. 새로고침·다른 계정/namespace·기존 업로드/멱등 이력은 유지한다. 저장한 합성 metadata는 worker/실제 파일 파기를 실행한 증거가 아니다.
+- 404/409/timeout·손상2xx는 완료가 아니며 자동 재삭제하지 않는다. 현재 상태 확인은 GET뿐이고 새 삭제에는 다시 확인이 필요하다. 성공 뒤 목록 실패/로그인 필요는 확인된 삭제를 보존하고 목록 재확인으로 연결한다. 회사 문맥은 company 포트를 사용해 auth API/company mock 조합을 보존한다.
+- [이번 D1/Brief](figma-v01/tasks/DEV-25.md#dev-25-brief)·[로컬 QA와 실제 차단](../qa/company-documents.md#dev-25-local-qa)을 구분한다. 실제 삭제·30일 비동기 파기/장기 worker는 disposable 자원·안전한 사용/삭제/잔존/복구 승인 뒤 재개한다.
