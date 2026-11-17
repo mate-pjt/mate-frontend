@@ -1,5 +1,8 @@
 import type { CompanyTeamRepository } from "./team-contracts";
 import type { CompanyTeamManagementRepository } from "./team-management-contracts";
+import type { CompanyTeamInvitationRepository } from "./team-invitation-contracts";
+export type * from "./team-invitation-contracts";
+export { normalizeTeamInvitation } from "./team-invitation-input";
 export type * from "./team-management-contracts";
 export { classifyTeamChange, sameTeamPermissions, teamRequiredPermissions, teamRoleFromPermissions } from "./team-permissions";
 export type { CompanyPermissionCatalog, CurrentCompanyPermissions, TeamCapabilities, TeamMemberCapabilities, TeamRole, CompanyTeamMember, CompanyTeamPage, CompanyTeamRepository } from "./team-contracts";
@@ -316,4 +319,4 @@ export interface CompanyDocumentRepository {
   }, idempotencyKey: string): Promise<RegistrationResult>;
 }
 
-export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository & CompanyTeamRepository & CompanyTeamManagementRepository;
+export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository & CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamInvitationRepository;

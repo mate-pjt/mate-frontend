@@ -58,3 +58,6 @@ export const listTeamChangeRequests: CompanyRepository["listTeamChangeRequests"]
 export const getTeamChangeRequest: CompanyRepository["getTeamChangeRequest"] = (...args) => getRepository().getTeamChangeRequest(...args);
 export const decideTeamChangeRequest: CompanyRepository["decideTeamChangeRequest"] = (...args) => getRepository().decideTeamChangeRequest(...args);
 export const cancelTeamChangeRequest: CompanyRepository["cancelTeamChangeRequest"] = (...args) => getRepository().cancelTeamChangeRequest(...args);
+export const listTeamInvitations: CompanyRepository["listTeamInvitations"] = (...args) => getRepository().listTeamInvitations(...args);
+export const getTeamInvitation: CompanyRepository["getTeamInvitation"] = (...args) => getRepository().getTeamInvitation(...args);
+export const createTeamInvitation: CompanyRepository["createTeamInvitation"] = (...args) => getRepository().createTeamInvitation(...args);
