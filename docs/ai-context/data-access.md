@@ -152,12 +152,22 @@ src/data/
 
 ### 가입 후 팀원 조회 · DEV-27
 
-- 같은 company factory의 `CompanyTeamRepository`를 공개 contracts/client로 합성한다. 현재 회사는 HTTP의 세션 refresh, mock의 계정별 기존 company overview에서 얻으며 다른 공급원의 auth 회사/기본 profile 권한으로 대체하지 않는다. 관리 포트는 GET 조회만 제공한다.
+- 같은 company factory의 `CompanyTeamRepository`를 공개 contracts/client로 합성한다. 현재 회사는 HTTP의 세션 refresh, mock의 계정별 기존 company overview에서 얻으며 다른 공급원의 auth 회사/기본 profile 권한으로 대체하지 않는다. DEV-27 선행 포트는 GET 조회이며 DEV-28 management 포트는 아래에 구분한다.
 - catalog·현재 `memberships/me`의 leaf와 ACTIVE members 목록/상세를 읽는다. role은 서버의 요약 배지이며 허용 조건이 아니다. page0/기본20/size1..100·서버 total/count·joinedAt ASC/id ASC와3page/9row flags를 보존한다. 정밀 시각의 소수9자리와 nullable 이름/프로필/마지막 로그인을 검증하고 ID/version/flags를 추정하지 않는다.
 - HTTP 경계는 accountId와 미지원 birthDate/mobilePhone을 복사하지 않는다. D2 자리는 미제공이며 MAT-290 Done만으로 실제값 표시를 활성화하지 않는다. 프로필 URL은 HTTPS/자격증명 없음, 화면은 no-referrer·실패 시 공용 기본 이미지다. source/게시 Swagger와 실제 서버 wire/권한 통합 증거는 별개다.
 - `loadCompanyTeam`은 계정/epoch·Abort와 조회 전후 회사/소속/leaf를 검사한다. UI는 화면 종료·로그아웃·탐색/복귀에 조회 결과를 폐기·재조회한다.401/403/404와 전체 빈 목록·범위 밖 빈 page를 구분하며 자동 fallback/명령/polling은 없다. 실제 접근 제어는 서버가 집행한다.
-- mock은 기존 company namespace/overview/문서·신청·초대·멱등 replay를 유지하고 불변 합성 팀원23명을 매번 복사한다. 새 mutable 팀원 저장소·전역 schema 변경·실제 API 자료 복사는 없다. 기존 connected와 team-agent/team-viewer/team-extra/team-read-only/team-empty/team-denied는 같은 company 공급원에서만 동작한다.
-- [로컬 계약·브라우저/실제 QA 경계](../qa/team-members.md#dev-27-local-qa)와 사용자 로컬 선행 결정을 따른다. 직급/권한·초대/신청·직급 관리 명령은 후속 개발 Task이며 이번 capabilities 표시가 그 실행 승인은 아니다.
+- DEV-27 당시 mock은 기존 company namespace/overview/문서·신청·초대·멱등 replay를 유지하고 불변 합성 팀원23명을 매번 복사했다. 당시 새 mutable 팀원 저장소·전역 schema 변경·실제 API 자료 복사는 없었다. connected와 team-agent/team-viewer/team-extra/team-read-only/team-empty/team-denied는 같은 company 공급원을 따르며 현재 가변 동작은 아래 DEV-28 절로 구분한다.
+- [DEV-27 로컬 계약·브라우저/실제 QA 경계](../qa/team-members.md#dev-27-local-qa)와 당시 사용자 로컬 선행 결정을 보존한다. 당시 직급/권한·초대/신청·직급 관리 명령은 후속 소유였으며 capabilities 표시가 그 실행 승인은 아니었다. DEV-28의 새 승인/실행 범위는 아래 절을 따른다.
+
+### 팀원 정보·권한·대상 동의 · DEV-28
+
+- `CompanyTeamManagementRepository`/`team-management-contracts.ts`를 기존 company factory/public client에 합성한다. 새 공급원/자동 fallback·library는 없다. private `team-management-api.ts`가 직급·소속 명령/동의 DTO를 검증하고 계정ID·처리자ID를 공개 모델에 복사하지 않는다. 개인 프로필 편집·직급 정의 CRUD·초대/메일은 포함하지 않는다.
+- 직접 PATCH는 endpoint별 expectedVersion, self-demotion/leave는 POST body, 내보내기는 DELETE query다. 동의 생성은 kind별 필드·requestKey UUID/expectedMembershipVersion, 결정/취소는 requestKey/expectedRequestVersion을 전송한다. 추측한 공통 멱등 header를 추가하지 않는다. outcome CREATED/REUSED/NO_CHANGE와 요청 PENDING/APPLIED/REJECTED/CANCELED/INVALIDATED·실제 전후 version/시각·target·회사·전체 권한을 검사한다. terminal REUSED를 대기·새 적용으로 안내하지 않는다.
+- UI는 현재 catalog/leaf·capabilities·actor 부분집합/role 비교와 명령 직전 exact target/version·직급 정의를 함께 사용한다. 현재 회사와 소속/leaf의 전후 재확인 뒤만 회사 요청·타인 상세를 노출한다. 대상 표시는 같은 회사 exact 소속 조회를 최대4동시로 조합하고404/과거 회사는 원래 소속 식별 fallback이다. 다른 회사의 현재 프로필을 조회해 과거 대상을 대체하지 않는다. 소속 없는 본인 이력은 source-authorized 상세 재확인으로 유지한다. 본인 결정은 현재 target·회사, 취소는 현재 kind별 관리 leaf를 추가 확인한다.
+- 명령 scope는 제출 중복·계정/epoch·Abort·화면 종료를 방어하고, 한 번 보낸 뒤에는 최신 GET/명시 재선택 전 자동 명령을 만들지 않는다. 요청 생성과 적용·실제 소속 종료와 서비스 계정 탈퇴를 구분한다. 검증된 성공 banner를 먼저 보존하고 `getCompanyTeamContext`(HTTP 내부 refresh, preserveOnError)와 최신 조회를 실행한다. 이후 조회 실패/최종401은 확인된 성공을 재전송하는 사유가 아니다. 기존 공통401의 한 번 재인증은 별개다.
+- mutable mock은 기존 MockStore schema1/7그룹/계정 namespace 안의 `company-team-management` 영역에 회사별 팀원·직급 snapshot/요청/합성 receipt를 보존한다. 같은 store/account의 명령을 최신 읽기→검사→쓰기까지 직렬화해 병렬 version 소비/성공 유실을 막는다. 손상 시 이 영역만 초기화하고 기존 company overview/문서·초대/신청·다른 계정은 보존한다. 본인 소속 종료만 같은 company overview에 반영하며 실제 API 응답/파일/권한을 mock에 복사하지 않는다.
+- `team-pending`(본인 동의 요청), `team-last-admin`(유일 관리자), `team-no-representative`(본인 취임 가능)를 기존 company 시나리오에 추가했다. 알림 allowlist는 사용자 D2의 정확한 `/my/team/change-requests/{양수 안전정수}`만 추가하며 query/encoded/범위 밖은 거부한다. 알림 읽음/이동은 요청 조회일 뿐 결정 POST가 아니다.
+- [DEV-28 로컬 QA](../qa/team-members.md#dev-28-local-qa)는 mock·HTTP fetch 대역·loopback 실제 Next/브라우저다. TEAM-05~10/23/25/26의 이번 소유9부분은 실제 API0통과·자원/실행 대응·사용/변경/잔존/복구 미확보로 차단이다. DEV-27·다른 Task의 기존 QA/예외를 확대하지 않는다.
 
 ## 8. 유지하는 제품/API 정책
 
