@@ -49,3 +49,10 @@ PASS. 첫 독립 Major3/Minor1·테스트/TypeScript와 HTTP fixture/도구 한�
 ## 추천 수정 방향
 
 새 범위 확장 없이 최종 문서 링크/상태/원본·diff 및 read-only verifier/ai-review freshness를 확인한다. 목적별 커밋·최종 PR head CI/리뷰·정상 merge commit/main FF는 실제 원격에서 따로 확인한다. 최종 상태/다음 선정·PR 식별자 같은 후속 metadata도 문서 검사를 다시 수행한다.
+
+## 2026-11-17 · 추가1회 뒤 재감사
+
+- 결론 PASS. 승인된 source2파일·test1파일과 현재 package/scripts·config/public entry·Task/WBS·QA/문서를 재대조했다. 감사 자체에서 source를 수정하지 않았다. base의8scripts/의존성·architecture의폴더/공개경계·plan의WBS 단일권위·harness의역할/등록은 그대로다. 사용자 추가1회는 이번 두 결함의 별도 승인이고 Skill의 기본3회 규칙을 전역 변경한 것이 아니다.
+- data-access 사실 동기화 제안/반영: canonical 같은 목적지는 결과 유지·다른 목적지는conceal/Abort, mock각 실제kind별capability를 현재 source에 맞춘다. 기존 POL-04 문단의 공고/회사만 허용한다는 설명은 당시 범위로 명시하고 이미 확정된 DEV-28 D2 exact 동의 상세 확장만 연결한다. Minor였으며 이번 사용자의 Documentation Update Check/문서 갱신 범위에서 반영했다. 새 정책·경로 승인 추가0, 미해결 드리프트0이다.
+- ai-failures는 새 원격 Major2/독립 FAIL·추가1회 승인·수정/842tests·탐색17/mock4·브라우저23PASS/초기2관찰을 보존한다. 실제0/9차단·과거 QA/원본/예외·DEV-29 선정 인계만 유지한다. browser call 경계/재조회중 읽음과 준비된 명령 결과를 구분하며 hidden/pixel 전수로 확대하지 않는다.
+- 최종 문서 freshness/ID·의존/원본·diff와 독립 Gate는 이 재감사 뒤 확인한다. Git/main은 새 최종 head의 실제 원격 결과로 따로 확인한다. 추가 개발자 결정 없음.
