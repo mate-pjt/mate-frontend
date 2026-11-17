@@ -166,3 +166,16 @@
 - 선정 인계 뒤 두 리뷰 freshness: read-only verifier/primary ai-review PASS. WBS 실집계38/23/50/1/2=114, DEV-30/31 원본·114/156/79/TEAM26/21links·Markdown/diff PASS, 검증 source/test/SVG15파일 동일. 제품 검증은 변경0으로 재실행하지 않았다. 회신 전사 외 정책/범위/검증 변경0이다. 다음 행동은 이번 Task의 작은 커밋·push/PR와 실제 최종 head CI/리뷰·정상 병합/main FF다.
 
 - 커밋 직전 검사: 새 SVG export의 EOF 빈 줄1개가 staged diff-check에서 확인됐다. 개행2→1의 기계적 정리만 수행하고 XML 도형/속성 serialization 동일·staged diff-check PASS를 확인했다. 동일 격리 자산에도 반영했다. 제품 로직 추가 수정/새 승인 정책은 없고, 이 공백 변경 뒤 앱 test/build는 의미 변화0 근거로 반복하지 않는다. 원래1001/세 build 결과와 이 동등성 검사를 함께 사용하며 원격 최종 head CI는 별도로 실행된다.
+
+<a id="dev-30-git-delivery"></a>
+
+## 2026-11-17 · PR/Git 전달 체크포인트
+
+- [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88), `feat/dev-30-invitation-management` → main, 최초 head `212553d8596c6e984d04dd9cc1c036ac3e9c4b94`. push/PR 작성·template·합성 화면2개와 type:feature/test/docs 라벨을 확인했다. 이 시점 main은 시작 `c0661b3341083a434fdc79fff5e778cce782a09f` 그대로이며 branch 작업트리는 clean이었다.
+- 목적별 이력: `9cd1536` HTTP 요청 수명 guard, `8f216b8` 초대 계약/feature, `6942120` 화면/SVG, `bac2f92` 회귀, `94290bc` 검증/인계 문서, `212553d` 실패 예방 문서. 이 기록은 별도 docs 커밋이며 source/test/설정 변경0이다.
+- 최초 head의 Actions checks/세 build와 PR-trigger checks가 실행됐으며 최종 head 판정으로 사용하지 않는다. GitHub의 자동 Preview 성공은 이번 작업에서 실제 업무 QA/운영 배포를 실행했다는 근거가 아니다. 최종 head 원격 CI/리뷰·main freshness와 허용 merge 조건을 다시 확인한다.
+- main protected=false/rulesets0·merge commit 허용을 읽기 전용 확인했다. 강제 push/보호 우회·직접 main push·check 강제 성공 없이 정상 merge로 작은 이력을 보존한다. 실제 Chromatic 월간 한도 문제에만 이번 사용자 예외를 적용한다. 그 밖의 검증/리뷰 문제는 예외가 아니다.
+- 이번 사용자 최초 Git 승인과 D1/D2를 근거로 계속 진행한다. 과거 PR/Task의 당시 예외를 승계하지 않는다. source/test 변경이 없는 이 문서는 링크·ID/집계/원본·승인 경계와 두 리뷰 freshness만 재확인한다. 앱 자동/브라우저는 동작 변화0으로 반복하지 않는다.
+- 다음 행동: 이 순수 기록을 반영한 실제 최종 PR head의 모든 CI/리뷰·병합 조건 확인→정상 main merge→로컬 main FF→로컬/origin/remote SHA·clean 확인. 결과는 실제 PR과 이번 종료 보고에서 확정하며 이 체크포인트를 Git 전달 완료로 읽지 않는다. DEV-31은 인계만 유지한다.
+
+- 순수 Git 문서의 read-only verifier/primary ai-review freshness PASS: PR/base/head·6커밋/라벨 원격 대조, source/test/SVG15파일 일치·EOF/XML 동등성,114/156/79/TEAM26/22links·일반/staged diff-check 확인. 현재3문서까지 문제0·실제 차단/승인 비승계 보존이다. 결과 회신 전사만 추가해 의미 변화가 없으며 전사 자체 재검토는 반복하지 않는다. 실제 최종 head CI·merge/main FF 판정은 PR/종료 보고를 따른다.

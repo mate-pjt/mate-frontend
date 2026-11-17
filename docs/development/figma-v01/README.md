@@ -5,10 +5,11 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-17 KST |
-| 현재 작업 | [DEV-30 Git 전달](tasks/DEV-30.md#dev-30-close) — D1/D2 로컬 범위·1001 tests/두 리뷰 PASS. 실제6QA 차단 보존. commit/PR·최종 CI·정상 merge/main FF 확인 예정 |
+| 현재 작업 | [DEV-30 로컬 범위 종료](tasks/DEV-30.md#dev-30-close) — D1/D2 로컬 범위·1001 tests/두 리뷰 PASS. 실제6QA 차단 보존. Git 전달은 [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88)의 최종 head·종료 보고에서 별도 확인 |
 | 다음 작업 | [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md#dev-31-dev-30-selection) — P2/DEV-27 선행 충족, 선정·인계만 했으며 착수하지 않음 |
 | 다음 첫 행동 | 최신 main·DEV-27/POL-14 D1·DEV-31 원래 정의와 현행 신청 소스를 확인하고 자체 요구사항·계약/자원 Gate·Brief를 제시한다. DEV-30 D1/D2·실제 QA/Git 예외를 승계하지 않음 |
 | DEV-30 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 merge/main FF. D1 로컬 선행/실제 QA 차단 보존·D2 초대 편집/PATCH 포함. 이번 Chromatic 월간 한도만 예외. 실제 업무/API/메일·수락/운영·배포·다음 Task 실행 제외. [Brief](tasks/DEV-30.md#dev-30-brief) |
+| DEV-30 Git 전달 | [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88), 목적별6커밋 최초 head212553d·type:feature/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일 SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-30.md#dev-30-git-delivery) |
 | DEV-29 Git 전달 | [PR #87](https://github.com/mate-pjt/mate-frontend/pull/87), 목적별6커밋 최초 headbf5adaf·type:feature/refactor/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-29.md#dev-29-git-delivery) |
 | DEV-29 이번 승인 범위 | 2026-11-17 사용자 최초 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR·최종 CI·정상 merge/main FF, 추가 D1 로컬 선행·실제 QA7차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무/API·초대/메일/수락·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-29.md#dev-29-brief) |
 | DEV-28 Git 전달 | [PR #86](https://github.com/mate-pjt/mate-frontend/pull/86), 목적별6커밋 최초 head338783b·라벨 feature/test/docs. 이 Git checkpoint 뒤 최종 head의 원격 CI/리뷰·정상 merge/main FF는 실제 PR/종료 보고에서 확인한다. [기록](tasks/DEV-28.md#dev-28-git-delivery) |
