@@ -308,3 +308,58 @@
 - [네이티브 회귀 판정](assets/dev-27/dev27-link-regression.json): 설치된 캐시의 Playwright CLI를 offline으로 재사용한 별도 Chromium에서 키보드 Meta down→링크 클릭→Meta up으로 **원래 목록 유지+상세 새 탭**, **원래 상세 유지+목록 새 탭**을 확인했다. Control 클릭의 원래 목록 유지와 일반 목록 복귀도 PASS.4관찰에서 원래 URL/표·상세/새로고침 enabled를 확인했다. 콘솔 오류0, 기존 개발 폰트 preload 타이밍 경고1은 범위 밖이다.
 - Aside가 modifier 옵션을 일반 클릭으로 처리한 시도와 비신뢰 DOM MouseEvent 시도는 네이티브 새 탭 PASS 근거로 삼지 않았다. 격리본에 과거 handler를 넣은 임시 시도도 의미 있는 재현 판정에 사용하지 않았으며 최종 격리 소스는 원본의 onNavigate로 복원했다.
 - 최종 관찰은 기존20PASS+이번4PASS이며 genuine hidden 추가1은 여전히 미실행이다. 실제 API 통합/개인정보 표시·다른 Task의 차단과 예외는 그대로다.
+
+<a id="dev-28-local-qa"></a>
+
+## 2026-11-17 · DEV-28 관리·동의의 로컬 검증과 실제 QA 차단
+
+- 실행 단위 DEV28-20261117, [이번 사용자 D1/D2](../development/figma-v01/tasks/DEV-28.md#dev-28-brief). 실제 HTTP 연결 코드를 구현하고 local mock/HTTP 대역·브라우저를 선행했다. 원본 TEAM26 계획·DEV-27 및 모든 과거 QA/예외를 그대로 보존한다.
+- 환경: Node22.20.0/pnpm11.3.0·Next16.2.9, `.env*` 없는 격리 소스·기존 node_modules 재사용/설치0. Aside Chromium desktop1920×1080/모바일390×844. mock company `team-pending`, API 프로필 loopback3139→3148의 합성 계정/회사·메모리 HTTP 대역이다. 실제 업무 API/계정/개인정보·권한/소속/메일·운영/배포0이다.
+- source/게시: backend dev `adc0e265ef0e2aa78ccb376e1fa322edd664b290`, 중앙 main `c9e50ff591ae18023164e1a94581c611bf1e4f29`; [CI/테스트 배포 run43389204151](https://github.com/mate-pjt/mate-backend/actions/runs/43389204151) 같은 SHA success. 개발 OpenAPI GET200/3.1.0/v1·SHA256 `85b38b6e43ad45807a1d8c66153767c53876220dbf84852cbc4fa53d832917ba`는 기존과 동일이다. 실행 process SHA/실제 업무 wire·권한 집행은 미확인이다.
+
+| TEAM 소유 부분 | 로컬 근거/결과 | 실제 API |
+| --- | --- | --- |
+| 05 직접 변경·과도 부여 | HTTP PATCH/expectedVersion·exact target/전체 leaf·고권한/actor 부분집합, 브라우저 직급·권한 직접 저장/재조회 PASS | 차단 |
+| 06 동의 생성/대기 | UUID/kind별 필드·CREATED/REUSED/NO_CHANGE, ADMIN 승격 요청 뒤 현재 VIEWER 유지·별도 수락 PASS | 차단 |
+| 07 결정/취소·무효/무기한 | 본인만 결정/담당자 kind leaf·APPLIED/REJECTED/CANCELED/INVALIDATED, 오래된 target/직급 정의·발행자 상태와 시간 경과 분리 PASS | 차단 |
+| 08 최후 관리자/대표자·경쟁 | 유일 ADMIN 강등/소속 종료 거부·ADMIN 유지 대표자 해제, 병렬 version/관리자 경쟁 회귀·브라우저 CM006 거부 PASS | 차단 |
+| 09 본인 축소·취임/소속 종료 | 부분집합/일반 직급·대표자 공석/본인 경로·타회사/직접 편집 우회 거부. 브라우저 대표자 입력 교정/취소·본인 소속 종료 후 계정 유지 PASS | 차단 |
+| 10 version/replay/미확정 | 명령 중복0·409/다른 제안 명시 취소·terminal REUSED, 응답 유실 뒤 성공 오인0/명시 GET만·성공 뒤 조회 실패 분리 PASS | 차단 |
+| 23 DEV-28 수명·접근성/오류 | 계정/epoch/Abort·회사/소속/leaf 전후/취소 현재 leaf·타인 target 표시, native 확인 취소 초점/모바일·VIEWER/read-only/401·403·404 PASS | 이 소유 부분 차단 |
+| 25 동의 알림·안전 route | 정확한 양수 안전정수 path만 허용. loopback 알림 읽음 PATCH1/결정 POST0 → PENDING 상세. 별도 명시 결정/대상 확인 PASS | 차단 |
+| 26 DEV-28 데이터 계층 | public company management 포트·HTTP DTO 최소화·7그룹/config/운영 guard/계정·회사 격리/저장소·api/mock/hybrid/Storybook/아키텍처 회귀 PASS | 이 소유 부분 차단 |
+
+### 실행 결과·실패 보존
+
+- 자동: `pnpm test`30파일838 PASS, `pnpm lint` PASS/경고0, 격리 API/mock/hybrid `pnpm build --webpack` 및 `pnpm build-storybook` PASS. 원격 최종 head 기본 Turbopack CI는 별도다. 상세 로그/명령과 첫2실패·수정3/3·독립 Major3/Minor1은 [Task](../development/figma-v01/tasks/DEV-28.md#dev-28-brief)·[두 리뷰](../development/figma-v01/reviews/DEV-28.md)에 연결한다.
+- [브라우저 원시 판정](assets/dev-28/dev28-browser-results.json): 최종30관찰 PASS(수정 뒤 mock3재관찰 포함)와 합성 fixture 불완전1을 보존했다. 첫 HTTP mutation fixture는 companyId가 없어 정확히 미확정으로 거부됐고 보완 뒤 직접 저장/재조회가 PASS였다. GET 동의 route matcher도 fixture만 바로잡았다. 이를 제품 FAIL이나 미실행 실제 QA PASS로 세지 않는다. 후속 final-source mock/캡처·문서 freshness는 아래/검토 기록에서 확인한다.
+- loopback response-lost는1회 명령 후503, 자동 재명령0/명시 GET에서 변경된 상태만 확인했다. 성공 후 refresh503에서도 확인된 성공 banner를 유지했고 final401에서는 보호 상세를 숨겼다. [알림 method/path/status 관찰](assets/dev-28/dev28-notification-events.json)은 읽음1/결정0이다. API 브라우저의 외부 origin은 loopback3139/3148 외0이었다.
+- 도구 한계: Aside의 호출별 focus 재조회/불안정 ref·일시 loading은 새 snapshot/한 수명 안의 연속 행동으로 확인했다. fullPage의 반복 상단 캡처는 채택하지 않고 viewport 캡처를 쓴다. genuine native hidden 전수·모든 Figma child/prototype/pixel 검증을 주장하지 않으며 기존 DEV-27 추가 hidden1미실행은 유지한다. 예시 이름/이메일은 모두 합성 `example.test`다.
+
+| 화면/상태 | 기준/예외 | 최종 캡처 |
+| --- | --- | --- |
+| 상세 직급/역할·leaf | Figma3137:53331·54225와 직급53403/역할53410 카드·기존 tokens/controls. 대표자 행동별 안내·미제공은 POL-14 D2의 한정 예외, 현재3category/15leaf는 D1 기능 계약 | [desktop](assets/dev-28/dev28-detail-desktop.png) · [mobile](assets/dev-28/dev28-detail-mobile.png) |
+| 동의 요청 상세/대상·전후 상태 | 이번 DEV-28 D2로 채택한 기존 my 카드/명시 확인 UX. 자동 동의0·처리 완료와 대기 구분. 이전 상세 전체 화면 예외로 확대하지 않음 | [desktop](assets/dev-28/dev28-request-desktop.png) · [mobile](assets/dev-28/dev28-request-mobile.png) |
+
+### 실제 QA 재개 조건
+
+실제 통과0 · 위9개 **DEV-28 소유 부분 차단**이다. 담당 역할·합성 회사/서로 다른 관리자·대상/추가 leaf·대표자/공석·유일 관리자/원래 소속/version과 경쟁 자원, Origin/CORS·현재 실행 SHA 대응·업무 응답 wrapper/필드, 개인정보 열람/사용·권한/소속 변경·알림 잔존/복구 범위를 확보해야 재개한다. 권한 축소·소속 종료 등 복구가 어려운 자원은 disposable 범위를 명시한다. 이번 D1은 실제 QA 면제·통합 PASS/운영 반영 승인이 아니다. TEAM 다른 소유 부분/기존 AUTH-16/17·가입/회사/문서·DEV-08/MAT-162/모든 예외·차단은 유지한다.
+
+### 병합 직전 추가 재현 · FAIL 보존
+
+앞선30관찰 PASS/fixture-invalid1 뒤 새 원격 리뷰2건을 별도로 재현했다. 위 raw 판정을 덮거나 실제 API QA로 세지 않는다. PR #86 head8fa797e에서 수정 전 결과다.
+
+| 사례/증거 종류 | 관찰·판정 |
+| --- | --- |
+| 같은 mine 탭 재클릭 · 실제 Next mock 브라우저 | 같은 URL에서 결과가 사라져 loading·재조회 버튼 disabled가 지속됨. FAIL. 독립 hook harness도 mine/company 모두 load1→1·새Effect0 재현 |
+| PROFILE_EDIT 없는 행동 leaf · 격리 Node mock/독립 재현 | 자기축소한 AGENT+REMOVE+PERMISSION_MANAGE에서 VIEWER canRemove=false인데 명령REMOVED, AGENT canRequestPermissionChange=false인데 권한 요청CREATED. capability/명령 불일치 FAIL |
+
+제품/테스트 수정은 아직 없고 자동 수정3/3 뒤 이 두 건 한정 추가1회 결정 대기다. mine/company·필터·breadcrumb/페이지 이동 브라우저와 각 행동 leaf 허용/거부 회귀, 관련 build/두 리뷰·새 최종 head CI 전에는 로컬 최종 PASS로 복귀하지 않는다. 실제0/9부분 차단·기존QA/예외는 그대로다.
+
+### 사용자 추가1회 승인 뒤 회귀
+
+- 2026-11-17 사용자 **“두 항목 한정 추가 1회 수정 후 전달 계속 (추천)”**. 현재 목적지의 canonical props를 비교해 탐색 방지/결과 유지, 다른 목적지의 conceal/Abort 유지, mock REMOVE/PERMISSIONS 각각의 판정으로 수정했다. 최초3/3 뒤 별도 추가1/1이며 다른 기능/실제 업무 승인은 없다.
+- Node22.20.0 전체30파일842 tests/lint경고0·격리 API/mock/hybrid webpack·Storybook PASS. 실제 mock leaf4조합의 버튼 capability·직접/동의 명령 허용/403·상위/자기/대표자·최후 관리자 회귀를 포함한다. 독립 verifier도842 tests·실제 컴포넌트 hook harness17사례·mock추가4조합을 확인했다.
+- [추가 브라우저 원시 관찰](assets/dev-28/dev28-extra-browser-results.json)은23 PASS와 초기 FAIL관찰2를 원문 결과대로 보존한다. 같은 mine/company·필터/필터재선택/root breadcrumb·의미상 같은 `scope=mine&page=1`/모바일, 다른 scope/필터·2page빈경계→1page·팀원 화면 이동을 확인했다. actual Next mock에서 PROFILE_EDIT 없는 AGENT+REMOVE+PERMISSION_MANAGE의 본인 축소→VIEWER 내보내기 확인/REMOVED→AGENT 권한 동의 확인/CREATED·현재 역할 유지를 UI로 확인했다. 외부 origin0이다.
+- 초기 FAIL2를 제품 성공으로 덮지 않는다. 첫 call경계 뒤 페이지복귀 클릭은 old URL/loading으로 관찰돼 원인을 제품으로 확정하지 않았다. source변경 없이 fresh 클릭1회·동일 tool수명 반복2회에서 경로/목록 복귀가 모두 성공했다. 다른 초기 관찰은 focus 재조회 중 editor disabled를 읽은 것이며 같은 호출에서 click의 actionability 대기 뒤 활성 버튼/확인 popup·REMOVED가 관찰됐다. 별도 notes의 cross-call/전환중 관찰과 준비된 실제 명령 결과를 분리한다. 옵션 RefStale1도 새 snapshot/같은 수명 액션으로 재시도했고 full tree/diff를 보존했다. 실제 native hidden 전수/모든 Figma pixel·실제 API PASS를 뜻하지 않는다.
+- 추가 회차는 HTTP 연결 코드 변경0이다. fetch 대역 계약은 전체842 tests에서 재실행했고 API profile을 다시 빌드했다. 실제 Next loopback HTTP의 앞선30관찰 원본은 보존하며 그 전체를 추가 회차에서 반복했다고 주장하지 않는다. 실제 API0/9소유 부분 차단과 DEV-29 미실행은 유지한다. 최종 문서/두 리뷰 freshness·새 PR head CI는 별도 Gate다.

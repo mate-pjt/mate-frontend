@@ -22,6 +22,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`my-company.md`](./my-company.md): 나의 회사 정보의 미연결·신청·연결 상태와 회사 선택 진입
 - [`company-documents.md`](./company-documents.md): POL-13의 계약 경계/DBOX22 미실행 계획과 DEV-22 목록·DEV-23 상세/원본의 로컬 mock/HTTP 대역·브라우저 증거. 가입 AUTH/실제 API 사례와 구분
 - [`team-members.md`](./team-members.md#dev-27-local-qa): POL-14 TEAM26 원본 계획과 DEV-27 로컬 검증20PASS/추가1미실행·실제 조회 QA 차단. 기존 QA-08·후속 소유 범위와 구분
+- [`team-members.md` DEV-28](./team-members.md#dev-28-local-qa): 직접/명시 동의·본인 변경/최후 관리자·알림/수명·가변 mock의 로컬 검증과 실제9소유 부분 차단. 이전 조회 QA/다른 소유 범위의 예외를 확대하지 않음
 - [`qna.md`](./qna.md): 자주 묻는 질문의 정책 문구·아코디언·모바일·의견 배너
 - 이후 기능마다 `docs/qa/<기능-slug>.md`를 하나씩 만들고 아래 목록에 추가한다.
 

@@ -349,3 +349,17 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 최소 수정/검증: Link/ButtonLink4곳의 수명 해제를 `onNavigate`로 옮겼다. 원본758 test/lint와 격리 build PASS, 별도 Chromium의 네이티브 Meta 클릭 목록/상세 새 탭·Control 클릭·일반 복귀4관찰 PASS를 확인했다. Aside의 modifier 옵션/비신뢰 DOM 이벤트 시도는 새 탭 검증 PASS로 사용하지 않았다.
 - 예방: Next Link의 수명 해제는 실제 onNavigate에 묶는다. 일반 이동뿐 아니라 수정 클릭/새 탭에서 원래 화면/버튼이 유지되는지 실제 브라우저로 확인한다.
 - 관련: [Task](../development/figma-v01/tasks/DEV-27.md#dev-27-verification)·[검토](../development/figma-v01/reviews/DEV-27.md)·[QA 회귀](../qa/team-members.md#dev-27-link-regression). 하네스/패키지 변경 없음.
+
+<a id="dev-28-review-failures"></a>
+
+## 2026-11-17 · DEV-28 요청 권한·대상 식별과 mock 경쟁
+
+- 실제 실패: 첫 독립 verifier가 Major3/Minor1을 발견했다. 요청 조회의 companyId 전후 비교만으로는 같은 회사의 leaf/소속 교체를 놓쳤고 취소도 이미 읽은 최신 leaf를 사용하지 않았다. 회사 요청에는 대상을 구분할 표시가 없었으며 병렬 mock 명령은 같은 version의 복사본을 각각 써 앞선 성공을 잃었다. terminal REUSED도 동의 대기로 안내했다. 초기829 자동 PASS가 이를 검출하지 못했음을 보존한다.
+- 수정/검증: 현재 membership/전체 leaf 전후 확인·취소 kind별 현재 leaf, 같은 회사 exact target 최대4조회/과거·종료 소속 fallback, account/store의 명령 lane, terminal 상태 안내를 추가했다. 서로 다른 factory의 병렬 version 경쟁·관리자 경쟁과 권한 회수/타인 상세·cancel POST0/본인 이력/target404/terminal 재생 회귀를 포함해838 tests와 lint·세 구성/Storybook·로컬 브라우저를 재검증한다.
+- 예방: 회사 ID와 조회 권한의 수명은 다르다. 새 민감 조회는 기존 팀원/문서의 pre/post scope 패턴을 재사용하고, 이미 확보한 현재 leaf를 모든 명령에 적용한다. 동의 관리는 대상 식별과 전후 상태를 함께 보여준다. mock도 async 읽기/쓰기 사이의 경쟁을 주입해 저장소 계약을 검증한다. outcome과 현재 lifecycle 상태는 별개다.
+- 부수 교정: 첫 테스트가 같은 Response를 재사용했고 Next build는 never helper/intent union narrowing 오류를 드러냈다. 요청마다 새 Response/명시 함수·개별 discriminant로 정리했다. 합성 HTTP fixture의 mutation companyId 누락과 GET route matcher를 고친 뒤 재검증했으며 제품 오류로 집계하지 않는다. Aside focus/불안정 ref와 fullPage 상단 반복은 도구 한계이며 viewport/새 snapshot을 사용한다.
+- 출력 경계 재발: 첫 PR structuredContent 전체에 불필요한 공개 계정 metadata가 출력됐다. 사용자에게 알렸고 실제 값은 Task/QA/PR에 재인용하지 않는다. 이후 원격 응답은 ref/SHA·소유 source/계약·필요 상태만 새 객체로 추출했다. 환경파일/credential·실제 업무 응답을 읽은 사건과 구분하고 기존 출력이 삭제됐다고 주장하지 않는다.
+- 소유/경계: [DEV-28 Brief](../development/figma-v01/tasks/DEV-28.md#dev-28-brief)·[첫 FAIL과 재검토](../development/figma-v01/reviews/DEV-28.md)·[TEAM QA](../qa/team-members.md#dev-28-local-qa). 실제 API QA는 이번 D1대로 차단을 유지하며 새 library/하네스/다른 Task 변경으로 해결하지 않는다.
+- 병합 직전 추가 FAIL: PR 자동 리뷰2건을 pre-merge guard가 발견해 병합을 멈췄다. 같은 목록 목적지 onNavigate=conceal이 결과를 지우고 Effect를 재실행하지 않는 로딩 고착을 실제 Next mock/독립 harness로 확인했다. mock은 POSITION 판정을 REMOVE/PERMISSIONS capability에도 재사용해 행동 leaf만 있는 actor의 UI와 명령이 달랐다. 기존838 tests/두 리뷰 PASS가 놓친 반례이며 최신 독립 판정은 Major2 FAIL이다.
+- 추가 예방/재개: 탐색 해제는 의미상 목적지가 바뀔 때 적용하거나 명시 reload를 보장한다. capabilities는 각 실제 행동 kind·leaf와 비교하고, 기본 preset뿐 아니라 PROFILE_EDIT 없는 합법적인 추가 leaf 조합도 명령과 대조한다. 자동 수정3/3 이후라 사용자 추가1회 결정 전 코드 수정은 하지 않았으며 승인/수정·회귀·재리뷰가 필요하다. Chromatic 게시 EEXIST는 동일 head job1회 재실행 성공, UI Tests/Review pending은 로그상 billed limit의 이번 예외로 구분한다.
+- 사용자 추가1회 확정 뒤: 두 최소 source수정·leaf4회귀와842 tests/lint0·세 구성/Storybook·실제 Next mock을 확인했다. 독립 컴포넌트 harness17과 mock4조합도 PASS다. 추가 브라우저23PASS와 초기FAIL관찰2는 raw/notes로 보존한다. call 경계의 첫 이동은 원인 미확정 관찰이며 source변경 없이 fresh3회 복귀 성공과 구분한다. focus 재조회 중 editor disabled를 성급히 판정한 읽음은 실제 클릭 대기 뒤 활성/확인·명령 성공과 구별한다. 문서/최종 리뷰·새 head CI는 별도 Gate이며 이전 실패를 삭제하지 않는다.

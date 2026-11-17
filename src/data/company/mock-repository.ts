@@ -11,7 +11,7 @@ import { validateDocumentAccess } from "./document-detail-api";
 import { syntheticDocumentBlob } from "./document-detail-mock";
 import { mapDocumentDeletion } from "./document-deletion-api";
 import type { DocumentDeletion } from "./contracts";
-import { createMockTeamQueries } from "./team-mock";
+import { createMockTeamManagement } from "./team-management-mock";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -301,7 +301,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     return { companyId: profile.companyId, membershipId: 9101, role: "ADMIN", verificationStatus: profile.verificationStatus };
   }
   return {
-    ...createMockTeamQueries(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }),
+    ...createMockTeamManagement(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }, account => { const state = read(account); state.overview = { status: "empty" }; write(account, state); }),
     async getDocumentBoxContext(access, signal) {
       const account = await mockAccount(runtime, access, "company", signal);
       const view = read(account).overview;

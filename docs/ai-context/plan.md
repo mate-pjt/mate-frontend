@@ -286,3 +286,7 @@ Final reports should include:
 ## 2026-11-17 · DEV-27 팀원 조회의 로컬 선행
 
 [이번 사용자 결정/Brief](../development/figma-v01/tasks/DEV-27.md#dev-27-brief)는 목록·역할·상세/메뉴와 같은 company Team 포트를 로컬 선행하고 실제 API QA 차단을 보존한다. catalog·현재 leaf·page/count/ASC와 capabilities/nullable·회사/계정/화면 수명을 연결하며 생년월일/전화 자리는 D2 미제공이다. [QA](../qa/team-members.md#dev-27-local-qa)는 mock·HTTP 대역/브라우저·실서버 미실행 및 도구 한계를 분리한다. DEV-28~33과 기존 QA/원본 기준선·승인 예외는 유지하며 현재/다음/상태는 WBS만 소유한다.
+
+## 2026-11-17 · DEV-28 팀원 관리와 명시 동의
+
+[이번 사용자 D1/D2·Brief](../development/figma-v01/tasks/DEV-28.md#dev-28-brief)는 실제 HTTP 연결을 포함한 로컬 선행·실제 API QA 차단 보존과 정확한 동의 route/내·회사 목록·명시 수락/거절/취소 UI를 채택했다. 같은 company 포트에서 직접/대상 동의/금지·본인 축소/대표자 취임/소속 종료, 최신 target/version·전후 current leaf/회사·계정·명령 수명을 조합한다. 첫 독립 Major3/Minor1과 수정3/3·추가 회귀를 [검토](../development/figma-v01/reviews/DEV-28.md)에 보존한다. [TEAM QA](../qa/team-members.md#dev-28-local-qa)의 로컬 결과/도구·fixture 한계는 실제9부분 차단과 별개다. 초대/신청/직급 정의 관리·서비스 계정 탈퇴·실제 업무/메일/운영·배포와 DEV-29 실행은 포함하지 않는다. 현재/다음/상태는 WBS만 소유한다.

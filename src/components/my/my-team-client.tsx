@@ -5,36 +5,40 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/ui/button";
-import { CheckboxSquare } from "@/components/ui/checkbox";
 import { NormalTag } from "@/components/ui/chip";
 import { Pagination } from "@/components/ui/pagination";
-import { SelectBox } from "@/components/ui/select";
-import type { CompanyTeamMember, TeamMemberCapabilities } from "@/data/company/contracts";
+import type { CompanyTeamMember } from "@/data/company/contracts";
 import { ApiError, errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { loadCompanyTeam, teamDate, teamDetailPath, teamListPath, teamMemberName, teamRoleLabel, type TeamResult } from "@/features/company/team";
 import { MySideMenu } from "./my-side-menu";
+import { TeamMemberEditor } from "./team-member-editor";
+import { teamChangePath, type TeamCommit } from "@/features/company/team-management";
 
 type Result = TeamResult | { status: "loading" | "unauthorized" | "denied" | "missing" } | { status: "error"; message: string };
 type Props = { initialPage: number | null; membershipId?: number | null };
 
 export function MyTeamClient({ initialPage, membershipId }: Props) {
   const { state, refresh, getAccessToken, getAccountKey, getSessionEpoch } = useAuthSession();
+  const [committed, setCommitted] = useState<(TeamCommit & { account: string | null; epoch: number }) | null>(null);
+  const receipt = committed && committed.epoch === getSessionEpoch() && (getAccountKey() === committed.account || getAccountKey() === null) ? committed : null;
+  const banner = receipt && <div className="mx-auto my-4 max-w-[1100px] rounded-2xl bg-primary-100 p-4 type-body-5 text-grayscale-800" role="status"><p>{receipt.message}</p><p className="mt-2 type-body-7">최신 상태 조회와 로그인 상태는 별도로 확인해 주세요.</p>{receipt.requestId && <ButtonLink href={teamChangePath(receipt.requestId)} variant="outline" size="xs" className="mt-3">변경 요청 보기</ButtonLink>}</div>;
   const detail = membershipId !== undefined;
   const valid = initialPage !== null && membershipId !== null;
   if (valid && state.status === "authenticated") {
-    return <AuthenticatedTeam initialPage={initialPage} membershipId={membershipId} getAccessToken={getAccessToken} refresh={refresh} getAccountKey={getAccountKey} getSessionEpoch={getSessionEpoch}
-      key={`${state.authentication.account.id}:${getSessionEpoch()}:${state.authentication.companyContext?.companyId ?? "none"}:${initialPage}:${membershipId ?? "list"}`} />;
+    return <>{banner}<AuthenticatedTeam initialPage={initialPage} membershipId={membershipId} getAccessToken={getAccessToken} refresh={refresh} getAccountKey={getAccountKey} getSessionEpoch={getSessionEpoch}
+      onCommitted={value => setCommitted({ ...value, account: getAccountKey(), epoch: getSessionEpoch() })}
+      key={`${state.authentication.account.id}:${getSessionEpoch()}:${state.authentication.companyContext?.companyId ?? "none"}:${initialPage}:${membershipId ?? "list"}`} /></>;
   }
-  return <TeamShell detail={detail}>
+  return <>{banner}<TeamShell detail={detail}>
     <Message title={!valid ? "팀원 주소와 페이지 정보를 확인해 주세요." : state.status === "anonymous" ? "로그인하면 함께하는 팀원을 확인할 수 있어요." : state.status === "error" ? "로그인 상태를 확인하지 못했어요." : "로그인 상태를 확인하고 있어요."} error={!valid || state.status === "error"}>
       {!valid ? <ButtonLink href={teamListPath()} variant="outline">팀원 목록으로 돌아가기</ButtonLink> : state.status === "anonymous" ? <LoginLink page={initialPage!} membershipId={membershipId} /> : state.status === "error" ? <Button onClick={() => void refresh().catch(() => undefined)} variant="outline">다시 시도하기</Button> : null}
     </Message>
-  </TeamShell>;
+  </TeamShell></>;
 }
 
-function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh, getAccountKey, getSessionEpoch }: AuthAccess & { initialPage: number; membershipId?: number; getSessionEpoch: () => number }) {
+function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh, getAccountKey, getSessionEpoch, onCommitted }: AuthAccess & { initialPage: number; membershipId?: number; getSessionEpoch: () => number; onCommitted: (value: TeamCommit) => void }) {
   const router = useRouter();
   const [result, setResult] = useState<Result>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
@@ -85,6 +89,7 @@ function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh,
         <h1 className={`${detail ? "type-heading-9" : "text-2xl font-bold sm:text-[32px]"} text-grayscale-900 focus:outline-none`} ref={heading} tabIndex={-1}>{detail ? "팀원 정보" : "우리 팀원을 한곳에서 관리해요!"}</h1>
         {!detail && <p className="mt-2 type-body-1 text-grayscale-600">팀원의 역할을 확인하고 정보를 확인할 수 있어요.</p>}
       </div>
+      <ButtonLink href={teamChangePath()} variant="outline" size="xs" onNavigate={conceal}>변경 요청 확인하기</ButtonLink>
       <Button onClick={reload} variant="text_gray" size="xs" disabled={result.status === "loading"}>새로고침</Button>
     </div>
     {result.status === "loading" && <Message title="팀원 정보를 확인하고 있어요." />}
@@ -115,14 +120,15 @@ function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh,
       </div> : <Message title={result.page.totalElements === 0 ? "함께하는 팀원이 없어요." : "이 페이지에는 팀원이 없어요."}>{result.page.totalElements > 0 && <Button onClick={() => navigate(1)} variant="outline">첫 페이지로 돌아가기</Button>}</Message>}
       {result.page.totalPages > 1 && result.page.content.length > 0 && <div className="mt-6 flex justify-center"><Pagination ariaLabel="팀원 목록 페이지" page={initialPage} totalPages={result.page.totalPages} onPageChange={navigate} /></div>}
     </>}
-    {result.status === "detail" && <MemberDetail result={result} page={initialPage} conceal={conceal} />}
+    {result.status === "detail" && <MemberDetail result={result} page={initialPage} conceal={conceal}
+      access={{ getAccessToken, refresh, getAccountKey }} getSessionEpoch={getSessionEpoch} reload={reload} onCommitted={value => { onCommitted(value); reload(); }}
+      onAccessError={error => setResult({ status: error.status === 401 ? "unauthorized" : error.status === 403 ? "denied" : "missing" })} />}
   </TeamShell>;
 }
 
-function MemberDetail({ result, page, conceal }: { result: Extract<TeamResult, { status: "detail" }>; page: number; conceal: () => void }) {
-  const { member, catalog } = result;
+function MemberDetail({ result, page, conceal, access, getSessionEpoch, reload, onCommitted, onAccessError }: { result: Extract<TeamResult, { status: "detail" }>; page: number; conceal: () => void; access: AuthAccess; getSessionEpoch: () => number; reload: () => void; onCommitted: (value: TeamCommit) => void; onAccessError: (error: ApiError) => void }) {
+  const { member } = result;
   const [failedImage, setFailedImage] = useState(false);
-  const flag = (direct: boolean, request: boolean) => direct ? "직접 변경 권한 있음 · 기능 준비 중" : request ? "대상 동의 요청 가능 · 기능 준비 중" : "현재 변경할 수 없음";
   const cards = [
     ["마지막 로그인", teamDate(member.lastLoginAt, true)], ["가입일", teamDate(member.joinedAt)], ["생년월일", "미제공"], ["핸드폰번호", "미제공"],
   ];
@@ -134,37 +140,11 @@ function MemberDetail({ result, page, conceal }: { result: Extract<TeamResult, {
       </div>
       <dl className="grid grid-cols-1 gap-2 sm:grid-cols-2">{cards.map(([label, value]) => <div className="rounded-xl bg-grayscale-50 p-4" key={label}><dt className="mb-5 type-body-7 text-grayscale-600">{label}</dt><dd className="type-body-5 text-grayscale-800">{value}</dd></div>)}</dl>
     </section>
-    <section className="mt-4 rounded-[20px] bg-white p-6 shadow-(--shadow-control)" aria-labelledby="team-position-title">
-      <h2 id="team-position-title" className="mb-6 type-heading-9 text-grayscale-800">직급설정</h2>
-      <p className="mb-2 type-body-7 text-grayscale-800">직급</p><SelectBox disabled className="h-12 w-full justify-between" aria-label={`현재 직급 ${member.positionName}, 변경 준비 중`}>{member.positionName}</SelectBox>
-      <p className="mt-3 type-body-7 text-grayscale-600">{flag(member.capabilities.canChangePosition, member.capabilities.canRequestPositionChange)}</p>
-    </section>
-    <section className="mt-4 rounded-[20px] bg-white p-6 shadow-(--shadow-control)" aria-labelledby="team-permissions-title">
-      <h2 id="team-permissions-title" className="mb-6 type-heading-9 text-grayscale-800">역할설정</h2>
-      <p className="mb-2 type-body-7 text-grayscale-800">부여된 역할</p>
-      <div className="mb-4 grid grid-cols-3 gap-2" aria-label="현재 역할">{(["VIEWER", "AGENT", "ADMIN"] as const).map(role => <span key={role} aria-current={member.role === role ? "true" : undefined} className={`flex min-h-12 items-center justify-center rounded-xl border px-3 py-2 type-body-5 ${member.role === role ? "border-primary-400 text-primary-400" : "border-grayscale-200 text-grayscale-700"}`}>{teamRoleLabel(role)}</span>)}</div>
-      <div className="space-y-3">{catalog.categories.map(category => {
-        const selected = category.permissions.filter(permission => member.permissions.includes(permission.code)).length;
-        return <details key={category.code} open={member.role === "ADMIN"} className="rounded-2xl bg-grayscale-50 p-4">
-          <summary className="cursor-pointer rounded-lg py-2 type-body-5 text-grayscale-800 focus-visible:outline-2 focus-visible:outline-primary">{category.name} <span className="ml-1 type-body-7 text-primary-400">{selected}개의 권한을 선택했어요!</span></summary>
-          <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">{category.permissions.map(permission => <div className="flex items-start gap-2 rounded-lg bg-white p-4" key={permission.code}>
-            <CheckboxSquare disabled checked={member.permissions.includes(permission.code)} ariaLabel={`${permission.name}, ${member.permissions.includes(permission.code) ? "부여됨" : "부여되지 않음"}`} />
-            <div className="min-w-0"><p className="type-body-5 text-grayscale-800">{permission.name}</p><p className="mt-1 type-body-7 text-grayscale-600">{permission.description}</p></div>
-          </div>)}</div>
-        </details>;
-      })}</div>
-      <p className="mt-4 type-body-7 text-grayscale-600">{flag(member.capabilities.canChangePermissions, member.capabilities.canRequestPermissionChange)}</p>
-      <MemberActions capabilities={member.capabilities} />
-    </section>
-    <div className="mt-6 flex flex-wrap justify-end gap-2"><ButtonLink href={teamListPath(page)} variant="tertiary" onNavigate={conceal}>목록으로 돌아가기</ButtonLink><Button disabled aria-describedby="team-change-help">권한 저장하기</Button></div>
-    <p className="mt-3 text-right type-body-7 text-grayscale-600" id="team-change-help">직급·역할·권한 변경은 준비 중이에요.</p>
+    <TeamMemberEditor snapshot={result} access={access} getSessionEpoch={getSessionEpoch} reload={reload} onNavigate={conceal} onCommitted={onCommitted} onAccessError={onAccessError} />
+    <div className="mt-6 flex justify-end"><ButtonLink href={teamListPath(page)} variant="tertiary" onNavigate={conceal}>목록으로 돌아가기</ButtonLink></div>
   </>;
 }
 
-function MemberActions({ capabilities: c }: { capabilities: TeamMemberCapabilities }) {
-  const messages = [c.canRemove && "팀원 내보내기 가능", c.canRequestRemoval && "내보내기 동의 요청 가능", c.canSelfDemote && "본인 권한 축소 가능", c.canLeave && "본인 탈퇴 가능", c.canAppointSelfRepresentative && "본인 대표자 취임 가능"].filter(Boolean);
-  return messages.length > 0 ? <p className="mt-2 type-body-7 text-grayscale-600">{messages.join(" · ")} · 기능 준비 중</p> : null;
-}
 function RoleTag({ member }: { member: CompanyTeamMember }) { return <NormalTag className={member.role === "ADMIN" ? "bg-primary-100 text-primary-400" : "bg-grayscale-50! text-grayscale-700!"}>{teamRoleLabel(member.role)}</NormalTag>; }
 function PreparedTab({ icon, width, height, label, available }: { icon: string; width: number; height: number; label: string; available: boolean }) {
   return <span className="inline-flex flex-col gap-1"><Button disabled variant="tertiary" aria-describedby="team-prepared" title={available ? "권한 있음 · 기능 준비 중" : "현재 권한 없음 · 기능 준비 중"}><span className="flex size-6 items-center justify-center"><Image src={`/images/team/${icon}.svg`} alt="" width={width} height={Math.round(height)} className="h-auto w-auto" /></span>{label}</Button><span className="type-body-7 text-grayscale-600">{available ? "권한 있음 · 준비 중" : "현재 권한 없음"}</span></span>;

@@ -46,3 +46,15 @@ export const getCompanyPermissionCatalog: CompanyRepository["getCompanyPermissio
 export const getCurrentCompanyPermissions: CompanyRepository["getCurrentCompanyPermissions"] = (...args) => getRepository().getCurrentCompanyPermissions(...args);
 export const listCompanyTeamMembers: CompanyRepository["listCompanyTeamMembers"] = (...args) => getRepository().listCompanyTeamMembers(...args);
 export const getCompanyTeamMember: CompanyRepository["getCompanyTeamMember"] = (...args) => getRepository().getCompanyTeamMember(...args);
+
+export const getCompanyTeamPositions: CompanyRepository["getCompanyTeamPositions"] = (...args) => getRepository().getCompanyTeamPositions(...args);
+export const changeTeamMemberPosition: CompanyRepository["changeTeamMemberPosition"] = (...args) => getRepository().changeTeamMemberPosition(...args);
+export const changeTeamMemberPermissions: CompanyRepository["changeTeamMemberPermissions"] = (...args) => getRepository().changeTeamMemberPermissions(...args);
+export const demoteMyTeamMembership: CompanyRepository["demoteMyTeamMembership"] = (...args) => getRepository().demoteMyTeamMembership(...args);
+export const leaveMyTeamMembership: CompanyRepository["leaveMyTeamMembership"] = (...args) => getRepository().leaveMyTeamMembership(...args);
+export const removeCompanyTeamMember: CompanyRepository["removeCompanyTeamMember"] = (...args) => getRepository().removeCompanyTeamMember(...args);
+export const createTeamChangeRequest: CompanyRepository["createTeamChangeRequest"] = (...args) => getRepository().createTeamChangeRequest(...args);
+export const listTeamChangeRequests: CompanyRepository["listTeamChangeRequests"] = (...args) => getRepository().listTeamChangeRequests(...args);
+export const getTeamChangeRequest: CompanyRepository["getTeamChangeRequest"] = (...args) => getRepository().getTeamChangeRequest(...args);
+export const decideTeamChangeRequest: CompanyRepository["decideTeamChangeRequest"] = (...args) => getRepository().decideTeamChangeRequest(...args);
+export const cancelTeamChangeRequest: CompanyRepository["cancelTeamChangeRequest"] = (...args) => getRepository().cancelTeamChangeRequest(...args);

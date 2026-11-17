@@ -1,7 +1,9 @@
-// POL-04 v1: validate before URL parsing can normalize an untrusted path.
+// POL-04 v1 + DEV-28 approved consent route: validate before URL normalization.
 export function safeNotificationPath(value: unknown): string | null {
   if (typeof value !== "string" || /[\s\\#\p{Cc}\p{Cf}]/u.test(value)) return null;
   if (value === "/my/company") return value;
+  const change = /^\/my\/team\/change-requests\/([1-9]\d*)$/.exec(value);
+  if (change) return Number.isSafeInteger(Number(change[1])) ? value : null;
 
   const match = /^\/bids\/([1-9]\d*)(?:\?bidClsfcNo=([^&]+))?$/.exec(value);
   if (!match || !Number.isSafeInteger(Number(match[1]))) return null;

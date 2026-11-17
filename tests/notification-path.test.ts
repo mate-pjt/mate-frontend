@@ -4,6 +4,8 @@ import { safeNotificationPath } from "@/lib/notification-path";
 describe("POL-04 v1 알림 경로", () => {
   it.each([
     ["/my/company", "/my/company"],
+    ["/my/team/change-requests/1", "/my/team/change-requests/1"],
+    ["/my/team/change-requests/9007199254740991", "/my/team/change-requests/9007199254740991"],
     ["/bids/1", "/bids/1"],
     ["/bids/9007199254740991", "/bids/9007199254740991"],
     ["/bids/10001?bidClsfcNo=2", "/bids/10001?bidClsfcNo=2"],
@@ -28,6 +30,10 @@ describe("POL-04 v1 알림 경로", () => {
     "/bids/1?bidClsfcNo=%C2%85", "/bids/1?bidClsfcNo=%E2%80%AE", "/bids/1?bidClsfcNo=\u0085", "/bids/1?bidClsfcNo=\u202e",
     "/bids/1?bidClsfcNo=..", `/bids/1?bidClsfcNo=${"a".repeat(51)}`,
     "/my/company?companyId=1", "/my/company/", "/my/company#x", "/my/company-merge/1", "/news/1", "/auth", "/api/v1/me/notifications",
+    "/my/team/change-requests", "/my/team/change-requests/0", "/my/team/change-requests/01", "/my/team/change-requests/-1",
+    "/my/team/change-requests/1e2", "/my/team/change-requests/9007199254740992", "/my/team/change-requests/%31",
+    "/my/team/change-requests/1/", "/my/team/change-requests/1?decision=ACCEPT", "/my/team/change-requests/1#accept",
+    "/my/team/change-requests/../1", "/my/team/change-requests/1%2fdecisions", "/my/team/change-requests/1\u0000",
   ])("위험·무효·미지원 입력 %j를 거절한다", (input) => {
     expect(safeNotificationPath(input)).toBeNull();
   });

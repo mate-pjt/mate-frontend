@@ -88,7 +88,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -173,4 +173,12 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 
 ## DEV-27 팀원 조회의 로컬 재현
 
-회사 공급원 mock에서 `connected`는 합성 팀원23명·목록20행/페이지·ADMIN/AGENT/VIEWER와 nullable 상세를 제공한다. `/my/team`의 메뉴와 `/my/team/<membershipId>?page=<목록 UI page>`를 사용한다. `team-agent`/`team-viewer`는 현재 사용자의 leaf, `team-extra`는 VIEWER+초대 leaf, `team-read-only`는 변경 capabilities 전체 false, `team-empty`/`team-denied`는 빈 목록/조회 거부다. 기존 계정별 company overview를 사용하므로 API auth의 회사 null로 mock 회사를 덮어쓰지 않는다. 새 그룹/schema/라이브러리나 관리 명령은 없으며 기존 데이터/초대·문서 상태는 보존한다. 로컬 검증·한계와 실제 QA 차단은 [TEAM 기록](../qa/team-members.md#dev-27-local-qa)을 따른다.
+회사 공급원 mock에서 `connected`는 합성 팀원23명·목록20행/페이지·ADMIN/AGENT/VIEWER와 nullable 상세를 제공한다. `/my/team`의 메뉴와 `/my/team/<membershipId>?page=<목록 UI page>`를 사용한다. `team-agent`/`team-viewer`는 현재 사용자의 leaf, `team-extra`는 VIEWER+초대 leaf, `team-read-only`는 변경 capabilities 전체 false, `team-empty`/`team-denied`는 빈 목록/조회 거부다. 기존 계정별 company overview를 사용하므로 API auth의 회사 null로 mock 회사를 덮어쓰지 않는다. DEV-27 당시 새 그룹/schema/라이브러리나 관리 명령은 없었으며 로컬 조회 검증·한계/실제 QA 차단은 [TEAM 기록](../qa/team-members.md#dev-27-local-qa)에 보존한다. 현재 관리 명령은 아래 DEV-28 범위다.
+
+## DEV-28 팀원 변경의 로컬 재현
+
+같은 company 공급원에서 상세의 직급/역할·leaf와 확인 팝업을 사용한다. 낮은 대상의 일반 변경은 직접, 동급·ADMIN 승격/대표자 지정은 대상 동의, 본인은 별도 축소/대표자 취임·소속 종료 경로다. 직급과 권한의 직접 저장은 각각 실행해 부분 성공을 한 번의 전체 저장으로 안내하지 않는다. 동의 요청은 `/my/team/change-requests`의 내/회사 목록과 exact 상세에서 명시 수락·거절/취소한다. 알림 읽음은 동의가 아니다.
+
+`MATE_DATA_PROFILE=mock`, `MATE_APP_ENV=local`, `MATE_MOCK_SCENARIOS`의 company에 `team-pending`을 지정하면 본인에게 온 직급 변경 제안이 보인다. `team-last-admin`은 마지막 관리자 거부와 ADMIN 유지 대표자 해제, `team-no-representative`는 본인 취임을 확인한다. 기존 `connected`/역할·읽기 전용 시나리오도 가변 팀원 상태를 계정·회사별로 복원한다. 이전 회사/문서·초대·신청 상태와 다른 계정은 유지하고 Mock 상태 초기화는 기존 개발 UI를 사용한다. 설정은 불변 빌드 snapshot이므로 dev 재시작/Preview 재빌드가 필요하다.
+
+로컬 자동 명령은 `pnpm test`, `pnpm lint`, 구성별 `pnpm build`, `pnpm build-storybook`, `git diff --check`다. [TEAM 검증/실제 차단](../qa/team-members.md#dev-28-local-qa)과 [검토](figma-v01/reviews/DEV-28.md)를 따른다. 실제 권한/소속 변경·초대/메일은 이 로컬 재현으로 승인되지 않으며 실제 자원·사용/변경/잔존/복구와 실행 대응을 먼저 확보한다.
