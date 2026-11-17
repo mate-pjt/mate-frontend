@@ -151,3 +151,12 @@
 - 다음 하나는 [DEV-29](DEV-29.md#dev-29-dev-28-selection)다. WBS에서 P0/P1 및 앞선 P2의 기존 외부/선행 차단을 보존하고 기본 표 순서상 첫 독립 후보(선행 DEV-27 완료)를 선정했다. DEV-30의 DEV-29 선행·다른 후보 순서를 바꾸지 않았다. 선정 이유/다음 첫 행동만 인계하고 자체 조사·설계·제품/QA/초대 발송을 시작하지 않았다.
 - Git 전달은 별도 진행: 승인된 목적별 commit/push·PR/실제 최종 head CI·리뷰/정상 merge/main FF가 다음 행동이다. PR/CI·main SHA 일치·clean은 실제 원격/종료 보고로 확인하며 Task 로컬 PASS를 Git 완료로 대신하지 않는다.
 - 종료 metadata freshness도 PASS: 독립 verifier가 Task/WBS·DEV-29 선정/인계와 역사적 첫 행동 보완을 확인했다. 문서12개/677링크·114Task/156의존/79원본/보호5/TEAM26 오류0·diff-check PASS, primary ai-review6섹션 재적용 PASS다. 이후 이 결과/PR 식별자 같은 사실 metadata만 추가하면 문서 검사·primary 리뷰로 확인하며, source/test·정책/검증 범위가 같아 앱 검증·독립 verifier 반복은 생략한다. 변경이 생기면 관련 검증/리뷰를 다시 수행한다.
+
+<a id="dev-28-git-delivery"></a>
+
+## 2026-11-17 · 목적별 커밋/PR 전달 체크포인트
+
+- `feat/dev-28-team-member-changes`에서 목적별6커밋: 데이터/API `a998a47`, 화면/명시 동의 `b8cab68`, 테스트 `8a70921`, 구조/데이터 가이드 `7957c57`, Task/QA/인계 `91d4d18`, 실패 기록 `338783b`. 모두 Conventional Commits의 영어 type/한국어 설명이며 unrelated 변경0이다. 최초 push head는 `338783b9e01e97f9418c038d071f89ed2d6edbb5`, 원격 branch와 같고 작업트리 clean이었다.
+- [PR #86](https://github.com/mate-pjt/mate-frontend/pull/86)을 root template에 맞춰 작성하고 `type: feature`/`type: test`/`type: docs` 라벨·합성 캡처/검증·실제9차단·이번 Chromatic 한도 예외를 연결했다. 생성 당시 base `944d14e171897cd30a2281cd8a49be32ad845557`, 최초 원격 CI 실행 중·리뷰/미해결 thread0이다. 생성 결과를 CI/병합 PASS로 세지 않는다.
+- 정상 merge commit 허용을 확인했다. 현재 main branch protection 조회는404(Branch not protected), 적용 rules는 빈 배열이다. 승인된 최종 head의 data-access tests/lint·API/mock/hybrid 기본 Turbopack과 Chromatic/기타 check·리뷰 상태, 최신 base/head를 다시 확인한다. quota 관련 check만 이번 명시 예외이며 check 강제 성공·force push/보호 우회·직접 main push는 하지 않는다.
+- 이 후속은 PR 식별자/전달 사실 metadata뿐이다. 문서 검사/diff-check·primary ai-review6섹션을 다시 적용하고 별도 docs commit으로 push한다. source/test·정책/검증 범위가 같아 앱 test/lint/build·독립 verifier 반복을 생략한다. **이 기록 이후 최종 head CI·정상 merge·로컬 main FF/SHA 일치·clean은 실제 PR 타임라인과 종료 보고의 별도 근거**로 확인한다. DEV-29 실행/실제 업무·메일·배포는 없다.

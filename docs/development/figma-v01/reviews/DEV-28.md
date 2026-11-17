@@ -55,3 +55,5 @@ architecture/data-access·plan·개발 가이드·Task/QA·WBS/리뷰·ai-failur
 그 뒤 Task/WBS 종료와 DEV-29 선정/인계만 추가했다. 이 metadata diff의 문서 검사·primary ai-review와 독립 freshness를 별도로 확인한다. 후속 리뷰 결과/PR 식별자는 사실 metadata로 기록하고, 코드/정책/검증 범위가 바뀌면 관련 검토를 다시 수행한다. Git 전달/최종 CI·main 반영은 실제 원격과 종료 보고의 별도 판정이다.
 
 2026-11-17 종료 freshness **PASS**: read-only verifier가 Task/WBS·DEV-29 인계와 전체 diff/numstat·diff-check를 직접 확인했다. WBS 중복 첫 행동1행은 DEV-28 착수 당시 역사 기록으로 구별한 뒤 재확인했고 미해결 Blocker/Major/Minor0이다. 최신 문서12개/링크677·114Task/156의존/79원본/보호5/TEAM26·오류0과 완료36/차단23/대기52/준비1/보류2·DEV-29만 준비를 확인했다. Primary ai-review도 위6섹션을 종료 diff에 재적용해 PASS: 요구/범위·승인·타 작업 보존·실제9차단·다음 미실행을 유지한다. 이 결과 기록만 후속 추가했으며 코드·정책·검증 범위가 같아 verifier 및 앱 test/lint/build는 반복하지 않는다. 문서 검사/diff-check는 다시 수행한다.
+
+PR #86 전달 metadata 재검토도 위6섹션 기준 PASS: 최초6커밋/338783b·라벨·CI 실행 중·현재 merge 방식/branch rules 조회와 최종 head 재확인 절차만 기록했다. 제품 변경/새 결정·실제 QA PASS/미래 CI 성공을 추가하지 않았다. Task/WBS의 PR 연결과 Markdown/diff를 재검사하며 독립 verifier/앱 검증 생략 근거는 바로 위와 같다. 최종 원격 결과/정상 merge·main 일치는 PR/종료 보고에서 따로 확인한다.
