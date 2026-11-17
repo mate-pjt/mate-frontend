@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-17",
+  "environment": "isolated Next 16.2.9 / Aside Chromium / local mock and HTTP double",
+  "cases": [
+    {
+      "case": "keyboard-details",
+      "pass": true
+    },
+    {
+      "case": "viewer",
+      "pass": true,
+      "invite": false
+    },
+    {
+      "case": "agent",
+      "pass": true,
+      "invite": false
+    },
+    {
+      "case": "extra",
+      "pass": true,
+      "invite": true
+    },
+    {
+      "case": "readonly",
+      "pass": true,
+      "invite": false
+    },
+    {
+      "case": "denied",
+      "pass": true
+    },
+    {
+      "case": "server-error",
+      "pass": true
+    },
+    {
+      "case": "revoked",
+      "pass": true
+    },
+    {
+      "case": "auth401",
+      "pass": true
+    },
+    {
+      "case": "empty",
+      "pass": true
+    },
+    {
+      "case": "no-company",
+      "pass": true
+    },
+    {
+      "case": "mock-page-detail-return",
+      "pass": true
+    },
+    {
+      "case": "mock-logout-hides-team",
+      "pass": true
+    },
+    {
+      "case": "changed",
+      "pass": true
+    },
+    {
+      "case": "removed",
+      "pass": true
+    },
+    {
+      "case": "nulls",
+      "pass": true
+    },
+    {
+      "case": "out-of-range-page",
+      "pass": true
+    },
+    {
+      "case": "invalid-target-url",
+      "pass": true
+    },
+    {
+      "case": "company-switch-resume",
+      "pass": true
+    },
+    {
+      "case": "background-conceals-detail",
+      "pass": null,
+      "result": "UNEXECUTED",
+      "attemptedPass": false,
+      "observedHiddenEvents": 0,
+      "reason": "Aside target API reactivates tabs; the requested genuine hidden transition was not generated."
+    },
+    {
+      "case": "session-expired",
+      "pass": true
+    }
+  ]
+}

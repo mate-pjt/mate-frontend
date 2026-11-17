@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-17",
+  "tool": "existing cached @playwright/cli, separate Chromium browser; offline package reuse, no dependency change",
+  "method": "native keyboard.down(Meta/Control) + link click + keyboard.up; snapshots/eval; no synthetic DOM event result used",
+  "cases": [
+    {
+      "case": "native-meta-list",
+      "originalPath": "/my/team",
+      "newTabPath": "/my/team/9101",
+      "table": 1,
+      "refreshEnabled": true,
+      "pass": true
+    },
+    {
+      "case": "native-meta-return",
+      "originalPath": "/my/team/9101",
+      "newTabPath": "/my/team",
+      "detailRegions": 1,
+      "refreshEnabled": true,
+      "pass": true
+    },
+    {
+      "case": "native-control-list",
+      "originalPath": "/my/team",
+      "table": 1,
+      "refreshEnabled": true,
+      "pass": true
+    },
+    {
+      "case": "normal-return",
+      "path": "/my/team",
+      "table": 1,
+      "refreshEnabled": true,
+      "pass": true
+    }
+  ],
+  "console": {
+    "errors": 0,
+    "warnings": [
+      "existing local font preload timing warning"
+    ]
+  }
+}
