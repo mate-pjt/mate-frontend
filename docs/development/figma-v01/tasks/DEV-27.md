@@ -169,3 +169,11 @@
 - 이번에는 DEV-28 전용 계약 재조사·Brief/설계·제품/실제 QA·Git 전달을 시작하지 않았다. 기존 상세의 변경 컨트롤은 준비 중으로 유지하며 실제 업무/API/메일·운영/배포0이다.
 
 - 종료/DEV-28 선정 metadata 뒤 read-only verifier와 primary 여섯 섹션 freshness도 PASS. source/test/SVG 불변·37파일/활성0/준비1·집계·범위/차단 경계 확인. 이후 리뷰 결과/실제 Git 식별자만 추가할 때는 사실/링크/diff 검사로 재확인하고 전면 코드 리뷰를 생략하는 근거를 기록한다.
+
+<a id="dev-27-git-delivery"></a>
+
+## 2026-11-17 · PR 전달 체크포인트
+
+- 목적별6개 커밋: 데이터 `d30a9c8`, UI `93e50f0`, 테스트 `028e8c7`, 구조/재현 문서 `4ba5e7d`, QA/종료·인계 `2442cd5`, 실패 예방 `03c3407`. branch push 완료, [PR #85](https://github.com/mate-pjt/mate-frontend/pull/85) 생성·type: feature/test/docs 라벨 적용. 최초 PR head `03c3407b170eb2ac7378c0cabc9874519f416b48`이며 아직 최종 CI/병합 PASS를 주장하지 않는다.
+- 이 PR번호/최초 head·라벨·현재 전달 단계를 담는 추가 문서 커밋 뒤 **실제 최종 head**의 checks/reviews·base 변화·정상 merge/main FF를 재확인한다. source/test/계약·화면/승인 범위는 이전 리뷰의 동일 지문이다. read-only 최종 verifier의 freshness 판단에 따라 이 사실 metadata는 primary가 원격 사실/링크·전체 task diff-check와 문서 검사를 다시 확인하고 전면 코드 리뷰는 재실행하지 않는다.
+- 이번 Chromatic 월간 한도 문제만 사용자 승인 예외다. 실제 최종 head의 한도 원인/미실행 검사와 나머지 CI 성공·미해결 리뷰0·정상 merge commit/로컬 main FF/SHA 일치/clean은 PR/최종 보고에서 확인한다. 검사 강제 성공/보호 우회/force push·직접 main push/다음 Task 실행은 없다.

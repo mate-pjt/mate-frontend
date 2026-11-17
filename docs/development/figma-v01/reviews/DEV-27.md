@@ -67,3 +67,7 @@ Developer follow-up:
 
 - 최종 read-only 재검토 PASS: Blocker0/Major0/Minor0. 당시37개 파일·UI blob2cbcaa34·source/test/SVG 불변, WBS 활성0/DEV-28 준비1·집계35/23/53/1/2와 원본/QA·예외 보존을 직접 확인했다. 문서만 바뀌었으므로 앱 검사/브라우저는 직전 PASS를 적용했다.
 - primary도 여섯 섹션(요구사항/문제/미실행/문서/확인/수정 방향)을 다시 확인했다. 이 결과 추가와 이후 실제 PR번호/head·CI/Git checkpoint는 사실 metadata이며, primary가 근거·링크/diff를 재확인하고 코드 리뷰 전면 재실행이 불필요한 이유를 기록한다. 코드/계약/검증 범위 변경 시에는 이 생략을 적용하지 않는다.
+
+### Git metadata 후속 범위
+
+[PR #85](https://github.com/mate-pjt/mate-frontend/pull/85)의 실제 번호/최초 head·라벨/최종 CI 대기 checkpoint만 추가했다. 원격 사실·링크/원본 보존·전체 diff-check/문서 검사와 여섯 리뷰 항목을 재확인했다. source/test/SVG·제품/검증/승인 범위 불변이며 독립 verifier의 마지막 freshness 근거에 따라 전체 코드 리뷰 재실행은 불필요하다. 최종 head의 원격 CI/병합/main 일치는 Git 전달 결과로 별도 판정한다.

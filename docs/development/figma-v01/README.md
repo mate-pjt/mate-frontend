@@ -7,6 +7,7 @@
 | 갱신일 | 2026-11-17 KST |
 | 현재 작업 | 없음 — [DEV-27 로컬 범위](tasks/DEV-27.md#dev-27-close) 검증/수정 후 두 리뷰 PASS. 실제 API 조회 차단·추가 hidden 미실행 유지. Git 전달은 최종 PR/head CI·정상 병합/main FF에서 별도 확인 |
 | 다음 작업 | [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md#dev-28-dev-27-selection) — DEV-27 선행 충족·P2 기본 순서 첫 후보. 선정/인계만, 자체 Gate·제품/실제 QA 미착수 |
+| DEV-27 Git 전달 | [PR #85](https://github.com/mate-pjt/mate-frontend/pull/85), 목적별6커밋 최초 head03c3407·라벨 feature/test/docs. Git checkpoint 문서 반영 뒤 최종 head CI/리뷰·정상 merge/main FF에서 별도 확인하며 실제 QA 차단 유지. [기록](tasks/DEV-27.md#dev-27-git-delivery) |
 | DEV-27 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 답변 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무/API·메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-27.md#dev-27-brief) |
 | POL-14 MAT-290 후속 승인 | 2026-11-17 사용자: POL-14/DEV-27/WBS 연결·미제공/재확인 조건·문서 검증/리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 main FF. DEV-27 구현/실제 업무 제외. [Brief/기존 동일 Task Chromatic 한도 예외 경계](tasks/POL-14.md#pol-14-mat-290-handoff) |
 | POL-14 외부 요청 | [MAT-290](https://linear.app/mate-pjt/issue/MAT-290/backend-팀원-목록상세-응답에-생년월일휴대전화번호-추가) — 11/17 조회 Backlog. 팀원 목록/상세의 birthDate/mobilePhone 추가·nullable/형식/권한·실제 반영 확인 요청. 반영 전 D2 미제공 유지, 계약/실제 응답 확인 뒤 DEV-27 자체 Gate에서 표시 연결 판단. **DEV-27 전체의 신규 선행/차단 아님**. [재확인 조건](tasks/POL-14.md#pol-14-mat-290-handoff) |
