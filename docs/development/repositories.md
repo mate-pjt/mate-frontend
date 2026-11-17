@@ -88,7 +88,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-invitation-mail-failed |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -182,3 +182,11 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 `MATE_DATA_PROFILE=mock`, `MATE_APP_ENV=local`, `MATE_MOCK_SCENARIOS`의 company에 `team-pending`을 지정하면 본인에게 온 직급 변경 제안이 보인다. `team-last-admin`은 마지막 관리자 거부와 ADMIN 유지 대표자 해제, `team-no-representative`는 본인 취임을 확인한다. 기존 `connected`/역할·읽기 전용 시나리오도 가변 팀원 상태를 계정·회사별로 복원한다. 이전 회사/문서·초대·신청 상태와 다른 계정은 유지하고 Mock 상태 초기화는 기존 개발 UI를 사용한다. 설정은 불변 빌드 snapshot이므로 dev 재시작/Preview 재빌드가 필요하다.
 
 로컬 자동 명령은 `pnpm test`, `pnpm lint`, 구성별 `pnpm build`, `pnpm build-storybook`, `git diff --check`다. [TEAM 검증/실제 차단](../qa/team-members.md#dev-28-local-qa)과 [검토](figma-v01/reviews/DEV-28.md)를 따른다. 실제 권한/소속 변경·초대/메일은 이 로컬 재현으로 승인되지 않으며 실제 자원·사용/변경/잔존/복구와 실행 대응을 먼저 확보한다.
+
+## DEV-29 보낸 초대의 로컬 재현
+
+`MATE_APP_ENV=local MATE_DATA_PROFILE=mock MATE_MOCK_SCENARIOS='{"company":"connected"}' pnpm dev`로 실행하고 가상 계정 로그인 뒤 `/my/team`의 새 팀원 초대하기를 사용한다. 이름과 `example.test` 합성 이메일·기존 일반 직급 또는 새 직급명·역할/추가 권한을 명시 입력한다. 새 직급 제안은 정의 CRUD가 아니며 수락 시 계약을 따른다. 생성/보낸 목록·상세·만료/delivery는 ACTIVE 팀원 표와 별개다. 같은 탭 새로고침은 초대를 복원하고 가상 계정2에는 계정1 초대를 표시하지 않는다.
+
+`team-extra`는 invite leaf만 추가한 VIEWER(기존 직급/기본 VIEWER 허용·새 직급/초과 grant 금지), `team-viewer`/`team-agent`/`team-read-only`는 초대 거부, `team-no-representative`는 대표자 공석이다. `team-invitation-mail-failed`는 생성 성공과 합성 메일 전송 실패를 구분한다. `active-member@example.test`, `pending-member@example.test`, `ambiguous-member@example.test`, `registered-member@example.test`는 각각 활성 소속 CM004·같은 회사 신청 CI010·모호한 신원 CI011·기등록 이름 보존을 재현하는 **공개 합성 별칭**이다. 실제 이메일이나 업무 계정은 사용하지 않는다.
+
+초대 생성과 기존 팀원 관리 명령은 같은 store/account queue를 공유한다. 유실/손상 응답 뒤 닫고 상태 확인은 GET이며 새 초대는 다시 명시 작성한다. 재발송/취소/PATCH·수락 완료 목적지는 이 기능에서 제공하지 않는다. 생성된 초대의 실제 메일/수신 수락은 [DEV-29 실제 QA 차단](../qa/team-members.md#dev-29-local-qa)이며 기존 `/auth/company/invitations` 합성 fixture를 실제 발송의 증거로 사용하지 않는다.

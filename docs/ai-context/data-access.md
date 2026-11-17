@@ -170,6 +170,16 @@ src/data/
 - `team-pending`(본인 동의 요청), `team-last-admin`(유일 관리자), `team-no-representative`(본인 취임 가능)를 기존 company 시나리오에 추가했다. 알림 allowlist는 사용자 D2의 정확한 `/my/team/change-requests/{양수 안전정수}`만 추가하며 query/encoded/범위 밖은 거부한다. 알림 읽음/이동은 요청 조회일 뿐 결정 POST가 아니다.
 - [DEV-28 로컬 QA](../qa/team-members.md#dev-28-local-qa)는 mock·HTTP fetch 대역·loopback 실제 Next/브라우저다. TEAM-05~10/23/25/26의 이번 소유9부분은 실제 API0통과·자원/실행 대응·사용/변경/잔존/복구 미확보로 차단이다. DEV-27·다른 Task의 기존 QA/예외를 확대하지 않는다.
 
+### 보내는 팀원 초대 · DEV-29
+
+- 공개 `CompanyTeamInvitationRepository`의 `createTeamInvitation`·`listTeamInvitations`·`getTeamInvitation`만 기존 company factory/client에 합성한다. 수신 초대 포트·신청/직급 CRUD·초대 수정/PATCH·재발송/취소는 변경하지 않는다. 새 공급원/library·fallback·추측한 멱등 header는 없다.
+- 입력은 email254/표시 이름100·대표자 여부·기존 일반 직급 ID XOR 새 직급명30·preset/추가15leaf·선택 message500다. trim/이메일 소문자화·ISO 제어문자/대표자 예약명·중복 leaf를 검사하고 명시 필드만 POST한다. 대표자는 ADMIN/서버 공석 capability·일반 직급/preset/추가 없음, 새 직급 제안은 PROFILE_EDIT, VIEWER 초과 부여는 MANAGE+actor 부분집합을 따른다. 등록된 계정 이름은 서버 결과를 보존한다.
+- private mapper가 exact company/초대 ID, page/count/createdAt DESC·ID DESC(나노초 포함), nullable·실제 시각/version·상태/delivery를 확인한다. source 목록은 **DB PENDING만** 세며 아직 DB에 남은 만료 행이 EXPIRED로 표시될 수 있다. ACTIVE 팀원 수나 전체 terminal 이력 수로 바꾸지 않는다. token/링크·cookie/메일 원문·불필요한 회사/계정 ID 메타데이터는 내부 모델에 복사하지 않는다.
+- 조회 전후 같은 회사·현재 소속/leaf와 catalog를 확인하고, 제출 직전에 선택 직급 정의/version·서버 capabilities·현재 grant를 다시 검사한다. 단일 scope는 중복/계정·epoch/Abort·화면 종료를 방어하고 한 번 보낸 뒤 자동 재생성하지 않는다. 유실/손상2xx/409는 명시 GET/새 작성부터 확인한다. 검증된 생성 성공·초대 수락 대기·메일 PENDING/SENDING/SENT/FAILED/SUPERSEDED·실제 수신/수락은 별개다. 후속 GET 실패/최종401은 확인된 성공을 잃거나 재발송하는 사유가 아니다.
+- mock의 `company-team-invitations` version1은 기존 schema/공급원/계정 namespace 안에 합성 입력/필요 결과만 저장한다. 손상/추가 비공개 필드가 있으면 이 영역만 초기화하며 기존 company/관리/서류·수신 초대/다른 계정은 보존한다. `team-mock-command.ts`는 기존 관리 명령과 초대 생성을 같은 store/account queue로 묶어 상태 검사부터 쓰기까지 직렬화한다. 실패 뒤 release·외부 대표자 취임의 양방향 순서를 회귀로 검증한다. 표시용 빈 목록을 대표자 공석으로 추정하지 않는다.
+- `team-invitation-mail-failed`는 초대를 만들되 합성 delivery만 FAILED로 반환한다. 실제 메일/원문·발송 링크는 생성하지 않는다. 수신 포트의 기존 합성 fixture 회귀는 발송된 초대의 실제 수신/수락 연결 증거가 아니다.
+- [DEV-29 QA](../qa/team-members.md#dev-29-local-qa)는 Node·mock 브라우저·API profile/loopback HTTP 대역과 실제7소유 부분 차단을 구분한다. TCP 유실 실험의 앱 fetch1회/HTTP wire2회(재전송은409) 관찰은 전송 계층과 앱의 자동 명령을 구분하는 한계이며, 실제 서버의 멱등 보장/메일 도착 PASS가 아니다.
+
 ## 8. 유지하는 제품/API 정책
 
 - 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다. 당시 미연결이던 금액 직접 범위의 후속 연결은 아래 DEV-11 기록을 따른다.

@@ -1,0 +1,192 @@
+{
+  "date": "2026-11-17 KST",
+  "task": "DEV-29",
+  "base": "473c9e1edc57cee22f0889ddcfd2154268901756",
+  "codeSnapshotSha256": "d9d6678722c00c19190e118ec29aa4da27cba0e642a6c0c7ea62e70cf3062df7",
+  "codeFiles": [
+    "src/components/my/my-team-client.tsx",
+    "src/components/my/team-invitation-dialog.tsx",
+    "src/components/my/team-invitations-panel.tsx",
+    "src/data/company/client.ts",
+    "src/data/company/contracts.ts",
+    "src/data/company/http-repository.ts",
+    "src/data/company/mock-repository.ts",
+    "src/data/company/team-invitation-api.ts",
+    "src/data/company/team-invitation-contracts.ts",
+    "src/data/company/team-invitation-input.ts",
+    "src/data/company/team-invitation-mock.ts",
+    "src/data/company/team-management-mock.ts",
+    "src/data/company/team-mock-command.ts",
+    "src/data/config.ts",
+    "src/features/company/team-invitations.ts",
+    "tests/company-team-invitation-fixtures.ts",
+    "tests/company-team-invitations-lifecycle.test.ts",
+    "tests/company-team-invitations.test.ts"
+  ],
+  "node": "22.20.0",
+  "pnpm": "11.3.0",
+  "automated": {
+    "testFiles": 32,
+    "testsPassed": 939,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "verifiedCommands": [
+      {
+        "command": "pnpm test",
+        "result": "PASS: 32 files / 939 tests"
+      },
+      {
+        "command": "pnpm lint",
+        "result": "PASS: 0 errors / 0 warnings"
+      },
+      {
+        "command": "MATE_APP_ENV=preview MATE_DATA_PROFILE=api pnpm build",
+        "result": "PASS"
+      },
+      {
+        "command": "MATE_APP_ENV=preview MATE_DATA_PROFILE=mock pnpm build",
+        "result": "PASS"
+      },
+      {
+        "command": "MATE_APP_ENV=preview MATE_DATA_PROFILE=hybrid MATE_DATA_OVERRIDES=<company/notifications/notificationSettings:mock> pnpm build",
+        "result": "PASS"
+      },
+      {
+        "command": "MATE_APP_ENV=preview MATE_DATA_PROFILE=mock pnpm build-storybook",
+        "result": "PASS: existing large-chunk warning only"
+      },
+      {
+        "command": "python3 /tmp/mate-dev-29/check-docs.py",
+        "result": "PASS: links / IDs79 / tasks114 / dependencies156 / baseline unchanged / one active task"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS"
+      }
+    ]
+  },
+  "browser": {
+    "tool": "Aside REPL",
+    "chrome": "156.0.0.0",
+    "dpr": 2,
+    "desktop": [
+      1440,
+      1080
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "desktopDialog": [
+      640,
+      908
+    ],
+    "selectHeight": 48,
+    "mobileDialogWidth": 358,
+    "mobileHorizontalOverflow": false,
+    "nativeFocusStayedInside": true,
+    "fullMockExternalResources": 0,
+    "fullMockApiResources": 0,
+    "account1Invitations": 2,
+    "account2Invitations": 0
+  },
+  "httpDouble": {
+    "appOrigin": "http://127.0.0.1:3110",
+    "apiOrigin": "http://127.0.0.1:3111",
+    "isLiveApi": false,
+    "lossApplicationFetchCallsPerExperiment": 1,
+    "lossWirePostsPerExperiment": 2,
+    "lossWireStatuses": [
+      "lost",
+      409
+    ],
+    "postMetadataInExecutionOrder": [
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 200,
+        "sent": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": "lost",
+        "sent": 2
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 409,
+        "sent": 2
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": "lost",
+        "sent": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 409,
+        "sent": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 200,
+        "sent": 4
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 200,
+        "sent": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 403,
+        "sent": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 200,
+        "sent": 2
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/companies/7001/membership-invitations",
+        "status": 403,
+        "sent": 2
+      }
+    ],
+    "postCounterCanReset": "HTTP double was restarted between scenario groups; sent is per process, not a global count"
+  },
+  "realApi": {
+    "passed": 0,
+    "blockedOwnedParts": [
+      "TEAM-11",
+      "TEAM-12 (POST/GET only)",
+      "TEAM-13",
+      "TEAM-16 (creation/delivery only)",
+      "TEAM-17",
+      "TEAM-23 (creation/read only)",
+      "TEAM-26 (invitation only)"
+    ],
+    "reason": "Synthetic live resources, running SHA correspondence and use/residue/recovery scope unavailable; user D1 authorizes local-first only"
+  },
+  "cleanup": {
+    "ownedBrowserTabsClosed": true,
+    "ownedDevAndDoubleProcessesStopped": true
+  },
+  "observationsPreserved": [
+    "Initial lint prefer-const failure; fixed",
+    "Input clear button changed textbox accessible name; unique ID/label fixed",
+    "Initial independent verifier Major1/Minor2; shared serializer/source enum/empty-list guard fixed",
+    "TCP loss produced one application fetch and two wire posts; second rejected 409",
+    "Aside session-root/ref/focus and initial HMR geometry observations are tool/execution limitations, not silently erased"
+  ],
+  "codeSnapshotAlgorithm": "Sort codeFiles lexicographically. For each path, append UTF-8(path + U+0000 + lowercase SHA256(file bytes) + U+000A) to an outer SHA256 digest."
+}
