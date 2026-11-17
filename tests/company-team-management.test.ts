@@ -108,6 +108,19 @@ describe("팀원 관리 HTTP wire", () => {
 });
 
 describe("가변 팀원 mock·불변식", () => {
+  it.each([{ extras: [] }, { extras: ["COMPANY_MEMBER_REMOVE"] }, { extras: ["COMPANY_MEMBER_PERMISSION_MANAGE"] }, { extras: ["COMPANY_MEMBER_REMOVE", "COMPANY_MEMBER_PERMISSION_MANAGE"] }])("직급 편집 없이 추가 행동 leaf $extras의 capability와 명령이 일치한다", async ({ extras }) => {
+    const repo = mock(), agent = teamCatalogFixture().presets.find(p => p.role === "AGENT")!.permissionCodes;
+    await repo.demoteMyTeamMembership(access, 9101, { expectedVersion: 1, positionId: 2, permissionCodes: [...agent, ...extras] });
+    const lower = await repo.getCompanyTeamMember(access, 7001, 9103), peer = await repo.getCompanyTeamMember(access, 7001, 9102);
+    const canRemove = extras.includes("COMPANY_MEMBER_REMOVE"), canManage = extras.includes("COMPANY_MEMBER_PERMISSION_MANAGE");
+    expect(lower.capabilities).toMatchObject({ canRemove, canChangePermissions: canManage, canChangePosition: false });
+    expect(peer.capabilities).toMatchObject({ canRequestPermissionChange: canManage, canRequestRemoval: canRemove, canRequestPositionChange: false });
+    expect((await repo.getCompanyTeamMember(access, 7001, 9104)).capabilities).toMatchObject({ canRemove: false, canRequestRemoval: false, canRequestPermissionChange: false });
+    const removal = repo.removeCompanyTeamMember(access, 9103, lower.version);
+    if (canRemove) expect((await removal).status).toBe("REMOVED"); else await expect(removal).rejects.toMatchObject({ status: 403 });
+    const request = repo.createTeamChangeRequest(access, 9102, { requestKey: key, expectedMembershipVersion: peer.version, kind: "PERMISSIONS", permissionCodes: viewerPermissions });
+    if (canManage) expect((await request).outcome).toBe("CREATED"); else await expect(request).rejects.toMatchObject({ status: 403 });
+  });
   it("병렬 명령은 같은 version을 한 번만 소비하고 앞선 성공을 잃지 않는다", async () => {
     const runtime = mockRuntime(memoryStorage(), { company: "connected" }), a = createMockCompanyRepository(runtime), b = createMockCompanyRepository(runtime);
     const results = await Promise.allSettled([
