@@ -363,3 +363,56 @@
 - [추가 브라우저 원시 관찰](assets/dev-28/dev28-extra-browser-results.json)은23 PASS와 초기 FAIL관찰2를 원문 결과대로 보존한다. 같은 mine/company·필터/필터재선택/root breadcrumb·의미상 같은 `scope=mine&page=1`/모바일, 다른 scope/필터·2page빈경계→1page·팀원 화면 이동을 확인했다. actual Next mock에서 PROFILE_EDIT 없는 AGENT+REMOVE+PERMISSION_MANAGE의 본인 축소→VIEWER 내보내기 확인/REMOVED→AGENT 권한 동의 확인/CREATED·현재 역할 유지를 UI로 확인했다. 외부 origin0이다.
 - 초기 FAIL2를 제품 성공으로 덮지 않는다. 첫 call경계 뒤 페이지복귀 클릭은 old URL/loading으로 관찰돼 원인을 제품으로 확정하지 않았다. source변경 없이 fresh 클릭1회·동일 tool수명 반복2회에서 경로/목록 복귀가 모두 성공했다. 다른 초기 관찰은 focus 재조회 중 editor disabled를 읽은 것이며 같은 호출에서 click의 actionability 대기 뒤 활성 버튼/확인 popup·REMOVED가 관찰됐다. 별도 notes의 cross-call/전환중 관찰과 준비된 실제 명령 결과를 분리한다. 옵션 RefStale1도 새 snapshot/같은 수명 액션으로 재시도했고 full tree/diff를 보존했다. 실제 native hidden 전수/모든 Figma pixel·실제 API PASS를 뜻하지 않는다.
 - 추가 회차는 HTTP 연결 코드 변경0이다. fetch 대역 계약은 전체842 tests에서 재실행했고 API profile을 다시 빌드했다. 실제 Next loopback HTTP의 앞선30관찰 원본은 보존하며 그 전체를 추가 회차에서 반복했다고 주장하지 않는다. 실제 API0/9소유 부분 차단과 DEV-29 미실행은 유지한다. 최종 문서/두 리뷰 freshness·새 PR head CI는 별도 Gate다.
+
+<a id="dev-29-local-qa"></a>
+
+## 2026-11-17 · DEV-29 보낸 초대의 로컬 검증과 실제 QA 차단
+
+- 승인/범위: [이번 사용자 D1·Brief](../development/figma-v01/tasks/DEV-29.md#dev-29-brief)의 **실제 HTTP 연결을 포함한 로컬 선행·실제 발송/수신/수락 QA 차단 보존**이다. 초대 생성/목록/상세만 실행하며 재발송/취소/PATCH·수락 목적지·신청/직급 CRUD는 후속 소유다. 기존 POL-14/DEV-27/28·QA-08 AUTH-16 실제0통과1차단/초대 AUTH-17 미실행·회사/다른 Task 예외를 확대하지 않는다.
+- 환경: 시작 main473c9e1 + DEV-29 최종 미커밋 source, Node22.20.0·pnpm11.3.0. Aside REPL/Chrome156.0.0.0·DPR2, desktop1440×1080/mobile390×844. Next mock `127.0.0.1:3109`(connected와 최종 team-no-representative), API profile의 실제 Next `127.0.0.1:3110` + loopback 합성 HTTP `127.0.0.1:3111`을 순차 실행했다. 실제 backend/업무 API에 요청하지 않았다.
+- 날짜/원문 근거: 11/17 backend dev/중앙 main은 [Task 조사](../development/figma-v01/tasks/DEV-29.md#dev-29-brief)의 고정 SHA·개발 게시 OpenAPI와 대조했다. source·배포/게시 계약·실행 SHA·실제 응답은 별개이며 공통 wrapper `success`/`isSuccess` 차이를 실제 wire PASS로 바꾸지 않는다.
+- 고정 로컬 증거: [source 지문·검증/HTTP 계측](evidence/dev-29-verification.json), [데스크톱 입력](screenshots/dev-29/form-desktop.png), [모바일 입력](screenshots/dev-29/form-mobile.png), [상세](screenshots/dev-29/detail-desktop.png), [대표자](screenshots/dev-29/form-representative.png), [성공 뒤 조회 실패](screenshots/dev-29/http-success-read-error.png), [성공 뒤 세션 만료](screenshots/dev-29/http-success-session-expired.png). 모든 화면/계정·입력은 합성이다. 서버 로그·증거에 token/cookie/메일 원문·비밀 링크/실제 환경값을 남기지 않는다.
+
+### 로컬 사례와 확인 수준
+
+| ID | 종류/범위 | 실행 결과·한계 |
+| --- | --- | --- |
+| L29-01 | Node 계약·수명/전체 회귀 | 최종 `pnpm test`32 files/939 tests PASS(기존842 + 신규97). 입력 길이/ISO 제어문자/email·직급 XOR·대표자 payload·preset/extra·actor 부분집합·401/403/404/409/5xx·손상2xx·계정/epoch/Abort·현재 회사/소속/leaf/catalog/직급 재검사 포함 |
+| L29-02 | mock 계약/저장 | 같은 store/account 중복1건·다른 이메일 병렬 성공·21건 page/count/DESC/ID·새로고침 복원·다른 계정/회사 거부·손상 영역만 초기화·반환 참조 격리 PASS. API auth+company mock에서 실제 token/refresh 추가 호출0 |
+| L29-03 | 독립 경쟁 재현/최종 회귀 | 초기 verifier Major: 공석 읽기 뒤 외부 대표자 취임이 초대에 끼어듦. 공유 serializer 후 외부 배리어/반대 명령 순서·실패 queue release와 빈 목록 보수 처리·CM004/CI009/CI008 source enum 회귀 PASS. 실제 backend 동시성 QA가 아님 |
+| L29-04 | 실제 Next mock 입력 | 빈값/잘못된 이메일은 제출 불가·설명 표시. clear 버튼 때문에 textbox 이름이 변하던 초기 실패를 고유ID/별도 label로 수정해 입력 전후 이름 유지 PASS |
+| L29-05 | 실제 Next mock 생성/중복 | 일반 초대 생성 뒤 보낸 목록1건/PENDING·delivery PENDING과 root 성공/Toast. 같은 이메일 거부 후 명시 GET에서도1건, 자동 새 생성 없음 PASS |
+| L29-06 | 실제 Next mock 직급/grant | 새 일반 직급명·AGENT·직원 초대 extra를 명시 선택/생성해 반환 직급·역할/권한을 목록/상세로 표시 PASS. 정의 CRUD를 수행한 것이 아님 |
+| L29-07 | 실제 Next mock 대표자 | 최종 team-no-representative의 ADMIN에서 대표자 선택 시 일반 직급/preset/extra 입력 제외·생성 뒤 대표자/ADMIN/PENDING 표시 PASS. 대표자 있는 connected에서는 버튼 disabled 확인 |
+| L29-08 | 실제 Next mock 상세 | 생성된 exact 초대의 read-only 상세·등록명/직급/권한/status/delivery·실제 expiresAt/createdAt/updatedAt·처리일·메시지 표시 PASS. 화면/모델에 비밀 링크를 제공하지 않음 |
+| L29-09 | 실제 브라우저 키보드/복귀 | native dialog의 Shift+Tab 포커스 내부 유지·Escape/닫기 뒤 최신 목록/heading focus PASS. hidden/계정 변경의 늦은 명령 결과 폐기는 Node controller로 검증했고 모든 실제 브라우저 경합을 전수 실행했다고 주장하지 않음 |
+| L29-10 | 시각/모바일 | 최종 popup desktop640×908·Select48px, mobile358px·가로 overflow0 PASS. 지정 frame/popup의 폭/입력 순서/표면·기존 asset/토큰을 대조함. Figma 전체 child/prototype·반응형/pixel 전수 PASS나 전체 화면 예외 승인이 아님 |
+| L29-11 | 실제 Next mock 복원/계정 | 하드 리로드 뒤 보낸 초대2건 복원, 로그아웃 뒤 보호 자료 숨김·가상 계정2의 초대0건 PASS. ACTIVE 팀원23과 보낸 초대 count를 합치지 않음 |
+| L29-12 | mock 브라우저 네트워크 | 관측 Resource Timing에서 외부 HTTP(S) resource0·API resource0 PASS. 실제 메일/OAuth/업무 변경0. 서버의 모든 가능한 외부 연결 전수 계측을 주장하지 않음 |
+| L29-13 | 실제 Next + 합성 HTTP | 실제 company HTTP Repository의 보호 POST/GET·현재 context/권한·응답 mapper를 경유해 생성/status/delivery FAILED와 별도 성공 banner 표시 PASS. source의 mail adapter/실제 메일 도착 증거가 아님 |
+| L29-14 | loopback TCP 유실 | 두 실험에서 앱의 fetch1회·wire POST2회(lost→동일 이메일409), 저장된 초대는 각1건. UI는 미확정/충돌·명시 GET만 안내했고 GET으로 확인 PASS. 추가 wire는 전송 계층 재시도로 추정하며 앱 guard만으로 wire1회를 보장하지 않는다 |
+| L29-15 | loopback 손상2xx | 서버 대역은 저장 후 delivery를 손상해 응답. 완료/Toast 없이 미확정·제출 잠금, 닫고 GET에서 저장된1건 확인 PASS. 앱 자동 POST 추가0 |
+| L29-16 | loopback 성공 뒤503 | 검증된 생성 성공 banner를 보존하면서 최신 목록 오류/명시 재조회 표시 PASS. [화면](screenshots/dev-29/http-success-read-error.png). 성공을 조회 실패로 취소하거나 자동 재발송하지 않음 |
+| L29-17 | loopback 성공 뒤401 | 생성200 뒤 context refresh401에서 성공 banner 보존·보호 자료 숨김·로그인 복귀 표시 PASS. [화면](screenshots/dev-29/http-success-session-expired.png) |
+| L29-18 | loopback403/행동별 leaf | 생성403에서 dialog/목록/팀원 표가 사라지고 권한 안내 표시 PASS. invite leaf VIEWER는 기존 직급만·AGENT/ADMIN/대표자 disabled·새 직급 선택지 없음, canInvite=false는 role이 ADMIN이어도 초대 진입 disabled PASS |
+| L29-19 | 기존 수신 mock 회귀 | 기존 preview/resume/acceptance·한 번 소비의 Node 회귀 PASS. **발송된 초대의 실제 메일/수신/수락 연결 PASS가 아니며** 그 통합은 아래 차단이다 |
+
+### 원래 TEAM 사례의 DEV-29 실제 통합 부분
+
+| 원본 case | 이번 소유 부분 | 실제 결과·재개 조건 |
+| --- | --- | --- |
+| TEAM-11 | 일반/대표자 생성·입력/grant | **차단/미실행**. 승인된 합성 actor/수신 회사·계정/메일함/현재 leaf·직급, 실행 SHA 대응·사용/잔존/복구 확보 필요 |
+| TEAM-12 | 생성/조회 권한·서버 거부 | **차단/미실행**. POST/GET만 이번 소유. PATCH·다른 관리 행동은 미실행/후속 소유 보존 |
+| TEAM-13 | 중복/활성 소속/신청/모호한 이메일·목록/상세 | **차단/미실행**. 실제 신원/경쟁 fixture·보호 자료 열람/복구 범위 미확보 |
+| TEAM-16 | 생성·초대 status/delivery/메일 도착 | **차단/미실행**. 실제 수신 자원/메일 관측·발송/소비/잔존·담당 역할 미확보. 재발송은 DEV-30 소유 |
+| TEAM-17 | 발송 초대의 수신·소비·계정 일치 | **차단/미실행**. 실제 token/링크를 기록하지 않는 관측·계정/소속 변경 승인·복구 필요. 기존 AUTH-16/17 대체 아님 |
+| TEAM-23 | 생성·조회 오류/경쟁 | **차단/미실행**. 초대 수정/재발송·취소 version은 후속이며 실제 유실/경쟁 자원 미확보 |
+| TEAM-26 | 초대의 개인정보/비밀 자료 최소화 | **차단/미실행**. 실제 응답·메일·환경/CORS 관측의 승인 범위/담당 역할 미확보. 로컬 모델/로그 검사를 실제 비노출 PASS로 올리지 않음 |
+
+이번 DEV-29 실제 소유 부분은 **0통과·7차단**이다. 원래 TEAM-01~26 계획/ID·다른 소유 부분의 대기/차단·기존 QA/정책 예외를 보존한다. 운영 배포·중앙/backend 수정·실제 초대/메일·외부 메시지는 실행하지 않았다.
+
+### 자동 검증·한계·정리
+
+- 최종 명령은 Node22.20.0의 `pnpm test`·`pnpm lint`·API/mock/hybrid `pnpm build`·`pnpm build-storybook` 및 문서 링크/79개 원본/114Task/156의존/상태·baseline/범위/Markdown·`git diff --check`다. 실제 최종 결과는 [Task](../development/figma-v01/tasks/DEV-29.md#dev-29-verification)·[리뷰](../development/figma-v01/reviews/DEV-29.md)에서 함께 확인한다. 앱 검사를 문서 전용 검사로 면제하지 않았다.
+- 초기 lint1건·label/a11y 실패·독립 Major1/Minor2와 수정3/3을 보존한다. Aside 첫 로그인 링크 클릭의 전환 미관찰은 관측한 href로 이동해 이어갔고 성공으로 소급하지 않는다. session 밖 저장 경로 거절·focus 재조회/무효 ref·HMR 전640×972/Select36 관찰은 fresh 리로드 뒤 최종640×908/Select48과 구분한다. HTTP 대역의 최초 후속 실패 모드는 이미 있던 데이터 때문에 제출 전 GET부터 실패했으며 대역을 재시작/threshold로 분리한 최종 시나리오 결과만 해당 성공 후 사례의 근거로 쓴다.
+- loopback 대역/Next와 브라우저 탭은 이번 소유 자원만 종료했다. 실제 외부 데이터 변경0·메일0이고, 합성 상태는 탭/sessionStorage·임시 대역 메모리에만 있었다. 실제 업무 데이터 복구나 실제 초대 회수 완료를 주장하지 않는다.

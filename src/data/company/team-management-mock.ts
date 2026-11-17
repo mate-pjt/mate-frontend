@@ -7,6 +7,7 @@ import { mapTeamChangeRequest, mapTeamMutation, mapTeamPosition, teamChangeStatu
 import { classifyTeamChange, sameTeamPermissions, teamRequiredPermissions, teamRoleFromPermissions } from "./team-permissions";
 import type { CompanyTeamMember, CompanyTeamRepository } from "./team-contracts";
 import type { CompanyTeamManagementRepository, TeamChangeCreated, TeamChangeKind, TeamChangeProposal, TeamChangeRequest, TeamMutation, TeamPosition } from "./team-management-contracts";
+import { serializeTeamMockCommand } from "./team-mock-command";
 
 type Member = { value: CompanyTeamMember; status: TeamMutation["status"]; endedAt: string | null; updatedAt: string };
 type Request = { value: TeamChangeRequest; issuerMembershipId: number };
@@ -18,21 +19,10 @@ function forbidden(): never { throw new ApiError(403, "CM005", "현재 소속과
 function conflict(code = "CM010", message = "상태가 변경됐어요. 최신 정보를 다시 조회해 주세요."): never { throw new ApiError(409, code, message); }
 function missing(): never { throw new ApiError(404, "CMC001", "요청이나 대상 소속을 찾지 못했어요."); }
 const validId = (id: number) => validateTeamMemberId(id);
-const commandQueues = new WeakMap<MockRuntime["store"], Map<string, Promise<void>>>();
 
 export function createMockTeamManagement(runtime: MockRuntime, companyFor: (account: string) => number | null, onLeave: (account: string) => void): CompanyTeamRepository & CompanyTeamManagementRepository {
-  let queues = commandQueues.get(runtime.store);
-  if (!queues) { queues = new Map(); commandQueues.set(runtime.store, queues); }
   async function serialize<T>(access: AuthAccess, operation: () => Promise<T>): Promise<T> {
-    const account = access.getAccountKey();
-    if (!account) throw new ApiError(401, "SESSION_INVALID", "로그인이 필요해요.");
-    const previous = queues!.get(account) ?? Promise.resolve(); let release!: () => void;
-    const tail = new Promise<void>(resolve => { release = resolve; }); queues!.set(account, tail);
-    await previous;
-    try {
-      if (account !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐어요.");
-      return await operation();
-    } finally { release(); if (queues!.get(account) === tail) queues!.delete(account); }
+    return serializeTeamMockCommand(runtime, access, operation);
   }
   const scenario = () => runtime.scenario("company");
   const now = () => new Date(runtime.now()).toISOString();

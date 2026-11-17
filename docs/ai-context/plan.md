@@ -290,3 +290,7 @@ Final reports should include:
 ## 2026-11-17 · DEV-28 팀원 관리와 명시 동의
 
 [이번 사용자 D1/D2·Brief](../development/figma-v01/tasks/DEV-28.md#dev-28-brief)는 실제 HTTP 연결을 포함한 로컬 선행·실제 API QA 차단 보존과 정확한 동의 route/내·회사 목록·명시 수락/거절/취소 UI를 채택했다. 같은 company 포트에서 직접/대상 동의/금지·본인 축소/대표자 취임/소속 종료, 최신 target/version·전후 current leaf/회사·계정·명령 수명을 조합한다. 첫 독립 Major3/Minor1과 수정3/3·추가 회귀를 [검토](../development/figma-v01/reviews/DEV-28.md)에 보존한다. [TEAM QA](../qa/team-members.md#dev-28-local-qa)의 로컬 결과/도구·fixture 한계는 실제9부분 차단과 별개다. 초대/신청/직급 정의 관리·서비스 계정 탈퇴·실제 업무/메일/운영·배포와 DEV-29 실행은 포함하지 않는다. 현재/다음/상태는 WBS만 소유한다.
+
+## 2026-11-17 · DEV-29 보내는 팀원 초대의 로컬 선행
+
+[이번 사용자 D1/Brief](../development/figma-v01/tasks/DEV-29.md#dev-29-brief)는 실제 HTTP 연결을 포함한 로컬 선행·실제 발송/수신/수락 QA 차단 보존을 확정했다. 기존 `/my/team`에서 입력/최신 leaf·직급/grant/대표자 조건·명시 생성과 보낸 목록/상세·delivery를 연결하며 현재 company 공급원과 계정/화면 수명을 유지한다. [QA](../qa/team-members.md#dev-29-local-qa)의 mock·loopback HTTP/브라우저와 실제7부분 차단, 초기 독립 리뷰의 대표자 경쟁과 source enum·공석 수정/최종 재검토를 구분한다. 재발송/취소/PATCH·수락 목적지·신청/직급 CRUD·실제 업무/메일/운영·배포와 다음 Task 실행은 포함하지 않는다. 현재/다음/상태·Git 전달은 WBS와 실제 최종 PR에서만 확인한다.

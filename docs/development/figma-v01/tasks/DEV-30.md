@@ -79,3 +79,12 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-30-dev-29-selection"></a>
+
+## 2026-11-17 · DEV-29 뒤 선정/인계만
+
+- [DEV-29 로컬 승인 단위](DEV-29.md#dev-29-close)의 생성/보낸 목록·상세·최신 문맥/명시 제출·계정/화면 수명과 shared mock queue·939 tests/두 리뷰를 선행 산출물로 인계한다. 실제 초대/메일·수신 수락 통합은0통과7부분 차단이며 이 Task의 실행 예외가 아니다. Git/main 반영은 실제 최종 PR/종료 보고와 착수 시 최신 main에서 확인한다.
+- 선정 이유: WBS 기본 P2 표 순서에서 DEV-29 선행을 충족한 첫 후속 후보다. 기존 P0/P1·앞선 P2 차단·DEV-31/32·POL-15 순서와 원본79/114Task/156의존을 유지한다. 상태는 WBS만 소유한다.
+- 다음 첫 행동: 최신 main·DEV-29 contracts/client/HTTP/mock·`team-invitations.ts`/현재 panel/dialog·POL-14 D3와 이 원래 정의를 읽는다. 당시 backend/Swagger에서 resend/cancel의 현재 version/delivery/status·단말/서버 만료 경합과 실제 자원·사용/소비/잔존/복구를 재확인한 뒤 자체 Brief·수정 파일/영향·검증을 제시한다. 미만료 PENDING만 기존 명령, 만료는 명시 새 초대 작성이라는 확정 정책을 유지한다.
+- 선정/인계만 수행했으며 전용 계약 조사·설계·제품/Repository·재발송/취소/PATCH·실제 업무/API/메일/QA·별도 Git 전달0이다. DEV-29의 로컬 선행·Git/Chromatic 승인은 다음 Task로 자동 승계하지 않는다. 원본 candidate/미작성 Brief·기존 결정/QA/차단은 보존한다.

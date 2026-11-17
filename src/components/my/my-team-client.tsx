@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { NormalTag } from "@/components/ui/chip";
 import { Pagination } from "@/components/ui/pagination";
@@ -15,6 +15,7 @@ import { loadCompanyTeam, teamDate, teamDetailPath, teamListPath, teamMemberName
 import { MySideMenu } from "./my-side-menu";
 import { TeamMemberEditor } from "./team-member-editor";
 import { teamChangePath, type TeamCommit } from "@/features/company/team-management";
+import { TeamInvitationsPanel } from "./team-invitations-panel";
 
 type Result = TeamResult | { status: "loading" | "unauthorized" | "denied" | "missing" } | { status: "error"; message: string };
 type Props = { initialPage: number | null; membershipId?: number | null };
@@ -45,6 +46,7 @@ function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh,
   const active = useRef<AbortController | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const focusAfterLoad = useRef(false);
+  const onAccessError = useCallback((error: ApiError) => setResult({ status: error.status === 401 ? "unauthorized" : error.status === 403 ? "denied" : "missing" }), []);
   const detail = membershipId !== undefined;
 
   useEffect(() => {
@@ -104,7 +106,8 @@ function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh,
         <PreparedTab icon="requests" width={13} height={18} label="팀원 신청" available={result.page.capabilities.canReviewRequests} />
         <PreparedTab icon="positions" width={20} height={16.6668} label="직급 관리" available={result.page.capabilities.canManagePositions} />
       </div>
-      <p className="mb-4 type-body-7 text-grayscale-600" id="team-prepared">팀원 초대·신청 검토·직급 관리는 준비 중이에요. {result.page.capabilities.canInvite ? "현재 팀원 초대 권한이 있어요." : "현재 팀원 초대 권한이 없어요."}</p>
+      <p className="mb-4 type-body-7 text-grayscale-600" id="team-prepared">신청 검토·직급 관리는 준비 중이에요.</p>
+      <TeamInvitationsPanel companyId={result.companyId} access={{ getAccessToken, refresh, getAccountKey }} getSessionEpoch={getSessionEpoch} onCommitted={onCommitted} onAccessError={onAccessError} />
       {result.page.content.length ? <div className="overflow-x-auto rounded-lg" role="region" aria-label="팀원 목록 표" tabIndex={0}>
         <table className="w-full min-w-[850px] border-separate border-spacing-y-2 text-left type-body-3 text-grayscale-800">
           <caption className="sr-only">현재 회사 팀원 {result.page.totalElements}명, {initialPage}페이지</caption>
