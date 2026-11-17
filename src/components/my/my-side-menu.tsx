@@ -10,14 +10,14 @@ import { useAuthSession } from "@/features/auth/session";
 const menuItems: SideMenuItem[] = [
   { value: "company", label: "나의 회사 정보", icon: "company" },
   { value: "documents", label: "서류함", icon: "clip" },
-  { value: "team", label: "함께하는 팀원", icon: "person", disabled: true },
+  { value: "team", label: "함께하는 팀원", icon: "person" },
   { value: "merge", label: "나의 회사 통합", icon: "add", disabled: true },
   { value: "bid-alerts", label: "알림 설정 공고", icon: "calendar", disabled: true },
   { value: "settings", label: "설정 및 관리", icon: "setting" },
   { value: "logout", label: "로그아웃", icon: "out" },
 ];
 
-export function MySideMenu({ value }: { value: "company" | "settings" }) {
+export function MySideMenu({ value }: { value: "company" | "settings" | "team" }) {
   const router = useRouter();
   const { logout } = useAuthSession();
   const [logoutBusy, setLogoutBusy] = useState(false);
@@ -47,6 +47,7 @@ export function MySideMenu({ value }: { value: "company" | "settings" }) {
         onValueChange={(next) => {
           if (next === "company") router.push("/my/company");
           if (next === "documents") router.push("/my/documents");
+          if (next === "team") router.push("/my/team");
           if (next === "settings") router.push("/my");
           if (next === "logout") void handleLogout();
         }}
