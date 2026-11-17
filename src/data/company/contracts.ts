@@ -1,3 +1,6 @@
+import type { CompanyTeamRepository } from "./team-contracts";
+export type { CompanyPermissionCatalog, CurrentCompanyPermissions, TeamCapabilities, TeamMemberCapabilities, TeamRole, CompanyTeamMember, CompanyTeamPage, CompanyTeamRepository } from "./team-contracts";
+
 export type CompanySearchItem = {
   companyId: number;
   companyName: string;
@@ -310,4 +313,4 @@ export interface CompanyDocumentRepository {
   }, idempotencyKey: string): Promise<RegistrationResult>;
 }
 
-export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository;
+export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository & CompanyTeamRepository;

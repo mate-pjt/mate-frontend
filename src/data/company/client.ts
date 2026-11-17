@@ -40,3 +40,9 @@ export const getMyCompanyOverview: CompanyRepository["getMyCompanyOverview"] = (
 export function documentStorageKey(accountId: number): string {
   return getDataConfig().sources.company === "api" ? `mate:signup-document:${accountId}` : getMockRuntime().store.key(String(accountId), "document-target");
 }
+
+export const getCompanyTeamContext: CompanyRepository["getCompanyTeamContext"] = (...args) => getRepository().getCompanyTeamContext(...args);
+export const getCompanyPermissionCatalog: CompanyRepository["getCompanyPermissionCatalog"] = (...args) => getRepository().getCompanyPermissionCatalog(...args);
+export const getCurrentCompanyPermissions: CompanyRepository["getCurrentCompanyPermissions"] = (...args) => getRepository().getCurrentCompanyPermissions(...args);
+export const listCompanyTeamMembers: CompanyRepository["listCompanyTeamMembers"] = (...args) => getRepository().listCompanyTeamMembers(...args);
+export const getCompanyTeamMember: CompanyRepository["getCompanyTeamMember"] = (...args) => getRepository().getCompanyTeamMember(...args);
