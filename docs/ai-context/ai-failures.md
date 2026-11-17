@@ -363,3 +363,13 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 병합 직전 추가 FAIL: PR 자동 리뷰2건을 pre-merge guard가 발견해 병합을 멈췄다. 같은 목록 목적지 onNavigate=conceal이 결과를 지우고 Effect를 재실행하지 않는 로딩 고착을 실제 Next mock/독립 harness로 확인했다. mock은 POSITION 판정을 REMOVE/PERMISSIONS capability에도 재사용해 행동 leaf만 있는 actor의 UI와 명령이 달랐다. 기존838 tests/두 리뷰 PASS가 놓친 반례이며 최신 독립 판정은 Major2 FAIL이다.
 - 추가 예방/재개: 탐색 해제는 의미상 목적지가 바뀔 때 적용하거나 명시 reload를 보장한다. capabilities는 각 실제 행동 kind·leaf와 비교하고, 기본 preset뿐 아니라 PROFILE_EDIT 없는 합법적인 추가 leaf 조합도 명령과 대조한다. 자동 수정3/3 이후라 사용자 추가1회 결정 전 코드 수정은 하지 않았으며 승인/수정·회귀·재리뷰가 필요하다. Chromatic 게시 EEXIST는 동일 head job1회 재실행 성공, UI Tests/Review pending은 로그상 billed limit의 이번 예외로 구분한다.
 - 사용자 추가1회 확정 뒤: 두 최소 source수정·leaf4회귀와842 tests/lint0·세 구성/Storybook·실제 Next mock을 확인했다. 독립 컴포넌트 harness17과 mock4조합도 PASS다. 추가 브라우저23PASS와 초기FAIL관찰2는 raw/notes로 보존한다. call 경계의 첫 이동은 원인 미확정 관찰이며 source변경 없이 fresh3회 복귀 성공과 구분한다. focus 재조회 중 editor disabled를 성급히 판정한 읽음은 실제 클릭 대기 뒤 활성/확인·명령 성공과 구별한다. 문서/최종 리뷰·새 head CI는 별도 Gate이며 이전 실패를 삭제하지 않는다.
+
+## 2026-11-17 · DEV-29 초대와 관리 명령의 공유 상태·입력 label
+
+- 독립 verifier가 대표자 공석 조회→직급 조회 지연→외부 본인 대표자 취임→초대 쓰기를 끼워 넣어 대표자가 있는데 대표자 초대를 생성하는 mock 경쟁을 재현했다. 마지막 membershipId/leaf 비교만으로 직급/공석의 동시 변경을 검출하지 못했다. 초기935 tests PASS와 이 Major FAIL을 구분해 보존한다.
+- 수정/예방: 같은 회사 상태를 읽고 쓰는 초대 생성과 팀원 관리 명령은 store/account 단위 공유 serializer를 사용한다. 외부 배리어의 양방향 명령 순서·중복/다른 이메일·실패 후 release를 회귀로 검증한다. 표시용 빈 목록을 공석 근거로 사용하지 않으며 오류 코드도 고정 backend enum(CM004/CI009·대표자 충돌CI008)에 대조한다.
+- 실제 브라우저는 TextInput을 감싼 label 안의 clear 버튼 문구가 값 입력 후 textbox 이름에 섞이는 문제를 확인했다. 고유 ID와 별도 htmlFor label로 분리하고 입력 전후 같은 접근성 이름·모바일/키보드를 재검증했다. 원시 컴포넌트 전체를 이 Task에서 바꾸지 않는다.
+- 출력 경계 재발: 첫 GitHub branch 응답 구조의 일부를 그대로 출력해 불필요한 공개 작성자 metadata가 포함됐다. 사용자에게 알렸고 실제 값은 Task/QA/PR에 재인용하지 않았다. 이후 structuredContent도 내부 파싱 뒤 SHA·계약/필요 상태만 새 객체로 출력한다. 환경파일/credential·실제 업무 응답 조회와 구분하며 기존 출력 삭제를 주장하지 않는다.
+- 문서 작성: heredoc append에 patch용 `+`가 남은 bullet을 문서 검토에서 발견해 제거했고, 변경 Markdown의 stray patch bullet·닫힌 fence 검사로 예방한다. 이 draft 문서 수정은 제품 자동 수정 회차와 구분한다.
+- 도구 한계: Aside의 session 밖 파일 저장 거절·호출 사이 focus 재조회/오래된 ref, 초기 HMR 전 geometry 관찰은 제품 실패와 구분한다. 세션 artifacts에 저장 후 필요한 합성 화면만 복사하고 fresh snapshot/같은 호출 내 조작·하드 리로드로 확인한다. TCP 유실의 앱 fetch1회와 HTTP wire2회는 별도 계측하며 wire 1회를 앱 guard만으로 보장했다고 쓰지 않는다.
+- 근거: [Task](../development/figma-v01/tasks/DEV-29.md#dev-29-brief)·[검토](../development/figma-v01/reviews/DEV-29.md)·[QA](../qa/team-members.md#dev-29-local-qa). 실제7부분 차단과 기존 Task/QA 예외는 유지한다.
