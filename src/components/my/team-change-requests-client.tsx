@@ -67,6 +67,11 @@ function AuthenticatedRequests({ access, getSessionEpoch, page, scope, status, r
   }, [getAccountKey, getAccessToken, refresh, getSessionEpoch, page, scope, status, requestId, attempt]);
   function conceal() { active.current?.abort(); command.current?.dispose(); setResult(null); setAction(null); }
   function reload() { conceal(); setError(null); setAttempt(value => value + 1); }
+  function navigate(href: string, event?: { preventDefault: () => void }) {
+    const current = requestId ? teamChangePath(requestId) : teamChangesListPath(scope, page, status);
+    if (href === current) { event?.preventDefault(); return; }
+    conceal(); if (!event) router.push(href);
+  }
   async function confirm() {
     if (!action || result?.status !== "detail" || pending || submitted) return;
     const run = createTeamCommandScope(access, () => epoch.current === getSessionEpoch()); command.current = run; setPending(true); setSubmitted(true);
@@ -84,21 +89,21 @@ function AuthenticatedRequests({ access, getSessionEpoch, page, scope, status, r
   }
   const request = result?.status === "detail" ? result.request : null;
   return <>
-    <nav className="mb-4 type-body-7 text-grayscale-600" aria-label="현재 위치"><Link href="/my/team" onNavigate={conceal}>함께하는 팀원</Link> <span aria-hidden>›</span> <Link href={teamChangePath()} onNavigate={conceal}>변경 요청</Link>{requestId && <> <span aria-hidden>›</span> 요청 상세</>}</nav>
+    <nav className="mb-4 type-body-7 text-grayscale-600" aria-label="현재 위치"><Link href="/my/team" onNavigate={event => navigate("/my/team", event)}>함께하는 팀원</Link> <span aria-hidden>›</span> <Link href={teamChangePath()} onNavigate={event => navigate(teamChangePath(), event)}>변경 요청</Link>{requestId && <> <span aria-hidden>›</span> 요청 상세</>}</nav>
     <div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h1 className="type-heading-5 text-grayscale-800" ref={heading} tabIndex={-1}>{requestId ? "변경 요청 상세" : "팀원 변경 요청"}</h1><Button variant="outline" size="xs" onClick={reload} disabled={!result && !error}>현재 상태 다시 조회하기</Button></div>
     <p className="mb-6 type-body-7 text-grayscale-600">요청을 열거나 알림을 읽는 것만으로 동의하지 않아요. 대기 요청은 자동으로 만료되거나 적용되지 않아요.</p>
     {error && <Notice alert message={error.message}>{error.status === 401 ? <ButtonLink href={`/auth?mode=login&next=${encodeURIComponent(requestId ? teamChangePath(requestId) : teamChangesListPath(scope, page, status))}`}>로그인하고 돌아오기</ButtonLink> : <Button variant="outline" onClick={reload}>최신 요청만 다시 조회하기</Button>}</Notice>}
     {!result && !error && <Notice message="변경 요청을 확인하고 있어요." />}
     {result?.status === "no-company" && <Notice message="현재 연결된 회사가 없어요. 본인의 과거 요청은 내 요청에서 확인할 수 있어요."><ButtonLink href={teamChangePath()} onNavigate={conceal}>내 요청 보기</ButtonLink></Notice>}
     {result?.status === "list" && <>
-      <div className="mb-4 flex flex-wrap items-center gap-3" aria-label="변경 요청 목록 범위"><ButtonLink href={teamChangesListPath("mine", 1, status)} variant={scope === "mine" ? "primary" : "outline"} onNavigate={conceal}>내 요청</ButtonLink><ButtonLink href={teamChangesListPath("company", 1, status)} variant={scope === "company" ? "primary" : "outline"} onNavigate={conceal}>회사 요청</ButtonLink>
+      <div className="mb-4 flex flex-wrap items-center gap-3" aria-label="변경 요청 목록 범위"><ButtonLink href={teamChangesListPath("mine", 1, status)} variant={scope === "mine" ? "primary" : "outline"} onNavigate={event => navigate(teamChangesListPath("mine", 1, status), event)}>내 요청</ButtonLink><ButtonLink href={teamChangesListPath("company", 1, status)} variant={scope === "company" ? "primary" : "outline"} onNavigate={event => navigate(teamChangesListPath("company", 1, status), event)}>회사 요청</ButtonLink>
         <Select ariaLabel="요청 상태 필터" value={status ?? "all"} options={[{ value: "all", label: "모든 상태" }, ...statuses.map(s => ({ value: s, label: teamChangeStatusLabel(s) }))]}
-          onValueChange={value => { conceal(); router.push(teamChangesListPath(scope, 1, value === "all" ? undefined : value as TeamChangeStatus)); }} />
+          onValueChange={value => navigate(teamChangesListPath(scope, 1, value === "all" ? undefined : value as TeamChangeStatus))} />
       </div>
       <p className="mb-4 type-body-7 text-grayscale-600">{scope === "mine" ? "현재 계정이 대상인 요청과 과거 처리 결과예요." : "현재 권한으로 조회할 수 있는 회사 요청만 표시해요."} {result.page.totalElements}건</p>
       <div className="space-y-3">{result.page.content.map(r => <article key={r.changeRequestId} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-6 shadow-(--shadow-control)"><div className="min-w-0"><h2 className="type-heading-9 text-grayscale-800">{teamChangeKindLabel(r.kind)} · {teamChangeStatusLabel(r.status)}</h2><p className="mt-2 break-all type-body-5 text-grayscale-700">대상: {targetLabel(r, result.targets[r.targetMembershipId])}</p><p className="mt-2 type-body-7 text-grayscale-600">요청일 {teamDate(r.createdAt, true)}{r.proposedPosition ? ` · 제안 직급 ${r.proposedPosition.name}` : ""}</p></div><ButtonLink href={teamChangePath(r.changeRequestId)} variant="outline" onNavigate={conceal}>요청 보기</ButtonLink></article>)}</div>
       {!result.page.content.length && <Notice message={result.page.totalElements ? "이 페이지에는 요청이 없어요." : "표시할 변경 요청이 없어요."}>{page > 1 && <ButtonLink href={teamChangesListPath(scope, 1, status)} onNavigate={conceal}>첫 페이지 보기</ButtonLink>}</Notice>}
-      {result.page.totalPages > 1 && <div className="mt-6 flex justify-center"><Pagination page={page} totalPages={result.page.totalPages} onPageChange={next => { conceal(); router.push(teamChangesListPath(scope, next, status)); }} /></div>}
+      {result.page.totalPages > 1 && <div className="mt-6 flex justify-center"><Pagination page={page} totalPages={result.page.totalPages} onPageChange={next => navigate(teamChangesListPath(scope, next, status))} /></div>}
     </>}
     {request && result?.status === "detail" && <>
       <RequestDetail request={request} catalog={result.catalog} target={result.targets[request.targetMembershipId]} />
