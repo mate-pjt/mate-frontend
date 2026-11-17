@@ -145,3 +145,13 @@
 - 다음 하나: **DEV-30 · 초대 재발송·취소 관리**. WBS P0/P1·앞선 P2의 기존 외부/계약·선행 차단을 유지한 기본 표 순서에서 DEV-29 선행을 충족한 첫 후속 후보다. DEV-31/32·POL-15의 순서/범위와 원본79/114Task/156의존은 바꾸지 않는다.
 - 다음 첫 행동: 최신 main/이 공개 초대 포트·목록/상세/수명/공유 mock queue와 POL-14 D3·DEV-30 원래 정의를 확인한다. 그때 backend/게시 Swagger·실행 대응과 최신 version/delivery·미만료 PENDING/만료·수락/취소 경쟁, 합성 수신처·사용/소비/잔존/복구 범위를 자체 Brief/Gate에서 확인한다. 생성은 DEV-29 흐름을 재사용하되 새 생성/재발송/취소는 자동 호출하지 않는다.
 - 여기서는 선정·인계만 했다. DEV-30 전용 계약 재조사·Brief/설계·제품/실제 QA·Git 전달은 미시작이며 DEV-29 D1/Git/Chromatic 예외를 확대하지 않는다. 현재/다음/상태는 WBS만 소유한다.
+
+
+<a id="dev-29-git-delivery"></a>
+
+## 2026-11-17 · Git 전달 체크포인트
+
+- 최초 요청의 명시 Git 승인으로 공통 serializer 추출 f367e10, 초대 데이터/수명8ceb6bb, 화면f1de066, 회귀71666f1, 검증/인계 문서c5094f1, 실패 예방bf5adaf의 목적별6커밋을 보존해 push했다. 최초 head `bf5adaf4f9acb7aee5925138ec67cd8d6a910433`, local/remote branch 동일·clean을 확인했다.
+- [PR #87](https://github.com/mate-pjt/mate-frontend/pull/87), main 기준 `473c9e1edc57cee22f0889ddcfd2154268901756`, 라벨 type:feature/refactor/test/docs. 저장소는 merge commit을 허용하며 작은 이력을 보존하는 정상 merge를 사용한다. force/보호규칙 우회·main 직접 push·check 강제 성공은 없다.
+- 이 순수 Git 사실/포인터 반영 뒤의 **최종 head**에서 CI/리뷰/미해결 thread·현재 main 차이를 다시 확인한다. 이번 PR Chromatic 월간 한도만 예외이고 실제 QA7차단은 유지한다. 정상 병합·로컬 main FF/동일SHA·clean의 실제 최종 결과는 PR과 대화 종료 보고에서 확인하며 이 병합 전 체크포인트로 선승인 PASS를 만들지 않는다.
+- 종료/인계 후 affected-document 재검토도 PASS이며 이후 변경은 이 PR 포인터/번호·검토 결과의 순수 기록이다. source/test 지문 d9d6678722c00c19190e118ec29aa4da27cba0e642a6c0c7ea62e70cf3062df7·정책/범위/QA 증거 불변이므로 앱 검사/독립 verifier를 다시 반복하지 않고 문서 링크/79/114/156·상태/DAG·diff와 primary ai-review의 해당6섹션을 재확인한다.

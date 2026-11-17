@@ -5,9 +5,10 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-17 KST |
-| 현재 작업 | [DEV-29 로컬 범위 종료](tasks/DEV-29.md#dev-29-close) — 939 tests/세 구성 빌드·Storybook/로컬 QA·문서/두 리뷰 PASS, 실제7부분 차단. Git 전달 진행 |
+| 현재 작업 | [DEV-29 로컬 범위 종료](tasks/DEV-29.md#dev-29-close) — 939 tests/세 구성 빌드·Storybook/로컬 QA·문서/두 리뷰 PASS, 실제7부분 차단. Git 전달은 PR/종료 보고에서 별도 확인 |
 | 다음 작업 | [DEV-30 · 초대 재발송·취소 관리](tasks/DEV-30.md#dev-30-dev-29-selection) — 선정/인계만, 실행 미시작 |
 | 다음 첫 행동 | 최신 main·DEV-29 산출물/POL-14 D3·당시 backend/Swagger를 확인하고 미만료 PENDING·version/delivery·만료/수락 경쟁과 합성 수신 자원·사용/소비/잔존/복구를 DEV-30 자체 Brief/Gate에서 확인 |
+| DEV-29 Git 전달 | [PR #87](https://github.com/mate-pjt/mate-frontend/pull/87), 목적별6커밋 최초 headbf5adaf·type:feature/refactor/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-29.md#dev-29-git-delivery) |
 | DEV-29 이번 승인 범위 | 2026-11-17 사용자 최초 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR·최종 CI·정상 merge/main FF, 추가 D1 로컬 선행·실제 QA7차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무/API·초대/메일/수락·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-29.md#dev-29-brief) |
 | DEV-28 Git 전달 | [PR #86](https://github.com/mate-pjt/mate-frontend/pull/86), 목적별6커밋 최초 head338783b·라벨 feature/test/docs. 이 Git checkpoint 뒤 최종 head의 원격 CI/리뷰·정상 merge/main FF는 실제 PR/종료 보고에서 확인한다. [기록](tasks/DEV-28.md#dev-28-git-delivery) |
 | DEV-28 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 merge/main FF, D1 로컬 선행/실제 QA 차단 보존·D2 정확 동의 경로/명시 결정 UX. 이번 Chromatic 월간 한도만 예외. 실제 업무 API/권한·소속 변경/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-28.md#dev-28-brief) |
