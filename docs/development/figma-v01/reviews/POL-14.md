@@ -155,3 +155,48 @@ read-only verifier의 확정 diff 검토를 받고 필요한 수정/재검증 �
 - 직접 재검증:14문서/627링크·79/114/156·고정5/후속7, 계약32/37/67·15leaf/행9/page3, 정책 지문/3결정/후속7/TEAM26, diff-check PASS. 별도 Markdown table340행 형식 검사도 PASS. TEAM 실제0통과26대기·제품/업무/메일0·미확인 실행 SHA/실제 wrapper 경계를 유지한다.
 - 대상 문서집합 SHA256 `596a665bada32e6a8d8739ef7b09dab853580b1004bbd49711f969d5e142c1d9`. 자체 ai-review도 종료 checkbox/선정·집계/인계와 현재 diff를 다시 검토해 위 여섯 섹션의 확정 결론을 유지한다.
 - 이 절은 실제 결과/지문/검증 수만 기록한다. 정책·범위·상태·승인/QA·인계 조건을 바꾸지 않아 두 리뷰를 재귀 실행하지 않는다. 문서/diff 검사는 다시 실행하며 이후 내용 변경 시 재검토한다. 실제 최종 PR head CI·리뷰/정상 병합/main FF는 PR #83과 최종 보고에서 확인한다.
+
+<a id="pol-14-mat-290-review"></a>
+
+## 2026-11-17 · MAT-290 연결 문서 후속 검토
+
+- 요구사항/승인: 사용자가 MAT-290 요청을 POL-14·DEV-27·WBS에 연결하고 반영 전 미제공/반영 뒤 재확인 조건, 문서 검증·리뷰·commit/push·PR/CI·정상 merge/main FF를 요청했다. DEV-27 구현 금지를 유지한다. 이 요청은 앞선 PR #83 전달 승인/성공과 별도의 문서/Git 후속 단위다.
+- 기준: main `1d93ebc426fbd8618023fce69630c23a2f46ff40` clean·origin main 일치에서 `docs/pol-14-mat-290-handoff`. 이번4문서만 변경, source/package/config/QA·기준선·다른 Task/Linear 업무 수정0. MAT-290은11/17 읽기 조회 Backlog/요청안이며 backend 수락/계약/반영/실제 응답 완료로 세지 않는다.
+- 검증 계획/명령: `python3 /tmp/mate-mat290-docs/validate.py`로 링크/anchor·79/114/156·상태·선행/순환·기준선/QA6파일과 기존3기록 원문·허용4문서·Markdown/민감 literal·TEAM26 대기를 확인하고 `git diff --check`를 실행한다. 실제 수와 결과는 검증 뒤 기록한다.
+- 로컬 app test/lint/build/Storybook·브라우저/mock/HTTP대역·실제 업무 API는 실행 코드/패키지·빌드 영향 없는 문서 후속이므로 미실행. 원격 CI는 새 실제 최종 head에서 별도 확인한다. 기존 QA/차단/예외와 actual0/TEAM26대기를 유지한다.
+- Documentation Update Check: WBS/Task2개·이 검토4문서만 갱신. plan의 WBS 진입점/기존 날짜별 정책·base의 package/scripts·architecture/data-access의 소스/데이터 규칙·harness/ai-failures에 새 변화가 없어 유지한다. TEAM-03의 기존 미제공 계획/QA 전체·baseline/coverage·의존성도 보존한다. source/하네스 드리프트 근거 없는 좁은 링크 후속이라 전체 context-audit를 반복하지 않는다.
+
+### ai-review · MAT-290 문서 연결
+
+#### 1. 리뷰 요약
+
+원본 요청·이번 성공 기준, 현재 git status/full diff·package.json과 MAT-290 읽기 snapshot을 기준으로 검토한다. 필드 추가 요청과 API 지원·D2 유지/표시 연결 재개를 구분하고 DEV-27 구현을 시작하지 않는4문서 범위다. 검증 결과와 verifier 판정은 아래에 기록한다.
+
+#### 2. 발견된 문제
+
+현재 문서 diff의 미해결 Blocker/Major 없음. 기존 확정 정책/기록을 append로 보존하고 이슈 생성·Done·계정 모델/source/Swagger만으로 실제 지원/통합 PASS를 만들지 않는다. MAT-290을 DEV-27 전체의 새 선행/차단으로 바꾸지 않는다.
+
+#### 3. 누락된 검증
+
+앱/제품·실제 팀원 API/메일·새 backend 반영은 검증하지 않았다. 문서-only 사유가 있고 이번 승인은 해당 실행을 포함하지 않는다. MAT-290은 읽기 확인한 요청이며 actual QA/자원·실행 대응·사용/복구 범위는 후속 자체 Gate로 남긴다. 기존 TEAM26·AUTH16/17 등 결과/차단을 바꾸지 않는다.
+
+#### 4. 문서 갱신 필요 여부
+
+POL-14의 외부 요청/승인·D2/재확인, DEV-27의 조건과 미실행, WBS의 현재/다음·외부 연결, 이번 검토 기록을 갱신한다. 공통 context/QA·baseline/coverage를 유지하는 사유는 Documentation Update Check와 같으며 상태는 WBS만 소유한다.
+
+#### 5. 개발자 확인 필요
+
+문서/Git 전달은 이번11/17 요청으로 명시 승인돼 추가 확인 불필요. 기존 같은 Task의 Chromatic 한도 예외는 실제 새 head에서 해당 원인만 확인해 적용한다. 최종 API 계약·실제 표시 연결/자원은 요청 등록으로 확정하지 않는다.
+
+#### 6. 추천 수정 방향
+
+문서 검사·read-only verifier를 마치고 종료 metadata/상태 뒤 freshness를 확인한다. 목적별 docs 커밋·새 PR의 실제 최종 head CI/리뷰·정상 merge/main FF를 진행하며 DEV-27은 준비/미착수로 유지한다. 반영 소식이 있으면 기록한 단계별 Gate로 다시 확인한다.
+
+### 문서 검증·독립 검토 결과
+
+- 2026-11-17 09:03 KST, `python3 /tmp/mate-mat290-docs/validate.py` PASS: 허용4문서·로컬 링크462/Markdown 표257행·원본79/Task114/의존156·고정6파일 byte/기존3기록 원문·TEAM26 대기 보존, 오류0. `git diff --check` PASS. 문서 전용이므로 로컬 앱 test/lint/build·Storybook·브라우저/mock/HTTP대역·실제 API는 미실행, 최종 head 원격 CI는 전달 단계에서 별도 확인한다.
+- read-only verifier `pol14_verifier`: **Result PASS**, Summary=MAT-290/D2/재확인·자체 Gate 연결, Issues=Blocker/Major/Minor 없음, Verification=위 검사 직접 재실행 PASS, Documentation Update Check=4문서 적절/기존 정책·QA·예외 보존, Developer follow-up=추가 정책 승인 없이 문서/Git 진행·제품/실제 통합 제외.
+- 최초 검토 대상 base `1d93ebc426fbd8618023fce69630c23a2f46ff40`, 4문서 SHA256 `0e66a2a07cd701ccb5d247eb3449374871c5bb504a044b80e6bf8585d822113c`. 이 결과를 종료 metadata 이후 검토로 소급하지 않는다. WBS 완료/현재 없음 전환과 종료/본 결과 기록 뒤 검사·같은 verifier freshness를 재확인한다.
+- ai-review 여섯 섹션 판정 PASS: 원본 요청·실제 diff/8scripts·문서 검사·MAT-290 읽기 snapshot으로 범위/표시/승인 경계와 선행/상태/기존 QA 보존을 확인했다. 이번 종료 metadata 이외 제품·계약 변경 없음, 미해결 이슈0. 후속 freshness 결과와 실제 Git 전달을 구분해 기록한다.
+- 최종 freshness: 같은 verifier가 종료/WBS·최초 결과/ai-review 추가를 포함한 4문서를 다시 읽고 검사 직접 재실행 **PASS**, Blocker/Major/Minor0·활성 Task0/DEV-27 준비·미착수/TEAM26대기를 확인했다. 검토 문서 집합 SHA256 `d48c7fef167e4ed4a3df46c82de48b2381b3522da5b2f87a772cb4be3e29829a`. 자체 ai-review도 종료 diff·검증 결과를 재확인해 여섯 섹션 판정을 유지한다.
+- 이 두 줄은 위 최종 결과/검토 대상 지문과 재실행 범위만 추가한 증거 metadata다. 정책·재확인 Gate·상태/의존·범위 변경이 없어 verifier 재귀 실행은 생략하며 문서 검사/diff-check는 다시 실행한다. 이 이후 내용 변경 시 필요한 리뷰를 다시 수행한다. 최종 Git 전달 식별자·새 head CI/병합/main 동기화는 새 PR/종료 보고에 별도로 기록한다.

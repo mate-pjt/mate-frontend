@@ -308,3 +308,48 @@ Figma 조사 범위는 위12frame metadata/상태·라벨이다. 모든 child/pr
 - Git 전달은 같은 [PR #83](https://github.com/mate-pjt/mate-frontend/pull/83)으로 이어간다. 초기2개 조사 커밋을 보존하고 정책·QA 계획·검증/인계·증거 경로 실패 기록을 목적별 docs 커밋으로 분리한다. 실제 최종 head의 CI/리뷰/병합 조건·Chromatic 한도 예외와 정상 merge commit/main FF·local/remote SHA/clean은 최종 PR/종료 보고에서 별도 확인한다. 이 정책 PASS가 Git 전달 완료 선언은 아니다.
 - 다음 하나: [DEV-27 인계](DEV-27.md#dev-27-pol-14-selection). WBS의 기존 P0/P1 차단/대기 선행과 앞선 P2 회사 갱신 DEV-08·DEV-24/26/MAT-162 조건을 유지한 채, POL-14 선행을 충족하는 P2 기본 표 순서 첫 독립 개발 단위다. 정책 완료/이번 Git 예외를 실제 자원 준비·로컬 선행 승인으로 해석하지 않는다.
 - 다음 첫 행동: 새 대화에서 최신 main/이 정책·DEV-27 후보 정의/TEAM-01~04/23/26과 당시 현행 backend/Swagger·Figma 목록/상세 상태를 확인한다. 현재 회사/leaf/3page·9row flags·page/count/ASC·nullable/D2 미제공·계정/회사 수명·실제 조회 자원/실행 대응·사용/잔존/복구 범위를 확인한 뒤 자체 Brief·수정 파일·영향·검증을 먼저 제시한다. **선정/인계만 했으며 DEV-27의 전용 조사·Brief/설계·구현·실제 QA·별도 Git 전달은 시작하지 않는다.**
+
+
+<a id="pol-14-mat-290-handoff"></a>
+
+## 2026-11-17 · MAT-290 외부 요청과 표시 기준의 후속 연결
+
+### 이번 문서 단위 Brief·승인/체크포인트
+
+- 확인 시각: 2026-11-17 08:58 KST. 시작 `main`/`1d93ebc426fbd8618023fce69630c23a2f46ff40`, clean·기존 변경0. fetch 뒤 local/remote main 동일, 같은 후속 브랜치 없음 확인 뒤 `docs/pol-14-mat-290-handoff` 생성. PR #83의 POL-14 확정 정책·6개 커밋·main 반영을 보존한다.
+- 사용자2026-11-17 요청: MAT-290을 POL-14·DEV-27·WBS에 연결하고, API 반영 전 **미제공 유지**와 반영 후 재확인 조건을 기록한다. 문서 검증·리뷰·목적별 commit/push·PR·최종 CI·정상 main 병합/로컬 FF까지 이번 후속 범위로 명시 승인했으며 **DEV-27 구현은 시작하지 않는다**.
+- 요구사항/성공 기준: 외부 요청의 필드·대상/현재 확인 수준을 승인·지원 계약과 구분, D2 유지/해제 재검토와 실제 자원·회귀 기준, WBS/DEV-27 상호 연결·선행/상태/QA 보존, 문서 검증/Documentation Update Check·두 리뷰와 최종 Git 전달. 이번 단위는 하나의 문서 후속 작업이며 제품 기능이 아니다.
+- 수정/영향/단계: 이 기록·DEV-27·WBS·기존 reviews/POL-14.md만 갱신 → 문서 검사 → ai-review/read-only verifier → 종료 metadata/freshness → 목적별 docs 커밋/PR·최종 head CI·정상 merge/main FF. runtime/package/구조·DTO/Repository/mock·backend/Linear 이슈 수정·실제 업무/API/메일·운영/배포·DEV-27 조사/Brief·설계/구현은 제외한다.
+- 가정/위험: 요청 등록·이슈 Done·계정 모델의 필드 존재·source/Swagger 확인을 팀원 API 지원/배포·실제 응답 PASS로 바꾸지 않는다. 기존 D1~D3/79원본/114Task/156의존·모든 QA/차단/예외를 보존한다. 문서 연결에 blocking ambiguity 없음. 상태는 WBS만 소유한다.
+- 검증: 현재 package.json8scripts 확인. 문서 전용이므로 로컬 앱 test/lint/build/Storybook·브라우저/mock/HTTP대역·업무 API 통합은 미실행, 링크/anchor·79/114/156·상태/의존·기준선/기존 원문·허용 범위/Markdown/민감 literal·diff-check와 두 리뷰를 수행한다. 원격 CI는 새 최종 head에서 별도 확인한다.
+- Git 전달 승인과 예외: 이번 문서/Git 전달은 위11/17 요청이 근거다. 동일 POL-14 대화의 최초 사용자 원문 ‘현재 Chromatic 월간 한도 … 관련 문제가 생기면 예외 처리로 하고 그냥 병합’은 이 문서 후속에도 유지하며, 실제 billed snapshot 한도 관련 검사만 예외로 확인한다. 앞선 PR의 검사 결과를 새 head의 결과로 재사용하거나 다른 CI/실제 QA·Task로 확대하지 않는다.
+
+### 외부 요청의 사실과 범위
+
+- [MAT-290](https://linear.app/mate-pjt/issue/MAT-290/backend-팀원-목록상세-응답에-생년월일휴대전화번호-추가), ‘backend: 팀원 목록·상세 응답에 생년월일·휴대전화번호 추가’. 위 시각 조회 결과 **Backlog**, 프로젝트 Mate MVP - 공고 추천 1차·repo:mate-backend/Feature다. 이는 외부 이슈의 당시 조회값이며 최신 진행/답변·계약/배포 완료를 보장하지 않는다.
+- 대상은 `GET /api/v1/companies/{companyId}/members`의 `data.content[]`와 `GET /api/v1/companies/{companyId}/members/{membershipId}`의 `data`, 공통 CompanyTeamMemberResponse다. 요청은 기존 계정/가입 모델의 개인 선택 입력 **birthDate/mobilePhone**을 팀원 조회에 연결하는 것이다. 회사 대표 전화번호·본인인증/복구 수단·신규 정보 수집 API와 구별한다.
+- 요청안: birthDate는 nullable `YYYY-MM-DD` 날짜 문자열, mobilePhone은 nullable 문자열/기존 계정 표현·검증 규칙 재사용, 미등록은 각각 null. 목록/상세 일치·조회 권한/회사 범위·기존 page/count/정렬/capabilities/오류 유지·OpenAPI/wire 정합·테스트와 관련 PR/commit·개발 반영 결과 회신을 요청했다. **필드명/형식/nullable·직렬화/열람 범위의 최종 팀원 API 계약은 실제 백엔드 답변과 반영 근거로 확인할 대상**이다.
+- 이 요청/계정 모델의 필드 존재는 팀원 응답 지원·서버 배포·현재 업무 응답의 증거가 아니다. 이번에는 Linear를 읽어 연결만 했으며 새 source/Swagger/업무 API 반영을 검증하지 않았다. MAT-287의 회사 프로필 편집/사진 요청·다른 Task 계약은 별개다.
+
+### API 반영 전 유지 기준
+
+- [D2](#pol-14-contract)의 생년월일·휴대전화번호 **자리/라벨 유지·값 ‘미제공’**을 유지한다. MAT-290 생성/접수·진행/완료 표시나 계정 모델 필드만으로 예외를 해제하거나 임의 데이터/새 API로 값을 합성하지 않는다.
+- MAT-290을 DEV-27 전체의 신규 선행/차단으로 추가하지 않는다. DEV-27은 기존 D2와 자체 Gate를 유지하고, **실제 값 표시 연결**만 아래 재확인 뒤 자신의 범위/검증 계획에서 판단한다. 이번 문서 반영으로 DEV-27을 시작하거나 로컬 선행·실제 QA 면제를 승인하지 않는다.
+
+### 반영 소식 뒤 재확인·표시 연결 Gate
+
+1. MAT-290의 답변/확정 계약·일정·연결 PR/commit을 확인한다. 두 endpoint의 공통 팀원 DTO/조회·mapper/테스트에 필드가 실제 연결됐는지 **고정 source**에서 확인하고 계정/가입 모델만의 존재로 대신하지 않는다.
+2. source commit, CI/개발 배포 기록, 게시 Swagger, 실행 식별자, 실제 팀원 응답을 분리해 날짜/환경·확인/미확인을 기록한다. source merge/이슈 Done/Swagger 필드가 실제 서버 반영/통합 PASS를 대신하지 않는다.
+3. 최종 필드명·경로·타입·날짜 전용/휴대전화 문자열 형식·각각 nullable/누락 직렬화·열람 권한/회사 범위, 기존 wrapper/오류·page/count/정렬/capabilities 유지 여부를 비교한다. 일부 필드/endpoint만 준비됐으면 부분 지원으로 기록하고 미확인 부분의 ‘미제공’을 유지한다.
+4. 실제 조회 검증은 승인된 합성 회사/계정·열람/개인정보 범위·Origin/실행 대응·사용/잔존/복구 자원을 확보한 후 수행한다. 값 있음/한쪽 null/둘 다 null, 같은 팀원의 목록·상세 일치, 날짜 이동/휴대전화 앞자리0·계정/회사 전환·권한 거부/오류를 확인한다. 실제 개인정보/응답 원문을 Task/로그/캡처에 남기지 않는다. 미실행은 PASS로 세지 않는다.
+5. 확인 근거를 갖춘 뒤 **DEV-27 자체 Brief/수정 파일·영향/검증 Gate에서 실제 값 표시 연결 범위를 판단**한다. 검증된 데이터가 없는 항목은 미제공 유지, null의 화면 처리·Figma 표시/접근성·모바일·수명/회귀 기준을 해당 Task/QA에서 명시한다. 이번 후속 문서만으로 D2의 실제 UI 예외를 해제하거나 제품을 활성화하지 않는다.
+
+- [DEV-27 연결](DEV-27.md#dev-27-mat-290-handoff)·[WBS](../README.md)·[검토](../reviews/POL-14.md#pol-14-mat-290-review). TEAM-03의 당시 미제공 계획과 TEAM26 실제0통과26대기·AUTH-16/17 및 다른 QA/차단·승인 예외는 보존한다. 실제 지원/표시 연결 검증은 재개한 개발 Task가 해당 QA에 이어 기록한다.
+
+### 문서 후속 단위 종료·검증 체크포인트
+
+- 2026-11-17 09:03 KST: MAT-290 요청·D2 미제공 유지·반영 뒤 단계별 재확인/DEV-27 자체 Gate를 4문서에 연결했다. 문서 단위 PASS이며 backend 반영·제품 구현·실제 API 통합 PASS가 아니다. 상태는 WBS에서 POL-14 완료/현재 없음, DEV-27 준비로 관리한다.
+- `python3 /tmp/mate-mat290-docs/validate.py`·`git diff --check` PASS: 변경4문서/로컬 링크462·Markdown 표257행·원본79/Task114/의존156·고정6파일 byte/기존3기록 원문 보존·TEAM26 실제 대기26. 종료 metadata 뒤 같은 검사를 다시 실행하고 결과는 검토 기록에 보존한다.
+- Documentation Update Check·여섯 섹션 ai-review·read-only verifier PASS, 미해결 Blocker/Major/Minor0. package8scripts/실행·구조/DTO/mock/하네스 변화가 없어 공통 context·baseline/coverage·QA 원문은 유지한다. 로컬 앱/브라우저·mock/HTTP대역·실제 API는 문서 전용 사유로 미실행이며 미실행을 PASS로 세지 않는다.
+- 종료 metadata 뒤 문서 검사/리뷰 freshness → 목적별 docs 커밋·새 PR·최종 head 원격 CI/리뷰·동일 Task Chromatic 한도 원인 확인·정상 merge/main FF를 계속한다. 실제 커밋/PR/CI·병합 SHA/clean은 최종 PR과 종료 보고의 별도 Git 전달 증거로 남긴다.
+- 다음 하나는 기존 선정 DEV-27을 유지한다. WBS P2 기본 순서·POL-14 선행 충족과 기존 P0/P1·앞선 P2 차단을 보존한 선정이며 MAT-290을 전체 신규 선행으로 추가하지 않는다. 다음 첫 행동은 최신 main·MAT-290 현행 답변/지원·POL-14/TEAM 계획과 자체 Brief/수정·검증 Gate 확인이다. **이번에는 DEV-27 전용 조사·설계·구현·실제 QA를 시작하지 않았다.**
