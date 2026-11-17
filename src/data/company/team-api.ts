@@ -6,7 +6,7 @@ const record = (value: unknown): value is Record<string, unknown> => value !== n
 const count = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const positive = (value: unknown): value is number => count(value) && value > 0;
 const text = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0;
-function timestamp(value: unknown): value is string {
+export function timestamp(value: unknown): value is string {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/.test(value) || !Number.isFinite(Date.parse(value))) return false;
   const day = value.slice(0, 10);
   return new Date(`${day}T00:00:00Z`).toISOString().slice(0, 10) === day && Number(value.slice(11, 13)) < 24;
