@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -51,7 +51,7 @@ src/data/
 | `personalFilters` | 개인 필터 조회/저장/초기화 | `personal-filters/client.ts` |
 | `notificationSettings` | 수신 주소, 이메일 인증/재전송/확인, 맞춤 이메일 ON/OFF | `notification-settings/client.ts` |
 
-회사 계약은 Directory/Onboarding/Document 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
+회사 계약은 Directory/Onboarding/Document/Team 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
 
 ## 4. 빌드 설정과 운영 guard
 
@@ -149,6 +149,15 @@ src/data/
 - 검증된 성공 뒤만 상세/원본 메모리 URL을 해제하고 기존 Toast를1회 표시한 뒤 최신 목록 GET/유효 page로 이동한다. 성공 뒤 목록 실패/최종401/세션 해제는 완료를 보존하며 재로그인·목록 재확인으로 분리한다. 미확정 상태의404는 권한/없는 문서가 합쳐질 수 있어 성공이 아니다. 이미 저장한 파일/기발급 티켓의 즉시 회수나 회사 인증 자동 강등·정확한 파기 완료 시각을 약속하지 않는다.
 - mock 문서의 optional `deletion`은 합성 두 시각만 저장한다. 기존 schema/namespace·다른 계정/영역·멱등 이력/버전을 보존하고 권한 있는 재삭제는 같은 시각 결과다. 삭제 문서는 목록/모든 version metadata·원본/업로드 handle·completion/processing/retry·proposal/등록 replay에서 제외한다. 손상된 새 metadata는 회사 공간만 초기화한다. worker/실제 원본/OCR 파기를 모사하거나 회사 인증을 바꾸지 않는다.
 - [DEV-25 로컬 QA](../qa/company-documents.md#dev-25-local-qa)는 Node 계약·실제 Next mock/loopback HTTP만 포함한다. 실제 DBOX-17~22·현재 실행 SHA/실제 권한·disposable 문서/사용·삭제·잔존·복구·장기 worker 파기는 사용자 D1대로 차단을 보존한다.
+
+### 가입 후 팀원 조회 · DEV-27
+
+- 같은 company factory의 `CompanyTeamRepository`를 공개 contracts/client로 합성한다. 현재 회사는 HTTP의 세션 refresh, mock의 계정별 기존 company overview에서 얻으며 다른 공급원의 auth 회사/기본 profile 권한으로 대체하지 않는다. 관리 포트는 GET 조회만 제공한다.
+- catalog·현재 `memberships/me`의 leaf와 ACTIVE members 목록/상세를 읽는다. role은 서버의 요약 배지이며 허용 조건이 아니다. page0/기본20/size1..100·서버 total/count·joinedAt ASC/id ASC와3page/9row flags를 보존한다. 정밀 시각의 소수9자리와 nullable 이름/프로필/마지막 로그인을 검증하고 ID/version/flags를 추정하지 않는다.
+- HTTP 경계는 accountId와 미지원 birthDate/mobilePhone을 복사하지 않는다. D2 자리는 미제공이며 MAT-290 Done만으로 실제값 표시를 활성화하지 않는다. 프로필 URL은 HTTPS/자격증명 없음, 화면은 no-referrer·실패 시 공용 기본 이미지다. source/게시 Swagger와 실제 서버 wire/권한 통합 증거는 별개다.
+- `loadCompanyTeam`은 계정/epoch·Abort와 조회 전후 회사/소속/leaf를 검사한다. UI는 화면 종료·로그아웃·탐색/복귀에 조회 결과를 폐기·재조회한다.401/403/404와 전체 빈 목록·범위 밖 빈 page를 구분하며 자동 fallback/명령/polling은 없다. 실제 접근 제어는 서버가 집행한다.
+- mock은 기존 company namespace/overview/문서·신청·초대·멱등 replay를 유지하고 불변 합성 팀원23명을 매번 복사한다. 새 mutable 팀원 저장소·전역 schema 변경·실제 API 자료 복사는 없다. 기존 connected와 team-agent/team-viewer/team-extra/team-read-only/team-empty/team-denied는 같은 company 공급원에서만 동작한다.
+- [로컬 계약·브라우저/실제 QA 경계](../qa/team-members.md#dev-27-local-qa)와 사용자 로컬 선행 결정을 따른다. 직급/권한·초대/신청·직급 관리 명령은 후속 개발 Task이며 이번 capabilities 표시가 그 실행 승인은 아니다.
 
 ## 8. 유지하는 제품/API 정책
 

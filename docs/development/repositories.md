@@ -88,7 +88,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -170,3 +170,7 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 - `documents` mock에서 전체 삭제 후 목록은200으로 해당 행을 제외하고, 개별 이력/원본/업로드/처리는404이며, 같은 계정의 재삭제는 같은 deletedAt/purgeAt다. 새로고침·다른 계정/namespace·기존 업로드/멱등 이력은 유지한다. 저장한 합성 metadata는 worker/실제 파일 파기를 실행한 증거가 아니다.
 - 404/409/timeout·손상2xx는 완료가 아니며 자동 재삭제하지 않는다. 현재 상태 확인은 GET뿐이고 새 삭제에는 다시 확인이 필요하다. 성공 뒤 목록 실패/로그인 필요는 확인된 삭제를 보존하고 목록 재확인으로 연결한다. 회사 문맥은 company 포트를 사용해 auth API/company mock 조합을 보존한다.
 - [이번 D1/Brief](figma-v01/tasks/DEV-25.md#dev-25-brief)·[로컬 QA와 실제 차단](../qa/company-documents.md#dev-25-local-qa)을 구분한다. 실제 삭제·30일 비동기 파기/장기 worker는 disposable 자원·안전한 사용/삭제/잔존/복구 승인 뒤 재개한다.
+
+## DEV-27 팀원 조회의 로컬 재현
+
+회사 공급원 mock에서 `connected`는 합성 팀원23명·목록20행/페이지·ADMIN/AGENT/VIEWER와 nullable 상세를 제공한다. `/my/team`의 메뉴와 `/my/team/<membershipId>?page=<목록 UI page>`를 사용한다. `team-agent`/`team-viewer`는 현재 사용자의 leaf, `team-extra`는 VIEWER+초대 leaf, `team-read-only`는 변경 capabilities 전체 false, `team-empty`/`team-denied`는 빈 목록/조회 거부다. 기존 계정별 company overview를 사용하므로 API auth의 회사 null로 mock 회사를 덮어쓰지 않는다. 새 그룹/schema/라이브러리나 관리 명령은 없으며 기존 데이터/초대·문서 상태는 보존한다. 로컬 검증·한계와 실제 QA 차단은 [TEAM 기록](../qa/team-members.md#dev-27-local-qa)을 따른다.

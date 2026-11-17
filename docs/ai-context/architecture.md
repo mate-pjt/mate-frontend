@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -58,6 +58,8 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - Storybook uses `@storybook/nextjs-vite` and imports `src/app/globals.css` plus `.storybook/preview.css` for the Pretendard CSS variable.
 
 ## Source Area Notes
+
+- [DEV-27](../development/figma-v01/tasks/DEV-27.md#dev-27-brief)의 `/my/team`·`/my/team/[membershipId]`는 같은 company Team 조회 포트로 현재 회사·소속/leaf·catalog·ACTIVE 목록/상세를 읽는다. `team-api.ts`가 page/count·joinedAt ASC/id ASC(나노초 포함)·nullable·3page/9row flags와 exact ID를 검증하고 계정ID/미지원 개인정보는 내부 모델에서 제외한다. `features/company/team.ts`는 계정/epoch·Abort·회사/소속/leaf 재확인, UI는 URL page 복귀·401/403/404·결측과 focus/visibility 복귀를 조합한다. 직급/역할·권한은 조회 전용이고 관리 명령은 후속 DEV-28~32다. 생년월일/전화번호는 D2 미제공이며 [로컬 QA](../qa/team-members.md#dev-27-local-qa)는 실제 API 통합 차단과 구분한다.
 
 - `src/app`은 route와 shell, `src/components`는 UI와 사용자 행동 조합을 담당한다. endpoint·DTO·HTTP/mock 구현은 직접 import하지 않는다.
 - `/my/documents`는 기존 my 메뉴에서 진입하는 가입 후 회사 서류함이다. `features/company/document-box.ts`가 공개 company client의 현재 page/버전 조회를 동시4건으로 조합하고 KST 기간을 계산한다. 목록용 내부 모델은 상세/원본 이력 모델과 구분하며 미리보기는 DEV-23 상세로 연결한다. 기존 문서 재업로드는 아래 DEV-24 범위를 따르고 신규 추가는 준비 중이다. [DEV-22 로컬 검증](../qa/company-documents.md#dev-22-local-qa)은 실제 업무 API 통합과 별개다.
