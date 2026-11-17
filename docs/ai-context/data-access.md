@@ -180,6 +180,15 @@ src/data/
 - `team-invitation-mail-failed`는 초대를 만들되 합성 delivery만 FAILED로 반환한다. 실제 메일/원문·발송 링크는 생성하지 않는다. 수신 포트의 기존 합성 fixture 회귀는 발송된 초대의 실제 수신/수락 연결 증거가 아니다.
 - [DEV-29 QA](../qa/team-members.md#dev-29-local-qa)는 Node·mock 브라우저·API profile/loopback HTTP 대역과 실제7소유 부분 차단을 구분한다. TCP 유실 실험의 앱 fetch1회/HTTP wire2회(재전송은409) 관찰은 전송 계층과 앱의 자동 명령을 구분하는 한계이며, 실제 서버의 멱등 보장/메일 도착 PASS가 아니다.
 
+### 기존 초대 편집·재발송·취소 · DEV-30
+
+- 같은 company `CompanyTeamInvitationRepository`/public client의 `updateTeamInvitation`, `resendTeamInvitation`, `cancelTeamInvitation`을 사용한다. PATCH는 expectedVersion과 기존 입력의 이메일을 제외한 필드, resend는 expectedVersion body, cancel은 expectedVersion query/body 없음이다. 기존 isSuccess 경계/401 한 번 재인증만 유지하며 새 endpoint·추측 멱등 header·라이브러리·공급원/fallback은 없다.
+- 이메일과 등록 계정 이름은 고정이다. PATCH의 대표자 변경은 ADMIN, 직급/대표자 변경은 PROFILE_EDIT, 일반 직급 정의와 grant는 현재 leaf·부분집합/공석을 따른다. 취소는 INVITE이며 재발송의 기존 grant 재검사와 다르다. UI는 미만료 PENDING만 허용하고 만료 DB 잔존 resend 창을 사용하지 않는다. 임의 cooldown/횟수 제한을 추가하지 않는다.
+- 사용자 명시 재발송에서 변경이 있으면 PATCH의 정확한 version+1·동일 delivery/만료·입력/권한을 검증하고 저장 receipt를 보존한다. 최신 company/소속/leaf·catalog/초대/version·만료를 다시 확인한 뒤에만 resend한다. 변경 없음은 PATCH0이다. 성공한 저장·재발송 요청·delivery 상태/실제 메일 수신을 구별하며 손상/유실·404/CI003/CI004·후속 조회 실패 뒤 자동 PATCH/resend/cancel은 없다. 계정/epoch/Abort/화면 종료 뒤 후속 요청·완료를 폐기한다.
+- 명령 scope는 선택적 내부 `AuthAccess.assertRequestScope`를 합성해 shared HTTP의 최초/401 refresh 후 fetch 직전에 원래 만료·계정/epoch/Abort를 검사한다. guard 없는 기존 요청/공급원/wire 계약은 유지한다. 인증 대기 중 만료는 전송0, 첫401 뒤 만료는 재전송0이며 이미 보낸 요청의 서버 rollback을 보장하는 정책은 아니다. 편집창 진입에는 기본 INVITE/현재 상태를, 제출에는 새 grant 부분집합을 적용해 기존 ADMIN 초대의 합법적인 VIEWER 축소를 허용한다.
+- mock은 기존 계정별 `company-team-invitations` version1/namespace와 shared command lane을 유지한다. 선택적 `deliveries`는 과거 PENDING 대체와 새 delivery만 저장하며 알려진 구형 행은 첫 재발송에서 현재 delivery를 보완한다. PATCH는 delivery/만료를 갱신하지 않고 취소는 완료/목록 제외를 보존한다. source와 같이 cancel/PATCH는 만료 확정, resend는 DB PENDING 잔존 창을 가질 수 있어 UI D3를 별도로 테스트한다. 실제 token·handoff/메일 원문·API 응답을 저장하지 않으며 기존 독립 수신 mock과 연결된 통합을 모사하지 않는다.
+- [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)는 로컬 mock·HTTP fetch 대역·실제 Next/브라우저다. 실제 TEAM-14~17/23/26의6소유 부분은 실행 버전 대응·승인 합성 계정/회사/수신함·사용/소비/잔존/복구·담당 역할 미확보로 차단을 유지한다. source의 이전 링크/handoff 거부를 열람한 것과 실제 수락 거부 실행은 다르다.
+
 ## 8. 유지하는 제품/API 정책
 
 - 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다. 당시 미연결이던 금액 직접 범위의 후속 연결은 아래 DEV-11 기록을 따른다.
