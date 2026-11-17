@@ -11,6 +11,7 @@ import { validateDocumentAccess } from "./document-detail-api";
 import { syntheticDocumentBlob } from "./document-detail-mock";
 import { mapDocumentDeletion } from "./document-deletion-api";
 import type { DocumentDeletion } from "./contracts";
+import { createMockTeamQueries } from "./team-mock";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -195,7 +196,7 @@ function fingerprint(value: unknown) { let hash = 2166136261; for (const char of
 export function createMockCompanyRepository(runtime: MockRuntime): CompanyRepository {
   function initial(): CompanyState {
     let overview: CompanyOverview = { status: "empty" }; const scenario = runtime.scenario("company");
-    if (scenario === "connected" || scenario.startsWith("documents")) overview = { status: "connected", profile: basicProfile() };
+    if (scenario === "connected" || scenario.startsWith("documents") || scenario.startsWith("team-")) overview = { status: "connected", profile: basicProfile() };
     if (["pending", "rejected", "canceled", "approved-stale"].includes(scenario)) {
       const createdAt = new Date(runtime.now()).toISOString();
       const request: MyMembershipRequest = { requestId: 8001, version: 1, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt, updatedAt: createdAt, completedAt: scenario === "pending" ? null : createdAt };
@@ -300,6 +301,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     return { companyId: profile.companyId, membershipId: 9101, role: "ADMIN", verificationStatus: profile.verificationStatus };
   }
   return {
+    ...createMockTeamQueries(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }),
     async getDocumentBoxContext(access, signal) {
       const account = await mockAccount(runtime, access, "company", signal);
       const view = read(account).overview;

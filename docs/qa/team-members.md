@@ -264,3 +264,47 @@
 - 실제 통과0 · 실패0 · 차단 사례로 실행한0 · 대기26. 현재 실행 Gate의 자원/실행 대응·사용/복구 승인은 미확보이며 제품 구현도 후속이다. 대기26을 실제 검증의26차단/통과로 집계하지 않는다.
 - POL-14에서는 문서/계약 정적 조사와 후속 기준·QA 계획만 검증한다. 실제 업무 GET/명령·메일·권한/직급·운영/배포 실행0이다. 정책 완료와 제품/실제 API 통합·main 반영은 별개다.
 - 목록/상세의 첫 자체 Gate 후보는 DEV-27, 동의 변경 DEV-28·초대 DEV-29/30·검토 DEV-31·직급 DEV-32는 각 선행과 자체 승인 범위를 확인한 뒤 시작한다. DEV-33의 POL-15/DEV-27 선행과 기존 AUTH QA를 유지한다. 이번에는 어느 개발 Task도 실행하지 않았다.
+
+<a id="dev-27-local-qa"></a>
+
+## 2026-11-17 · DEV-27 조회의 로컬 검증과 실제 QA 차단
+
+- 실행 단위: DEV27-20261117. 사용자 [이번 Brief/D1](../development/figma-v01/tasks/DEV-27.md#dev-27-brief)의 로컬 선행·실제 API QA 차단 보존 결정이다. 위11/16 정책 계획/대기26과 다른 Task의 실제 결과/예외를 덮어쓰지 않는다.
+- 환경: Node22.20.0/pnpm11.3.0·Next16.2.9 webpack, `.env*` 없는 격리 소스 복사본. Aside Chromium1920×1080/390×844. mock `company=connected`, HTTP 대역은 loopback3028→3127의 합성 응답/CORS이며 실제 개발 서버/계정/개인정보·실제 회사/문서/메일을 사용하지 않았다.
+- 실제 backend 확인 수준: 고정 dev `adc0e265…`·CI run43389204151 success, 개발 OpenAPI200/지문 무변경·3page/9row/nullable·count/ASC와 catalog15leaf3분류를 재확인했다. 실행 process SHA·실제 업무 응답/wrapper·권한 집행은 미확인이다. MAT-290 Done·댓글0과 DTO/명세의 두 필드 부재를 구분해 D2 미제공 유지다.
+
+| 대상/근거 | 이번 로컬 결과 | 실제 API/후속 범위 |
+| --- | --- | --- |
+| TEAM-01 · 현재 회사·leaf·ADMIN/AGENT/VIEWER/추가 leaf | PASS · HTTP/단위·브라우저에서 role 요약과 권한 구분, VIEWER+초대 leaf는 초대 권한 표시, 기본정보 profile GET 추가0 | DEV-27 조회 부분 차단 · 승인 합성 회사/계정·현재 권한/실행 대응·열람 범위 미확보 |
+| TEAM-02 · 목록/빈 값/페이지/count/ASC | PASS · mock23명/20+3·목록2page→상세→동일 page 복귀, HTTP 전체 빈 값/범위 밖 page와 0-based API·size1..100, 정밀 시각 정렬 | 같은 실제 조회 자원/비식별 fixture·정렬/count 검증 필요 |
+| TEAM-03 · 상세/nullable/D2 | PASS · exact 대상·없는/탈퇴 대상404·변경된 직급/역할 재조회, null 이름/로그인/프로필, 생년월일/핸드폰번호 미제공·추가 wire 개인정보/계정ID 폐기 | 실제 값 표시 연결은 MAT-290의 지원/실응답 재확인 후 별도 Gate. 미지원 자리 미제공 유지 |
+| TEAM-04 ·3page/9row flags | PASS · HTTP/계약·mock의 읽기 전용 전체 false, 직접/동의/금지 표시와 후속 변경·초대·신청/직급 관리 disabled, 업무 명령0 | 조회 당시 flags와 실제 서버 거부·회사 상태 조합은 실제 QA 차단. 변경 실행은 DEV-28~32 |
+| TEAM-23 · DEV-27 계정/회사/화면 부분 | PASS · 단위의 늦은 계정/epoch/Abort 응답 폐기·회사/소속/leaf 재확인, 브라우저 회사 전환/복귀·로그아웃/세션 만료·보호 자료 숨김 | 이 조회 부분은 실제 QA 차단. 다른 Task 소유의 명령/직급/초대 수명은 대기 유지 |
+| TEAM-26 · DEV-27 Repository 부분 | PASS ·7그룹/config·api/mock/hybrid/운영 guard/저장소·아키텍처 회귀, HTTP 대역의 최종401/403/404/503·wrapper 거부. 실제 Next·공급원 격리 | 이 조회 부분은 실제 QA 차단. source/게시·mock/대역·build를 실통합 PASS로 올리지 않음 |
+
+### 브라우저 증거/한계
+
+- [20개 관찰 PASS·추가1개 미실행의 원시 판정](assets/dev-27/dev27-browser-results.json): 키보드 Enter/Space 펼침,4역할/권한 상태,6접근/빈/회사 상태, 페이지 복귀/로그아웃, 변경/탈퇴/nullable·범위 밖 page/잘못된 ID, 회사 전환·세션 만료. 새로고침/직접 URL을 사용했고 UI가 받아들인 결과로 판정했다.
+- 추가 점검 `background-conceals-detail`은 Aside target API가 탭을 다시 활성화해 실제 visibility hidden 이벤트0이었다. 첫 시도의 false를 제품 FAIL로 오인하거나 PASS로 바꾸지 않고 **UNEXECUTED**로 기록했다. 진짜 hidden 상태의 DOM/화면 전수 검증은 남아 있다. 기본 Abort·화면 종료/계정/회사 변경은 별도 단위 및 브라우저 로그아웃/복귀로 확인했으며 이 증거가 genuine hidden 이벤트를 증명하지는 않는다.
+- desktop1920px/모바일390px에서 문서 가로 넘침0, 모바일 표는850px을343px 지역 안에서 스크롤했다. main landmark1·native details 키보드·권한 checkbox/저장 disabled를 확인했다. UI 자산3개 로드 성공·Figma 원본 크기20×20/13×18/약20×16.67이며 나머지 헤더/메뉴/기본 프로필은 기존 자산이다. 초기 탭 stretch/글꼴·role 색과 fractional Image 경고는 최소 교정했다.
+- mock resource의 외부 origin 요청0. HTTP 대역은 보호 GET과 기존 auth refresh POST만 사용했고 **업무 mutation0**이다. 실제 서버 호출/메일·가입·문서 처리/운영·배포0. 테스트 자원은 합성 메모리/탭 공간뿐이며 QA 서버는 종료 시 정리한다.
+
+| 화면 | Figma/정합성 경계 | 캡처 |
+| --- | --- | --- |
+| 목록 | [3137:52702](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52702) · 표·역할·탭·메뉴/아이콘 유지. 신청/직급 자리는 후속 준비 중, 현재 조회 기능 설명/새로고침·페이지/결측 상태 추가 | [desktop](assets/dev-27/dev27-http-list-desktop.png) · [mobile](assets/dev-27/dev27-http-list-mobile.png) |
+| 상세 관리자/팀원·뷰어 | [3137:53331](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53331) · [3137:54225](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-54225) · 개인정보4자리·직급·역할·권한·목록 복귀 유지. D2 두 자리 미제공은 명시 한정 예외. 현재 catalog의3분류/15leaf·명칭은 POL-14 D1 계약의 기능 기준이며 Figma2분류 전체 화면 예외로 부르지 않음 | [desktop](assets/dev-27/dev27-http-detail-desktop.png) · [mobile](assets/dev-27/dev27-http-detail-mobile.png) |
+
+모든 frame/child/prototype·pixel 전수 PASS가 아니다. 현재 HTTP 계약에는 Google 연동 확인 필드가 없어 연동/검증 완료를 합성하지 않았다. 변경 컨트롤은 DEV-28 소유로 준비 중이며 실제 권한 변경 완료를 주장하지 않는다.
+
+### 실제 QA 재개 조건
+
+실제 통과0이다. TEAM-01~04와 공통23/26의 **DEV-27 조회 부분**은 합성 actor/회사·현재 leaf/상태·Origin/실행 SHA 대응·개인정보 열람/사용·잔존/복구 범위와 담당 역할을 확보해야 재개한다. 다른20개 및 공통 case의 후속 소유 범위는 기존 대기다. 사용자 로컬 선행은 실제 QA 면제/서버 반영 승인이 아니며 AUTH-16 0통과1차단·AUTH-17 미실행과 QA-08·회사/가입/문서의 기존 차단을 유지한다. MAT-290의 두 필드 표시 재개는 [별도 지원 확인 Gate](../development/figma-v01/tasks/DEV-27.md#dev-27-mat-290-handoff)를 따른다.
+
+<a id="dev-27-link-regression"></a>
+
+### DEV-27 독립 Major1 수정 뒤 링크 회귀
+
+- 첫 verifier FAIL: `onClick={conceal}`4곳이 Cmd/Ctrl 수정 클릭에도 현재 자료를 지울 수 있었다. 실제 SPA 이동만 처리하는 `onNavigate={conceal}`로 변경했다. 일반 링크·준비 중 변경 기능의 범위는 그대로다.
+- [네이티브 회귀 판정](assets/dev-27/dev27-link-regression.json): 설치된 캐시의 Playwright CLI를 offline으로 재사용한 별도 Chromium에서 키보드 Meta down→링크 클릭→Meta up으로 **원래 목록 유지+상세 새 탭**, **원래 상세 유지+목록 새 탭**을 확인했다. Control 클릭의 원래 목록 유지와 일반 목록 복귀도 PASS.4관찰에서 원래 URL/표·상세/새로고침 enabled를 확인했다. 콘솔 오류0, 기존 개발 폰트 preload 타이밍 경고1은 범위 밖이다.
+- Aside가 modifier 옵션을 일반 클릭으로 처리한 시도와 비신뢰 DOM MouseEvent 시도는 네이티브 새 탭 PASS 근거로 삼지 않았다. 격리본에 과거 handler를 넣은 임시 시도도 의미 있는 재현 판정에 사용하지 않았으며 최종 격리 소스는 원본의 onNavigate로 복원했다.
+- 최종 관찰은 기존20PASS+이번4PASS이며 genuine hidden 추가1은 여전히 미실행이다. 실제 API 통합/개인정보 표시·다른 Task의 차단과 예외는 그대로다.

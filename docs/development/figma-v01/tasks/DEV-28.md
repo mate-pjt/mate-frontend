@@ -79,3 +79,13 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-28-dev-27-selection"></a>
+
+## 2026-11-17 · DEV-27 뒤 다음 Task 선정/인계만
+
+- [DEV-27 로컬 범위 종료](DEV-27.md#dev-27-close)를 근거로 P2 기본 표 순서의 다음 후보로 선정했다. P0/P1 및 앞선 P2 회사 갱신의 기존 차단·선행은 유지한다. 현재/다음/상태는 WBS만 소유한다.
+- 인계 산출물: 같은 company Team 공개 조회 포트와 `/my/team`·`/my/team/[membershipId]`, strict ID/version/현재 leaf/catalog·3page/9row flags, 계정/회사/화면 수명·조회 전후 재확인, 목록 page 복귀와 조회 전용 상세다. 본 Task의 관리 명령/동의·퇴사/내보내기·알림 route를 구현한 것은 아니다.
+- 다음 첫 행동: 최신 main/DEV-27·POL-14의 직접/대상 동의/금지·최후 관리자 기준과 TEAM-05~10/23/25/26, 그때의 backend GitHub/개발 Swagger·상태별 Figma를 확인한다. 실제 leaf/target/version·직접 변경/동의 생성·결정/취소·안전 알림 경로/계정·회사 수명과 실제 합성 자원/사용/복구 범위를 자체 Brief·수정 파일·영향·검증 Gate에서 확정한다. 원본 candidate는 구현 Brief 승인이 아니다.
+- DEV-27의 로컬 선행·실제 QA 차단 보존/Chromatic 예외는 이번 조회 단위 승인이다. 이 Task의 자동 로컬 선행·실제 업무 변경·Git 전달 승인으로 확대하지 않는다. D2 미제공/MAT-290 지원 재확인·기존 AUTH/회사/문서 QA와 다른 Task 차단을 유지한다.
+- 선정/인계만 했으며 전용 계약 재조사·요구사항 확정/설계·제품/Repository 명령·실제 업무/메일/QA·Git 전달을 시작하지 않았다.

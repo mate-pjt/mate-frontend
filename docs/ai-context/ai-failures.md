@@ -339,3 +339,13 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - Output limitation: 첫 Figma 응답에서 임시 asset 주소를 선별 없이 출력했고 Aside 대화형 CLI 시작도 불필요한 계정 식별 metadata를 자동 출력했다. 사용자에게 공개했으며 실제 값을 Task/QA/PR에 재인용하지 않는다. 환경파일/credential·실제 계정/업무 응답 조회와 구분하며 기존 출력 삭제를 주장하지 않는다. 외부/CLI 응답은 실행 전 출력 필드와 자동 startup metadata를 확인·필터링하고, 후속 출력은 node/비식별 상태·method/path/status만 사용한다.
 - Evidence boundary: Aside 일회 REPL/탭 수명·스크린샷 session 경로·1px 이미지 AX 가시성/미지원 request 이벤트는 도구 한계로 기록한다. mock 외부 resource 관찰0을 packet 전수 계측으로 올리지 않는다.408의 wire3회/401의 공통 인증 재요청2회를 앱의 자동 재삭제와 구분하고 실제 통합 차단을 유지한다. Toast는 알림 region 안에서 세어 같은 성공 제목과의 전역 text2개를 오판하지 않는다.
 - Related files: DEV-25 Task/검토·DBOX-DEL QA, document-deletion controller/dialog·상세, 두 삭제 회귀 파일. 새 library/하네스·전역 config/storage 정책 변경 없음.
+
+
+## 2026-11-17 · DEV-27 수정 클릭을 현재 페이지 이탈로 처리
+
+- Task/기대: 팀원 링크의 일반 이동은 이전 조회를 취소하고, Cmd/Ctrl+클릭으로 다른 탭을 열 때는 원래 목록/상세를 유지한다.
+- 실제 실패: 독립 verifier가 Major1로 발견했다. `onClick={conceal}`이 수정 클릭에도 자료를 숨기고 새로고침을 disabled loading으로 남길 수 있었다. 초기 primary ai-review에서 놓쳤으며 첫 독립 검토 FAIL을 보존한다.
+- 원인: Next16 Link가 사용자 onClick을 실행한 뒤 modifier/target을 확인한다는 순서를 놓쳤다. 실제 SPA 이동 의도와 모든 클릭을 동일하게 취급했다.
+- 최소 수정/검증: Link/ButtonLink4곳의 수명 해제를 `onNavigate`로 옮겼다. 원본758 test/lint와 격리 build PASS, 별도 Chromium의 네이티브 Meta 클릭 목록/상세 새 탭·Control 클릭·일반 복귀4관찰 PASS를 확인했다. Aside의 modifier 옵션/비신뢰 DOM 이벤트 시도는 새 탭 검증 PASS로 사용하지 않았다.
+- 예방: Next Link의 수명 해제는 실제 onNavigate에 묶는다. 일반 이동뿐 아니라 수정 클릭/새 탭에서 원래 화면/버튼이 유지되는지 실제 브라우저로 확인한다.
+- 관련: [Task](../development/figma-v01/tasks/DEV-27.md#dev-27-verification)·[검토](../development/figma-v01/reviews/DEV-27.md)·[QA 회귀](../qa/team-members.md#dev-27-link-regression). 하네스/패키지 변경 없음.

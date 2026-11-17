@@ -7,6 +7,7 @@ import { mapDocumentBoxPage, mapDocumentBoxVersions, validateDocumentBoxQuery, v
 import { mapDocumentHistory, readDocumentOriginal } from "./document-detail-api";
 import { mapReplacementUpload, mapReuploadStatus } from "./document-upload-api";
 import { mapDocumentDeletion } from "./document-deletion-api";
+import { createTeamQueries } from "./team-api";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -274,5 +275,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, deleteCompanyDocument, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { ...createTeamQueries(http), getCompanyTeamContext: getDocumentBoxContext, getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, deleteCompanyDocument, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }

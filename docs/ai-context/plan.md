@@ -282,3 +282,7 @@ Final reports should include:
 [사용자 D1/D2/D3와 정책 v1](../development/figma-v01/tasks/POL-14.md#pol-14-contract)은 현행15leaf/계산 role·capabilities·직접/대상 동의/금지와 최후 관리자·회사/계정 범위, 초대7일/메일 상태·합류/직급/version 계약을 채택한다. 생년월일/전화 자리는 미제공·대표자 안내는 행동별로 교정하는 한정 화면 예외와 만료 후 새 초대 기준을 확정했다. 대표자 system 정의 보호와 소속의 동의 변경/본인 해제를 구분한다.
 
 [DEV-27~33 인계](../development/figma-v01/tasks/POL-14.md#pol-14-handoff)·[TEAM26 미실행 계획](../qa/team-members.md#pol-14-team-qa)은 후속 자체 Gate의 기준이며 제품 구현·실제 업무/메일/권한·직급 처리·QA 자원/실행 승인·로컬 선행 예외가 아니다. 동의 상세/안전 알림 경로는 DEV-28, 수락 완료 목적지는 POL-15/DEV-33의 별도 Gate다. source/배포/게시 명세를 실행 SHA·실제 통합으로 바꾸지 않고 기존 QA-08 AUTH-16/17·다른 가입/회사/DEV-08/MAT-162와 모든 과거 차단/예외·기준선을 보존한다. 현재/다음/상태는 WBS만 소유한다.
+
+## 2026-11-17 · DEV-27 팀원 조회의 로컬 선행
+
+[이번 사용자 결정/Brief](../development/figma-v01/tasks/DEV-27.md#dev-27-brief)는 목록·역할·상세/메뉴와 같은 company Team 포트를 로컬 선행하고 실제 API QA 차단을 보존한다. catalog·현재 leaf·page/count/ASC와 capabilities/nullable·회사/계정/화면 수명을 연결하며 생년월일/전화 자리는 D2 미제공이다. [QA](../qa/team-members.md#dev-27-local-qa)는 mock·HTTP 대역/브라우저·실서버 미실행 및 도구 한계를 분리한다. DEV-28~33과 기존 QA/원본 기준선·승인 예외는 유지하며 현재/다음/상태는 WBS만 소유한다.

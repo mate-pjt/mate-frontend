@@ -5,8 +5,10 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-17 KST |
-| 현재 작업 | 없음 — [POL-14 MAT-290 문서 후속](tasks/POL-14.md#pol-14-mat-290-handoff) 검증/두 리뷰 PASS. Git 전달은 새 PR의 최종 head CI·정상 병합/main FF에서 별도 확인하며 DEV-27 구현 제외 |
-| 다음 작업 | [DEV-27 · 팀원 목록·역할·상세 조회](tasks/DEV-27.md#dev-27-pol-14-selection) — POL-14 충족·P2 기본 순서 첫 독립 후보. 선정/인계만, 자체 Gate·조사/제품/실제 QA 미착수 |
+| 현재 작업 | 없음 — [DEV-27 로컬 범위](tasks/DEV-27.md#dev-27-close) 검증/수정 후 두 리뷰 PASS. 실제 API 조회 차단·추가 hidden 미실행 유지. Git 전달은 최종 PR/head CI·정상 병합/main FF에서 별도 확인 |
+| 다음 작업 | [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md#dev-28-dev-27-selection) — DEV-27 선행 충족·P2 기본 순서 첫 후보. 선정/인계만, 자체 Gate·제품/실제 QA 미착수 |
+| DEV-27 Git 전달 | [PR #85](https://github.com/mate-pjt/mate-frontend/pull/85), 목적별6커밋 최초 head03c3407·라벨 feature/test/docs. Git checkpoint 문서 반영 뒤 최종 head CI/리뷰·정상 merge/main FF에서 별도 확인하며 실제 QA 차단 유지. [기록](tasks/DEV-27.md#dev-27-git-delivery) |
+| DEV-27 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 답변 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무/API·메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-27.md#dev-27-brief) |
 | POL-14 MAT-290 후속 승인 | 2026-11-17 사용자: POL-14/DEV-27/WBS 연결·미제공/재확인 조건·문서 검증/리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 main FF. DEV-27 구현/실제 업무 제외. [Brief/기존 동일 Task Chromatic 한도 예외 경계](tasks/POL-14.md#pol-14-mat-290-handoff) |
 | POL-14 외부 요청 | [MAT-290](https://linear.app/mate-pjt/issue/MAT-290/backend-팀원-목록상세-응답에-생년월일휴대전화번호-추가) — 11/17 조회 Backlog. 팀원 목록/상세의 birthDate/mobilePhone 추가·nullable/형식/권한·실제 반영 확인 요청. 반영 전 D2 미제공 유지, 계약/실제 응답 확인 뒤 DEV-27 자체 Gate에서 표시 연결 판단. **DEV-27 전체의 신규 선행/차단 아님**. [재확인 조건](tasks/POL-14.md#pol-14-mat-290-handoff) |
 | POL-14 이번 승인 범위 | 2026-11-16 사용자 최초 요청: 정책 조사/결정·문서 검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 main FF. 이번 Chromatic 월간 한도만 예외. D1 현행 계약/동의·D2 미제공/행동별 안내·D3 만료후 새 초대 확정. 제품/실제 업무 API·초대/메일/권한/직급·중앙 저장소·운영/배포·다음 Task 실행 제외. [확정 Brief](tasks/POL-14.md#pol-14-brief) |
@@ -31,7 +33,7 @@
 | POL-08 이번 승인 범위 | 2026-11-13 사용자: POL-08 정책·문서 검증/두 리뷰·목적별 commit/push·PR·최종 CI/정상 main 병합·로컬 동기화. 이번 Chromatic 월간 한도만 예외. 제품/업무 API 변경·중앙 저장소 편집·외부 메시지·운영/배포·다음 Task 실행 제외. [조사/결정](tasks/POL-08.md#pol-08-investigation) |
 | DEV-11 이번 승인 범위 | 2026-11-12 사용자 요청6항의 Git 전달·이번 Chromatic 한도 예외와 추가 답변 ‘로컬 선행·실서버 QA 차단 보존 (추천)’. 실제 업무/계정 변경·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-11.md#dev-11-brief) |
 | DEV-10 이번 승인 범위 | 2026-11-12 사용자: DEV-10 개발·검증·두 리뷰·목적별 commit/push·PR·CI·정상 main 병합/로컬 동기화. 이번 Chromatic 월간 한도 예외, 로컬 선행/실제 API 차단 보존 답변과 실제 HTTP 연결 구현을 구분. [Brief](tasks/DEV-10.md#dev-10-brief) |
-| 다음 첫 행동 | 새 대화 DEV-27 자체 Gate에서 최신 main/POL-14·TEAM 계획과 MAT-290 답변/현행 지원을 확인한다. API 반영 전 미제공 유지, 반영 소식 뒤 source/배포/Swagger/실행·실제 응답을 분리 재확인하고 자체 Brief·수정/검증부터 제시한다. 이번에는 DEV-27 실행하지 않음 |
+| 다음 첫 행동 | 새 대화 DEV-28에서 최신 main/DEV-27·POL-14/TEAM 기준·현행 source/Swagger·target/version/직접·동의/안전 route·실제 자원/사용·복구 범위를 확인하고 자체 Brief·수정/검증 Gate를 제시한다. 이번에는 실행하지 않음 |
 | DEV-14 외부 조건 | [POL-09 사용자 결정](tasks/POL-09.md#pol-09-contract): 본문·현장설명 일시·기준일/수집일 추가 추진. 2026-11-13 [사용자 요청문/이미지 전달 보고](tasks/POL-09.md#pol-09-backend-delivery)를 기록했다. **답변과 실제 API 계약 확보 전까지 차단 유지**. 접수/답변·실행 대응/비식별 검증 자원·일정 미확인, 구현 미착수·현재 차이에 대한 Figma 예외 승인 없음. [재개 Gate](tasks/DEV-14.md#dev-14-pol-09-handoff) |
 | DEV-13 외부 조건 | 2026-11-13 사용자 전용 backend 이전 차수 계약 선행 확정·개발자에게 요청 발송 보고. 기존 no-view 조회 경로는 미채택. 실제 계약/접수·일정·배포/실행 대응·합성 검증 자원은 미확보이며 [재개 Gate](tasks/DEV-13.md#dev-13-pol-08-handoff) 전 구현/로컬 선행 예외 없음 |
 | DEV-09 이번 승인 범위 | 2026-11-12 사용자: DEV-09 하나의 개발·검증·두 리뷰·목적별 commit/push·PR/CI·정상 main 병합/로컬 main 동기화. 이번 PR의 Chromatic 월간 한도 문제만 예외. 실제 업무 API 변경/메일·문서 처리/운영·배포는 별도 범위 확인. 다음 Task는 선정/인계만. [사전 조사](tasks/DEV-09.md#dev-09-investigation) |
@@ -81,7 +83,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료34 · 차단23 · 대기54 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 준비/선정 상태·미착수, TEAM26은 실제 대기를 유지한다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료35 · 차단23 · 대기53 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 선정/준비만, 실행 미착수다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -174,8 +176,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
 | [POL-14 · 팀원 권한·초대·합류·직급 계약](tasks/POL-14.md) | 정책 결정 | P2 | 완료 | T01, T02, T03, T04 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-27 · 팀원 목록·역할·상세 조회](tasks/DEV-27.md) | 개발 | P2 | 준비 | T01 | [POL-14](tasks/POL-14.md) |
-| [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md) | 개발 | P2 | 대기 | T01 | [DEV-27](tasks/DEV-27.md) |
+| [DEV-27 · 팀원 목록·역할·상세 조회](tasks/DEV-27.md) | 개발 | P2 | 완료 | T01 | [POL-14](tasks/POL-14.md) |
+| [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md) | 개발 | P2 | 준비 | T01 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-29 · 팀원 초대 발송](tasks/DEV-29.md) | 개발 | P2 | 대기 | T02 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-30 · 초대 재발송·취소 관리](tasks/DEV-30.md) | 개발 | P2 | 대기 | T02 | [DEV-29](tasks/DEV-29.md) |
 | [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md) | 개발 | P2 | 대기 | T03 | [DEV-27](tasks/DEV-27.md) |
@@ -446,3 +448,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [사용자3결정/v1](tasks/POL-14.md#pol-14-contract): 현행 leaf/계산 role·capabilities/직접·대상 동의·최후 관리자·초대/합류/직급 계약 채택, 상세 미제공·대표자 행동별 안내의 한정 화면 예외, 만료 후 새 초대 기준을 확정했다. 후속DEV/QA·문서 검증/Context Audit·두 리뷰 PASS와 제품/실제 통합·Git 전달을 구별한다.
 - [TEAM26](../../qa/team-members.md#pol-14-team-qa)은 실제0통과26대기·실행 자원/사용·복구/실행 대응 미확보다. 기존 QA-08 AUTH-16/17·다른 가입/회사/문서·DEV-08/MAT-162·타Task 차단/예외와79원본/114Task/156의존을 보존한다. 종료 metadata freshness·최종 CI/Git/main 일치는 검토/실제 PR #83·종료 보고에서 확인한다.
 - 다음 하나는 [DEV-27](tasks/DEV-27.md#dev-27-pol-14-selection)이다. POL-14 완료·기존 앞선 우선순위/선행 차단 보존 뒤 P2 기본 표 순서 첫 독립 개발 후보로 선정했다. 위 첫 행동/자체 Gate 인계만 하며 전용 조사/설계/구현·실제 업무/QA·Git 전달을 시작하지 않는다.
+
+
+## 2026-11-17 · DEV-27 조회 로컬 범위 종료와 DEV-28 인계
+
+- [DEV-27 종료/검증·수정/리뷰](tasks/DEV-27.md#dev-27-close): 실제 API 연결 코드를 포함한 로컬 단위 PASS, 실제 통합0통과·조회 부분 차단/추가 hidden 미실행 유지. 첫 독립 Major1을 onNavigate로 고치고 네이티브4회귀·재리뷰를 수행했다. Git 전달은 실제 최종 PR/head에서 별도 확인한다.
+- P0/P1/앞선 P2의 기존 차단/선행과79원본·114Task/156의존을 보존한 다음 하나는 [DEV-28](tasks/DEV-28.md#dev-28-dev-27-selection). 위 첫 행동과 선정/인계만 하며 전용 계약 재조사·Brief/설계·제품/실제 업무/QA·Git 전달은 시작하지 않는다. 이번 승인 예외를 다음 Task로 옮기지 않는다.
