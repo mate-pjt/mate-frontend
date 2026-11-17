@@ -5,7 +5,7 @@
 | 확인할 것 | 현재 값 |
 | --- | --- |
 | 갱신일 | 2026-11-17 KST |
-| 현재 작업 | [DEV-28 로컬 범위 종료](tasks/DEV-28.md#dev-28-close) — 자동·로컬 브라우저·문서/두 리뷰 PASS. 실제 API QA9부분 차단 보존, Git 전달은 아래 PR의 최종 결과로 별도 확인 |
+| 현재 작업 | [DEV-28 추가1/1 뒤 로컬 범위 종료](tasks/DEV-28.md#dev-28-extra-close) — 두 결함 수정·842 tests/빌드/로컬 QA·문서/두 리뷰 PASS. 실제 API QA9차단·초기 관찰/도구 한계 보존, 새 최종 PR head CI/Git 전달은 별도 확인 |
 | 다음 작업 | [DEV-29 · 팀원 초대 발송](tasks/DEV-29.md#dev-29-dev-28-selection) — 선정/인계만, 실행 미시작 |
 | 다음 첫 행동 | 최신 main·POL-14/DEV-27/28 산출물과 당시 backend/개발 Swagger를 확인하고 발송 입력·권한·delivery/실제 메일 분리, 합성 수신 자원·사용/변경/잔존/복구 범위를 DEV-29 자체 Brief/Gate에서 확정 |
 | DEV-28 Git 전달 | [PR #86](https://github.com/mate-pjt/mate-frontend/pull/86), 목적별6커밋 최초 head338783b·라벨 feature/test/docs. 이 Git checkpoint 뒤 최종 head의 원격 CI/리뷰·정상 merge/main FF는 실제 PR/종료 보고에서 확인한다. [기록](tasks/DEV-28.md#dev-28-git-delivery) |
@@ -86,7 +86,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료36 · 차단23 · 대기52 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 이번 D1/D2의 로컬 개발·검증/두 리뷰 완료이며 실제 API QA9소유 부분 차단을 보존한다. DEV-29는 다음 요구사항 Gate 대상으로 선정/인계만 했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료36 · 차단23 · 대기52 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29는 선정/인계만 했으며 DEV-28 재검증/Review Gate 전에 실행하지 않는다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -180,7 +180,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | --- | --- | --- | --- | --- | --- |
 | [POL-14 · 팀원 권한·초대·합류·직급 계약](tasks/POL-14.md) | 정책 결정 | P2 | 완료 | T01, T02, T03, T04 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-27 · 팀원 목록·역할·상세 조회](tasks/DEV-27.md) | 개발 | P2 | 완료 | T01 | [POL-14](tasks/POL-14.md) |
-| [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md) · **D1 로컬 범위 PASS·실제 QA9부분 차단 보존** | 개발 | P2 | 완료 | T01 | [DEV-27](tasks/DEV-27.md) |
+| [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md) · **추가1/1 뒤 로컬 Gate PASS·실제 QA9차단 보존** | 개발 | P2 | 완료 | T01 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-29 · 팀원 초대 발송](tasks/DEV-29.md) | 개발 | P2 | 준비 | T02 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-30 · 초대 재발송·취소 관리](tasks/DEV-30.md) | 개발 | P2 | 대기 | T02 | [DEV-29](tasks/DEV-29.md) |
 | [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md) | 개발 | P2 | 대기 | T03 | [DEV-27](tasks/DEV-27.md) |
@@ -462,3 +462,13 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-28 종료](tasks/DEV-28.md#dev-28-close): 이번 D1/D2의 실제 HTTP 연결 코드/가변 mock·팀원 편집/명시 동의 목록·상세/알림 exact route,838 tests·lint·API/mock/hybrid/Storybook·로컬30관찰/문서·Context Audit/두 리뷰 PASS. 첫 독립 Major3/Minor1·수정3/3·fixture-invalid1을 보존한다. 실제 API QA9소유 부분0통과·차단/추가 hidden 미실행과 기존 QA·정책 예외는 유지한다. 종료 metadata freshness·Git 최종 CI/정상 merge/main FF는 별도 확인한다.
 - 다음 하나는 [DEV-29 인계](tasks/DEV-29.md#dev-29-dev-28-selection)다. 기존 P0/P1·앞선 P2의 외부/선행 차단을 유지한 기본 표 순서 첫 독립 후보이며 DEV-27 선행 충족을 확인했다. DEV-30의 DEV-29 선행과 원본79/114Task/156의존을 유지한다. 첫 행동/자체 Gate만 인계하고 전용 조사/설계·초대/메일·제품/실제 API/QA·별도 Git 전달은 시작하지 않았다. DEV-28 승인을 다음 Task로 확대하지 않는다.
+
+## 2026-11-17 · DEV-28 병합 직전 새 리뷰 Gate
+
+- PR #86 head8fa797e의 최종 CI본체/게시 성공과 한도 pending 예외를 확인했으나, merge 직전 새 자동 리뷰2건을 발견했다. [현재 탭 로딩 고착·mock 행동별 capability 불일치](tasks/DEV-28.md#dev-28-remote-review)를 실제 로컬 브라우저/합성 Node 및 read-only verifier가 재현해 최신 Review Gate FAIL이다. 정상 merge API는 실행하지 않았다.
+- 자동 수정3/3 뒤 이 두 건 한정 추가1회 결정 전 제품 변경은 하지 않는다. DEV-29 선정/인계 기록은 보존하되 DEV-28 재검증/두 리뷰 전 실행하지 않는다. 원본/선행·기존QA/실제9차단·승인 예외는 유지한다.
+
+## 2026-11-17 · DEV-28 추가1회 승인 뒤 로컬 Gate 재통과
+
+- [추가1/1 종료](tasks/DEV-28.md#dev-28-extra-close): 이번 사용자 승인으로 같은 목적지 결과 유지·mock 각 행동kind capability 두 최소 수정/4회귀를 반영했다.842 tests/lint0·API/mock/hybrid/Storybook·추가 실제 Next mock/독립 탐색17·문서/Context Audit·두 리뷰 PASS다. 첫 FAIL/원격Major2·추가 브라우저23PASS/초기2관찰·도구 한계/원인 미확정은 보존하며 실제 API0/9소유 부분 차단을 유지한다.
+- DEV-29는 기존 선정/인계 하나를 유지하고 첫 행동/자체 Gate 외 실행0이다. 원본79/114Task/156의존과 기존 다른 Task/QA·승인 예외를 보존한다. 새 최종 PR head CI/두 thread·정상 merge/main FF/동일SHA·clean은 실제 PR/종료 보고에서 별도 확인한다.

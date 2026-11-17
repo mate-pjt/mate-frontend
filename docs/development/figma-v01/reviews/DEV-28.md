@@ -2,6 +2,8 @@
 
 대상은 [확정 Brief/D1/D2](../tasks/DEV-28.md#dev-28-brief)와 `feat/dev-28-team-member-changes`, 시작 main `944d14e171897cd30a2281cd8a49be32ad845557` 이후 변경이다. 실제 API 통합은 이번 사용자 D1대로 차단 보존하며, 로컬 기능/문서 품질과 Git 전달을 구분한다.
 
+사용자 추가1회 승인 뒤 두 Major의 source/test·문서 최종 독립 Gate와 primary ai-review는 **PASS**다. 새 최종 head CI/Git 전달은 아래 후속 근거와 실제 PR에서 별도 확인한다. 이전 FAIL·수정3/3·추가1/1·브라우저 초기2관찰과 실제 API 차단을 보존하며 이전 CI나 Chromatic 예외로 대체하지 않는다.
+
 ## 첫 read-only verifier · FAIL 보존
 
 verifier는 `.codex/agents/verifier.toml`을 읽고 원본 요구/현재 diff·untracked source/test·package scripts와 검증 로그를 직접 검토했다. 파일 수정/실제 업무·브라우저·Git 변경은 하지 않았다.
@@ -26,27 +28,27 @@ verifier는 `.codex/agents/verifier.toml`을 읽고 원본 요구/현재 diff·u
 
 ### 1. 리뷰 요약
 
-PASS. 원본 범위/이번 D1·D2·POL-14와 현재 전체 source/test/doc diff를 재검토했다. 직접/동의/금지·본인 변경/마지막 관리자, 요청 상태·버전/UUID·종료/재사용·미확정과 실제/로컬 증거를 구분했다. 첫 독립 검토 결함을 최소 수정했고 자동·로컬 HTTP/브라우저를 재확인했다. 최종 read-only verifier도 미해결 Blocker/Major/Minor0으로 로컬 범위 PASS를 판정했다. 종료 metadata는 아래 freshness로 구분한다.
+PASS. 원본 Brief·D1/D2와2026-11-17 추가1회 승인에 맞춰 현재 전체 diff와 추가 두 source/test를 검토했다. 현재 목적지는 결과를 유지하고 다른 목적지는 기존 수명을 해제한다. mock은 실제 행동 kind로 분류한다. 전체842 tests/lint0·API/mock/hybrid/Storybook·추가 실제 Next mock과 독립 source 검토를 확인했다. 최종 문서 freshness/Git 결과는 별도다.
 
 ### 2. 발견된 문제
 
-첫 Major3/Minor1은 위와 같이 수정했고 primary 재검토에서 미해결 Blocker/Major 없음. 긴 Toast는 짧은 첫 문장/상세 banner로 분리하고 draft 오류 수정·native close 후 refresh/onNavigate 수명을 재확인했다. 공개 PR 계정 metadata의 불필요한 출력은 [실패 기록](../../../ai-context/ai-failures.md#dev-28-review-failures)에 보존하고 실제 값을 재인용하지 않는다.
+첫 Major3/Minor1과 병합 직전 Major2를 각각 보존하고 수정했다. 현재 source/test 미해결 Blocker/Major/Minor0이다. PROFILE_EDIT 없는 합법적 추가 leaf4조합의 capability/허용·거부와 탐색 harness17사례를 독립 확인했다. 추가 브라우저 원시 관찰23PASS/초기FAIL2는 분리해 보존한다. 초기 cross-call 이동의 제품 원인을 확정하지 않으며 fresh3회/동일수명 결과와 대조했다. focus 재조회 중 disabled 초기 읽음은 실제 활성화·확인/명령 결과와 구별했다. 제품 수정으로 이 관찰을 숨기지 않았다.
 
 ### 3. 누락된 검증
 
-실제9부분의 현재 회사/역할·원본 target/version·서버 transaction 관리자 경쟁·CORS/실행 대응·알림 전달은 자원/사용·변경/잔존/복구 범위 미확보로 차단이다. D1은 이번 로컬 단위 선행이며 실제 통합 PASS/배포 승인이 아니다. genuine native hidden 전수/모든 Figma child·prototype/pixel PASS는 주장하지 않는다. 기존 DEV-27 추가 hidden1미실행·QA-08/가입/회사/문서/DEV-08/MAT-162 차단도 유지한다.
+실제 TEAM9소유 부분0통과·자원/실행 대응·사용/변경/잔존/복구 미확보 차단을 유지한다. native hidden 전수·모든 Figma pixel/child·실제 알림 전달 PASS는 주장하지 않는다. 추가 회차는 HTTP 연결 변경0이며 기존 loopback HTTP 브라우저 전체를 반복하지 않았다. 전체 HTTP 대역 계약과 API profile build는 재실행했다. 이전 DEV-27 hidden1·다른 QA/Task 차단도 유지한다. 새 PR 최종 head CI·정상 merge/main은 아직 확인 전이다.
 
 ### 4. 문서 갱신 필요 여부
 
-architecture/data-access·plan·개발 가이드·Task/QA·WBS/리뷰·ai-failures를 갱신한다. base는 의존성/scripts/Node 기준이 같고, harness는 역할/순서/등록 설정이 같아 유지한다. baseline/coverage·79원본/114Task/156의존·TEAM26 원본 계획/과거 결정·QA는 보존한다. 현재/다음/상태는 WBS만 소유한다.
+Task/WBS·리뷰/Context Audit·TEAM QA/추가 원시 관찰·ai-failures와 data-access의 canonical 탐색/행동별 capability를 갱신한다. data-access의 POL-04 당시 허용 경로와 현재 DEV-28 D2 확장을 명확히 분리했다. package/lockfile/scripts·하네스/등록 설정 변경0으로 base/harness는 유지한다. 원본79/114Task/156의존·baseline/coverage5·TEAM26과 과거 QA/승인 예외를 보존한다. 현재/다음/상태는 WBS만 소유한다.
 
 ### 5. 개발자 확인 필요
 
-남은 신규 정책 결정 없음. 실제 API QA의 자원/실행 대응·사용/변경/복구는 향후 재개 Gate이고 이번 Git 승인은 반복 확인하지 않는다. Chromatic 월간 한도만 이번 사용자 예외로 확인하며 다른 CI/보호 조건을 우회하지 않는다.
+추가1회 결정은 사용자가 확정했으며 미결이 아니다. 새 정책 결정이나 Git 전달 반복 승인은 필요 없다. 실제 API QA 자원/실행 대응·사용/변경/복구는 향후 재개 Gate다. 이번 Chromatic billed limit의 pending2만 예외이고 다른 실패·미해결 리뷰를 면제하지 않는다.
 
 ### 6. 추천 수정 방향
 
-추가 제품 범위 확장 없이 최종 문서/Context Audit·verifier freshness를 확인하고 목적별 커밋·PR/최종 head CI·정상 merge/main FF를 진행한다. 다음 DEV-29는 WBS 기준 선정/인계만 하고 실제 실행을 시작하지 않는다.
+추가 기능/제품 수정 없이 최종 문서·독립 verifier freshness를 확인하고 목적별 fix/test/docs commit·push를 진행한다. 해결된 원격 두 thread와 새 최종 head CI/base를 확인한 뒤 정상 merge commit·main FF/SHA/clean을 확인한다. DEV-29는 선정/인계만 유지한다. 추가1회는 완료된 두 최소 수정/검증 단위이며 더 실패하면 자동 제품 수정을 계속하지 않는다.
 
 ## Review freshness
 
@@ -57,3 +59,22 @@ architecture/data-access·plan·개발 가이드·Task/QA·WBS/리뷰·ai-failur
 2026-11-17 종료 freshness **PASS**: read-only verifier가 Task/WBS·DEV-29 인계와 전체 diff/numstat·diff-check를 직접 확인했다. WBS 중복 첫 행동1행은 DEV-28 착수 당시 역사 기록으로 구별한 뒤 재확인했고 미해결 Blocker/Major/Minor0이다. 최신 문서12개/링크677·114Task/156의존/79원본/보호5/TEAM26·오류0과 완료36/차단23/대기52/준비1/보류2·DEV-29만 준비를 확인했다. Primary ai-review도 위6섹션을 종료 diff에 재적용해 PASS: 요구/범위·승인·타 작업 보존·실제9차단·다음 미실행을 유지한다. 이 결과 기록만 후속 추가했으며 코드·정책·검증 범위가 같아 verifier 및 앱 test/lint/build는 반복하지 않는다. 문서 검사/diff-check는 다시 수행한다.
 
 PR #86 전달 metadata 재검토도 위6섹션 기준 PASS: 최초6커밋/338783b·라벨·CI 실행 중·현재 merge 방식/branch rules 조회와 최종 head 재확인 절차만 기록했다. 제품 변경/새 결정·실제 QA PASS/미래 CI 성공을 추가하지 않았다. Task/WBS의 PR 연결과 Markdown/diff를 재검사하며 독립 verifier/앱 검증 생략 근거는 바로 위와 같다. 최종 원격 결과/정상 merge·main 일치는 PR/종료 보고에서 따로 확인한다.
+
+## 병합 직전 원격 리뷰 · 독립 재현 FAIL
+
+PR #86 head8fa797e의 정상 merge 직전 새 자동 리뷰(대상338783b)·미해결 thread2를 발견해 guard로 중단했다. source/test 수정/merge API 실행0이다. Read-only verifier도 두 결함을 직접 재현해 FAIL을 반환했다.
+
+| 심각도 | 근거/재현 | 필요한 최소 수정·회귀 |
+| --- | --- | --- |
+| Major | [요청 목록](../../../../src/components/my/team-change-requests-client.tsx:94)의 같은 탭/목록 breadcrumb에서 conceal 뒤 props/Effect 불변. 독립 harness mine/company 모두 load1→1·Effect0·loading/재조회 disabled. primary 실제 Next mock 내 요청 클릭도 같은 URL/로딩·disabled 지속 | 의미상 같은 목적지는 탐색 방지/결과 유지 또는 명시 reload. 다른 경로 conceal 유지. mine/company·상태 필터·breadcrumb·2page→1page 검증 |
+| Major | [mock capability](../../../../src/data/company/team-management-mock.ts:95)가 POSITION 결과를 REMOVE/PERMISSIONS에 재사용. PROFILE_EDIT 없는 AGENT+REMOVE+PERMISSION_MANAGE에서 VIEWER canRemove=false/명령REMOVED, AGENT canRequestPermissionChange=false/명령CREATED. primary 격리 Node/독립 verifier 각각 재현 | 각 행동 kind로 판정. 자기/대표자·최후 관리자/read-only 유지. 해당 leaf 허용/없음 거부·실제 명령과 capability 일치 회귀 |
+
+기존838 tests/lint·PR/push3구성 CI/Vercel·재실행 후 Chromatic 게시 성공은 별개다. UI Tests/Review는 billed snapshot limit의 pending 예외이고 이 제품 결함의 면제가 아니다. 자동 수정3/3 뒤 추가1회 결정 전 코드/테스트는 변경하지 않았으며 문서 재현/차단 사실만 갱신한다. 추가 결정 및 수정 뒤에는 독립 verifier/ai-review를 다시 수행해야 한다.
+
+위 새 FAIL/재현을 담은5개 기록 문서의 read-only freshness는 PASS다. 12문서/681링크·114Task/156의존/79원본/보호5/TEAM26 오류0·diff-check·source/test변경0·DEV-28 활성 하나를 확인했다. Primary도 기록 diff의 사실/범위·승인/원본 보존을 확인했지만 기능 Gate FAIL·Major2는 유지한다. 이 결과만 사실 metadata로 추가해 독립/앱 검증은 반복하지 않고 문서 검사/diff를 재확인한다.
+
+## 추가1/1 뒤 최종 Gate · PASS
+
+- 사용자2026-11-17 추가1회 승인 뒤 두 최소 수정/4회귀·842 tests/lint0/세 구성·Storybook과 실제 Next mock·원시 관찰을 반영했다. 독립 verifier는 source/test3파일의 동일 SHA·842 tests·탐색 harness17·mock4조합과 빌드 source 해시/로그, 문서12/682링크/원본·범위·차단을 대조해 전체 Gate PASS를 판정했다. 미해결 Blocker/Major/Minor0이다.
+- 브라우저23PASS·초기FAIL관찰2는 원문 결과를 유지했다. 초기 이동 원인은 미확정이며 fresh3회/독립17정상과 구분하고 성공으로 재분류하지 않았다. focus 재조회 중 disabled 읽음과 준비된 실제 활성/확인·명령 성공도 구별했다. 현재 근거에서 추가 제품 결함/필수 QA 보완은 확인되지 않았다. native hidden/pixel 전수·실제 API0/9차단을 해소한 것은 아니다.
+- primary는 위6섹션을 전체 최종 diff에 다시 적용해 PASS다. 결과·WBS/체크리스트 종료/PR 식별자만 추가하는 metadata는 문서 검사/diff·primary6섹션으로 확인하며 코드/정책/검증 범위가 동일하므로 독립/앱 검증 반복을 생략한다. 최종 remote head/base/두 thread·CI/merge/main은 실제 원격/종료 보고의 별도 판정이다.

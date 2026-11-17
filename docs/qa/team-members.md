@@ -344,3 +344,22 @@
 ### 실제 QA 재개 조건
 
 실제 통과0 · 위9개 **DEV-28 소유 부분 차단**이다. 담당 역할·합성 회사/서로 다른 관리자·대상/추가 leaf·대표자/공석·유일 관리자/원래 소속/version과 경쟁 자원, Origin/CORS·현재 실행 SHA 대응·업무 응답 wrapper/필드, 개인정보 열람/사용·권한/소속 변경·알림 잔존/복구 범위를 확보해야 재개한다. 권한 축소·소속 종료 등 복구가 어려운 자원은 disposable 범위를 명시한다. 이번 D1은 실제 QA 면제·통합 PASS/운영 반영 승인이 아니다. TEAM 다른 소유 부분/기존 AUTH-16/17·가입/회사/문서·DEV-08/MAT-162/모든 예외·차단은 유지한다.
+
+### 병합 직전 추가 재현 · FAIL 보존
+
+앞선30관찰 PASS/fixture-invalid1 뒤 새 원격 리뷰2건을 별도로 재현했다. 위 raw 판정을 덮거나 실제 API QA로 세지 않는다. PR #86 head8fa797e에서 수정 전 결과다.
+
+| 사례/증거 종류 | 관찰·판정 |
+| --- | --- |
+| 같은 mine 탭 재클릭 · 실제 Next mock 브라우저 | 같은 URL에서 결과가 사라져 loading·재조회 버튼 disabled가 지속됨. FAIL. 독립 hook harness도 mine/company 모두 load1→1·새Effect0 재현 |
+| PROFILE_EDIT 없는 행동 leaf · 격리 Node mock/독립 재현 | 자기축소한 AGENT+REMOVE+PERMISSION_MANAGE에서 VIEWER canRemove=false인데 명령REMOVED, AGENT canRequestPermissionChange=false인데 권한 요청CREATED. capability/명령 불일치 FAIL |
+
+제품/테스트 수정은 아직 없고 자동 수정3/3 뒤 이 두 건 한정 추가1회 결정 대기다. mine/company·필터·breadcrumb/페이지 이동 브라우저와 각 행동 leaf 허용/거부 회귀, 관련 build/두 리뷰·새 최종 head CI 전에는 로컬 최종 PASS로 복귀하지 않는다. 실제0/9부분 차단·기존QA/예외는 그대로다.
+
+### 사용자 추가1회 승인 뒤 회귀
+
+- 2026-11-17 사용자 **“두 항목 한정 추가 1회 수정 후 전달 계속 (추천)”**. 현재 목적지의 canonical props를 비교해 탐색 방지/결과 유지, 다른 목적지의 conceal/Abort 유지, mock REMOVE/PERMISSIONS 각각의 판정으로 수정했다. 최초3/3 뒤 별도 추가1/1이며 다른 기능/실제 업무 승인은 없다.
+- Node22.20.0 전체30파일842 tests/lint경고0·격리 API/mock/hybrid webpack·Storybook PASS. 실제 mock leaf4조합의 버튼 capability·직접/동의 명령 허용/403·상위/자기/대표자·최후 관리자 회귀를 포함한다. 독립 verifier도842 tests·실제 컴포넌트 hook harness17사례·mock추가4조합을 확인했다.
+- [추가 브라우저 원시 관찰](assets/dev-28/dev28-extra-browser-results.json)은23 PASS와 초기 FAIL관찰2를 원문 결과대로 보존한다. 같은 mine/company·필터/필터재선택/root breadcrumb·의미상 같은 `scope=mine&page=1`/모바일, 다른 scope/필터·2page빈경계→1page·팀원 화면 이동을 확인했다. actual Next mock에서 PROFILE_EDIT 없는 AGENT+REMOVE+PERMISSION_MANAGE의 본인 축소→VIEWER 내보내기 확인/REMOVED→AGENT 권한 동의 확인/CREATED·현재 역할 유지를 UI로 확인했다. 외부 origin0이다.
+- 초기 FAIL2를 제품 성공으로 덮지 않는다. 첫 call경계 뒤 페이지복귀 클릭은 old URL/loading으로 관찰돼 원인을 제품으로 확정하지 않았다. source변경 없이 fresh 클릭1회·동일 tool수명 반복2회에서 경로/목록 복귀가 모두 성공했다. 다른 초기 관찰은 focus 재조회 중 editor disabled를 읽은 것이며 같은 호출에서 click의 actionability 대기 뒤 활성 버튼/확인 popup·REMOVED가 관찰됐다. 별도 notes의 cross-call/전환중 관찰과 준비된 실제 명령 결과를 분리한다. 옵션 RefStale1도 새 snapshot/같은 수명 액션으로 재시도했고 full tree/diff를 보존했다. 실제 native hidden 전수/모든 Figma pixel·실제 API PASS를 뜻하지 않는다.
+- 추가 회차는 HTTP 연결 코드 변경0이다. fetch 대역 계약은 전체842 tests에서 재실행했고 API profile을 다시 빌드했다. 실제 Next loopback HTTP의 앞선30관찰 원본은 보존하며 그 전체를 추가 회차에서 반복했다고 주장하지 않는다. 실제 API0/9소유 부분 차단과 DEV-29 미실행은 유지한다. 최종 문서/두 리뷰 freshness·새 PR head CI는 별도 Gate다.

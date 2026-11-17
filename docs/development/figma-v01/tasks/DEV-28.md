@@ -28,7 +28,7 @@
 - [x] 중복/실패·재조회·다른 역할의 서버 거부를 검증한다. mock/HTTP 대역 검증과 실제 QA 미실행을 구분한다.
 - [x] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다.
 - [x] 요구사항 Gate에서 정한 로컬 브라우저·권한·오류 사례와 QA를 검증하고, 이번 D1의 실제 API QA9부분 차단을 기록했다. 전체 기능 통합 PASS로 표시하지 않는다.
-- [x] Documentation Update Check 및 verifier/ai-review를 통과한다. 종료 metadata freshness와 Git 전달은 아래 후속 증거로 구분한다.
+- [x] Documentation Update Check 및 verifier/ai-review를 통과한다. 병합 직전 새 Major2/FAIL을 보존하고 사용자 추가1/1 뒤 두 수정·최종 독립 Gate PASS를 확인했다. 실제 QA/최종 Git은 별도 판정이다.
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -160,3 +160,41 @@
 - [PR #86](https://github.com/mate-pjt/mate-frontend/pull/86)을 root template에 맞춰 작성하고 `type: feature`/`type: test`/`type: docs` 라벨·합성 캡처/검증·실제9차단·이번 Chromatic 한도 예외를 연결했다. 생성 당시 base `944d14e171897cd30a2281cd8a49be32ad845557`, 최초 원격 CI 실행 중·리뷰/미해결 thread0이다. 생성 결과를 CI/병합 PASS로 세지 않는다.
 - 정상 merge commit 허용을 확인했다. 현재 main branch protection 조회는404(Branch not protected), 적용 rules는 빈 배열이다. 승인된 최종 head의 data-access tests/lint·API/mock/hybrid 기본 Turbopack과 Chromatic/기타 check·리뷰 상태, 최신 base/head를 다시 확인한다. quota 관련 check만 이번 명시 예외이며 check 강제 성공·force push/보호 우회·직접 main push는 하지 않는다.
 - 이 후속은 PR 식별자/전달 사실 metadata뿐이다. 문서 검사/diff-check·primary ai-review6섹션을 다시 적용하고 별도 docs commit으로 push한다. source/test·정책/검증 범위가 같아 앱 test/lint/build·독립 verifier 반복을 생략한다. **이 기록 이후 최종 head CI·정상 merge·로컬 main FF/SHA 일치·clean은 실제 PR 타임라인과 종료 보고의 별도 근거**로 확인한다. DEV-29 실행/실제 업무·메일·배포는 없다.
+
+<a id="dev-28-remote-review"></a>
+
+## 2026-11-17 · 병합 직전 새 원격 리뷰/추가 수정 Gate
+
+- 전달 head `8fa797ef91bd032dd171313741fa4cbcfa9bec9c`의 PR/push Data access CI는 tests/lint·API/mock/hybrid 기본 빌드 모두 SUCCESS, Vercel SUCCESS다. Chromatic 최초 임시 디렉터리 EEXIST는 같은 head의 게시 job1회 재실행으로 SUCCESS였다. build197의 Billed snapshot limit reached를 확인해 UI Tests/UI Review PENDING만 이번 사용자 한도 예외로 구분했다. 코드/설정·check 상태 강제 변경0이다.
+- 정상 merge 직전 재조회에서 338783b 대상 새 자동 리뷰2건/미해결 thread2가 도착했다. guard가 병합을 중단했으며 merge API는 실행하지 않았다. 앞선 로컬 PASS/독립 PASS를 이 최신 Review Gate의 대체로 사용하지 않는다.
+- Major1: 목록 첫 페이지 현재 mine/company 탭과 같은 목록 breadcrumb의 onNavigate=conceal이 결과를 지우지만 동일 props/key/Effect여서 조회를 다시 시작하지 않는다. 독립 메모리 hook harness는 두 scope에서 load1→1/새Effect0·loading/reload disabled를 재현했고, primary 실제 Next mock 브라우저도 내 요청 재클릭 후 같은 URL·loading·재조회 disabled 지속을 관찰했다.
+- Major2: mock이 POSITION 분류를 내보내기/권한 동의 capability에 재사용했다. PROFILE_EDIT 없는 AGENT+REMOVE+PERMISSION_MANAGE로 자기축소한 뒤 VIEWER의 canRemove=false/실제REMOVED, AGENT의 canRequestPermissionChange=false/실제CREATED를 primary 합성 Node 재현과 read-only verifier가 각각 확인했다. 실제 API 집행 결함으로 확대하지 않는다.
+- 최소 수정안: 의미상 현재 목적지 탐색은 막고 결과를 유지하거나 명시 재조회하며 다른 목적지의 conceal 수명은 유지한다. mock REMOVE/PERMISSIONS는 각각 실제 kind 판정으로 capability를 계산하고 자기/대표자·최후 관리자/read-only 제약을 보존한다. 같은 탭/필터/목록 breadcrumb·다른 page 이동의 실제 브라우저와 행동 leaf의 허용/거부 회귀, 전체 test/lint·영향 build/두 리뷰·새 최종 head CI가 필요하다.
+- 자동 수정3/3을 소진했으므로 새 제품 수정은 하지 않았다. 사용자에게 **이 두 항목 한정 추가1회 수정 후 재검증·재리뷰·Git 전달 계속 / PR 병합 보류·차단 기록 종료** 중 결정을 요청했다. 답변 전 이를 승인으로 간주하지 않는다. 범위/추천과 실제 승인 기록을 구분하며 새로운 변경은 아직 docs 재현 기록뿐이다.
+- 최신 독립 verifier FAIL·primary ai-review FAIL, 미해결 Major2다. source/test 미변경이라838 tests·lint/빌드를 반복하지 않았으며 이전 CI 성공을 결함 부재의 근거로 삼지 않는다. 다음 첫 행동은 결정 확인 후 승인된 최소 수정 또는 PR 미병합 인계다. 실제 API0/9차단·기존 QA/예외·DEV-29 선정/인계만을 유지한다.
+- 재현/차단의5개 기록 문서만 독립 freshness PASS: source/test 변경0·활성DEV-28 하나·문서12/681링크·114Task/156의존/79원본/보호5/TEAM26·오류0·diff-check를 확인했다. 이 결과 기록은 사실 metadata이고 기능 FAIL을 해제하지 않는다. 추가 제품 수정/병합 결정 전 미커밋 기록으로 보존하며 임의 reset/stash·폐기하지 않는다.
+
+## 2026-11-17 · 사용자 추가1회 승인과 재개 Brief
+
+- 결정자/날짜/원문: 이번 사용자2026-11-17 **“두 항목 한정 추가 1회 수정 후 전달 계속 (추천)”**. 위 원격 Major2만 추가 수정1회를 승인했다. 최초 자동 수정3/3·이전 FAIL은 그대로 보존하고 이번 회차는 별도로 센다. 실제 API/업무·메일/운영/배포·새 기능/다음 Task 승인이 아니다. 기존 Git 전달 승인은 반복 확인하지 않는다.
+- 재개 Git: `feat/dev-28-team-member-changes`/`8fa797ef91bd032dd171313741fa4cbcfa9bec9c`, 원격 branch와 동일. 기존 변경은 이 Task의 최신 FAIL/재개 기록5문서뿐이며 보존한다. fetch 뒤 main은 `944d14e171897cd30a2281cd8a49be32ad845557` 그대로, PR #86 open/unmerged·같은 base/head다. 무관한 변경0이다.
+- 요구/성공 기준: 현재 scope/page/status와 의미상 같은 목적지는 탐색을 막고 결과를 유지하며 다른 목적지의 conceal/Abort 수명은 유지한다. mock 내보내기·권한 동의 capability는 각 실제 kind/leaf로 계산해 합법적인 추가 leaf와 명령 결과가 일치해야 한다. 자기/대표자·최후 관리자·read-only를 보존한다. 새 정책/계약·API/개인정보/라이브러리 변경 없음, blocking ambiguity 없음.
+- 수정 파일/영향: `team-change-requests-client.tsx`의 Link/router 탐색 guard, `team-management-mock.ts`의 capability 판정, `company-team-management.test.ts`의 추가 leaf 허용/거부 회귀·필요한 탐색 회귀와 기존 Task/WBS/QA/검토·실패 기록이다. 다른 UI/Repository 정책·DEV-29 구현은 제외한다.
+- 단계/검증: 승인 기록→두 최소 수정/회귀→Node22.20.0 test/lint·격리 API/mock/hybrid webpack/Storybook→실제 Next mock의 mine/company·필터·breadcrumb/2page→1page/다른 목적지→문서·독립 verifier/ai-review6섹션→목적별 추가 커밋/push·새 최종 head CI/리뷰 thread/정상 merge/main FF다. 같은 URL 보호가 다른 이동을 막거나 특정 leaf의 허용 범위를 넓히지 않도록 확인한다. 이번 추가1회가 실패하면 추가 자동 수정 없이 원인/재개 조건을 보고한다. 실제 API0통과/9차단 유지.
+
+### 추가1/1 수정·재검증 결과
+
+- 최소 수정은 source2파일뿐이다. 요청 client의 canonical 현재 목적지 guard를 Link/router에 적용했고 mock REMOVE/PERMISSIONS 각각의 capability 판정을 사용했다. PUBLIC HTTP/DTO·정책/API/기본 권한·자기/대표자·최후 관리자/read-only를 바꾸지 않았다.
+- Node22.20.0 전체30파일842 tests/lint경고0 PASS. 추가 leaf 없음/remove/manage/둘다4회귀가 실제 명령 허용/403과 capability를 비교한다. 격리 API/mock/hybrid `pnpm build --webpack`·Storybook PASS, 환경파일 열람/설치0이다. 로그: `/tmp/mate-dev-28-contract/test-extra.log`, `lint-extra.log`, `build-api-extra.log`, `build-mock-extra.log`, `build-hybrid-extra.log`, `storybook-extra.log`.
+- 독립 source/test 재검토 PASS: 전체842 tests·실제 컴포넌트 hook harness17사례·mock4조합의 직접/동의 허용·거부·직급편집 부재/상위 ADMIN/자기 제한·diff-check를 확인했고 미해결 Blocker/Major/Minor0이다. 파일 수정·업무 API/Git/브라우저는 실행하지 않았다.
+- [추가 실제 Next mock QA](../../../qa/team-members.md#dev-28-local-qa)의23PASS와 초기FAIL관찰2·도구 ref/focus/전환 수명을 구분했다. 현재 탭/필터·breadcrumb·같은 의미 주소/모바일·다른 목적지·page2빈경계→1page, PROFILE_EDIT 없는 AGENT의 본인 축소→직접 내보내기 REMOVED·동급 권한 동의 CREATED/현재 역할 유지를 관찰했다. 초기 관찰은 source추가수정 없이 fresh 실행으로 확인했고 raw/notes를 보존한다. 실제API/hidden전수/모든pixel PASS가 아니다.
+- Documentation Update Check: Task/WBS·QA/원시 관찰·리뷰/Context Audit·data-access·ai-failures를 갱신한다. data-access의 POL-04 당시 경로만 허용한다는 옛 문구는 역사적 범위와 이번 D2 확장을 분리하도록 사실 동기화했다. package/scripts/lockfile·base/harness/등록 설정은 변화0이라 유지한다. 최종 문서 검사·독립 freshness가 다음 행동이며 그 뒤 목적별 추가 commit/push·새 실제 head CI/두 thread·정상 merge/main FF를 진행한다. 실제9차단과 DEV-29 미실행 유지.
+
+<a id="dev-28-extra-close"></a>
+
+### 추가1/1 뒤 최종 Gate와 종료 metadata
+
+- read-only verifier의 최종 source/test/doc 전체 Gate **PASS**: 미해결 Blocker/Major/Minor0, 검토한 source3파일 SHA가 그대로이며842 tests/탐색17·mock4와 세 구성/Storybook·브라우저23PASS/초기FAIL2·notes를 확인했다. 초기 이동 관찰 원인은 미확정이며 성공으로 재분류하지 않았다. 현재 근거에서 추가 제품 결함/필수 QA 보완을 확인하지 못했다. 실제 API0/9차단·DEV-29 미실행과 과거 FAIL/예외를 보존했다.
+- 문서12/682링크·114Task/156의존/79원본/보호5/TEAM26·오류0·diff-check와 primary ai-review6섹션/Context Audit PASS. 이 결과/체크리스트/WBS 종료 metadata만 후속 갱신하고 문서·primary 리뷰를 다시 확인한다. 코드/정책/검증 범위가 같아 앱 검증/독립 verifier 반복은 생략한다. 바뀌면 관련 재검토가 필요하다.
+- 다음 하나는 기존 선정/인계한 DEV-29를 재확인했다. P0/P1/앞선 P2의 기존 외부·선행 차단, DEV-27 완료·기본 표 순서/DEV-30 선행이 그대로이며 새 우선순위/의존을 만들지 않았다. 다음 첫 행동은 WBS/DEV-29 인계의 자체 계약/자원·Brief Gate다. 구현/실제 초대·메일·QA는 시작하지 않았다.
+- 다음 실제 행동은 UI/mock fix·test·구조/검토·QA/실패 기록의 목적별 추가 commit/push, 새 PR 최종 head CI/최신 base와 원격2 thread 해결 확인·정상 merge commit/main FF·동일 SHA/clean 확인이다. 앞선8fa797e의 CI 성공을 새 head 증거로 대신하지 않는다. 정상 병합/최종 main SHA는 PR 타임라인·종료 보고에 별도로 기록한다.
