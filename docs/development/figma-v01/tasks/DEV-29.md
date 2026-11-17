@@ -79,3 +79,13 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-29-dev-28-selection"></a>
+
+## 2026-11-17 · DEV-28 뒤 다음 Task 선정/인계만
+
+- [DEV-28 로컬 종료](DEV-28.md#dev-28-close)와 WBS의 우선순위/선행을 확인했다. P0/P1 및 앞선 P2의 기존 외부/계약·선행 차단을 보존하면 기본 표 순서의 첫 독립 개발 후보이며 선행 DEV-27이 완료돼 선정했다. DEV-30의 본 Task 선행과 DEV-31/32·POL-15의 기존 순서/범위는 유지한다. 현재/다음/상태는 WBS만 소유한다.
+- 선행 산출물: DEV-27 public Team 조회/role·catalog·계정/회사/탐색 수명과 DEV-28 공개 management 포트/현재 leaf·엄격 version/UUID·명시 확인/후속 조회 패턴이다. 초대 발송 포트/화면·실제 메일·수신 수락/목적지는 이번 DEV-28에서 구현/검증한 것이 아니다.
+- 다음 첫 행동: 최신 main·POL-14 D1/D3와 DEV-27/28의 계약/소유 경계, 그때의 backend GitHub/개발 Swagger·Figma3137:52847/52911/52990·TEAM-11~13/16~17/23/26을 확인한다. email/표시 이름·대표자/직급 XOR·preset/extra/message와 actor 상한/행동 leaf, 생성/초대 상태/delivery/실제 메일·수신 흐름을 구분해 자체 Brief·수정 파일/영향/검증 Gate를 제시한다.
+- 실제 발송/메일함·비밀 링크가 있는 흐름은 합성 수신 회사/계정·현재 권한/버전, 환경/실행 SHA 대응·열람/사용/소비/잔존/복구 범위와 담당 역할부터 확인한다. token/링크/메일 원문·개인정보/환경 실제 값을 읽거나 기록하지 않는다. DEV-28의 로컬 선행/실제 QA 차단 보존·Git/Chromatic 예외를 이 Task에 자동 확대하지 않는다.
+- 여기서는 선정/인계만 했다. 전용 계약 재조사·요구사항 확정/설계·제품/Repository·실제 업무 API/초대/메일/QA·이 Task의 Git 전달을 시작하지 않았다. 원본 candidate/Brief 미작성과 과거 결정/QA·차단은 보존한다.

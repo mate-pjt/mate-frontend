@@ -1,0 +1,131 @@
+[
+  {
+    "case": "mock-position-cancel",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-position-direct",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-permission-direct",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-admin-promotion-pending",
+    "result": "PASS",
+    "evidence": "요청 생성 뒤 현재 역할 뷰어 유지"
+  },
+  {
+    "case": "mock-request-cancel",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-own-request-read-only-until-click",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-own-accept-applied",
+    "result": "PASS"
+  },
+  {
+    "case": "mock-request-mobile",
+    "result": "PASS",
+    "width": 390
+  },
+  {
+    "case": "http-position-direct",
+    "result": "FAIL",
+    "classification": "fixture-invalid: mutation response companyId missing"
+  },
+  {
+    "case": "http-position-direct-correct-fixture",
+    "result": "PASS"
+  },
+  {
+    "case": "http-conflict-409",
+    "result": "PASS"
+  },
+  {
+    "case": "http-response-lost-no-auto-resubmit",
+    "result": "PASS"
+  },
+  {
+    "case": "http-response-lost-explicit-status-get",
+    "result": "PASS"
+  },
+  {
+    "case": "http-notification-detail-after-fixture-correction",
+    "result": "PASS"
+  },
+  {
+    "case": "http-own-reject",
+    "result": "PASS"
+  },
+  {
+    "case": "http-notification-read-opens-pending-without-decision",
+    "result": "PASS"
+  },
+  {
+    "case": "http-request-mobile-target-and-content",
+    "result": "PASS",
+    "width": 390
+  },
+  {
+    "case": "http-explicit-accept-applied",
+    "result": "PASS"
+  },
+  {
+    "case": "http-confirmed-success-then-refresh-failure",
+    "result": "PASS"
+  },
+  {
+    "case": "http-final401-hides-protected-content",
+    "result": "PASS"
+  },
+  {
+    "case": "http-viewer",
+    "result": "PASS"
+  },
+  {
+    "case": "http-readonly",
+    "result": "PASS"
+  },
+  {
+    "case": "http-denied",
+    "result": "PASS"
+  },
+  {
+    "case": "http-missing",
+    "result": "PASS"
+  },
+  {
+    "case": "http-last-admin-server-refusal",
+    "result": "PASS"
+  },
+  {
+    "case": "http-self-leave-retains-service-account",
+    "result": "PASS"
+  },
+  {
+    "case": "http-self-demotion-validation-correctable",
+    "result": "PASS"
+  },
+  {
+    "case": "http-detail-mobile-and-loopback-isolation",
+    "result": "PASS",
+    "width": 390
+  },
+  {
+    "case": "final-source-mock-direct-restored-state",
+    "result": "PASS"
+  },
+  {
+    "case": "final-source-mock-promotion-pending",
+    "result": "PASS"
+  },
+  {
+    "case": "final-source-mock-company-cancel-target-identified",
+    "result": "PASS"
+  }
+]

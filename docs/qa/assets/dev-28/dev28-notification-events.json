@@ -1,0 +1,116 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/token/refresh",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/company-permission-definitions",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/memberships/me",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/company-membership-change-requests/5101",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/members/9101",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/token/refresh",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/memberships/me",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me/notifications/unread-count",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me/notifications",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/me/notifications/50001/read",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me/notifications/unread-count",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/token/refresh",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me/notifications/unread-count",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/company-permission-definitions",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/memberships/me",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/company-membership-change-requests/5101",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/members/9101",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/token/refresh",
+    "status": 200,
+    "code": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/7001/memberships/me",
+    "status": 200,
+    "code": null
+  }
+]
