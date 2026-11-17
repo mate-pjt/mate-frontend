@@ -3,6 +3,7 @@ import type { TeamRole } from "./team-contracts";
 
 export type TeamInvitationStatus = "PENDING" | "CANCELED" | "EXPIRED" | "DECLINED" | "ACCEPTED";
 export type TeamInvitationDeliveryStatus = "PENDING" | "SENDING" | "SENT" | "FAILED" | "SUPERSEDED";
+export type TeamInvitationCommand = "resend" | "cancel";
 export type TeamInvitationInput = {
   email: string;
   inviteeDisplayName: string;
@@ -45,4 +46,7 @@ export interface CompanyTeamInvitationRepository {
   listTeamInvitations(access: AuthAccess, companyId: number, page?: number, size?: number, signal?: AbortSignal): Promise<TeamInvitationPage>;
   getTeamInvitation(access: AuthAccess, companyId: number, invitationId: number, signal?: AbortSignal): Promise<TeamInvitation>;
   createTeamInvitation(access: AuthAccess, companyId: number, input: TeamInvitationInput, signal?: AbortSignal): Promise<TeamInvitation>;
+  updateTeamInvitation(access: AuthAccess, companyId: number, invitationId: number, expectedVersion: number, input: TeamInvitationInput, signal?: AbortSignal): Promise<TeamInvitation>;
+  resendTeamInvitation(access: AuthAccess, companyId: number, invitationId: number, expectedVersion: number, signal?: AbortSignal): Promise<TeamInvitation>;
+  cancelTeamInvitation(access: AuthAccess, companyId: number, invitationId: number, expectedVersion: number, signal?: AbortSignal): Promise<TeamInvitation>;
 }
