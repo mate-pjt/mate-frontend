@@ -373,3 +373,13 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 문서 작성: heredoc append에 patch용 `+`가 남은 bullet을 문서 검토에서 발견해 제거했고, 변경 Markdown의 stray patch bullet·닫힌 fence 검사로 예방한다. 이 draft 문서 수정은 제품 자동 수정 회차와 구분한다.
 - 도구 한계: Aside의 session 밖 파일 저장 거절·호출 사이 focus 재조회/오래된 ref, 초기 HMR 전 geometry 관찰은 제품 실패와 구분한다. 세션 artifacts에 저장 후 필요한 합성 화면만 복사하고 fresh snapshot/같은 호출 내 조작·하드 리로드로 확인한다. TCP 유실의 앱 fetch1회와 HTTP wire2회는 별도 계측하며 wire 1회를 앱 guard만으로 보장했다고 쓰지 않는다.
 - 근거: [Task](../development/figma-v01/tasks/DEV-29.md#dev-29-brief)·[검토](../development/figma-v01/reviews/DEV-29.md)·[QA](../qa/team-members.md#dev-29-local-qa). 실제7부분 차단과 기존 Task/QA 예외는 유지한다.
+
+
+## 2026-11-17 · DEV-30 이벤트 전달과 도구 출력 경계
+
+- 실제 관찰: 새 관리 버튼의 중첩 렌더 콜백에서 React ref lint가 발생했다. helper 분리만으로는 해결되지 않았고, 별도 버튼 컴포넌트에 handler 함수를 직접 전달해 실제 이벤트 안에서 호출하도록 경계를 바꾼 뒤 lint를 통과했다. 최초 테스트의 mock 저장소에 없는 value wrapper 가정도 교정했다. 초기997 뒤 독립 FAIL/최종1001 tests·lint와 실제 Next browser를 구분해 확인한다.
+- 예방: 이벤트에서만 사용할 ref 접근을 렌더 콜백과 함께 추론하도록 만들지 않는다. 진단 시 lintText의 비수정 대조로 실패 경계를 먼저 좁히고 lint disable을 추가하지 않는다. 저장소 검증은 실제 MockStore 직렬화 형식부터 확인한다.
+- 독립 리뷰: feature에서 repository 호출 직전만 만료를 확인하면 토큰 대기/401 refresh 동안 만료돼 실제 요청이 나갈 수 있다. 명령 scope의 선택적 guard를 HTTP fetch 직전에도 적용하고 두 지연을 실제 feature/API/HTTP+합성 시계로 재현한다. 편집 진입은 현재 기본 권한, 최종 부여는 새 입력으로 판단해 허용된 권한 축소를 막지 않는다. 마지막 자동 수정3/3과 회귀/실제 mock browser 결과는 Task/QA에 보존한다.
+- 도구 출력: 이미지가 포함된 MCP 결과 전체를 text()로 출력해 합성 화면의 base64가 과다 출력된1회를 확인했다. 이후 ImageContent는 image()로 별도 전달하고 메타데이터/원격 JSON은 필요한 필드만 추출한다. 실제 env/credential·업무 자료를 조회한 사건과 구분하며 원문 bytes를 Task/QA/PR에 복사하지 않는다.
+- Aside 호출 사이 focus 재조회/오래된 ref, 중복 REPL 변수와 SVG 준비/격리 symlink 실패는 제품 실패와 구분해 [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)에 남겼다. 실제6소유 부분 차단과 D1/D2/기존 다른 Task 예외는 유지한다.
+- 커밋 직전 새 SVG의 EOF 빈 줄1개를 staged diff-check에서 확인했다. 일반 git diff는 untracked 파일을 포함하지 않으므로 새 파일까지 stage한 diff-check로 확인한다. 개행만 정리하고 XML 도형/속성 동일을 검증했으며 제품 로직 추가 수정이나 재빌드 PASS로 세지 않는다.
