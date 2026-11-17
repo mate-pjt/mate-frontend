@@ -88,3 +88,14 @@
 - [POL-14 정책 문서 종료](POL-14.md#pol-14-close)에 따라 선행을 충족하는 P2 기본 표 순서 첫 팀원 개발 단위로 선정/인계했다. 기존 P0/P1 차단과 앞선 P2의 DEV-08·DEV-24/26/MAT-162·다른 Task 선행을 바꾸지 않는다. 현재/다음/상태는 WBS만 소유한다.
 - 다음 첫 행동: 새 대화에서 최신 Git/main·이 후보의 원래 범위/완료 기준과 POL-14 D1~D3·TEAM QA 계획, 그때의 backend/개발 Swagger·Figma3137:52702/53331/54225의 목록/상세/오류/모바일 상태를 확인한다. 현재 company/leaf·page/count/ASC·3page/9row flags·nullable/미제공·계정/회사 수명과 안전한 실제 조회 계정/회사·실행 대응/사용·잔존·복구 범위를 확인해 자체 Brief·수정 파일/영향/검증을 먼저 제시한다.
 - 이번에는 POL-14 소유의 정책/후속 기준·선정/인계만 작성했다. 이 Task의 전용 조사·요구사항 확정/설계·제품/Repository·실제 업무/QA·Git 전달을 시작하지 않았다. POL-14의 Git/Chromatic 예외·정책 문서 PASS가 이 Task의 실제 자원 준비·로컬 선행/통합 면제 승인은 아니다.
+
+
+<a id="dev-27-mat-290-handoff"></a>
+
+## 2026-11-17 · MAT-290 연결과 표시 데이터 재확인 조건
+
+- [MAT-290](https://linear.app/mate-pjt/issue/MAT-290/backend-팀원-목록상세-응답에-생년월일휴대전화번호-추가)은 팀원 목록 `GET /api/v1/companies/{companyId}/members`의 content 각 행과 상세 `GET /api/v1/companies/{companyId}/members/{membershipId}`에 계정의 birthDate/mobilePhone을 연결해 달라는 외부 요청이다. 11/17 조회 Backlog이며 요청안·이슈 상태를 최종 계약/배포·실제 지원으로 간주하지 않는다. 개인 선택 입력 정보이며 회사 대표 전화나 인증/복구 수단과 구분한다.
+- API 지원 확인 전에는 기존 [POL-14 D2](POL-14.md#pol-14-contract)의 자리/라벨 유지·**미제공 표시**를 유지한다. 이슈 생성/Done·계정 필드·source/Swagger만으로 실제값을 표시하지 않는다. MAT-290을 이 Task 전체의 신규 선행/차단으로 만들지 않으며 현재 상태는 WBS가 소유한다.
+- 반영 소식 뒤 [POL-14 재확인 Gate](POL-14.md#pol-14-mat-290-handoff)를 따른다. 답변/확정 계약과 고정 source/DTO·조회/mapper/테스트, CI/개발 배포·게시 Swagger·실행 대응·실제 두 응답을 나눠 확인한다. 필드명/경로·타입·날짜/전화 표현·각각 null/누락 직렬화·조회 권한과 기존 page/count/정렬/capabilities/오류를 대조한다. 일부 지원/미확인은 구분하고 해당 부분의 미제공을 유지한다.
+- 실제 값 표시 연결은 지원 확인 후 이 Task **자체 Brief·수정/검증 Gate**에서 판단한다. 승인된 합성 회사/계정·조회/개인정보·환경/실행 대응·사용/잔존/복구 범위로 값 존재/각각 null·목록상세 일치·권한/계정·회사/화면 수명·오류/날짜/전화·Figma/모바일/접근성을 검증하고 해당 QA에 기록한다. 현재 TEAM-03의 미제공 계획·TEAM26 실제0통과26대기·AUTH-16/17/다른 차단·예외는 보존한다.
+- 이번11/17 사용자는 POL-14 소유 문서의 연결/재개 조건과 검증·리뷰/Git 전달만 승인했다. 이 Task의 전용 조사·Brief/설계·구현·Repository/DTO/mock·실제 업무 QA·별도 Git 전달은 시작하지 않았다. 다음 첫 행동에 MAT-290 현행 답변/지원 여부와 위 Gate를 함께 확인하되 무조건 API 반영까지 대기하는 새 선행으로 바꾸지 않는다.
