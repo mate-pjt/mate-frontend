@@ -48,3 +48,14 @@ describe("기존 공통 API 요청 회귀", () => {
     }
   });
 });
+
+
+describe("요청 직전 scope/Abort guard", () => {
+  it("인증 대기 후 guard 거부/이미 Abort된 요청은 fetch 전에 멈춘다", async () => {
+    const fetcher = vi.fn<typeof fetch>(), client = createHttpClient("https://synthetic-api.test", fetcher);
+    const controller = new AbortController(); controller.abort();
+    await expect(client.request("/test", { signal: controller.signal })).rejects.toMatchObject({ name: "AbortError" });
+    await expect(client.authorized({ getAccountKey: () => "1", getAccessToken: async () => "synthetic-token", refresh: vi.fn(), assertRequestScope: () => { throw new ApiError(409, "EXPIRED", "합성 만료"); } }, "/test")).rejects.toMatchObject({ code: "EXPIRED" });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+});

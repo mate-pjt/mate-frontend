@@ -79,3 +79,13 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-31-dev-30-selection"></a>
+
+## 2026-11-17 · DEV-30 뒤 선정·인계만
+
+- 선정 이유: WBS의 P0/P1과 앞선 P2의 외부/선행 차단·보류를 유지한 기본 표 순서에서 첫 독립 후보다. DEV-27 선행의 로컬 범위 산출물을 확인했고 DEV-32·POL-15보다 앞선 원래 순위를 따른다. 상태는 WBS만 소유한다.
+- 인계: [DEV-30 로컬 검증/리뷰](DEV-30.md#dev-30-close)의 공개 company 초대 포트·정확 version/현재 권한·수명/인증 직전 guard·부분 성공·mock 격리/공유 명령 lane을 참고할 수 있다. DEV-31의 신청 목록/검토/역할·승인/사유 거절은 별도 도메인이며 기존 발송 관리나 DEV-15 본인 취소로 대체하지 않는다. 실제 DEV-30 QA0통과6차단은 그대로다.
+- 다음 첫 행동: 최신 main/미커밋 변경과 DEV-27·POL-14 D1·이 원래 정의를 확인하고 현행 신청 소유 source를 읽는다. 그 대화에서 최신 backend/게시 Swagger와 실행 대응·신청자/reviewer·합성 회사/신청의 사용/변경·잔존/복구 범위를 확인한 뒤 자체 Brief·수정 파일/영향·검증을 제시한다. API/DTO 설계 전에 data-access.md를 읽는다.
+- 인계 범위: 원래 Figma3137:53069/53154/53193·TEAM-18~20/23/26·현재 REVIEW leaf와 승인된 역할 부여/거절 사유·동시 처리/수명 Gate를 보존한다. DEV-30의 D1 로컬 선행·D2 PATCH 확장·Git/Chromatic 승인을 다음 Task 승인으로 확대하지 않는다.
+- 이번에는 선정·첫 행동 인계만 했다. DEV-31 전용 계약 조사·설계/Implementation Brief·제품/Repository·실제 업무/API·승인/거절/메일·QA·별도 Git 전달을 시작하지 않았다. 원본 정의/미작성 Brief·기존 정책/QA/차단을 보존한다.

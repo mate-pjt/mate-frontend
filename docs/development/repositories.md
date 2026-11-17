@@ -190,3 +190,9 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 `team-extra`는 invite leaf만 추가한 VIEWER(기존 직급/기본 VIEWER 허용·새 직급/초과 grant 금지), `team-viewer`/`team-agent`/`team-read-only`는 초대 거부, `team-no-representative`는 대표자 공석이다. `team-invitation-mail-failed`는 생성 성공과 합성 메일 전송 실패를 구분한다. `active-member@example.test`, `pending-member@example.test`, `ambiguous-member@example.test`, `registered-member@example.test`는 각각 활성 소속 CM004·같은 회사 신청 CI010·모호한 신원 CI011·기등록 이름 보존을 재현하는 **공개 합성 별칭**이다. 실제 이메일이나 업무 계정은 사용하지 않는다.
 
 초대 생성과 기존 팀원 관리 명령은 같은 store/account queue를 공유한다. 유실/손상 응답 뒤 닫고 상태 확인은 GET이며 새 초대는 다시 명시 작성한다. 재발송/취소/PATCH·수락 완료 목적지는 이 기능에서 제공하지 않는다. 생성된 초대의 실제 메일/수신 수락은 [DEV-29 실제 QA 차단](../qa/team-members.md#dev-29-local-qa)이며 기존 `/auth/company/invitations` 합성 fixture를 실제 발송의 증거로 사용하지 않는다.
+
+## DEV-30 기존 초대 편집·재발송·취소의 로컬 재현
+
+같은 company mock 시나리오/기존 계정 공간에서 `/my/team`의 보낸 초대를 생성한 뒤 행의 재발송·초대 취소를 선택한다. 미만료 PENDING만 관리하며 만료는 새 초대 작성이다. 재발송 form은 이메일/등록된 계정 이름을 잠그고 현재 직급/권한·부여 제약을 검사한다. 변경이 있으면 PATCH 저장 후 최신 상태를 다시 확인하고 새 version으로 재발송한다. 저장·재발송·메일 상태는 별개이며 실패 뒤 자동 재명령은 없다.
+
+mock은 실제 메일/비밀 링크를 만들지 않으며 독립 수신 fixture와 발송 관리 연결을 모사하지 않는다. 실제6소유 부분의 재개 조건과 합성 로컬 경합/브라우저 증거는 [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)를 따른다. 새 시나리오·설정·스키마/namespace·라이브러리 추가는 없다.

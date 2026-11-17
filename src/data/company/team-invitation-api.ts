@@ -48,7 +48,28 @@ export function mapTeamInvitationPage(value: unknown, companyId: number, page: n
 }
 export function createTeamInvitations(http: HttpClient): CompanyTeamInvitationRepository {
   const path = (id: number) => `/api/v1/companies/${id}/membership-invitations`;
+  async function command(access: Parameters<CompanyTeamInvitationRepository["cancelTeamInvitation"]>[0], companyId: number, id: number, version: number, resend: boolean, signal?: AbortSignal) {
+    validateTeamQuery(companyId); validateTeamMemberId(id); validateTeamMemberId(version);
+    if (version === Number.MAX_SAFE_INTEGER) throw new ApiError(400, "INVALID_INPUT", "초대 버전을 다시 확인해 주세요.");
+    const result = mapTeamInvitation(await http.authorized<unknown>(access,
+      `${path(companyId)}/${id}${resend ? "/resend" : `?expectedVersion=${version}`}`,
+      { method: resend ? "POST" : "DELETE", ...(resend ? { body: { expectedVersion: version } } : {}), signal }), companyId, id);
+    if (result.version !== version + 1 || result.status !== (resend ? "PENDING" : "CANCELED")) invalid();
+    return result;
+  }
   return {
+    async updateTeamInvitation(access, companyId, id, expectedVersion, input, signal) {
+      validateTeamQuery(companyId); validateTeamMemberId(id); validateTeamMemberId(expectedVersion);
+      if (expectedVersion === Number.MAX_SAFE_INTEGER) throw new ApiError(400, "INVALID_INPUT", "초대 버전을 다시 확인해 주세요.");
+      const { email, ...body } = normalizeTeamInvitation(input);
+      const result = mapTeamInvitation(await http.authorized<unknown>(access, `${path(companyId)}/${id}`, { method: "PATCH", body: { expectedVersion, ...body }, signal }), companyId, id);
+      if (result.version !== expectedVersion + 1 || result.status !== "PENDING" || result.invitedEmail !== email || result.representative !== body.representative
+        || result.inviteeDisplayName !== body.inviteeDisplayName
+        || !body.representative && (body.positionId !== null ? result.position?.positionId !== body.positionId : result.position?.positionId !== null || result.position.name !== body.proposedPositionName)) invalid();
+      return result;
+    },
+    resendTeamInvitation: (access, companyId, id, version, signal) => command(access, companyId, id, version, true, signal),
+    cancelTeamInvitation: (access, companyId, id, version, signal) => command(access, companyId, id, version, false, signal),
     async listTeamInvitations(access, companyId, page = 0, size = 20, signal) {
       validateTeamQuery(companyId, page, size);
       return mapTeamInvitationPage(await http.authorized<unknown>(access, `${path(companyId)}?${new URLSearchParams({ page: String(page), size: String(size) })}`, { signal }), companyId, page, size);

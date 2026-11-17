@@ -416,3 +416,38 @@
 - 최종 명령은 Node22.20.0의 `pnpm test`·`pnpm lint`·API/mock/hybrid `pnpm build`·`pnpm build-storybook` 및 문서 링크/79개 원본/114Task/156의존/상태·baseline/범위/Markdown·`git diff --check`다. 실제 최종 결과는 [Task](../development/figma-v01/tasks/DEV-29.md#dev-29-verification)·[리뷰](../development/figma-v01/reviews/DEV-29.md)에서 함께 확인한다. 앱 검사를 문서 전용 검사로 면제하지 않았다.
 - 초기 lint1건·label/a11y 실패·독립 Major1/Minor2와 수정3/3을 보존한다. Aside 첫 로그인 링크 클릭의 전환 미관찰은 관측한 href로 이동해 이어갔고 성공으로 소급하지 않는다. session 밖 저장 경로 거절·focus 재조회/무효 ref·HMR 전640×972/Select36 관찰은 fresh 리로드 뒤 최종640×908/Select48과 구분한다. HTTP 대역의 최초 후속 실패 모드는 이미 있던 데이터 때문에 제출 전 GET부터 실패했으며 대역을 재시작/threshold로 분리한 최종 시나리오 결과만 해당 성공 후 사례의 근거로 쓴다.
 - loopback 대역/Next와 브라우저 탭은 이번 소유 자원만 종료했다. 실제 외부 데이터 변경0·메일0이고, 합성 상태는 탭/sessionStorage·임시 대역 메모리에만 있었다. 실제 업무 데이터 복구나 실제 초대 회수 완료를 주장하지 않는다.
+
+<a id="dev-30-local-qa"></a>
+
+## 2026-11-17 · DEV-30 편집·재발송·취소의 로컬 검증과 실제 차단
+
+- 승인: [이번 Task D1/D2](../development/figma-v01/tasks/DEV-30.md#dev-30-brief). 사용자 로컬 선행·실제 QA 차단 보존과 이후 **초대 정보 편집·PATCH까지 포함**을 적용했다. 답변 전 읽기 전용 가정은 대체됐으며 당시 조사/원본 TEAM 계획은 보존한다.
+- 실행: Node22.20.0/pnpm11.3.0, 현재 source의 환경파일 제외 격리 복사본·Next16.2.9·Aside 실제 browser, loopback49191/all mock/company connected. HTTP fetch 대역은 별도 Node 계약 검사다. 실제 업무/API/메일·수신/수락·운영/배포0이다.
+- 자동: 초기997 PASS 뒤 독립 Major2/Minor1을 보완한 source의 `pnpm test` **1001/1001·35files**, `pnpm lint` 오류/경고0, API/mock/hybrid Preview의 `pnpm build` 및 `pnpm build-storybook` PASS. 격리 실행에서는 동일 package script에 `--config.verify-deps-before-run=false`를 붙여 복제 의존성의 자동 install을 방지했다. 변경 실행 소스11개의 SHA256이 작업트리와 같다. 새 library·package/lockfile·프로젝트 설정 변경0이다. `git diff --check`와 문서 검사도 수행한다.
+
+| 소유 사례 | 로컬에서 확인한 근거 | 실제 서버/남은 경계 |
+| --- | --- | --- |
+| TEAM-14 편집·재발송/취소 | exact PATCH body(이메일 제외)/resend body/cancel query, 현재 version+1·등록 이름/이메일 고정·직급/대표자/grant 제한, no-change PATCH0. mock 직렬 version 소비·terminal 거부·이전 PENDING delivery SUPERSEDED, 브라우저 편집 후 version1→3/delivery1→2·취소4/CANCELED/목록0 확인 | **차단/미실행**. 실제 저장/메일·이전 링크/일회성 handoff·동시 수락은 미실행 |
+| TEAM-15 만료 | fake Clock의 정확 경계·DB PENDING 잔존 resend 창과 UI 차단, 실제 browser2.5초 만료 후 submit disabled·행의 관리 버튼0/새 작성, 빈 작성 form/자동 생성0 | **차단/미실행**. 단말/서버 시계 차이·전송 중 실제 서버 만료 확정은 별도 |
+| TEAM-16 명령/메일/수신 | delivery5상태·FAILED와 명령 성공 분리, 유실/손상/409·429/5xx 후 자동 재명령0. PATCH 저장 뒤 조회/재발송 실패/유실은 저장 receipt 보존. browser의 합성 수락 경합에서 version3/ACCEPTED·delivery1 유지/재발송0·저장 성공 banner와 오류를 함께 확인 | **차단/미실행**. 메일 어댑터/수신함 도착·실제 수락 증거 없음 |
+| TEAM-17 수신/이전 링크 | source의 status/만료/deliveryVersion/handoff 소비·확인 이메일 검사를 열람. fetch 대역의 CI003/CI004 수락 거부가 성공/refresh로 바뀌지 않는지 검증. 기존 독립 수신 mock 회귀는 전체 테스트에 포함 | **차단/미실행**. 발송 관리 mock과 기존 수신 fixture는 연결되지 않음. 실제 취소/이전 링크 수락 거부를 실행한 로컬/실서버 통합 PASS가 아님 |
+| TEAM-23 수명/브라우저 | scope의 계정/epoch/Abort·현재 소속/leaf/회사·늦은 응답/중복·PATCH 뒤 수명 종료, browser 로그인/로그아웃·다른 계정의 빈 초대, 새로고침 복원·명시 조회·Escape/초점 복귀. 재발송640px/취소420px,360×800에서 둘 다328px/가로 넘침0 | **차단/미실행**. 실제 계정·회사/권한 회수/인증 만료와 회사 변경 잠금은 별도 |
+| TEAM-26 공급원/증거 | public client·동일 company factory, 기존7그룹/immutable snapshot/hybrid/운영 guard/namespace 계약 회귀. app document의 관측 HTTP 외부 resource0·합성 입력/metadata만 보존·비밀 token/링크·메일 원문 공개/저장 없음 | **차단/미실행**. resource 관측은 packet/서버 통신 전수 계측이 아니며 실제 배포/업무 응답 증거가 아님 |
+
+### 브라우저 시나리오와 산출물
+
+1. 비로그인 팀원 보호·가상 로그인→초대 생성→편집 form의 기존값/이메일 readonly→이름 변경과 재발송→목록/성공 banner/정확 version/delivery를 확인했다.
+2. 취소 popup의 원본 icon80×80 로드·420px 폭·Escape 후 원래 행 초점 복귀, 확인 후 CANCELED/완료 시각·목록 제거를 확인했다. 돌아가기는 명령이 아니다.
+3. 360×800에서 재발송/취소 popup328px·viewport 내부/가로 넘침0, 만료 timer의 버튼 잠금·새 작성 안내/빈 form을 확인했다. Figma 재발송3137:52911/취소3137:52990과 자식 popup3137:53029가 기준이며 전체 페이지/모든 상태 pixel 전수 PASS를 주장하지 않는다.
+4. 로컬 합성 storage의 PATCH 쓰기 직후에만 수락을 주입해 부분 성공 UI를 확인했고, 주입 함수를 같은 호출의 finally에서 복구했다. 제품/실제 서버 결함 재현이 아닌 의도적 합성 경합이다.
+5. 로그아웃 뒤 보호 자료 숨김·다른 가상 계정에서 초대0, 새로고침 뒤 만료 상태 복원을 확인했다. UI 문서의 관측 외부 HTTP resource0은 네트워크 전수 캡처가 아니다.
+6. 독립 리뷰 수정 뒤 실제 Next/mock에서 ADMIN 초대를 만든 다음 합성 actor만 VIEWER+INVITE+MANAGE/일반 직급으로 바꿨다. 편집창 진입은 가능하고 기존 ADMIN 입력의 제출은 잠기며 VIEWER로 낮추면 PATCH→재조회→재발송이 성공했다. DOM/저장 상태의 version3·role VIEWER·PENDING·delivery2로 확인했다. 실제 권한 변경/업무 API는 실행하지 않았다.
+
+검토 시 임시 근거는 `/tmp/mate-dev30/evidence/`의 최초 합성 스크린샷5개와 관찰 JSON, 추가 `dev30-revision-observations.json`, `/tmp/mate-dev30/test-revised.log`, `lint-revised.log`, `build-{api,mock,hybrid}-revised.log`, `storybook-revised.log`다. 이전 final 로그는 초기997 근거로 보존한다. 추가 fullPage 캡처는 스티칭 중복이 있어 시각 PASS나 PR 이미지에 사용하지 않고 권한 축소는 DOM/JSON으로 판단했다. 원문 인증/업무 로그·링크를 근거로 복사하지 않는다.
+
+### 실패·도구 한계와 재개 조건
+
+- 제품 자동 수정3/3: 첫2회는 lint ref 경계/fixture 가정을 교정했다. D2 범위 확장은 실패 수정이 아닌 추가 승인 구현이다. 초기 독립 FAIL의 인증 대기/401 refresh 중 만료 dispatch와 기존 grant의 편집 진입 거부는 마지막3회에서 보완했다. 실제 feature/API/shared HTTP+fetch 대역/합성 시계로 인증 대기 만료 fetch0, 첫401 뒤 만료의 추가 fetch0, 공통 Abort/scope guard, 허용된 ADMIN→VIEWER 편집·재발송을 새 회귀4건으로 확인했다. 전송 후 서버 처리/시계 차이까지 보장하지 않는다. 초기 PR crop2개는 올바른 전체 합성 화면으로 교체했다.
+- pnpm 자동 install/non-TTY·Turbopack의 외부 symlink 거부·복제 완료 전1회 시작은 격리 도구 준비 관찰이다. Task 소유 symlink만 해제하고 기존 의존성을 복제해 source/config 변경 없이 해결했다.
+- Aside 호출 사이 focus 재조회가 기존 parent 화면/dialog를 교체하고 오래된 ref가 무효가 되는 관찰이 있어 fresh snapshot·같은 호출 안에서 조작/재확인을 수행했다. REPL 중복 변수 선언1회와 SVG 다운로드 준비 중 빈 응답/미지원 instance ID는 도구 실패이며 제품 PASS로 세지 않는다. 실제 icon은 정확한 원본 instance를 export한80px SVG다.
+- source SHA/CI·게시 OpenAPI·실행 중 process SHA·실제 업무 응답은 서로 다르다. 실제6소유 부분은0통과6차단이며 승인 합성 회사/계정·현재 leaf/version·메일 수신함·Origin/실행 대응·사용/소비/잔존/복구·담당 역할을 확보한 뒤 재개한다. 기존 DEV-29/28/27·QA-08 AUTH-16/17·다른 가입/회사/문서/정책의 차단/승인 예외를 확대하거나 지우지 않는다.
