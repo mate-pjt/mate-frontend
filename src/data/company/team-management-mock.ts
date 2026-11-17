@@ -90,13 +90,14 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     const a = actor(c).value, self = a.membershipId === m.membershipId;
     const permission = classifyTeamChange(catalog, a.permissions, m, "PERMISSIONS", null, preset("VIEWER"));
     const pos = classifyTeamChange(catalog, a.permissions, m, "POSITION", null, null);
+    const removal = classifyTeamChange(catalog, a.permissions, m, "REMOVE", null, null);
     const end = m.role !== "ADMIN" || adminCount(c) > 1, admin = a.role === "ADMIN";
     return { canChangePermissions: !self && permission === "DIRECT", canChangePosition: !self && pos === "DIRECT",
-      canRemove: !self && a.permissions.includes("COMPANY_MEMBER_REMOVE") && pos === "DIRECT" && end,
+      canRemove: !self && removal === "DIRECT" && end,
       canSelfDemote: self && (a.role === "ADMIN" ? adminCount(c) > 1 || m.positionType === "REPRESENTATIVE" : !sameTeamPermissions(m.permissions, preset("VIEWER"))),
-      canLeave: self && end, canRequestPermissionChange: !self && a.permissions.includes("COMPANY_MEMBER_PERMISSION_MANAGE") && (pos === "CONSENT" || admin),
+      canLeave: self && end, canRequestPermissionChange: !self && a.permissions.includes("COMPANY_MEMBER_PERMISSION_MANAGE") && (permission === "CONSENT" || admin),
       canRequestPositionChange: !self && a.permissions.includes("COMPANY_MEMBER_PROFILE_EDIT") && (pos === "CONSENT" || admin),
-      canRequestRemoval: !self && a.permissions.includes("COMPANY_MEMBER_REMOVE") && pos === "CONSENT" && end,
+      canRequestRemoval: !self && removal === "CONSENT" && end,
       canAppointSelfRepresentative: self && admin && !c.members.some(m => m.status === "ACTIVE" && m.value.positionType === "REPRESENTATIVE") };
   }
   function member(c: Company, id: number) { return c.members.find(m => m.value.membershipId === id) ?? missing(); }
