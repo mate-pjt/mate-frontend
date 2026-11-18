@@ -6,8 +6,9 @@
 | --- | --- |
 | 갱신일 | 2026-11-18 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-15 · 초대 수락 후 팀원 목적지 결정](tasks/POL-15.md#pol-15-dev-32-handoff) — P2, POL-14 선행 충족, 선정·인계 |
-| 다음 첫 행동 | 새 대화에서 최신 main과 POL-14 결정·DEV-27 접근 기준을 확인하고, 초대 수락 완료 Figma 3141:56172와 현재 CTA/복귀 경로를 대조한다. 현재 권한별 목적지·안전한 폴백의 정책 Gate부터 시작한다. |
+| 다음 작업 | [DEV-33 · 초대 수락 완료의 팀원 화면 연결](tasks/DEV-33.md#dev-33-pol-15-handoff) — P2, POL-15·DEV-27 선행 충족, 선정·인계 |
+| 다음 첫 행동 | 새 대화에서 최신 main과 POL-15의 상태별 목적지, O11 Figma, 수락 결과·현재 소속/권한 포트·`/my/team` 가드와 TEAM-23/24·AUTH-16/17을 대조한다. 실제 QA의 실행·합성 자원·변경/복구 준비를 확인하고 DEV-33 자체 요구사항 Gate를 작성한다. |
+| POL-15 이번 승인 범위 | 2026-11-18 사용자 D1으로 확인된 접근 범위에 따른 팀원 목록·나의 회사·공개 공고 이동을 확정했다. 문서 검증·두 리뷰·목적별 Git 전달·최종 head CI·정상 main 병합 및 로컬 FF, 이번 PR의 Chromatic 월간 한도 예외가 별도 승인됐다. [Brief](tasks/POL-15.md#pol-15-brief) · [결정](tasks/POL-15.md#pol-15-contract) |
 | DEV-32 이번 승인 범위 | 2026-11-18 사용자 요청의 단일 개발·검증·두 리뷰·목적별 Git 전달/정상 병합/로컬 FF와 추가 결정 ‘로컬 선행·실제 API QA 차단 보존’. 이번 Chromatic 월간 한도만 예외. [범위와 근거](tasks/DEV-32.md#dev-32-brief) |
 | DEV-32 Git 전달 | [PR #90](https://github.com/mate-pjt/mate-frontend/pull/90), 최초 head `e117775`, feature/test/docs 라벨. 전달 기록 추가 뒤 최종 PR head의 CI·리뷰·정상 병합·로컬 FF는 실제 PR과 종료 보고에서 확인한다. [체크포인트](tasks/DEV-32.md#dev-32-git-delivery) |
 | DEV-31 이번 승인 범위 | 2026-11-18 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 D1 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무 조회/승인·거절/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-31.md#dev-31-brief) |
@@ -193,8 +194,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-30 · 초대 재발송·취소 관리](tasks/DEV-30.md) | 개발 | P2 | 완료 | T02 | [DEV-29](tasks/DEV-29.md) |
 | [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md) · **로컬 Gate PASS·실제5소유 부분 차단 보존** | 개발 | P2 | 완료 | T03 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-32 · 회사 직급 목록·추가·관리](tasks/DEV-32.md) · **로컬 Gate PASS·실제 QA 4부분 차단** | 개발 | P2 | 완료 | T04 | [DEV-27](tasks/DEV-27.md) |
-| [POL-15 · 초대 수락 후 팀원 목적지 결정](tasks/POL-15.md) | 정책 결정 | P2 | 준비 | O11 | [POL-14](tasks/POL-14.md) |
-| [DEV-33 · 초대 수락 완료의 팀원 화면 연결](tasks/DEV-33.md) | 개발 | P2 | 대기 | O11 | [POL-15](tasks/POL-15.md) / [DEV-27](tasks/DEV-27.md) |
+| [POL-15 · 초대 수락 후 팀원 목적지 결정](tasks/POL-15.md#pol-15-contract) · **정책·문서 검증 범위** | 정책 결정 | P2 | 완료 | O11 | [POL-14](tasks/POL-14.md) |
+| [DEV-33 · 초대 수락 완료의 팀원 화면 연결](tasks/DEV-33.md#dev-33-pol-15-handoff) | 개발 | P2 | 준비 | O11 | [POL-15](tasks/POL-15.md) / [DEV-27](tasks/DEV-27.md) |
 
 ## 6. 회사 간 통합
 
@@ -502,3 +503,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-32 종료](tasks/DEV-32.md#dev-32-close)에서 T04 직급 관리·로컬 1,125 tests/빌드/실제 Next·문서/두 리뷰 통과와 실제 API 4부분 차단을 확인한다. 첫 독립 검토의 U+FEFF 문제는 추가 승인으로 교정했다. PR 최종 head, CI와 main 반영은 전달 기록과 원격 PR을 확인한다.
 - [POL-15](tasks/POL-15.md#pol-15-dev-32-handoff)는 높은 우선순위의 기존 외부/선행 차단을 보존한 뒤 기본 표 순서상 첫 독립 정책 후보다. POL-14 선행 충족과 이후 DEV-33의 정책 의존을 확인했다. 이번 작업에서 정책 조사나 구현을 시작하지 않았다.
+
+## 2026-11-18 · POL-15 목적지 정책과 DEV-33 인계
+
+- [사용자 D1](tasks/POL-15.md#pol-15-brief)으로 수락 완료 후 현재 소속과 실제 조회 권한에 따른 `/my/team`·`/my/company`·`/bids`와 읽기 재시도 기준을 확정했다. 앱 변경이나 실업무 통합 없이 정책·문서 판정을 기록한다. [확정 정책](tasks/POL-15.md#pol-15-contract) · [검증 및 리뷰](reviews/POL-15.md)
+- P0/P1과 앞선 P2의 기존 우선순위·차단·선행 대기를 보존했다. 정책과 DEV-27이 선행인 [DEV-33](tasks/DEV-33.md#dev-33-pol-15-handoff) 하나를 선정했다. O11 구현과 TEAM-23/24·AUTH-16/17의 실행 자원·검증 범위는 DEV-33 요구사항 Gate에서 확인한다. [종료 및 다음 첫 행동](tasks/POL-15.md#pol-15-close)

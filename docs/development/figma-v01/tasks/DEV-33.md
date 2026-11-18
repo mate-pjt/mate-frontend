@@ -79,3 +79,12 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-33-pol-15-handoff"></a>
+
+## 2026-11-18 · POL-15 목적지 정책 인계
+
+- O11의 수락 완료는 최신 계정과 수락한 회사·활성 소속, `COMPANY_MEMBER_LIST_VIEW`가 확인되면 `/my/team`으로 이동한다. 팀원 조회 권한 부족이나 경로 미제공 시 같은 회사 `COMPANY_INFORMATION_VIEW`가 확인되면 `/my/company`를 제공한다. 접근 가능성을 확인할 수 없는 경우 확인된 성공 안내와 읽기 재시도·공개 `/bids`를 제공한다. 직접 진입에 기존 가드를 적용하고 정책 적용 후 단계별 UI와 네트워크 동작을 검증한다. [사용자 결정과 상태별 기준](POL-15.md#pol-15-contract) · [수락 완료 Figma](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3141-56172)
+- 후속 완료 조건은 현재 계정·회사·소속·leaf의 대조, 접근 권한의 상실/미확인·경로 미제공, 수락 성공 뒤 조회 실패와 수락 결과 미확정의 구분, 중복 클릭·다른 계정/회사·뒤로가기/새로고침에 대한 명시 검증이다. 거절/로그인 복귀/만료·권한 없는 직접 URL도 회귀를 확인한다. [TEAM-23/24 상세 기준](../../../qa/team-members.md#pol-15-team-qa)
+- 첫 행동은 최신 main과 이 정책의 원문·O11 완료 Figma·수락 결과/현재 회사·권한 포트·`/my/team` 접근 가드·TEAM-23/24와 AUTH-16/17을 대조하는 것이다. 업무 응답과 배포 실행 대응, 소모용 합성 초대/계정·권한별 fixture·변경/정리 범위 및 승인을 확보한 뒤 자체 요구사항 Gate를 작성한다. 실제 QA가 준비되지 않으면 해당 제약과 필요한 결정을 이 Task에서 다룬다. [AUTH-16/17 기존 실제 차단](../../../qa/auth.md#qa-08-20261102)
+- 이번 기록은 후속 개발 범위와 확인 절차의 인계다. DEV-33 자체 Brief·설계·제품 코드·로컬/실제 QA·별도 Git 전달과 승인 연장은 이 단계의 범위 밖이다. 현재·다음·상태는 [WBS](../README.md)를 따른다.
