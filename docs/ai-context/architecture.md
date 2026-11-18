@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-17
+Last updated: 2026-11-18
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -58,6 +58,8 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - Storybook uses `@storybook/nextjs-vite` and imports `src/app/globals.css` plus `.storybook/preview.css` for the Pretendard CSS variable.
 
 ## Source Area Notes
+
+- [DEV-31](../development/figma-v01/tasks/DEV-31.md#dev-31-brief)의 `/my/team/membership-requests`는 같은 company 공급원의 신청 목록/상세·승인/사유 거절 포트를 사용한다. 기존 팀원 화면에서 신청 탭으로 진입하고 보낸 초대는 기존 panel을 재사용한다. `features/company/team-membership-requests.ts`는 현재 REVIEW/소속·catalog의 전후 확인과 exact 신청/version·선택 직급·grant를 조합하고 명시 명령의 인증 대기/401 재인증 직전에도 scope를 검사한다.640px native 검토 dialog는 원 신청과 부여값·대표자/원제안 직급·역할/leaf·사유를 구분한다. PENDING 전용 상세 GET의404를 처리 성공으로 만들지 않으며 검증된 terminal receipt를 먼저 보존한다. 승인 당시 결과와 현재 팀원 정보의 후속 변경/종료·부분 조회 실패를 구분하여 남은 신청 목록을 계속 사용할 수 있다. mock은 기존 관리 상태/공유 명령 lane에 신청 영역과 승인 팀원을 함께 보존하고 신청 영역 손상이 기존 팀원 수정을 초기화하지 않는다. [로컬 QA/실제5소유 부분 차단](../qa/team-members.md#dev-31-local-qa)은 별개다.
 
 - [DEV-27](../development/figma-v01/tasks/DEV-27.md#dev-27-brief)의 `/my/team`·`/my/team/[membershipId]`는 같은 company Team 조회 포트로 현재 회사·소속/leaf·catalog·ACTIVE 목록/상세를 읽는다. `team-api.ts`가 page/count·joinedAt ASC/id ASC(나노초 포함)·nullable·3page/9row flags와 exact ID를 검증하고 계정ID/미지원 개인정보는 내부 모델에서 제외한다. `features/company/team.ts`는 계정/epoch·Abort·회사/소속/leaf 재확인, UI는 URL page 복귀·401/403/404·결측과 focus/visibility 복귀를 조합한다. 당시 조회 전용 선행 위에 DEV-28의 관리 명령을 연결하며 초대/신청/직급 정의 관리는 DEV-29~32다. 생년월일/전화번호는 D2 미제공이며 [조회 QA](../qa/team-members.md#dev-27-local-qa)는 실제 API 통합 차단과 구분한다.
 
