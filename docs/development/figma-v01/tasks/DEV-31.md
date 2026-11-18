@@ -138,3 +138,12 @@
 - 다음 하나는 [DEV-32 인계](DEV-32.md#dev-32-dev-31-selection)다. 앞선 P0/P1의 외부/정책/선행 차단·P2 회사 갱신/신규 서류/MAT-162 등의 대기/보류를 유지하고, DEV-27이 완료된 기본 P2 표 순서 첫 독립 후보를 골랐다. POL-15/DEV-33·다른 Task를 앞당기거나 소유/우선순위/원본 의존성을 바꾸지 않는다.
 - 첫 행동/한계: 최신 main·DEV-27/POL-14 D1·원래 DEV-32 정의와 현행 직급 source/Swagger·Figma/실제 자원의 자체 Gate부터 시작한다. 이번 신청 승인 중 제안 직급 해결은 직급 정의 CRUD 구현이 아니다. DEV-31 D1·Git/Chromatic 승인을 다음 Task로 옮기지 않는다. 이번에는 선정·인계 외 DEV-32 전용 조사/정책/설계·제품/Repository·실제 업무/QA·별도 Git 전달을 시작하지 않았다.
 - Git 전달은 아직 목적별 commit 전이며 실제 최종 PR/head CI·리뷰/정상 merge/main FF·SHA/clean은 실제 PR·종료 보고에서 확인한다. 요청으로 이미 승인된 같은 Git 전달을 반복 승인받지 않는다.
+
+<a id="dev-31-git-delivery"></a>
+
+### 2026-11-18 · PR/Git 전달 체크포인트
+
+- [PR #89](https://github.com/mate-pjt/mate-frontend/pull/89)를 실제 생성했다. base main `1be8f7812f7add7f1dc6f744498b694e88aef5d1`, 최초 head `45ee7e546ae36856afc23af99613826a8df83fb7`, 라벨 type: feature/test/docs·33파일이다. 사용자 최초 Git 승인으로 수행하며 같은 승인을 반복 요청하지 않는다.
+- 작은 목적별6커밋: f023b2f 데이터 계약/HTTP·mock, cb05b9f 검토/승인·거절 UI,44d4c99 테스트,1e83b35 개발 지침,ffbf118 QA/Task·다음 인계,45ee7e5 예방 규칙. runtime/test/docs를 분리했고 새 library·package/lockfile·빌드/하네스 설정 변경0이다. push 뒤 local/remote branch 동일·clean을 확인했다.
+- 이 시점 원격 main은 시작 SHA와 같고 main protected=false/필수 check 목록0·merge commit 허용을 조회했다. 최초 head의 Data access checks(push/PR)는 진행 중, Chromatic workflow/Storybook Publish·Vercel은 success, UI Tests/Review는 pending이다. **최종 head의 CI·리뷰/한도 원인·병합 조건 확인 전 병합 완료를 주장하지 않는다.**
+- 이 Git 기록은 제품/정책/실제5QA 차단·DEV-32 선정/인계 범위/18source해시를 바꾸지 않는다. 문서 freshness 뒤 이 기록을 별도 docs commit/push하고 실제 최종 head의 CI·원격 리뷰·정상 merge commit·local main FF/동일 SHA·clean을 확인한다. 이번 월간 Chromatic 한도만 예외이고 check 강제 성공/보호 우회/force push/직접 main push는 하지 않는다.

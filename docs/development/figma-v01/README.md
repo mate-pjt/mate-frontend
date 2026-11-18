@@ -9,6 +9,7 @@
 | 다음 작업 | [DEV-32 · 회사 직급 목록·추가·관리](tasks/DEV-32.md#dev-32-dev-31-selection) — P2/DEV-27 선행 충족, 선정·인계만 하며 착수하지 않음 |
 | 다음 첫 행동 | 최신 main·DEV-27/POL-14 D1·DEV-32 원래 정의와 현행 직급 소유 source/게시 계약·Figma·실제 자원을 확인하고 자체 요구사항/Brief·검증 Gate를 제시한다. DEV-31 D1·Git/Chromatic 예외를 승계하지 않음 |
 | DEV-31 이번 승인 범위 | 2026-11-18 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 D1 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무 조회/승인·거절/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-31.md#dev-31-brief) |
+| DEV-31 Git 전달 | [PR #89](https://github.com/mate-pjt/mate-frontend/pull/89), 목적별6커밋 최초 head45ee7e5·type: feature/test/docs. Git checkpoint 기록 뒤 최종 head CI·리뷰/정상 merge/main FF·동일 SHA/clean은 실제 PR/종료 보고에서 확인. [기록](tasks/DEV-31.md#dev-31-git-delivery) |
 | DEV-30 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 merge/main FF. D1 로컬 선행/실제 QA 차단 보존·D2 초대 편집/PATCH 포함. 이번 Chromatic 월간 한도만 예외. 실제 업무/API/메일·수락/운영·배포·다음 Task 실행 제외. [Brief](tasks/DEV-30.md#dev-30-brief) |
 | DEV-30 Git 전달 | [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88), 목적별6커밋 최초 head212553d·type:feature/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일 SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-30.md#dev-30-git-delivery) |
 | DEV-29 Git 전달 | [PR #87](https://github.com/mate-pjt/mate-frontend/pull/87), 목적별6커밋 최초 headbf5adaf·type:feature/refactor/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-29.md#dev-29-git-delivery) |
