@@ -486,3 +486,29 @@
 - Aside call 간 focus 복귀는 보호 자료 재조회/dialog 종료를 일으켜 처음 screenshot이 dialog 대신 목록이었던 관찰을 보존한다. 같은 call의 fresh snapshot/geometry/캡처·다시 열기와 Escape로 확인했다. 뒤로가기 API timeout 뒤 실제 URL이 복귀한 것, refresh 후 접힌 details를 open selector로 읽은 실패도 fresh 상태와 구분한다. Meta 수정 클릭은 현재 탭의 일반 이동만 관찰했으므로 새 탭 동작은 source review 범위로 남겼고 일반 진입/복귀는 확인했다.
 - mock의 신청 receipt/팀원/새 직급은 reviewer 계정 namespace의 합성 상태다. 신청자 별도 계정 overview·다른 회사 pending·기존 수신 초대까지의 원자 정리는 source 열람과 미실행 실제 QA다. 이를 로컬 통합 PASS로 세지 않는다.
 - 실제5소유 부분은 실행 버전/Origin·승인 합성 검토자/신청자·회사/신청·현재 leaf/version·사용/변경/잔존/복구·담당 역할 확보 뒤 위 원래 TEAM case ID로 재개한다. 기존26개 원본 계획·DEV-27~30/다른 Task QA와 승인 예외는 보존한다.
+
+<a id="dev-32-local-qa"></a>
+
+## 2026-11-18 · DEV-32 직급 관리의 로컬 검증과 실제 API 차단
+
+[DEV-32 Brief/승인](../development/figma-v01/tasks/DEV-32.md#dev-32-brief)의 범위만 실행했다. Next 16.2.9와 Aside에서 합성 mock 및 loopback HTTP 대역을 분리했다. 실제 업무 API, 메일, 실제 변경은 각각 0건이다. 실행 중 서버 SHA와 실제 응답 계약은 미확인이다.
+
+| 원래 사례 | 로컬 검증과 관측 | 실제 API |
+| --- | --- | --- |
+| TEAM-21 | trim·1/30/초과·예약어·제어 문자·중복과 동시 생성/rename, 정확한 POST/PATCH·version·receipt. 실제 Next mock과 HTTP 대역의 추가/이름 변경과 새 목록. 공유 mock의 팀원 목록·상세 및 초대에 같은 ID의 변경명 반영, 소속/초대 자체 버전 보존 | **차단/미실행**. 승인된 직급·권한/참조·경쟁 fixture 필요 |
+| TEAM-22 | 사용 중 CP004·대표자 CP003·다른 회사/없는 ID·stale CP005. 삭제 query/version·receipt 확인. mock의 삭제 뒤 과거 초대 참조 보존, 같은 이름 재생성과 합류 승인도 새 ID. 브라우저에서 활성 사용 삭제 거절 후 읽기 재조회, 미사용 직급 삭제 | **차단/미실행**. 사용 중/미사용·system·과거 참조 fixture와 사용·잔존/복구 승인 필요 |
+| TEAM-23의 DEV-32 부분 | 조회·관리 leaf, 서버 읽기 전용, 다른 계정 격리·늦은 응답/401 재인증 중 닫힘을 자동 테스트했다. 실제 Next는 로그인 복귀, 팀원 2페이지 복귀, 팀원/신청 진입, 360×800에서 328px native 변경 창·가로 넘침 0·Escape의 호출 버튼 초점 복귀를 확인했다 | **차단/미실행**. 개발 서버와 Origin·권한 상실/회사 교체·오류를 검증할 범위 필요 |
+| TEAM-26의 DEV-32 부분 | 같은 company 공급원/HTTP DTO/공유 mock, 일곱 그룹의 운영 guard와 API/mock/hybrid 빌드. 로컬 대역에 정상·충돌·손상·응답 단절·조회 재시도·조회 전용을 주입했다 | **차단/미실행**. 실제 서버 식별자·wire와 안전한 관측·사용 및 복구 범위 필요 |
+
+### Aside 브라우저와 HTTP 관측
+
+- [최종 화면](../development/figma-v01/assets/dev-32/README.md)에서 데스크톱 목록·입력·완료 Toast와 모바일 이름 변경을 확인했다. Figma [3137:53220](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53220), [3137:53254](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53254), [3137:53288](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53288) 세 상태의 입력, 행, 기본 설정·사용자 지정, 취소 아이콘과 Toast를 대조했다. 기존 GNB/사이드 메뉴·합성 데이터와 안내 가독성 토큰을 사용했고 전체 화면의 pixel 전수 판정은 하지 않았다.
+- 대역의 정상 POST 201, PATCH 200 `expectedVersion=1`, DELETE 200 query `expectedVersion=2`와 행 제거를 확인했다. CP005/CP004·손상 201은 성공 안내로 바뀌지 않았고, 명시 조회를 제공했다.
+- 쓰기 서버가 헤더 전 소켓을 끊은 최초 대역에서 브라우저 전송 재시도와 CP002가 관측됐다. 고유 이름 제약으로 행 하나만 남았다. 이 관측은 성공으로 집계하지 않았다. 응답 헤더 전송 뒤 본문을 끊는 대역으로 재검증해 POST 1회, 결과 미확정 안내, 사용자의 명시 GET 뒤 같은 행이 나타남을 확인했다. fetch 오류의 앱 재전송 0은 별도 Vitest 회귀에서 확인했다.
+- 합성 201 이후 후속 GET 503에서는 완료 안내를 유지했다. 재조회도 503일 때 GET만 다시 호출했고 확인된 저장을 별도로 표시했다. 권한 없음/관리 leaf 없음/서버 읽기 전용 모드에서 쓰기 0건을 확인했다.
+- 첫 독립 검토에서 발견한 U+FEFF 직급명 입력/읽기 불일치를 교정했다. 입력 이벤트로 U+FEFF를 설정한 실제 Next HTTP 대역에서 POST 1회, 직급 행 2→3, 새로고침 후 3을 확인했다. 브라우저 도구의 일반 텍스트 채우기는 이 문자만 있는 입력을 비워서 입력 이벤트로 재검증했다. 기존 팀원·초대·합류 승인과 mock 저장 보존은 자동 회귀에 포함했다.
+- 격리 소스에 프로젝트 환경파일을 복사하지 않았다. 브라우저와 대역은 합성 전용이고 다른 가입/회사/서류/QA-08의 대기·차단·예외를 보존한다.
+
+### 실제 QA 재개 조건
+
+백엔드·QA 담당 역할이 실행 버전/Origin과 승인된 합성 회사·현재 소속/관리/읽기 전용·타사 계정, 사용 중/미사용 직급과 역사 참조·경쟁 데이터를 제공해야 한다. 삭제·재생성/참조 확인은 disposable 자원과 잔존·복구 범위를 정한 뒤 실행한다. 2026-11-18 사용자 결정의 범위는 로컬 선행·이번 Git 전달이며 실제 TEAM-21/22와 TEAM-23/26의 DEV-32 부분 0통과/4차단을 보존한다.
