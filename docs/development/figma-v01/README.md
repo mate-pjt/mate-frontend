@@ -4,10 +4,11 @@
 
 | 확인할 것 | 현재 값 |
 | --- | --- |
-| 갱신일 | 2026-11-17 KST |
-| 현재 작업 | [DEV-30 로컬 범위 종료](tasks/DEV-30.md#dev-30-close) — D1/D2 로컬 범위·1001 tests/두 리뷰 PASS. 실제6QA 차단 보존. Git 전달은 [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88)의 최종 head·종료 보고에서 별도 확인 |
-| 다음 작업 | [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md#dev-31-dev-30-selection) — P2/DEV-27 선행 충족, 선정·인계만 했으며 착수하지 않음 |
-| 다음 첫 행동 | 최신 main·DEV-27/POL-14 D1·DEV-31 원래 정의와 현행 신청 소스를 확인하고 자체 요구사항·계약/자원 Gate·Brief를 제시한다. DEV-30 D1/D2·실제 QA/Git 예외를 승계하지 않음 |
+| 갱신일 | 2026-11-18 KST |
+| 현재 작업 | [DEV-31 로컬 범위 종료](tasks/DEV-31.md#dev-31-close) — D1 로컬 구현·1085 tests/세 구성/Storybook·browser·문서/두 리뷰 PASS. 실제5QA 차단 보존. Git 전달은 실제 최종 PR/head·종료 보고에서 별도 확인 |
+| 다음 작업 | [DEV-32 · 회사 직급 목록·추가·관리](tasks/DEV-32.md#dev-32-dev-31-selection) — P2/DEV-27 선행 충족, 선정·인계만 하며 착수하지 않음 |
+| 다음 첫 행동 | 최신 main·DEV-27/POL-14 D1·DEV-32 원래 정의와 현행 직급 소유 source/게시 계약·Figma·실제 자원을 확인하고 자체 요구사항/Brief·검증 Gate를 제시한다. DEV-31 D1·Git/Chromatic 예외를 승계하지 않음 |
+| DEV-31 이번 승인 범위 | 2026-11-18 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 D1 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무 조회/승인·거절/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-31.md#dev-31-brief) |
 | DEV-30 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 merge/main FF. D1 로컬 선행/실제 QA 차단 보존·D2 초대 편집/PATCH 포함. 이번 Chromatic 월간 한도만 예외. 실제 업무/API/메일·수락/운영·배포·다음 Task 실행 제외. [Brief](tasks/DEV-30.md#dev-30-brief) |
 | DEV-30 Git 전달 | [PR #88](https://github.com/mate-pjt/mate-frontend/pull/88), 목적별6커밋 최초 head212553d·type:feature/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일 SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-30.md#dev-30-git-delivery) |
 | DEV-29 Git 전달 | [PR #87](https://github.com/mate-pjt/mate-frontend/pull/87), 목적별6커밋 최초 headbf5adaf·type:feature/refactor/test/docs. 순수 Git 기록 뒤 최종 head CI/리뷰·정상 merge/main FF·동일SHA/clean은 실제 PR/종료 보고에서 확인. [체크포인트](tasks/DEV-29.md#dev-29-git-delivery) |
@@ -187,8 +188,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-28 · 팀원 정보·권한 변경](tasks/DEV-28.md) · **추가1/1 뒤 로컬 Gate PASS·실제 QA9차단 보존** | 개발 | P2 | 완료 | T01 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-29 · 팀원 초대 발송](tasks/DEV-29.md) | 개발 | P2 | 완료 | T02 | [DEV-27](tasks/DEV-27.md) |
 | [DEV-30 · 초대 재발송·취소 관리](tasks/DEV-30.md) | 개발 | P2 | 완료 | T02 | [DEV-29](tasks/DEV-29.md) |
-| [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md) | 개발 | P2 | 준비 | T03 | [DEV-27](tasks/DEV-27.md) |
-| [DEV-32 · 회사 직급 목록·추가·관리](tasks/DEV-32.md) | 개발 | P2 | 대기 | T04 | [DEV-27](tasks/DEV-27.md) |
+| [DEV-31 · 합류 신청 목록·검토·승인/거절](tasks/DEV-31.md) · **로컬 Gate PASS·실제5소유 부분 차단 보존** | 개발 | P2 | 완료 | T03 | [DEV-27](tasks/DEV-27.md) |
+| [DEV-32 · 회사 직급 목록·추가·관리](tasks/DEV-32.md) | 개발 | P2 | 준비 | T04 | [DEV-27](tasks/DEV-27.md) |
 | [POL-15 · 초대 수락 후 팀원 목적지 결정](tasks/POL-15.md) | 정책 결정 | P2 | 대기 | O11 | [POL-14](tasks/POL-14.md) |
 | [DEV-33 · 초대 수락 완료의 팀원 화면 연결](tasks/DEV-33.md) | 개발 | P2 | 대기 | O11 | [POL-15](tasks/POL-15.md) / [DEV-27](tasks/DEV-27.md) |
 
@@ -488,3 +489,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-30 검증/판정](tasks/DEV-30.md#dev-30-close): D1 로컬 선행·실제 QA 차단 보존/D2 편집·PATCH 포함. 초기 독립 Major2/Minor1 FAIL과 마지막 자동 수정3/3 뒤1001 tests·lint/세 구성/Storybook·실제 mock browser·문서/두 리뷰 PASS. 실제6소유 부분0통과6차단·실제 이전/취소 링크 수락/메일 미실행은 별도이며 Git 전달은 실제 최종 head/PR에서 확인한다.
 - 다음 하나는 [DEV-31 인계](tasks/DEV-31.md#dev-31-dev-30-selection)다. 기본 우선순위/표 순서와 DEV-27 선행 충족을 확인해 선정·첫 행동만 기록했다. 기존 P0/P1·앞선 P2 차단/보류·원본79/114Task/156의존을 유지한다. 전용 계약 조사·설계·제품/실제 API/QA·별도 Git 전달0이며 DEV-30 승인/예외를 승계하지 않는다.
+
+## 2026-11-18 · DEV-31 로컬 범위 종료와 DEV-32 인계
+
+- [DEV-31 종료/검증](tasks/DEV-31.md#dev-31-close): 이번 D1의 신청 목록/검토·직급/권한/대표자·승인/사유 거절·미확정/후속 조회/수명,1085 tests·lint/세 구성/Storybook·실제 Next mock/HTTP 대역·문서/Context Audit·두 리뷰 PASS. 최초 독립 Major1/수정3/3·도구/전송 경계·실제5소유 부분0통과차단을 보존한다. 종료 metadata freshness·최종 Git 전달은 검토/실제 PR/종료 보고에서 따로 확인한다.
+- 다음 하나는 [DEV-32](tasks/DEV-32.md#dev-32-dev-31-selection)다. 기존 P0/P1·앞선 P2의 외부/선행 차단/보류와 기본 표 순서·DEV-27 충족을 확인한 선정/첫 행동만 인계했다. 전용 계약/설계·제품/실제 API·QA·별도 Git 전달0, 이번 승인/예외 승계0이다. 원본79/114Task/156의존과 기존 모든 정책/QA/차단·예외를 유지한다.
