@@ -9,6 +9,7 @@
 | 다음 작업 | [DEV-33 · 초대 수락 완료의 팀원 화면 연결](tasks/DEV-33.md#dev-33-pol-15-handoff) — P2, POL-15·DEV-27 선행 충족, 선정·인계 |
 | 다음 첫 행동 | 새 대화에서 최신 main과 POL-15의 상태별 목적지, O11 Figma, 수락 결과·현재 소속/권한 포트·`/my/team` 가드와 TEAM-23/24·AUTH-16/17을 대조한다. 실제 QA의 실행·합성 자원·변경/복구 준비를 확인하고 DEV-33 자체 요구사항 Gate를 작성한다. |
 | POL-15 이번 승인 범위 | 2026-11-18 사용자 D1으로 확인된 접근 범위에 따른 팀원 목록·나의 회사·공개 공고 이동을 확정했다. 문서 검증·두 리뷰·목적별 Git 전달·최종 head CI·정상 main 병합 및 로컬 FF, 이번 PR의 Chromatic 월간 한도 예외가 별도 승인됐다. [Brief](tasks/POL-15.md#pol-15-brief) · [결정](tasks/POL-15.md#pol-15-contract) |
+| POL-15 Git 전달 | [PR #91](https://github.com/mate-pjt/mate-frontend/pull/91) 최초 head `735946a`, `type: docs`. 최종 head의 CI·리뷰·main 반영은 PR에서 확인한다. [전달 체크포인트](tasks/POL-15.md#pol-15-git-delivery) |
 | DEV-32 이번 승인 범위 | 2026-11-18 사용자 요청의 단일 개발·검증·두 리뷰·목적별 Git 전달/정상 병합/로컬 FF와 추가 결정 ‘로컬 선행·실제 API QA 차단 보존’. 이번 Chromatic 월간 한도만 예외. [범위와 근거](tasks/DEV-32.md#dev-32-brief) |
 | DEV-32 Git 전달 | [PR #90](https://github.com/mate-pjt/mate-frontend/pull/90), 최초 head `e117775`, feature/test/docs 라벨. 전달 기록 추가 뒤 최종 PR head의 CI·리뷰·정상 병합·로컬 FF는 실제 PR과 종료 보고에서 확인한다. [체크포인트](tasks/DEV-32.md#dev-32-git-delivery) |
 | DEV-31 이번 승인 범위 | 2026-11-18 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 D1 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무 조회/승인·거절/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-31.md#dev-31-brief) |

@@ -161,3 +161,10 @@
 - [x] 후속 개발과 검증/차단에 연결하고 문서 검사와 두 리뷰를 마쳤다. [DEV-33](DEV-33.md#dev-33-pol-15-handoff) · [TEAM 검증 계획](../../../qa/team-members.md#pol-15-team-qa) · [검토 기록](../reviews/POL-15.md)
 - 다음은 DEV-33 하나다. 기존 P0/P1의 자원·선행 차단과 앞선 P2의 차단/보류 및 선행 대기를 적용한 문서 표에서, POL-15와 DEV-27이 갖춰지는 첫 후보다. 첫 행동은 최신 main, 수락 결과·현행 권한 포트/팀원 가드와 실제 QA 재개 조건을 확인해 자체 요구사항 Gate를 구성하는 것이다. 이번에는 선정과 인계까지다.
 - 체크포인트. `docs/pol-15-invitation-destination`의 이 문서 변경을 종료 diff로 검증한 뒤 목적별 커밋·push·PR로 전달한다. 실제 최종 head의 CI와 병합 여부·로컬 main FF는 원격 PR과 종료 보고에서 확인한다.
+
+<a id="pol-15-git-delivery"></a>
+
+## 2026-11-18 · Git 전달 체크포인트
+
+- 정책 확정/리뷰의 `b86579d`와 검증 기준/DEV-33 인계의 `735946a`를 분리했다. 작업 브랜치에서 초기 원격 head `735946ad9ac835d05a7672dcaaa33d00c806d2cb`로 PR을 열고 `type: docs` 라벨을 확인했다. [PR #91](https://github.com/mate-pjt/mate-frontend/pull/91)
+- 이 체크포인트 커밋을 포함한 최종 head에서 PR과 최신 `main`, 원격 CI·리뷰·병합 조건을 확인한다. Chromatic 월간 한도 관련 상태만 이번 예외로 기록한다. 조건 충족 시 정상 merge commit으로 작은 커밋을 보존하고 로컬 main을 fast-forward하여 SHA와 작업트리를 확인한다. 실제 완료 상태는 PR과 종료 보고를 따른다.
