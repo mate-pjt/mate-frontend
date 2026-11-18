@@ -1,7 +1,7 @@
 import { ApiError } from "../shared/errors";
 import type { AuthAccess } from "../shared/http";
 import { mockAccount, type MockRuntime } from "../mock/runtime";
-import { mapTeamMember, validateTeamMemberId, validateTeamQuery } from "./team-api";
+import { mapTeamMember, timestamp, validateTeamMemberId, validateTeamQuery } from "./team-api";
 import { emptyMemberCapabilities, teamCatalogFixture, teamMemberFixtures } from "./team-mock";
 import { mapTeamChangeRequest, mapTeamMutation, mapTeamPosition, teamChangeStatuses, validateTeamProposal, validateTeamReceipt } from "./team-management-api";
 import { classifyTeamChange, sameTeamPermissions, teamRequiredPermissions, teamRoleFromPermissions } from "./team-permissions";
@@ -11,10 +11,12 @@ import { serializeTeamMockCommand } from "./team-mock-command";
 import { createMockTeamMembershipRequests } from "./team-membership-request-mock";
 import { mapTeamMembershipRequest } from "./team-membership-request-api";
 import type { CompanyTeamMembershipRequestRepository, TeamMembershipRequest } from "./team-membership-request-contracts";
+import { normalizeTeamPositionName } from "./team-position-input";
 
 type Member = { value: CompanyTeamMember; status: TeamMutation["status"]; endedAt: string | null; updatedAt: string };
 type Request = { value: TeamChangeRequest; issuerMembershipId: number };
-type Company = { members: Member[]; positions: TeamPosition[]; requests: Request[]; membershipRequests?: TeamMembershipRequest[] };
+type Company = { members: Member[]; positions: TeamPosition[]; deletedPositions?: Array<TeamPosition & { deletedAt: string }>; requests: Request[]; membershipRequests?: TeamMembershipRequest[] };
+export type MockTeamPositionReferences = { referencePositionName: (account: string, companyId: number, positionId: number) => string | undefined };
 type State = { version: 1; companies: Record<string, Company>; nextId: number; receipts: Record<string, { signature: string; requestId: number }> };
 const catalog = teamCatalogFixture();
 const preset = (role: "ADMIN" | "AGENT" | "VIEWER") => [...catalog.presets.find(p => p.role === role)!.permissionCodes];
@@ -23,7 +25,7 @@ function conflict(code = "CM010", message = "상태가 변경됐어요. 최신 �
 function missing(): never { throw new ApiError(404, "CMC001", "요청이나 대상 소속을 찾지 못했어요."); }
 const validId = (id: number) => validateTeamMemberId(id);
 
-export function createMockTeamManagement(runtime: MockRuntime, companyFor: (account: string) => number | null, onLeave: (account: string) => void): CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamMembershipRequestRepository {
+export function createMockTeamManagement(runtime: MockRuntime, companyFor: (account: string) => number | null, onLeave: (account: string) => void): CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamMembershipRequestRepository & MockTeamPositionReferences {
   async function serialize<T>(access: AuthAccess, operation: () => Promise<T>): Promise<T> {
     return serializeTeamMockCommand(runtime, access, operation);
   }
@@ -47,7 +49,10 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
       if (s?.version !== 1 || !Number.isSafeInteger(s.nextId) || s.nextId < 5101 || !s.companies || !s.receipts || Array.isArray(s.companies)) return false;
       for (const [companyId, c] of Object.entries(s.companies)) {
         validId(Number(companyId)); c.positions.forEach(mapTeamPosition);
-        if (new Set(c.positions.map(p => p.id)).size !== c.positions.length || new Set(c.members.map(m => m.value.membershipId)).size !== c.members.length) return false;
+        const deleted = c.deletedPositions ?? [];
+        if (!Array.isArray(deleted) || deleted.some(p => mapTeamPosition(p).type !== "CUSTOM" || !timestamp(p.deletedAt))) return false;
+        const positionIds = [...c.positions, ...deleted].map(p => p.id);
+        if (new Set(positionIds).size !== positionIds.length || new Set(c.members.map(m => m.value.membershipId)).size !== c.members.length) return false;
         for (const m of c.members) {
           mapTeamMember({ ...m.value, accountId: 1 });
           if (m.value.role !== teamRoleFromPermissions(catalog, m.value.permissions) || m.value.positionType === "REPRESENTATIVE" && m.value.role !== "ADMIN") return false;
@@ -88,6 +93,20 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     if (target.value.role === "ADMIN" && (permissions === null || teamRoleFromPermissions(catalog, permissions) !== "ADMIN") && adminCount(c) <= 1) conflict("CM006", "마지막 관리자의 권한과 소속은 유지해야 해요.");
   }
   function position(c: Company, id: number) { validId(id); return c.positions.find(p => p.id === id) ?? missing(); }
+  function currentPosition(c: Company, id: number, version: number) {
+    const value = c.positions.find(p => p.id === id);
+    if (!value) throw new ApiError(404, "CP001", "회사 직급을 찾지 못했어요.");
+    if (value.type === "REPRESENTATIVE") conflict("CP003", "대표자 직급은 변경하거나 삭제할 수 없어요.");
+    if (value.version !== version) conflict("CP005", "직급이 변경됐어요. 최신 목록을 확인해 주세요.");
+    return value;
+  }
+  function insertPosition(c: Pick<Company, "positions" | "deletedPositions">, name: string): TeamPosition {
+    const id = Math.max(0, ...c.positions.map(p => p.id), ...(c.deletedPositions ?? []).map(p => p.id)) + 1;
+    validId(id);
+    const value: TeamPosition = { id, version: 1, name, type: "CUSTOM" };
+    c.positions.push(value);
+    return value;
+  }
   function capabilities(c: Company, m: CompanyTeamMember) {
     if (scenario() === "team-read-only") return emptyMemberCapabilities();
     const a = actor(c).value, self = a.membershipId === m.membershipId;
@@ -109,6 +128,19 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     if (companyId === null || scenario() === "team-denied") forbidden();
     const s = read(account), c = company(s, companyId); actor(c); write(account, s);
     return { account, companyId, s, c };
+  }
+  async function positionWrite<T>(access: AuthAccess, companyId: number, signal: AbortSignal | undefined, operation: (c: Company) => T) {
+    validateTeamQuery(companyId);
+    return serialize(access, async () => {
+      const x = await current(access, signal);
+      if (x.companyId !== companyId || !actor(x.c).value.permissions.includes("COMPANY_POSITION_MANAGE")) forbidden();
+      mutable();
+      signal?.throwIfAborted();
+      access.assertRequestScope?.();
+      const result = operation(x.c);
+      write(x.account, x.s);
+      return structuredClone(result);
+    });
   }
   function target(c: Company, id: number, expected: number) {
     validId(id); validId(expected); mutable(); const m = member(c, id);
@@ -186,6 +218,39 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     },
     async getCompanyTeamMember(access, companyId, id, signal) { validId(id); validateTeamQuery(companyId); const x = await current(access, signal); if (x.companyId !== companyId) forbidden(); const m = member(x.c, id); if (m.status !== "ACTIVE" || scenario() === "team-empty") missing(); return { ...structuredClone(m.value), capabilities: capabilities(x.c, m.value) }; },
     async getCompanyTeamPositions(access, companyId, signal) { validateTeamQuery(companyId); const x = await current(access, signal); if (x.companyId !== companyId) forbidden(); return structuredClone(x.c.positions); },
+    createCompanyTeamPosition(access, companyId, rawName, signal) {
+      const name = normalizeTeamPositionName(rawName);
+      return positionWrite(access, companyId, signal, c => {
+        if (c.positions.some(p => p.name === name)) conflict("CP002", "같은 이름의 직급이 이미 있어요.");
+        return insertPosition(c, name);
+      });
+    },
+    renameCompanyTeamPosition(access, companyId, id, rawName, expectedVersion, signal) {
+      validId(id); validId(expectedVersion);
+      const name = normalizeTeamPositionName(rawName);
+      return positionWrite(access, companyId, signal, c => {
+        const value = currentPosition(c, id, expectedVersion);
+        if (value.name === name) return value;
+        if (c.positions.some(p => p.name === name)) conflict("CP002", "같은 이름의 직급이 이미 있어요.");
+        validId(expectedVersion + 1);
+        const renamed = { ...value, name, version: expectedVersion + 1 };
+        c.positions[c.positions.indexOf(value)] = renamed;
+        for (const m of c.members) if (m.value.positionId === id) m.value.positionName = name;
+        return renamed;
+      });
+    },
+    deleteCompanyTeamPosition(access, companyId, id, expectedVersion, signal) {
+      validId(id); validId(expectedVersion);
+      return positionWrite(access, companyId, signal, c => {
+        const value = currentPosition(c, id, expectedVersion);
+        if (c.members.some(m => m.status === "ACTIVE" && m.value.positionId === id)) conflict("CP004", "사용 중인 직급은 삭제할 수 없어요.");
+        const version = expectedVersion + 1, deletedAt = now();
+        validId(version);
+        c.positions.splice(c.positions.indexOf(value), 1);
+        (c.deletedPositions ??= []).push({ ...value, version, deletedAt });
+        return { positionId: id, version, deletedAt };
+      });
+    },
     async changeTeamMemberPosition(access, id, body, signal) {
       const x = await current(access, signal), m = target(x.c, id, body.expectedVersion), p = position(x.c, body.positionId), a = actor(x.c).value;
       if (id === a.membershipId) {
@@ -296,9 +361,13 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     decideTeamChangeRequest: (...args) => serialize(args[0], () => repository.decideTeamChangeRequest(...args)),
     cancelTeamChangeRequest: (...args) => serialize(args[0], () => repository.cancelTeamChangeRequest(...args)),
   };
-  const reviews = createMockTeamMembershipRequests(runtime, { catalog, load: async (access, signal) => {
+  const reviews = createMockTeamMembershipRequests(runtime, { catalog, insertPosition, load: async (access, signal) => {
     const x = await current(access, signal);
     return { account: x.account, companyId: x.companyId, company: x.c, save: () => write(x.account, x.s) };
   } });
-  return { ...repository, ...commands, ...reviews };
+  return { ...repository, ...commands, ...reviews, referencePositionName(account, companyId, positionId) {
+    if (companyFor(account) !== companyId) return undefined;
+    const c = read(account).companies[companyId];
+    return c?.positions.find(p => p.id === positionId)?.name ?? c?.deletedPositions?.find(p => p.id === positionId)?.name;
+  } };
 }

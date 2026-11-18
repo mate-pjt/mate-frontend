@@ -301,9 +301,9 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
     const profile = basicProfile(7101, verified ? "VERIFIED" : "UNVERIFIED", businessNumber); state.overview = { status: "connected", profile };
     return { companyId: profile.companyId, membershipId: 9101, role: "ADMIN", verificationStatus: profile.verificationStatus };
   }
-  const team = createMockTeamManagement(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }, account => { const state = read(account); state.overview = { status: "empty" }; write(account, state); });
+  const { referencePositionName, ...team } = createMockTeamManagement(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }, account => { const state = read(account); state.overview = { status: "empty" }; write(account, state); });
   return {
-    ...team, ...createMockTeamInvitations(runtime, team),
+    ...team, ...createMockTeamInvitations(runtime, { ...team, referencePositionName }),
     async getDocumentBoxContext(access, signal) {
       const account = await mockAccount(runtime, access, "company", signal);
       const view = read(account).overview;

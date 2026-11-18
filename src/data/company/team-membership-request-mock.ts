@@ -13,7 +13,11 @@ import { sameTeamPermissions, teamRoleFromPermissions } from "./team-permissions
 
 type Member = { value: CompanyTeamMember; status: TeamMutation["status"]; endedAt: string | null; updatedAt: string };
 type ReviewCompany = { members: Member[]; positions: TeamPosition[]; membershipRequests?: TeamMembershipRequest[] };
-type Port = { catalog: CompanyPermissionCatalog; load: (access: AuthAccess, signal?: AbortSignal) => Promise<{ account: string; companyId: number; company: ReviewCompany; save: () => void }> };
+type Port = {
+  catalog: CompanyPermissionCatalog;
+  insertPosition: (company: ReviewCompany, name: string) => TeamPosition;
+  load: (access: AuthAccess, signal?: AbortSignal) => Promise<{ account: string; companyId: number; company: ReviewCompany; save: () => void }>;
+};
 function forbidden(): never { throw new ApiError(403, "CM005", "현재 소속과 신청 검토 권한을 확인해 주세요."); }
 function missing(): never { throw new ApiError(404, "CR001", "대기 중인 신청을 찾지 못했어요. 이미 처리됐거나 취소됐을 수 있어요."); }
 function conflict(code: string, message: string): never { throw new ApiError(409, code, message); }
@@ -75,9 +79,7 @@ export function createMockTeamMembershipRequests(runtime: MockRuntime, port: Por
           if (!sameTeamPermissions(permissions, port.catalog.presets.find(p => p.role === "VIEWER")!.permissionCodes) && !x.capabilities.canManagePermissions
             || permissions.some(p => !actor.permissions.includes(p))) forbidden();
           position = body.positionId !== null ? c.positions.find(p => p.id === body.positionId && p.type === "CUSTOM") : c.positions.find(p => p.name === body.positionName && p.type === "CUSTOM");
-          if (!position && body.positionId === null) {
-            position = { id: Math.max(...c.positions.map(p => p.id)) + 1, name: body.positionName!, type: "CUSTOM", version: 1 }; c.positions.push(position);
-          }
+          if (!position && body.positionId === null) position = port.insertPosition(c, body.positionName!);
         }
         if (!position) throw new ApiError(400, "CR006", "선택한 일반 직급을 다시 확인해 주세요.");
         const now = new Date(Math.max(runtime.now(), Date.parse(row.updatedAt))).toISOString(), membershipId = Math.max(9200, ...c.members.map(m => m.value.membershipId)) + 1;

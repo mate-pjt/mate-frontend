@@ -7,6 +7,7 @@ export { membershipRejectionReason, normalizeMembershipApproval } from "./team-m
 export type * from "./team-invitation-contracts";
 export { normalizeTeamInvitation } from "./team-invitation-input";
 export type * from "./team-management-contracts";
+export { normalizeTeamPositionName } from "./team-position-input";
 export { classifyTeamChange, sameTeamPermissions, teamRequiredPermissions, teamRoleFromPermissions } from "./team-permissions";
 export type { CompanyPermissionCatalog, CurrentCompanyPermissions, TeamCapabilities, TeamMemberCapabilities, TeamRole, CompanyTeamMember, CompanyTeamPage, CompanyTeamRepository } from "./team-contracts";
 

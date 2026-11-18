@@ -9,13 +9,14 @@ import { teamRoleFromPermissions, sameTeamPermissions } from "./team-permissions
 import type { CompanyTeamManagementRepository } from "./team-management-contracts";
 import type { CompanyTeamRepository } from "./team-contracts";
 import { serializeTeamMockCommand } from "./team-mock-command";
+import type { MockTeamPositionReferences } from "./team-management-mock";
 
 type Delivery = { invitationId: number; version: number; status: TeamInvitation["delivery"]["status"] };
 type State = { version: 1; nextId: number; invitations: TeamInvitation[]; deliveries?: Delivery[] };
 const forbidden = (): never => { throw new ApiError(403, "CM005", "현재 회사와 권한으로 초대할 수 없어요."); };
 function conflict(code: string, message: string): never { throw new ApiError(409, code, message); }
 
-export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTeamRepository & CompanyTeamManagementRepository): CompanyTeamInvitationRepository {
+export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTeamRepository & CompanyTeamManagementRepository & MockTeamPositionReferences): CompanyTeamInvitationRepository {
   async function context(access: AuthAccess, companyId: number, signal?: AbortSignal) {
     const account = await mockAccount(runtime, access, "company", signal);
     if ((await team.getCompanyTeamContext(access, signal)).companyId !== companyId) forbidden();
@@ -30,7 +31,13 @@ export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTea
     if (access.getAccountKey() !== account) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐어요.");
     return { account, current, catalog, members, capabilities };
   }
-  const present = (v: TeamInvitation): TeamInvitation => mapTeamInvitation({ ...v, status: v.status === "PENDING" && Date.parse(v.expiresAt) <= runtime.now() ? "EXPIRED" : v.status }, v.companyId);
+  function present(v: TeamInvitation, account: string): TeamInvitation {
+    const position = v.position && v.position.positionId !== null
+      ? { ...v.position, name: team.referencePositionName(account, v.companyId, v.position.positionId) ?? v.position.name }
+      : v.position;
+    const status = v.status === "PENDING" && Date.parse(v.expiresAt) <= runtime.now() ? "EXPIRED" : v.status;
+    return mapTeamInvitation({ ...v, position, status }, v.companyId);
+  }
   function valid(value: unknown): value is State {
     try {
       const s = value as State;
@@ -90,7 +97,7 @@ export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTea
       } else { row.status = "CANCELED"; row.completedAt = now; }
       row.version += 1; row.updatedAt = now;
       runtime.store.write(account, "company-team-invitations", state);
-      return present(row);
+      return present(row, account);
     });
   }
   return {
@@ -133,7 +140,7 @@ export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTea
         Object.assign(row, { inviteeDisplayName: body.inviteeDisplayName, representative: body.representative,
           position: { positionId: body.positionId, name: body.representative ? "대표자" : body.proposedPositionName ?? positions.find(p => p.id === body.positionId)!.name },
           role, permissions, message: body.message, version: row.version + 1, updatedAt: now });
-        runtime.store.write(account, "company-team-invitations", state); return present(row);
+        runtime.store.write(account, "company-team-invitations", state); return present(row, account);
       });
     },
     resendTeamInvitation: (access, companyId, id, version, signal) => command(access, companyId, id, version, true, signal),
@@ -143,13 +150,13 @@ export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTea
       const x = await context(access, companyId, signal), state = read(x.account);
       const rows = state.invitations.filter(v => v.companyId === companyId && v.status === "PENDING")
         .sort((a, b) => compareInvitationTime(b.createdAt, a.createdAt) || b.invitationId - a.invitationId);
-      return { content: rows.slice(page * size, (page + 1) * size).map(present), page, size, totalElements: rows.length, totalPages: Math.ceil(rows.length / size), capabilities: x.capabilities };
+      return { content: rows.slice(page * size, (page + 1) * size).map(row => present(row, x.account)), page, size, totalElements: rows.length, totalPages: Math.ceil(rows.length / size), capabilities: x.capabilities };
     },
     async getTeamInvitation(access, companyId, id, signal) {
       validateTeamQuery(companyId); validateTeamMemberId(id);
       const x = await context(access, companyId, signal), row = read(x.account).invitations.find(v => v.invitationId === id && v.companyId === companyId);
       if (!row) throw new ApiError(404, "CI001", "초대를 찾지 못했어요.");
-      return present(row);
+      return present(row, x.account);
     },
     async createTeamInvitation(access, companyId, input, signal) {
       validateTeamQuery(companyId); const body = normalizeTeamInvitation(input), account = access.getAccountKey();
@@ -188,7 +195,7 @@ export function createMockTeamInvitations(runtime: MockRuntime, team: CompanyTea
           role, permissions, message: body.message, status: "PENDING", version: 1, expiresAt: new Date(runtime.now() + 7 * 86_400_000).toISOString(),
           delivery: { version: 1, status: runtime.scenario("company") === "team-invitation-mail-failed" ? "FAILED" : "PENDING" }, createdAt: now, updatedAt: now, completedAt: null };
         state.invitations.push(value); state.deliveries?.push({ invitationId: value.invitationId, ...value.delivery }); runtime.store.write(account, "company-team-invitations", state);
-        return present(value);
+        return present(value, account);
       });
     },
   };
