@@ -52,6 +52,9 @@ export const listCompanyTeamMembers: CompanyRepository["listCompanyTeamMembers"]
 export const getCompanyTeamMember: CompanyRepository["getCompanyTeamMember"] = (...args) => getRepository().getCompanyTeamMember(...args);
 
 export const getCompanyTeamPositions: CompanyRepository["getCompanyTeamPositions"] = (...args) => getRepository().getCompanyTeamPositions(...args);
+export const createCompanyTeamPosition: CompanyRepository["createCompanyTeamPosition"] = (...args) => getRepository().createCompanyTeamPosition(...args);
+export const renameCompanyTeamPosition: CompanyRepository["renameCompanyTeamPosition"] = (...args) => getRepository().renameCompanyTeamPosition(...args);
+export const deleteCompanyTeamPosition: CompanyRepository["deleteCompanyTeamPosition"] = (...args) => getRepository().deleteCompanyTeamPosition(...args);
 export const changeTeamMemberPosition: CompanyRepository["changeTeamMemberPosition"] = (...args) => getRepository().changeTeamMemberPosition(...args);
 export const changeTeamMemberPermissions: CompanyRepository["changeTeamMemberPermissions"] = (...args) => getRepository().changeTeamMemberPermissions(...args);
 export const demoteMyTeamMembership: CompanyRepository["demoteMyTeamMembership"] = (...args) => getRepository().demoteMyTeamMembership(...args);

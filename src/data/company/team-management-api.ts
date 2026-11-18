@@ -2,6 +2,7 @@ import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
 import { timestamp, validateTeamMemberId, validateTeamQuery } from "./team-api";
 import type { CompanyTeamManagementRepository, TeamChangeCreated, TeamChangePage, TeamChangeProposal, TeamChangeQuery, TeamChangeRequest, TeamChangeStatus, TeamMutation, TeamPosition } from "./team-management-contracts";
+import { hasTeamPositionName, normalizeTeamPositionName } from "./team-position-input";
 
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
 const positive = (v: unknown): v is number => typeof v === "number" && Number.isSafeInteger(v) && v > 0;
@@ -15,12 +16,21 @@ function codes(value: unknown): string[] {
   return [...value];
 }
 export function mapTeamPosition(value: unknown): TeamPosition {
-  if (!object(value) || !positive(value.id) || !positive(value.version) || !text(value.name) || !["CUSTOM", "REPRESENTATIVE"].includes(String(value.type))) invalid();
-  return { id: value.id, version: value.version, name: value.name, type: value.type as TeamPosition["type"] };
+  if (!object(value) || !positive(value.id) || !positive(value.version) || !hasTeamPositionName(value.name) || (value.type !== "CUSTOM" && value.type !== "REPRESENTATIVE")) invalid();
+  if ("system" in value && value.system !== (value.type === "REPRESENTATIVE")) invalid();
+  return { id: value.id, version: value.version, name: value.name, type: value.type };
+}
+function mapPositionWrite(value: unknown, name: string, positionId?: number, expectedVersion?: number): TeamPosition {
+  const position = mapTeamPosition(value);
+  if (!object(value) || value.system !== false || !timestamp(value.createdAt) || !timestamp(value.updatedAt)
+    || Date.parse(value.updatedAt) < Date.parse(value.createdAt) || position.type !== "CUSTOM" || position.name !== name) invalid();
+  if (positionId === undefined ? position.version !== 1
+    : position.id !== positionId || expectedVersion === undefined || (position.version !== expectedVersion && position.version !== expectedVersion + 1)) invalid();
+  return position;
 }
 export function mapTeamMutation(value: unknown, membershipId: number): TeamMutation {
   if (!object(value) || value.membershipId !== membershipId || !positive(value.companyId) || !positive(value.positionId) || !positive(value.version)
-    || !text(value.positionName) || !["CUSTOM", "REPRESENTATIVE"].includes(String(value.positionType))
+    || !hasTeamPositionName(value.positionName) || !["CUSTOM", "REPRESENTATIVE"].includes(String(value.positionType))
     || !["ADMIN", "AGENT", "VIEWER"].includes(String(value.role)) || !["ACTIVE", "LEFT", "REMOVED"].includes(String(value.status))
     || !timestamp(value.joinedAt) || !timestamp(value.updatedAt) || !(value.endedAt === null || timestamp(value.endedAt))) invalid();
   if (Date.parse(value.updatedAt) < Date.parse(value.joinedAt) || (value.status === "ACTIVE") !== (value.endedAt === null)
@@ -84,6 +94,26 @@ export function createTeamManagement(http: HttpClient): CompanyTeamManagementRep
       const positions = value.map(mapTeamPosition);
       if (new Set(positions.map(p => p.id)).size !== positions.length) invalid();
       return positions;
+    },
+    async createCompanyTeamPosition(access, companyId, rawName, signal) {
+      validateTeamQuery(companyId);
+      const name = normalizeTeamPositionName(rawName);
+      const result = await http.authorized<unknown>(access, `/api/v1/companies/${companyId}/positions`, { method: "POST", body: { name }, signal });
+      return mapPositionWrite(result, name);
+    },
+    async renameCompanyTeamPosition(access, companyId, positionId, rawName, expectedVersion, signal) {
+      validateTeamQuery(companyId);
+      version(positionId, expectedVersion);
+      const name = normalizeTeamPositionName(rawName);
+      const result = await http.authorized<unknown>(access, `/api/v1/companies/${companyId}/positions/${positionId}`, { method: "PATCH", body: { name, expectedVersion }, signal });
+      return mapPositionWrite(result, name, positionId, expectedVersion);
+    },
+    async deleteCompanyTeamPosition(access, companyId, positionId, expectedVersion, signal) {
+      validateTeamQuery(companyId);
+      version(positionId, expectedVersion);
+      const result = await http.authorized<unknown>(access, `/api/v1/companies/${companyId}/positions/${positionId}?expectedVersion=${expectedVersion}`, { method: "DELETE", signal });
+      if (!object(result) || result.positionId !== positionId || !positive(result.version) || result.version !== expectedVersion + 1 || !timestamp(result.deletedAt)) invalid();
+      return { positionId, version: result.version, deletedAt: result.deletedAt };
     },
     async changeTeamMemberPosition(access, id, body, signal) {
       if (!positive(body.positionId)) input();

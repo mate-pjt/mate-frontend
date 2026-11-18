@@ -1,4 +1,5 @@
 import { ApiError } from "../shared/errors";
+import { hasTeamPositionName } from "./team-position-input";
 import type { HttpClient } from "../shared/http";
 import { timestamp, validateTeamMemberId, validateTeamQuery } from "./team-api";
 import type { CompanyTeamInvitationRepository, TeamInvitation, TeamInvitationCapabilities, TeamInvitationPage } from "./team-invitation-contracts";
@@ -20,7 +21,7 @@ export function mapTeamInvitation(value: unknown, companyId: number, invitationI
     || !(value.completedAt === null || timestamp(value.completedAt)) || !(value.message === null || typeof value.message === "string") || !record(value.delivery)) invalid();
   const d = value.delivery, p = value.position;
   if (!positive(d.version) || !["PENDING", "SENDING", "SENT", "FAILED", "SUPERSEDED"].includes(String(d.status))
-    || !(p === null || record(p) && (p.positionId === null || positive(p.positionId)) && text(p.name))
+    || !(p === null || record(p) && (p.positionId === null || positive(p.positionId)) && hasTeamPositionName(p.name))
     || !Array.isArray(value.permissions) || !value.permissions.length || !value.permissions.every(code => text(code) && /^[A-Z][A-Z0-9_]*$/.test(code))
     || new Set(value.permissions).size !== value.permissions.length || compareInvitationTime(value.updatedAt, value.createdAt) < 0
     || compareInvitationTime(value.expiresAt, value.createdAt) <= 0 || value.completedAt !== null && compareInvitationTime(value.completedAt, value.createdAt) < 0

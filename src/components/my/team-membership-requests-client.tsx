@@ -12,6 +12,7 @@ import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { loadTeamMembershipRequests, membershipApplicantName, membershipRequestPath, requestedMembershipPosition, type TeamMembershipSnapshot } from "@/features/company/team-membership-requests";
 import { teamDate, teamDetailPath, teamListPath, teamRoleLabel } from "@/features/company/team";
+import { teamPositionsPath } from "@/features/company/team-positions";
 import { MySideMenu } from "./my-side-menu";
 import { TeamMembershipReviewDialog } from "./team-membership-review-dialog";
 import { TeamInvitationsPanel } from "./team-invitations-panel";
@@ -78,7 +79,7 @@ function AuthenticatedMembershipRequests({ initialPage, access, getSessionEpoch,
       <Button variant="text_gray" size="xs" onClick={reload} disabled={result.status === "loading" || opened !== null || opening !== null}>신청 상태 확인</Button></div>
     <nav aria-label="팀원 관리 메뉴" className="mb-8 flex flex-wrap items-center gap-4"><ButtonLink href={teamListPath()} onNavigate={conceal} variant="tertiary"><Image src="/images/team/team.svg" width={20} height={20} alt="" />팀원</ButtonLink>
       <span aria-current="page" className="inline-flex items-center gap-2 rounded-xl bg-grayscale-800 px-4 py-2 type-heading-9 text-white"><span className="inline-flex size-6 items-center justify-center"><Image src="/images/team/requests.svg" width={13} height={18} alt="" /></span>팀원 신청{result.status === "ready" ? ` ${result.value.page.totalElements}` : ""}</span>
-      <Button disabled variant="tertiary" title="직급 관리는 준비 중이에요."><Image src="/images/team/positions.svg" width={20} height={17} className="h-auto w-auto" alt="" />직급 관리</Button></nav>
+      <ButtonLink href={teamPositionsPath()} onNavigate={conceal} variant="tertiary"><Image src="/images/team/positions.svg" width={20} height={17} className="h-auto w-auto" alt="" />직급 관리</ButtonLink></nav>
     {invitationNotice && <p role="status" className="mb-4 rounded-xl bg-primary-100 p-4 type-body-7 text-grayscale-800">{invitationNotice}</p>}
     {result.status === "loading" && <Message title="회사에 들어온 신청을 확인하고 있어요." />}
     {result.status === "unauthorized" && <Message title="로그인이 필요해요."><Login page={initialPage} /></Message>}

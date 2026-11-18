@@ -1,4 +1,5 @@
 import { ApiError } from "../shared/errors";
+import { hasTeamPositionName } from "./team-position-input";
 import type { HttpClient } from "../shared/http";
 import { timestamp, validateTeamMemberId, validateTeamQuery } from "./team-api";
 import type { CompanyTeamMembershipRequestRepository, TeamMembershipRequest, TeamMembershipRequestPage, TeamMembershipReviewCapabilities } from "./team-membership-request-contracts";
@@ -32,7 +33,7 @@ export function mapTeamMembershipRequest(v: unknown, companyId: number, requestI
     || !v.requestedRepresentative && (v.requestedPositionId === null) === (v.proposedPositionName === null)
     || v.status === "PENDING" && v.completedAt !== null || v.status !== "PENDING" && v.completedAt === null) invalid();
   if (v.status === "APPROVED") {
-    if (typeof v.appliedRepresentative !== "boolean" || !positive(v.appliedPositionId) || !v.appliedPositionName?.trim() || !positive(v.appliedMembershipId) || v.appliedRole === null || !v.appliedPermissions.length
+    if (typeof v.appliedRepresentative !== "boolean" || !positive(v.appliedPositionId) || !hasTeamPositionName(v.appliedPositionName) || !positive(v.appliedMembershipId) || v.appliedRole === null || !v.appliedPermissions.length
       || v.appliedRepresentative && (!v.requestedRepresentative || v.appliedRole !== "ADMIN") || v.rejectionReason !== null) invalid();
   } else if (v.appliedRepresentative !== null || v.appliedPositionId !== null || v.appliedPositionName !== null || v.appliedMembershipId !== null || v.appliedRole !== null || v.appliedPermissions.length) invalid();
   if (v.status === "REJECTED") { try { if (membershipRejectionReason(v.rejectionReason as string) !== v.rejectionReason) invalid(); } catch { invalid(); } }

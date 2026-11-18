@@ -1,6 +1,7 @@
 import { ApiError } from "../shared/errors";
 import type { HttpClient } from "../shared/http";
 import type { CompanyPermissionCatalog, CompanyTeamMember, CompanyTeamPage, CompanyTeamRepository, CurrentCompanyPermissions, TeamCapabilities, TeamMemberCapabilities, TeamRole } from "./team-contracts";
+import { hasTeamPositionName } from "./team-position-input";
 
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 const count = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
@@ -57,7 +58,7 @@ export function mapCurrentPermissions(value: unknown, companyId: number): Curren
 }
 export function mapTeamMember(value: unknown): CompanyTeamMember {
   if (!record(value) || !positive(value.membershipId) || !positive(value.accountId) || !positive(value.positionId) || !positive(value.version)
-    || !(value.displayName === null || typeof value.displayName === "string") || !text(value.contactEmail) || !text(value.positionName)
+    || !(value.displayName === null || typeof value.displayName === "string") || !text(value.contactEmail) || !hasTeamPositionName(value.positionName)
     || !["CUSTOM", "REPRESENTATIVE"].includes(String(value.positionType)) || !roles.includes(value.role as TeamRole)
     || !timestamp(value.joinedAt) || !(value.lastLoginAt === null || timestamp(value.lastLoginAt))) invalid();
   let profileImageUrl: string | null = null;

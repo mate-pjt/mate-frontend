@@ -165,3 +165,7 @@ Confirmed:
 
 - TODO: 실제 API 회사·메일·계정별 통합 검증의 승인·데이터 준비 항목은 기존 docs/qa 펀치리스트를 유지한다.
 - TODO: Confirm the final deployment host and production `NEXT_PUBLIC_SITE_URL` policy without reading actual environment values.
+
+## 회사 직급 관리
+
+[DEV-32](../development/figma-v01/tasks/DEV-32.md#dev-32-brief)의 `/my/team/positions`는 팀원 목록과 받은 신청에서 열린다. 기존 팀원 페이지 번호를 전달해 목록 복귀에 쓴다. `features/company/team-positions.ts`가 같은 회사의 조회 권한·내 소속과 서버 `canManagePositions`를 확인한다. 대표자 직급은 기본 설정 표시와 비활성 동작을 사용한다. 입력은 기존 TextInput, 목록은 Button/NormalTag, 삭제는 native 확인, 성공은 기존 Toast를 사용한다. 현재 권한·버전이 바뀌거나 쓰기 결과를 확인할 수 없으면 최신 목록을 조회하도록 안내한다. 확인된 쓰기와 후속 조회 오류는 별도로 표시한다. 실제 검증 상태는 [팀원 QA](../qa/team-members.md#dev-32-local-qa)에서 확인한다.

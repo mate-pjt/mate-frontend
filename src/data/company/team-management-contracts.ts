@@ -2,6 +2,7 @@ import type { AuthAccess } from "../shared/http";
 import type { TeamRole } from "./team-contracts";
 
 export type TeamPosition = { id: number; version: number; name: string; type: "CUSTOM" | "REPRESENTATIVE" };
+export type TeamPositionDeletion = { positionId: number; version: number; deletedAt: string };
 export type TeamMutation = {
   membershipId: number; companyId: number; positionId: number; positionName: string; positionType: TeamPosition["type"];
   permissions: string[]; role: TeamRole; status: "ACTIVE" | "LEFT" | "REMOVED"; version: number;
@@ -30,6 +31,9 @@ export type TeamDecision = { requestKey: string; expectedRequestVersion: number;
 export type TeamCancellation = { requestKey: string; expectedRequestVersion: number };
 export interface CompanyTeamManagementRepository {
   getCompanyTeamPositions(access: AuthAccess, companyId: number, signal?: AbortSignal): Promise<TeamPosition[]>;
+  createCompanyTeamPosition(access: AuthAccess, companyId: number, name: string, signal?: AbortSignal): Promise<TeamPosition>;
+  renameCompanyTeamPosition(access: AuthAccess, companyId: number, positionId: number, name: string, expectedVersion: number, signal?: AbortSignal): Promise<TeamPosition>;
+  deleteCompanyTeamPosition(access: AuthAccess, companyId: number, positionId: number, expectedVersion: number, signal?: AbortSignal): Promise<TeamPositionDeletion>;
   changeTeamMemberPosition(access: AuthAccess, membershipId: number, body: { expectedVersion: number; positionId: number }, signal?: AbortSignal): Promise<TeamMutation>;
   changeTeamMemberPermissions(access: AuthAccess, membershipId: number, body: { expectedVersion: number; permissionCodes: string[] }, signal?: AbortSignal): Promise<TeamMutation>;
   demoteMyTeamMembership(access: AuthAccess, membershipId: number, body: { expectedVersion: number; permissionCodes: string[]; positionId: number | null }, signal?: AbortSignal): Promise<TeamMutation>;

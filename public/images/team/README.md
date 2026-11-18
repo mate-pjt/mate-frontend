@@ -5,3 +5,5 @@
 - 24px 슬롯 안에서 원본 SVG 크기를 유지한다. 헤더/메뉴/상세의 공용 아이콘과 기본 프로필은 기존 자산·컴포넌트를 재사용하며 API 프로필 이미지는 동적 데이터다.
 
 - `invitation-cancel.svg`: DEV-30의 Figma 취소 popup3137:53029 안 `I3137:53029;2194:13851` 원본 instance를 SVG로 export했다. 자연 크기80×80을 그대로 사용하며 임시 asset URL·스크린샷·재구성 path는 사용하지 않는다.
+
+- `positions-cancel.svg`는 DEV-32의 [직급 관리 목록](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-53220) 안 `I3224:58110;3424:113270`의 표시용 Figma SVG다. 원본 20×20을 24px 슬롯에 가운데 배치한다.
