@@ -17,6 +17,7 @@ import { TeamMemberEditor } from "./team-member-editor";
 import { teamChangePath, type TeamCommit } from "@/features/company/team-management";
 import { TeamInvitationsPanel } from "./team-invitations-panel";
 import { membershipRequestPath } from "@/features/company/team-membership-requests";
+import { teamPositionsPath } from "@/features/company/team-positions";
 
 type Result = TeamResult | { status: "loading" | "unauthorized" | "denied" | "missing" } | { status: "error"; message: string };
 type Props = { initialPage: number | null; membershipId?: number | null };
@@ -106,9 +107,8 @@ function AuthenticatedTeam({ initialPage, membershipId, getAccessToken, refresh,
         <span className="inline-flex items-center gap-2 rounded-xl bg-grayscale-800 px-4 py-2 type-heading-9 text-white" aria-current="page"><Image src="/images/team/team.svg" width={20} height={20} alt="" />팀원 {result.page.totalElements}</span>
         {result.page.capabilities.canReviewRequests ? <ButtonLink href={membershipRequestPath()} onNavigate={conceal} variant="tertiary"><span className="flex size-6 items-center justify-center"><Image src="/images/team/requests.svg" alt="" width={13} height={18} /></span>팀원 신청</ButtonLink>
           : <span className="inline-flex flex-col gap-1"><Button disabled variant="tertiary" title="현재 신청 검토 권한이 없어요."><Image src="/images/team/requests.svg" alt="" width={13} height={18} />팀원 신청</Button><span className="type-body-7 text-grayscale-600">현재 검토 권한 없음</span></span>}
-        <PreparedTab icon="positions" width={20} height={16.6668} label="직급 관리" available={result.page.capabilities.canManagePositions} />
+        <ButtonLink href={teamPositionsPath(initialPage)} onNavigate={conceal} variant="tertiary"><span className="flex size-6 items-center justify-center"><Image src="/images/team/positions.svg" width={20} height={17} className="h-auto w-auto" alt="" /></span>직급 관리</ButtonLink>
       </div>
-      <p className="mb-4 type-body-7 text-grayscale-600" id="team-prepared">직급 관리는 준비 중이에요.</p>
       <TeamInvitationsPanel companyId={result.companyId} access={{ getAccessToken, refresh, getAccountKey }} getSessionEpoch={getSessionEpoch} onCommitted={onCommitted} onAccessError={onAccessError} />
       {result.page.content.length ? <div className="overflow-x-auto rounded-lg" role="region" aria-label="팀원 목록 표" tabIndex={0}>
         <table className="w-full min-w-[850px] border-separate border-spacing-y-2 text-left type-body-3 text-grayscale-800">
@@ -151,9 +151,6 @@ function MemberDetail({ result, page, conceal, access, getSessionEpoch, reload, 
 }
 
 function RoleTag({ member }: { member: CompanyTeamMember }) { return <NormalTag className={member.role === "ADMIN" ? "bg-primary-100 text-primary-400" : "bg-grayscale-50! text-grayscale-700!"}>{teamRoleLabel(member.role)}</NormalTag>; }
-function PreparedTab({ icon, width, height, label, available }: { icon: string; width: number; height: number; label: string; available: boolean }) {
-  return <span className="inline-flex flex-col gap-1"><Button disabled variant="tertiary" aria-describedby="team-prepared" title={available ? "권한 있음 · 기능 준비 중" : "현재 권한 없음 · 기능 준비 중"}><span className="flex size-6 items-center justify-center"><Image src={`/images/team/${icon}.svg`} alt="" width={width} height={Math.round(height)} className="h-auto w-auto" /></span>{label}</Button><span className="type-body-7 text-grayscale-600">{available ? "권한 있음 · 준비 중" : "현재 권한 없음"}</span></span>;
-}
 function Message({ title, error = false, children }: { title: string; error?: boolean; children?: React.ReactNode }) { return <div className="rounded-2xl bg-grayscale-50 p-6 text-grayscale-700" role={error ? "alert" : "status"}><p className={error ? "type-body-1 text-danger" : "type-body-1"}>{title}</p>{children && <div className="mt-4 flex flex-wrap items-center gap-3 type-body-7">{children}</div>}</div>; }
 function LoginLink({ page, membershipId }: { page: number; membershipId?: number }) { const next = membershipId ? teamDetailPath(membershipId, page) : teamListPath(page); return <ButtonLink href={`/auth?mode=login&next=${encodeURIComponent(next)}`}>로그인하고 돌아오기</ButtonLink>; }
 function TeamShell({ detail, children }: { detail: boolean; children: React.ReactNode }) {
