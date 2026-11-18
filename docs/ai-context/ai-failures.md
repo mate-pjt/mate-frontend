@@ -389,3 +389,9 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 첫 독립 verifier는 승인 receipt를 모든 focus/명시 조회에 계속 전달해 현재 소속의 직급/권한과 같아야 한다고 검사하던 문제를 재현했다. 승인 후 정상 직급 변경/내보내기에서 남은 신청 목록 전체가 반복 오류로 고착됐고 초기1080 tests PASS는 이를 검출하지 못했다.
 - 수정/예방: 명령의 terminal receipt는 승인 당시 결과다. 후속 현재 팀원 정보는 확인/변경됨/확인 불가로 나누어 목록을 계속 사용할 수 있게 하고,401/403은 보호 자료 숨김을 유지한다. 실제 mock Repository의 승인→직급 변경→반복 재조회→내보내기와404/503·401/403 회귀5개·실제 browser를 추가했다. 최종1085 tests와 새 source의 나머지 검증/두 리뷰를 다시 확인한다.
 - 근거: [DEV-31 QA](../qa/team-members.md#dev-31-local-qa)·[첫 FAIL/최종 리뷰](../development/figma-v01/reviews/DEV-31.md). 승인 당시 expectedVersion/actual applied 상태와 현재 membership version/직급 변경은 별개의 수명이며, 후속 정상 변경을 명령 실패로 올리거나 자동 재결정하지 않는다. 실제 신청자 상태/다른 pending 정리·실제5QA 차단은 보존한다.
+
+## 2026-11-18 · DEV-32 직급 이름의 쓰기와 읽기 공백 기준
+
+- 최초 테스트 1,123건 통과 뒤 독립 verifier가 Kotlin과 JavaScript의 공백 차이를 발견했다. 이름 U+FEFF를 서버에 저장한 뒤 입력과 다르게 `trim()`을 사용한 응답 검증이 목록 전체를 거부하고, 같은 mapper를 거치는 로컬 mock의 관리 상태도 무효화할 수 있었다.
+- 사용자 승인 1회로 입력과 관련 DTO 읽기가 같은 Kotlin 공백 기준을 사용하도록 수정했다. 직급 자체와 팀원·초대·합류 승인에서 같은 원문 및 ID를 유지한다. API 대역의 명령→조회와 공유 mock의 기존 상태를 검증한 회귀를 함께 추가했다.
+- 여러 DTO에 공유하는 문자열을 새로 쓸 수 있게 만들면, ASCII·일반 한글·길이 경계와 함께 서버의 문자 정규화 차이도 쓰기→읽기 왕복으로 확인한다. [DEV-32 검토](../development/figma-v01/reviews/DEV-32.md)

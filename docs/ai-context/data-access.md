@@ -224,3 +224,10 @@ src/data/
 기본 Gate는 `pnpm test`, `pnpm lint`, 프로필별 `pnpm build`, `git diff --check`다. 공유 모델/Storybook 영향 시 `pnpm build-storybook`도 실행한다. 비동기 Server Component는 실제 Next.js 실행에서 확인한다. 전체 mock의 서버·브라우저 외부 요청 0건, hybrid의 공급원 경계, static 페이지 → dynamic 페이지/새로고침, 운영 artifact 승격 차단을 브라우저/실행 검증으로 확인한다.
 
 실제 서버 가입·회사 등록·초대·메일·설정 변경은 계정과 변경/복구 범위를 정해 별도 승인받는다. 기존 QA 대기 항목을 mock 성공으로 통과 처리하지 않는다. 사용법은 [Repository 개발 가이드](../development/repositories.md), 증거와 미실행 범위는 [Repository QA](../qa/repositories.md)를 따른다.
+
+## 10. 회사 직급의 공유 정의와 참조
+
+- DEV-32는 기존 company 그룹의 `getCompanyTeamPositions`와 `createCompanyTeamPosition`, `renameCompanyTeamPosition`, `deleteCompanyTeamPosition`을 사용한다. HTTP 요청은 회사별 `/positions`에 생성의 `{name}`, 이름 변경의 `{name, expectedVersion}`, 삭제의 query `expectedVersion`을 보낸다. 변경 receipt는 타입·이름·대상 ID·버전·시각을 확인한 뒤 화면 상태와 분리한다.
+- 직급명은 Kotlin의 공백 기준을 입력과 읽기 DTO에서 공유한다. 직급 목록과 팀원·초대·합류 승인 응답의 이름 원문을 보존하고, 시스템 이름의 예약 검사는 일반 직급 쓰기에 적용한다.
+- 목록은 현재 소속의 `COMPANY_MEMBER_LIST_VIEW`, 관리 시 `COMPANY_POSITION_MANAGE`와 서버 팀원 목록의 `canManagePositions`를 사용한다. 화면에서 관측한 버전이 여전히 맞을 때만 사용자 명령을 전달한다. 스코프는 전송 직전과 401 인증 갱신 직전 호출 경계에서 다시 확인한다. 알려진 충돌과 결과 미확정 모두 명시 조회 후에만 다음 행동을 제공한다.
+- mock은 기존 `company-team-management`의 회사/계정 영역과 명령 대기열을 사용한다. 삭제 정의는 기존 상태 형식의 선택 영역에 남겨 활성 목록에서 제외한다. 같은 이름을 다시 만들 때 새 ID를 쓴다. 연결된 팀원과 보낸 초대는 같은 직급 정의의 이름을 반영하고 참조 ID를 유지한다. 합류 제안에서 정의가 생성될 때도 이 ID 할당을 공유한다. 이미 확인한 승인 시점 값은 별도 기록으로 남는다. [실행 근거와 통합 차단](../qa/team-members.md#dev-32-local-qa)을 참조한다.
