@@ -78,3 +78,12 @@
 - 이 append는 POL-14의 정책/계약·완료 기준 인계다. 이 Task의 실행/Implementation Brief·설계/제품·실제 QA·Git 전달을 시작한 것이 아니다. 현재/다음/상태는 WBS만 소유한다. 원본2026-10-27 관찰·미작성 Brief·기존 체크리스트/QA는 보존한다.
 - 공통 재개 Gate: 최신 Git/main·이 선행 결정/현재 source·게시 Swagger/실행 대응을 확인하고, 자체 성공 기준·수정 파일/영향·검증을 제시한다. `data-access.md`의 같은 company 공급원·public 포트/HTTP/DTO 경계·immutable snapshot/운영 guard·계정 격리를 지킨다. 새 library/endpoint/필드·fallback을 임의 만들지 않는다.
 - 실제 업무 GET/변경·메일/초대/직급 실행은 승인된 합성 회사/계정·현재 leaf/상태/버전·환경/Origin/실행 SHA 대응·사용/소비/잔존/복구 범위와 자원 담당 역할이 필요하다. 이번 정책/Git/Chromatic 예외는 해당 자원 확보·실제 QA 면제/로컬 선행 승인이 아니다. 이전 QA-08 AUTH-16 0통과1차단·초대 AUTH-17 미실행과 다른 가입/회사·DEV-08/MAT-162 등 차단을 보존한다.
+
+<a id="dev-32-dev-31-selection"></a>
+
+## 2026-11-18 · DEV-31 뒤 선정·인계만
+
+- 선정 이유: WBS의 P0/P1 및 앞선 P2 외부/선행 차단·보류를 유지한 기본 표 순서에서 DEV-27 선행이 충족된 첫 독립 후보다. POL-15보다 앞선 원래 순위·T04 연결을 유지하며 상태는 WBS만 소유한다.
+- 인계 근거: [DEV-31 로컬 종료](DEV-31.md#dev-31-close), 기존 DEV-27의 직급 조회 포트/같은 company 공급원과 POL-14 D1의 일반/대표자 system 직급·현재 권한/정확 version 기준. 신청 승인 중 새 제안명 해결은 회사 직급 정의 관리 CRUD를 대신하지 않는다. 실제 DEV-31 QA5차단과 다른 모든 QA/정책/예외를 보존한다.
+- 다음 첫 행동: 최신 main/미커밋 변경·DEV-27/POL-14 D1/이 원래 정의를 확인한다. 그 대화에서 현행 직급 소유 source·게시 Swagger/실행 대응·Figma3137:53220/53254/53288와 권한/이름/참조·사용 중 삭제/경쟁·합성 자원/사용·변경/잔존/복구를 확인한 뒤 자체 Brief·수정 파일/영향·검증을 제시한다. API/DTO 설계 전에 data-access.md를 읽는다.
+- 이번에는 정의·선행/우선순위·첫 행동 인계만 했다. DEV-32 전용 계약 조사·정책 결정·설계/Implementation Brief·제품/Repository/실제 업무 API·직급 변경·QA·별도 Git 전달을 시작하지 않았다. 원본 정의/미작성 Brief·POL-14 확정 인계·기존 QA와79원본/114Task/156의존을 보존하며 DEV-31 D1·Git/Chromatic 예외를 승계하지 않는다.

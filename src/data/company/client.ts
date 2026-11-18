@@ -42,6 +42,10 @@ export function documentStorageKey(accountId: number): string {
 }
 
 export const getCompanyTeamContext: CompanyRepository["getCompanyTeamContext"] = (...args) => getRepository().getCompanyTeamContext(...args);
+export const listTeamMembershipRequests: CompanyRepository["listTeamMembershipRequests"] = (...args) => getRepository().listTeamMembershipRequests(...args);
+export const getTeamMembershipRequest: CompanyRepository["getTeamMembershipRequest"] = (...args) => getRepository().getTeamMembershipRequest(...args);
+export const approveTeamMembershipRequest: CompanyRepository["approveTeamMembershipRequest"] = (...args) => getRepository().approveTeamMembershipRequest(...args);
+export const rejectTeamMembershipRequest: CompanyRepository["rejectTeamMembershipRequest"] = (...args) => getRepository().rejectTeamMembershipRequest(...args);
 export const getCompanyPermissionCatalog: CompanyRepository["getCompanyPermissionCatalog"] = (...args) => getRepository().getCompanyPermissionCatalog(...args);
 export const getCurrentCompanyPermissions: CompanyRepository["getCurrentCompanyPermissions"] = (...args) => getRepository().getCurrentCompanyPermissions(...args);
 export const listCompanyTeamMembers: CompanyRepository["listCompanyTeamMembers"] = (...args) => getRepository().listCompanyTeamMembers(...args);

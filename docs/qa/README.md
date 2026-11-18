@@ -94,3 +94,4 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 2026-11-16 DEV-24의 [서류 재업로드 로컬 QA](company-documents.md#dev-24-local-qa)는 사용자 D1의 재업로드만 로컬 선행·신규 추가/실통합 차단 범위다. Node/실제 Next mock/loopback HTTP를 실제 파일/OCR·권한/서버 통합과 구별하고, DBOX-11~15/21~22는0통과·7차단이다. DEV-22/23의 기존 실제 차단과 합쳐 고유17차단/5대기를 보존하며 원본22개 계획/기존 가입·회사 QA를 덮어쓰지 않는다.
 
 - DEV-30 기존 초대의 [로컬 편집·재발송/취소와 실제6부분 차단](team-members.md#dev-30-local-qa): mock/HTTP 대역·실제 Next 결과와 실제 메일/이전 링크/수신 통합을 구별한다.
+- DEV-31 받은 합류 신청의 [로컬 승인/사유 거절과 실제5소유 부분 차단](team-members.md#dev-31-local-qa): mock·HTTP 대역·실제 Next 검증과 신청자 상태/다른 pending·초대 정리의 실제 통합을 구별한다.

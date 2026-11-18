@@ -383,3 +383,9 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 - 도구 출력: 이미지가 포함된 MCP 결과 전체를 text()로 출력해 합성 화면의 base64가 과다 출력된1회를 확인했다. 이후 ImageContent는 image()로 별도 전달하고 메타데이터/원격 JSON은 필요한 필드만 추출한다. 실제 env/credential·업무 자료를 조회한 사건과 구분하며 원문 bytes를 Task/QA/PR에 복사하지 않는다.
 - Aside 호출 사이 focus 재조회/오래된 ref, 중복 REPL 변수와 SVG 준비/격리 symlink 실패는 제품 실패와 구분해 [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)에 남겼다. 실제6소유 부분 차단과 D1/D2/기존 다른 Task 예외는 유지한다.
 - 커밋 직전 새 SVG의 EOF 빈 줄1개를 staged diff-check에서 확인했다. 일반 git diff는 untracked 파일을 포함하지 않으므로 새 파일까지 stage한 diff-check로 확인한다. 개행만 정리하고 XML 도형/속성 동일을 검증했으며 제품 로직 추가 수정이나 재빌드 PASS로 세지 않는다.
+
+## 2026-11-18 · DEV-31 과거 승인 receipt와 현재 팀원 상태
+
+- 첫 독립 verifier는 승인 receipt를 모든 focus/명시 조회에 계속 전달해 현재 소속의 직급/권한과 같아야 한다고 검사하던 문제를 재현했다. 승인 후 정상 직급 변경/내보내기에서 남은 신청 목록 전체가 반복 오류로 고착됐고 초기1080 tests PASS는 이를 검출하지 못했다.
+- 수정/예방: 명령의 terminal receipt는 승인 당시 결과다. 후속 현재 팀원 정보는 확인/변경됨/확인 불가로 나누어 목록을 계속 사용할 수 있게 하고,401/403은 보호 자료 숨김을 유지한다. 실제 mock Repository의 승인→직급 변경→반복 재조회→내보내기와404/503·401/403 회귀5개·실제 browser를 추가했다. 최종1085 tests와 새 source의 나머지 검증/두 리뷰를 다시 확인한다.
+- 근거: [DEV-31 QA](../qa/team-members.md#dev-31-local-qa)·[첫 FAIL/최종 리뷰](../development/figma-v01/reviews/DEV-31.md). 승인 당시 expectedVersion/actual applied 상태와 현재 membership version/직급 변경은 별개의 수명이며, 후속 정상 변경을 명령 실패로 올리거나 자동 재결정하지 않는다. 실제 신청자 상태/다른 pending 정리·실제5QA 차단은 보존한다.

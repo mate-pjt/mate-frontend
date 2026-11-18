@@ -451,3 +451,38 @@
 - pnpm 자동 install/non-TTY·Turbopack의 외부 symlink 거부·복제 완료 전1회 시작은 격리 도구 준비 관찰이다. Task 소유 symlink만 해제하고 기존 의존성을 복제해 source/config 변경 없이 해결했다.
 - Aside 호출 사이 focus 재조회가 기존 parent 화면/dialog를 교체하고 오래된 ref가 무효가 되는 관찰이 있어 fresh snapshot·같은 호출 안에서 조작/재확인을 수행했다. REPL 중복 변수 선언1회와 SVG 다운로드 준비 중 빈 응답/미지원 instance ID는 도구 실패이며 제품 PASS로 세지 않는다. 실제 icon은 정확한 원본 instance를 export한80px SVG다.
 - source SHA/CI·게시 OpenAPI·실행 중 process SHA·실제 업무 응답은 서로 다르다. 실제6소유 부분은0통과6차단이며 승인 합성 회사/계정·현재 leaf/version·메일 수신함·Origin/실행 대응·사용/소비/잔존/복구·담당 역할을 확보한 뒤 재개한다. 기존 DEV-29/28/27·QA-08 AUTH-16/17·다른 가입/회사/문서/정책의 차단/승인 예외를 확대하거나 지우지 않는다.
+
+<a id="dev-31-local-qa"></a>
+
+## 2026-11-18 · DEV-31 받은 신청 검토의 로컬 검증과 실제 차단
+
+- 승인: [이번 D1/Brief](../development/figma-v01/tasks/DEV-31.md#dev-31-brief)의 사용자 **로컬 선행·실제 API QA 차단 보존**. 이전 Task의 예외를 승계하지 않는다. 실제 업무 GET/승인·거절/메일·운영/배포0이다.
+- 환경: Node22.20.0/pnpm11.3.0/Next16.2.9, 환경파일 제외 격리 복사본·Aside 실제 browser. `localhost:3031`의 전체 mock(company=team-requests), `localhost:3032`의 auth/company HTTP+notifications/notificationSettings mock와 loopback49331 합성 HTTP 대역을 구분한다. 후자는 실제 HTTP 직렬화·인증·mapper·UI를 통과하지만 실제 개발 API 통합이 아니다.
+- 자동: 최종 소스의 `pnpm test`1085/1085·37files(신규84), lint와 API/mock/hybrid Preview build·Storybook·문서 검증은 [최종 검토 기록](../development/figma-v01/reviews/DEV-31.md)에서 확인한다. 최초1080 PASS 뒤 독립 Major1 FAIL·교정2/3을 보존한다. 격리 pnpm의 의존성 자동 install/TTY 차단은 `pnpm_config_verify_deps_before_run=false`로 방지했고 package/lockfile·프로젝트 설정 변경0이다.
+
+| 소유 사례 | 이번 로컬 근거 | 실제 서버/남은 경계 |
+| --- | --- | --- |
+| TEAM-18 조회/검토 leaf | page0/20·PENDING 전용 목록/상세·createdAt ASC/id ASC(나노초)/count·nullable·DTO allowlist. 브라우저23건/페이지 이동·이름/이메일 결측·회사/권한 전후 확인. HTTP 대역은 auth role ADMIN/실제 leaf VIEWER 조합에서도 민감 GET0/POST0과 권한 안내 확인 | **차단 · 실제0통과**. 실제 승인 합성 회사/검토자·현재 leaf/실행 SHA·실응답 미확보 |
+| TEAM-19 승인/역할/대표자·경쟁 | 정확 version/원직급·원제안명/VIEWER·변경 직급/초과 grant leaf·부분집합·원 대표자 신청/ADMIN/공석을 Node로 검증. 공유 mock lane의 승인/거절·본인 대표자 취임 경쟁은 한 결과만 확정. browser 승인 뒤 목록23→22·exact 새 팀원/실제 직급·role/permissions, REVIEW만 가진 사용자의 원 제안 직급 승인 확인 | **차단 · 실제0통과**. 실제 소속 원자 생성·신청자 상태·다른 회사 pending/초대 정리·동시 가입/대표자 경쟁 미실행 |
+| TEAM-20 사유 거절/동시 처리 | trim 후1..300·제어문자/빈값/초과·version·타인 처리/취소404/409·terminal receipt를 검증. browser 공백 제출 disabled·trim 사유 거절·목록 제외/Toast·이력 보존. 일반 신청을 대표자로 올리는 payload와 대표자 비ADMIN 승인은 거부 | **차단 · 실제0통과**. 신청자 계정의 실제 거절 상태·사유·취소/타인 결정 경합 미실행 |
+| TEAM-23 수명/실제 로컬 browser | 계정/epoch/Abort·인증 대기/401 refresh 직전 fetch guard·중복/자동 재명령0. 브라우저 로그인 복귀·계정1 처리/계정2 원래23건·로그아웃 후 receipt 숨김, 실제 승인 뒤 정상 변경/내보내기도20건 신청 목록 사용.640×908/모바일328×720(360×800)·가로 넘침0·Escape trigger 초점 복귀, 팀원→신청 진입 확인 | **차단 · 실제0통과**. 실제 계정/회사 변경·권한 회수/잠금·인증/특수 오류 자원 미확보. 수정 클릭은 Aside의 Meta 전달이 새 탭으로 관찰되지 않아 새 탭 회귀 PASS로 세지 않음 |
+| TEAM-26 공급원/증거 | 같은 company public port/7그룹·immutable snapshot·hybrid/운영 guard·account storage 회귀. 신청 영역 손상이 기존 팀원/회사 상태를 초기화하지 않음. mock document의 관측 HTTP 외부 resource0·합성 필드만 저장 | **차단 · 실제0통과**. 관측 resource0은 packet/서버 전수 계측이 아니며 실제 배포/업무 응답을 증명하지 않음 |
+
+### 명령/후속 조회의 실제 로컬 HTTP 관찰
+
+| 대역 조건 | 브라우저 관찰·HTTP 상태 | 판정 경계 |
+| --- | --- | --- |
+| 정상 승인 | POST1/version1→2·APPROVED receipt, exact membership9201 GET·목록2건·실제 적용 VIEWER/직급 표시 | 로컬 HTTP 대역 PASS, 실제 서버 통합 아님 |
+| 손상200/null | 완료 Toast0·입력/재승인 잠금·닫고 명시 GET, POST1·PENDING3 유지 | 손상2xx를 성공으로 만들지 않음 |
+| 동시 취소409 | 완료0·잠금/명시 재조회·CANCELED/version2·나머지2건, POST1 | 특정 결정 성공을 추정하지 않음 |
+| 결정 후 응답 유실 | 실제 대역 상태APPROVED/version2, UI 미확정·완료0·명시 GET 뒤2건. 재현에서 앱 fetch계측POST1/HTTP wirePOST2(재전송은409) | 전송 계층 재시도와 앱 자동 재결정을 구분. 실제 서버 멱등/네트워크 보장으로 올리지 않음 |
+| 승인 후 목록503 | 완료 banner+오류/재조회 CTA, 재조회 뒤에도 receipt 유지·POST1 | 성공과 최신 조회 실패 분리 |
+| 승인 후 최종 refresh401 | 완료 banner 유지·신청 자료 숨김·로그인/정확 복귀 링크, POST1 | 인증 실패가 이미 확인된 결정을 반복하는 사유가 아님 |
+
+### 화면/증거와 도구 한계
+
+- Figma3137:53069 목록·3137:53154 검토640×908·3137:53193 거절 완료/빈 상태를 연결했다. 실제 검토 dialog와 하단3028:110014의 거절/승인 버튼 screenshot을 대조하고 기존 danger/primary 토큰·64px급 footer·24px padding·640px 폭을 적용했다. 원본 전체 pixel/모든 상태 전수 PASS는 아니다. 원래 대표자 선택 제한/leaf·사유 등 기능 차이는 POL-14 D1이고 전체 화면 예외 승인으로 확대하지 않는다.
+- 합성 화면: [목록](../development/figma-v01/assets/dev-31/list.png), [검토](../development/figma-v01/assets/dev-31/review.png), [모바일 검토](../development/figma-v01/assets/dev-31/mobile.png). 실제 계정/연락처·환경값·token/쿠키·초대 URL·업무 응답은 포함하지 않는다. 원본 Figma 예시 신원/임시 asset URL은 저장하지 않았다.
+- Aside call 간 focus 복귀는 보호 자료 재조회/dialog 종료를 일으켜 처음 screenshot이 dialog 대신 목록이었던 관찰을 보존한다. 같은 call의 fresh snapshot/geometry/캡처·다시 열기와 Escape로 확인했다. 뒤로가기 API timeout 뒤 실제 URL이 복귀한 것, refresh 후 접힌 details를 open selector로 읽은 실패도 fresh 상태와 구분한다. Meta 수정 클릭은 현재 탭의 일반 이동만 관찰했으므로 새 탭 동작은 source review 범위로 남겼고 일반 진입/복귀는 확인했다.
+- mock의 신청 receipt/팀원/새 직급은 reviewer 계정 namespace의 합성 상태다. 신청자 별도 계정 overview·다른 회사 pending·기존 수신 초대까지의 원자 정리는 source 열람과 미실행 실제 QA다. 이를 로컬 통합 PASS로 세지 않는다.
+- 실제5소유 부분은 실행 버전/Origin·승인 합성 검토자/신청자·회사/신청·현재 leaf/version·사용/변경/잔존/복구·담당 역할 확보 뒤 위 원래 TEAM case ID로 재개한다. 기존26개 원본 계획·DEV-27~30/다른 Task QA와 승인 예외는 보존한다.

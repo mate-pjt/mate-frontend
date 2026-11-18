@@ -88,7 +88,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-invitation-mail-failed |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-requests, team-requests-empty, team-reviewer, team-invitation-mail-failed |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -196,3 +196,9 @@ Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 
 같은 company mock 시나리오/기존 계정 공간에서 `/my/team`의 보낸 초대를 생성한 뒤 행의 재발송·초대 취소를 선택한다. 미만료 PENDING만 관리하며 만료는 새 초대 작성이다. 재발송 form은 이메일/등록된 계정 이름을 잠그고 현재 직급/권한·부여 제약을 검사한다. 변경이 있으면 PATCH 저장 후 최신 상태를 다시 확인하고 새 version으로 재발송한다. 저장·재발송·메일 상태는 별개이며 실패 뒤 자동 재명령은 없다.
 
 mock은 실제 메일/비밀 링크를 만들지 않으며 독립 수신 fixture와 발송 관리 연결을 모사하지 않는다. 실제6소유 부분의 재개 조건과 합성 로컬 경합/브라우저 증거는 [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)를 따른다. 새 시나리오·설정·스키마/namespace·라이브러리 추가는 없다.
+
+## 12. 받은 팀원 합류 신청 · DEV-31
+
+`company=team-requests`는 `/my/team/membership-requests`에서23건의 합성 신청·기존 직급/제안명/대표자·결측·page를 확인한다. `team-requests-empty`는 빈 목록, `team-reviewer`는 VIEWER+REVIEW만 가진 검토자의 원직급/VIEWER 승인·사유 거절과 직급 변경/초과 grant 제한을 확인한다. `team-no-representative`의 기존 공석 상태에서는 대표자 원신청 승인을 테스트할 수 있다. 설정은 dev 재시작/Preview 재빌드가 필요하다.
+
+승인/거절은 기존 계정별 관리 상태와 공유 명령 lane을 사용한다. 승인 당시 결과는 현재 팀원 상태와 별개이며 후속 직급 변경/종료 뒤에도 남은 신청을 검토할 수 있다. 신청 상세 GET은 PENDING 전용이므로 처리 뒤404는 정상일 수 있고 특정 결정의 성공을 대신하지 않는다. 합성 reviewer의 목록/receipt·팀원 반영은 다른 신청자 계정 overview·다른 회사 pending/수신 초대의 실제 원자 정리 검증이 아니다. 실제5소유 부분의 자원/실행·변경/복구 조건은 [QA](../qa/team-members.md#dev-31-local-qa)와 [Task](figma-v01/tasks/DEV-31.md#dev-31-brief)를 따른다.

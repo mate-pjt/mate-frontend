@@ -8,10 +8,13 @@ import { classifyTeamChange, sameTeamPermissions, teamRequiredPermissions, teamR
 import type { CompanyTeamMember, CompanyTeamRepository } from "./team-contracts";
 import type { CompanyTeamManagementRepository, TeamChangeCreated, TeamChangeKind, TeamChangeProposal, TeamChangeRequest, TeamMutation, TeamPosition } from "./team-management-contracts";
 import { serializeTeamMockCommand } from "./team-mock-command";
+import { createMockTeamMembershipRequests } from "./team-membership-request-mock";
+import { mapTeamMembershipRequest } from "./team-membership-request-api";
+import type { CompanyTeamMembershipRequestRepository, TeamMembershipRequest } from "./team-membership-request-contracts";
 
 type Member = { value: CompanyTeamMember; status: TeamMutation["status"]; endedAt: string | null; updatedAt: string };
 type Request = { value: TeamChangeRequest; issuerMembershipId: number };
-type Company = { members: Member[]; positions: TeamPosition[]; requests: Request[] };
+type Company = { members: Member[]; positions: TeamPosition[]; requests: Request[]; membershipRequests?: TeamMembershipRequest[] };
 type State = { version: 1; companies: Record<string, Company>; nextId: number; receipts: Record<string, { signature: string; requestId: number }> };
 const catalog = teamCatalogFixture();
 const preset = (role: "ADMIN" | "AGENT" | "VIEWER") => [...catalog.presets.find(p => p.role === role)!.permissionCodes];
@@ -20,7 +23,7 @@ function conflict(code = "CM010", message = "상태가 변경됐어요. 최신 �
 function missing(): never { throw new ApiError(404, "CMC001", "요청이나 대상 소속을 찾지 못했어요."); }
 const validId = (id: number) => validateTeamMemberId(id);
 
-export function createMockTeamManagement(runtime: MockRuntime, companyFor: (account: string) => number | null, onLeave: (account: string) => void): CompanyTeamRepository & CompanyTeamManagementRepository {
+export function createMockTeamManagement(runtime: MockRuntime, companyFor: (account: string) => number | null, onLeave: (account: string) => void): CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamMembershipRequestRepository {
   async function serialize<T>(access: AuthAccess, operation: () => Promise<T>): Promise<T> {
     return serializeTeamMockCommand(runtime, access, operation);
   }
@@ -28,9 +31,10 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
   const now = () => new Date(runtime.now()).toISOString();
   function initialCompany(): Company {
     const members = teamMemberFixtures().map(value => ({ value, status: "ACTIVE" as const, endedAt: null, updatedAt: value.joinedAt }));
-    const role = scenario() === "team-agent" ? "AGENT" : ["team-viewer", "team-extra"].includes(scenario()) ? "VIEWER" : "ADMIN";
+    const role = scenario() === "team-agent" ? "AGENT" : ["team-viewer", "team-extra", "team-reviewer"].includes(scenario()) ? "VIEWER" : "ADMIN";
     members[0].value.permissions = preset(role); members[0].value.role = role;
     if (scenario() === "team-extra") members[0].value.permissions.push("COMPANY_MEMBER_INVITE");
+    if (scenario() === "team-reviewer") members[0].value.permissions.push("COMPANY_MEMBERSHIP_REQUEST_REVIEW");
     if (role !== "ADMIN" || scenario() === "team-no-representative") Object.assign(members[0].value, { positionId: 2, positionName: "사원", positionType: "CUSTOM" });
     if (scenario() === "team-last-admin") { members[3].value.permissions = preset("VIEWER"); members[3].value.role = "VIEWER"; }
     return { members, positions: [
@@ -50,6 +54,15 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
           mapTeamMutation({ ...m.value, companyId: Number(companyId), status: m.status, endedAt: m.endedAt, updatedAt: m.updatedAt }, m.value.membershipId);
         }
         for (const r of c.requests) { mapTeamChangeRequest(r.value); validId(r.issuerMembershipId); if (r.value.companyId !== Number(companyId)) return false; }
+        if (c.membershipRequests !== undefined) {
+          try {
+            if (!Array.isArray(c.membershipRequests) || new Set(c.membershipRequests.map(r => r.requestId)).size !== c.membershipRequests.length) throw new Error("invalid review area");
+            for (const r of c.membershipRequests) {
+              const mapped = mapTeamMembershipRequest(r, Number(companyId));
+              if (Object.keys(r).some(key => !Object.hasOwn(mapped, key)) || Object.keys(r.capabilities).some(key => !Object.hasOwn(mapped.capabilities, key))) throw new Error("invalid review fields");
+            }
+          } catch { delete c.membershipRequests; }
+        }
       }
       const ids = Object.values(s.companies).flatMap(c => c.requests.map(r => r.value.changeRequestId));
       if (new Set(ids).size !== ids.length || ids.some(id => id >= s.nextId)) return false;
@@ -283,5 +296,9 @@ export function createMockTeamManagement(runtime: MockRuntime, companyFor: (acco
     decideTeamChangeRequest: (...args) => serialize(args[0], () => repository.decideTeamChangeRequest(...args)),
     cancelTeamChangeRequest: (...args) => serialize(args[0], () => repository.cancelTeamChangeRequest(...args)),
   };
-  return { ...repository, ...commands };
+  const reviews = createMockTeamMembershipRequests(runtime, { catalog, load: async (access, signal) => {
+    const x = await current(access, signal);
+    return { account: x.account, companyId: x.companyId, company: x.c, save: () => write(x.account, x.s) };
+  } });
+  return { ...repository, ...commands, ...reviews };
 }

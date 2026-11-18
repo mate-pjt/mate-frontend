@@ -298,3 +298,7 @@ Final reports should include:
 ## 2026-11-17 · DEV-30 기존 초대 관리의 로컬 선행
 
 [이번 D1/D2·Brief](../development/figma-v01/tasks/DEV-30.md#dev-30-brief)는 로컬 선행/실제 QA 차단 보존과 편집·PATCH 포함을 확정했다. 같은 company 초대 포트와 기존 form에서 미만료 PENDING의 이름/직급·권한/메시지 편집·재발송/취소, 정확 version·현재 leaf/소속·수명과 부분 성공을 처리한다. [로컬 QA](../qa/team-members.md#dev-30-local-qa)의 mock·HTTP 대역·실제 Next 결과와 실제6소유 부분/발송 초대의 수신 연결 차단은 별개다. 기존 모든 QA/승인 예외·원본 기준선을 보존하며 현재/다음/상태와 Git 전달은 WBS·Task/실제 PR에서 확인한다.
+
+## 2026-11-18 · DEV-31 받은 합류 신청의 로컬 선행
+
+[이번 D1/Brief](../development/figma-v01/tasks/DEV-31.md#dev-31-brief)에 따라 실제 API 연결 코드·로컬 mock/HTTP 대역·브라우저 검증을 진행하며 실제 TEAM-18~20/23/26의5소유 부분은 차단으로 보존한다. 같은 company 포트로 PENDING 목록/상세·직급/권한 지정·승인/사유 거절을 연결하고 현재 REVIEW·소속/정확 version·인증 직전/계정/회사/화면 수명·미확정과 후속 조회를 구분한다. 승인 당시 receipt와 현재 팀원의 후속 변경/종료는 별개다. [QA](../qa/team-members.md#dev-31-local-qa)·[검토](../development/figma-v01/reviews/DEV-31.md)에서 로컬/실제 통합·첫 FAIL/교정·최종 Gate를 구분하고 현재/다음/상태는 WBS만 관리한다. 다른 가입/회사/문서 QA·정책/예외와79원본 기준선은 보존한다.

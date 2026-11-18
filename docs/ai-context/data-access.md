@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-17
+Last updated: 2026-11-18
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -188,6 +188,15 @@ src/data/
 - 명령 scope는 선택적 내부 `AuthAccess.assertRequestScope`를 합성해 shared HTTP의 최초/401 refresh 후 fetch 직전에 원래 만료·계정/epoch/Abort를 검사한다. guard 없는 기존 요청/공급원/wire 계약은 유지한다. 인증 대기 중 만료는 전송0, 첫401 뒤 만료는 재전송0이며 이미 보낸 요청의 서버 rollback을 보장하는 정책은 아니다. 편집창 진입에는 기본 INVITE/현재 상태를, 제출에는 새 grant 부분집합을 적용해 기존 ADMIN 초대의 합법적인 VIEWER 축소를 허용한다.
 - mock은 기존 계정별 `company-team-invitations` version1/namespace와 shared command lane을 유지한다. 선택적 `deliveries`는 과거 PENDING 대체와 새 delivery만 저장하며 알려진 구형 행은 첫 재발송에서 현재 delivery를 보완한다. PATCH는 delivery/만료를 갱신하지 않고 취소는 완료/목록 제외를 보존한다. source와 같이 cancel/PATCH는 만료 확정, resend는 DB PENDING 잔존 창을 가질 수 있어 UI D3를 별도로 테스트한다. 실제 token·handoff/메일 원문·API 응답을 저장하지 않으며 기존 독립 수신 mock과 연결된 통합을 모사하지 않는다.
 - [DEV-30 QA](../qa/team-members.md#dev-30-local-qa)는 로컬 mock·HTTP fetch 대역·실제 Next/브라우저다. 실제 TEAM-14~17/23/26의6소유 부분은 실행 버전 대응·승인 합성 계정/회사/수신함·사용/소비/잔존/복구·담당 역할 미확보로 차단을 유지한다. source의 이전 링크/handoff 거부를 열람한 것과 실제 수락 거부 실행은 다르다.
+
+### 받은 합류 신청 검토·승인/사유 거절 · DEV-31
+
+- `CompanyTeamMembershipRequestRepository`의 list/get/approve/reject 네 행동은 같은 company factory/public client에 합성한다. 새 공급원·fallback/library는 없다. private `team-membership-request-api.ts`가 exact company/request ID·PENDING page/count·createdAt ASC/id ASC(나노초 포함), nullable 요청값과 applied 값·시각/version·capabilities를 검사하고 불필요한 accountId·비공개 필드를 복사하지 않는다. 목록과 상세 GET은 모두 **PENDING 전용**이며 상태 전체 이력 endpoint로 만들지 않는다.
+- approval은 expectedVersion/대표자·positionId XOR positionName·preset/추가 leaf, rejection은 expectedVersion/trim 후 제어 문자 없는1..300자 reason이다. 정확한 version+1·동일 신청/회사·terminal 상태와 승인 actual 직급/role/permissions/소속 ID·거절 사유를 검증한다. 원 신청 직급/제안명을 그대로 승인하는 데 PROFILE_EDIT를 추가 요구하지 않는다. 변경 직급은 PROFILE_EDIT, VIEWER 초과는 MANAGE+actor 부분집합, 대표자는 원 대표자 신청/ADMIN·일반 필드 없음·서버의 현재 공석 최종 검사를 따른다. representative capability는 ADMIN 여부이며 공석 보장으로 추정하지 않는다.
+- 조회 전후의 REVIEW leaf·현재 회사/소속/전체 leaf와 제출 직전 신청/version·선택 직급 정의·catalog를 재확인한다. 새 scope는 계정/epoch/Abort/화면 수명·동일 제출을 검사하고 `AuthAccess.assertRequestScope`로 최초/401 재인증 뒤 fetch 직전에도 방어한다. 유실/손상2xx/409/404 뒤 자동 재결정은 없고 명시 조회·새 검토부터 시작한다. 서버가 이미 처리한 변경의 rollback은 보장하지 않는다.
+- 검증된 결정 receipt를 banner/Toast에 먼저 보존한 뒤 최신 목록·승인 membership exact GET을 확인한다.404/목록 제외만으로 특정 결정이나 신청자 상태 성공을 추론하지 않는다. 승인 당시 적용값은 이력이며 현재 팀원의 합법적 후속 변경/내보내기·404/조회 오류가 전체 신청 목록을 차단하지 않는다. 승인 이후 현재 정보가 다르거나 확인되지 않으면 별도 안내하고 인증/권한401/403은 보호 자료를 숨긴다. 후속 목록/refresh 실패에도 확인된 성공을 재전송하지 않는다.
+- mock 신청은 기존 account/company별 `company-team-management` 안의 optional `membershipRequests`에 보존하고 같은 store/account serializer 아래 승인/거절·팀원/직급 반영·대표자 경쟁을 수행한다. 손상된 신청 하위 영역만 초기화하며 기존 팀원/변경 요청·company/서류·초대·다른 계정을 보존한다. 합성 신청자 재승인 시 이미 활성인 합성 팀원은 고정 source의 CM004로 거부한다. 실제 개인정보/API 응답을 복사하지 않는다. `team-requests`(23건), `team-requests-empty`, `team-reviewer`(VIEWER+REVIEW) 세 시나리오를 추가했다.
+- 이 mock은 reviewer 계정의 합성 신청/팀원만 조합한다. 신청자 별도 계정의 회사 overview·다른 회사 pending/기존 수신 초대 공간까지 원자 동기화하는 실제 통합을 모사하지 않는다. [DEV-31 QA](../qa/team-members.md#dev-31-local-qa)는 mock/HTTP 대역/실제 Next 로컬과 실제 TEAM-18~20/23/26의5차단을 구분한다. source의 신청자 상태·다른 pending/초대 정리·실제 권한/경쟁·실행 SHA/응답은 실제 QA 재개 조건이다.
 
 ## 8. 유지하는 제품/API 정책
 
