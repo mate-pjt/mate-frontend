@@ -17,7 +17,7 @@ const menuItems: SideMenuItem[] = [
   { value: "logout", label: "로그아웃", icon: "out" },
 ];
 
-export function MySideMenu({ value }: { value: "company" | "settings" | "team" }) {
+export function MySideMenu({ value, onNavigate }: { value: "company" | "settings" | "team"; onNavigate?: () => void }) {
   const router = useRouter();
   const { logout } = useAuthSession();
   const [logoutBusy, setLogoutBusy] = useState(false);
@@ -45,6 +45,7 @@ export function MySideMenu({ value }: { value: "company" | "settings" | "team" }
         className="w-full"
         items={menuItems.map((item) => item.value === "logout" ? { ...item, label: logoutBusy ? "로그아웃 중..." : item.label, disabled: logoutBusy } : item)}
         onValueChange={(next) => {
+          if (["company", "documents", "team", "settings"].includes(next)) onNavigate?.();
           if (next === "company") router.push("/my/company");
           if (next === "documents") router.push("/my/documents");
           if (next === "team") router.push("/my/team");
