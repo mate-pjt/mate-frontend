@@ -140,3 +140,11 @@
 - [x] 사용자의 이번 로컬 선행 결정과 실제 TEAM-21/22·TEAM-23/26의 4부분 차단을 [QA](../../../qa/team-members.md#dev-32-local-qa)에 남겼다. 합성 브라우저 탭과 Next 2개·HTTP 대역을 종료했다. 실제 업무 조회·변경·메일은 미실행이다.
 - 다음은 [POL-15](POL-15.md#pol-15-dev-32-handoff) 한 건이다. P0/P1 및 앞선 P2 외부/선행 차단을 보존하고 POL-14 선행 충족과 WBS 표 순서로 선정했다. 첫 행동은 원본 O11과 수락 완료 Figma·현행 CTA/복귀·현재 권한을 대조해 정책 범위를 구조화하는 것이다. 이번에는 선정·인계만 남겼다.
 - 다음 전달 단계는 목적별 커밋, PR/라벨과 실제 최종 head CI·리뷰 조건 확인, 정상 merge 및 로컬 main 동기화다. Git과 실제 통합 QA를 따로 판정한다.
+
+<a id="dev-32-git-delivery"></a>
+
+## 2026-11-18 · Git 전달 체크포인트
+
+- `feat/dev-32-company-positions`에서 `fc1ea13`(회사 직급 데이터), `c38148a`(화면), `f592833`(테스트), `178c066`(공통 문서), `e117775`(검증/인계)의 5개 분리 커밋을 전송했다.
+- [PR #90](https://github.com/mate-pjt/mate-frontend/pull/90)는 시작 base `71bcf71c318e27d0849b4bf41e7d2f45e1298903`, 등록 당시 head `e117775156d7cf58e4fcb239c9c7394883f4cc60`, 라벨 `type: feature`, `type: test`, `type: docs`다. 저장소 템플릿과 합성 화면 캡처를 사용했다.
+- 이 전달 기록을 추가한 최종 head에서 GitHub Actions와 리뷰·병합 조건을 다시 확인한다. 월간 한도에 관련된 Chromatic만 이번 사용자 예외 범위다. 병합·로컬 main fast-forward와 최종 SHA는 실제 원격 PR·종료 보고를 근거로 삼는다. 실제 API 4부분 차단과 POL-15 인계 상태를 유지한다.

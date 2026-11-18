@@ -9,6 +9,7 @@
 | 다음 작업 | [POL-15 · 초대 수락 후 팀원 목적지 결정](tasks/POL-15.md#pol-15-dev-32-handoff) — P2, POL-14 선행 충족, 선정·인계 |
 | 다음 첫 행동 | 새 대화에서 최신 main과 POL-14 결정·DEV-27 접근 기준을 확인하고, 초대 수락 완료 Figma 3141:56172와 현재 CTA/복귀 경로를 대조한다. 현재 권한별 목적지·안전한 폴백의 정책 Gate부터 시작한다. |
 | DEV-32 이번 승인 범위 | 2026-11-18 사용자 요청의 단일 개발·검증·두 리뷰·목적별 Git 전달/정상 병합/로컬 FF와 추가 결정 ‘로컬 선행·실제 API QA 차단 보존’. 이번 Chromatic 월간 한도만 예외. [범위와 근거](tasks/DEV-32.md#dev-32-brief) |
+| DEV-32 Git 전달 | [PR #90](https://github.com/mate-pjt/mate-frontend/pull/90), 최초 head `e117775`, feature/test/docs 라벨. 전달 기록 추가 뒤 최종 PR head의 CI·리뷰·정상 병합·로컬 FF는 실제 PR과 종료 보고에서 확인한다. [체크포인트](tasks/DEV-32.md#dev-32-git-delivery) |
 | DEV-31 이번 승인 범위 | 2026-11-18 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 main 병합/로컬 FF. 추가 D1 로컬 선행·실제 API QA 차단 보존. 이번 Chromatic 월간 한도만 예외. 실제 업무 조회/승인·거절/메일·운영/배포·다음 Task 실행 제외. [Brief](tasks/DEV-31.md#dev-31-brief) |
 | DEV-31 Git 전달 | [PR #89](https://github.com/mate-pjt/mate-frontend/pull/89), 목적별6커밋 최초 head45ee7e5·type: feature/test/docs. Git checkpoint 기록 뒤 최종 head CI·리뷰/정상 merge/main FF·동일 SHA/clean은 실제 PR/종료 보고에서 확인. [기록](tasks/DEV-31.md#dev-31-git-delivery) |
 | DEV-30 이번 승인 범위 | 2026-11-17 사용자 단일 Task 개발·검증/두 리뷰·목적별 commit/push·PR/최종 CI·정상 merge/main FF. D1 로컬 선행/실제 QA 차단 보존·D2 초대 편집/PATCH 포함. 이번 Chromatic 월간 한도만 예외. 실제 업무/API/메일·수락/운영·배포·다음 Task 실행 제외. [Brief](tasks/DEV-30.md#dev-30-brief) |
