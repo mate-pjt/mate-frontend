@@ -306,3 +306,7 @@ Final reports should include:
 ## 2026-11-18 · DEV-32 공유 직급 관리의 로컬 선행
 
 [DEV-32의 이번 Brief](../development/figma-v01/tasks/DEV-32.md#dev-32-brief)는 같은 회사의 직급 목록·추가·이름 변경·미사용 일반 직급 삭제를 다룬다. 사용자의 이번 결정에 따라 로컬 자동·브라우저·문서·두 리뷰와 승인된 Git 전달을 진행하고, TEAM-21/22와 TEAM-23/26의 DEV-32 실제 API 네 부분은 [QA 기록](../qa/team-members.md#dev-32-local-qa)에 차단으로 보존한다. 다음 작업과 상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.
+
+## 2026-11-20 · DEV-33 초대 수락 완료 동선
+
+[DEV-33](../development/figma-v01/tasks/DEV-33.md#dev-33-verification)은 POL-15의 최신 소속·leaf에 따른 팀원/회사/공개 공고 CTA, 읽기 재시도와 응답 미확정, 계정/화면 수명을 구현한다. 이번 사용자 결정에 따른 [로컬 검증](../qa/team-members.md#dev-33-local-qa)과 TEAM-23/24의 실제 API 차단을 구분한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.

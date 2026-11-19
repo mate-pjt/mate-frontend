@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-18
+Last updated: 2026-11-20
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -154,6 +154,8 @@ Confirmed:
 - [DEV-57 결정/검증](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)에 따라 auth 폭은 로그인420/가입·검색·초대640/시작692px를 구분한다. 시작 인사는 인증 응답의 nullable nickname만 사용하고 null/누락/공백은 일반 인사, loading/error는 별도 상태로 표시한다. 가입 날짜는 별도 DatePicker를 사용한다. 공통 헤더 이름(DEV-56), 소속 용어·약관 정책과 실제 QA 차단은 별개다.
 - 회사 등록의 시공능력평가액·대표면허·3종 인증 직접 수정은 가입 전 API가 없어 준비 중 비활성이다.
 - 모든 실제 브라우저 API 통합 검증은 `docs/qa/README.md`와 기능별 펀치리스트에 기록하고 환경 준비 후 수행한다.
+
+- 초대 수락 완료의 CTA는 POL-15에 따라 최신 회사·활성 소속과 조회 leaf를 최초 표시 및 클릭 때 확인한다. `/my/team`, `/my/company`, `/bids`와 읽기 재시도를 표시한다. 계정·페이지 전환은 이전 완료 문맥을 폐기하며 목적지 route의 보호 검사는 계속 적용된다. [DEV-33](../development/figma-v01/tasks/DEV-33.md#dev-33-brief)
 
 ## Data Access Contract
 

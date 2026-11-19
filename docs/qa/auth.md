@@ -511,3 +511,16 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 - 자동 검증: `pnpm test`18파일/414건 PASS, `pnpm lint`PASS, API/mock/hybrid `pnpm build`PASS, `pnpm build-storybook`PASS. 초기 nullable 타입 오류와 label 교정 뒤 자동 검증/구성 빌드·가입 재검증의 freshness는 [검토 기록](../development/figma-v01/reviews/DEV-57.md)을 따른다. Storybook의 기존 extensionless import/큰 chunk 경고는 성공 exit0과 구분한다.
 - 실제 통합: **미실행/차단 보존**. 게시 nickname schema/source 확인은 현재 실행 SHA/실제 인증 응답과 다르다. 실제 Google 인증·가입/초대 권한·서버 날짜 validation·잔존/복구 검증은 기존 승인 자원/실행 대응을 확보한 뒤 재개한다. 이번 로컬 PASS/Chromatic 예외로 면제하지 않는다.
 - 증거: 저장소 밖 `/Users/jisung/.codex/visualizations/2026/11/13/01a1d2c3-f5a6-79e0-996f-aae00cd9be1a/dev-57`의 `browser/` AX/PNG/JSON, loopback `http-events.jsonl`(method/path/status만), 최종 test/lint/build 로그·Figma PNG/지문. 대표 [달력](../development/figma-v01/reviews/assets/DEV-57/calendar.png)·[시작](../development/figma-v01/reviews/assets/DEV-57/start.png)은 합성 데이터만 포함한다. 요청 headers/원시 인증값·실제 개인정보는 수집하지 않는다.
+
+<a id="dev-33-auth-regression"></a>
+
+## 2026-11-20 · DEV-33 초대 수신·완료의 인증 회귀
+
+| 기존 사례 | 로컬 Next 브라우저에서 확인한 행동 | 실제 API |
+| --- | --- | --- |
+| AUTH-16 | 전체 mock에서 주소의 초대 fragment가 제거되고 합성 로그인 뒤 초대에 복귀했다. 계정 불일치에서 수락/거절 행동이 숨겨지고 가상 계정을 바꿔 거절한 뒤 `/bids`로 이동했다. HTTP 대역으로 `CI006`의 다른 계정 안내, 만료에서 수락 불가와 `/auth/start` 복귀를 확인했다 | 기존 0통과·1차단 유지 |
+| 초대 화면 AUTH-17 | 1280×900에서 키보드 수락·완료 제목 초점·Tab/Enter CTA와 360×800에서 폴백 가로 넘침 없음을 확인했다. 닫기는 `/`에 도착했다. 새로고침·뒤로가기에서 사용한 초대가 재생되지 않았다 | 기존 미실행 유지 |
+
+실제 OAuth, 초대 소비·멤버십 변경, 메일 실행은 각 0회다. [QA-08의 실제 조건](#qa-08-20261102)과 이전 판정을 유지한다. 상세 요청·오류·O11 사례는 [TEAM-23/24의 로컬 검증](team-members.md#dev-33-local-qa)에 연결한다.
+
+첫 verifier 검토를 반영해 수신 확인 뒤 세션이 만료되는 경우를 loopback에서 재현했다. fragment가 없는 경로에서 401을 받은 뒤 기존 초대 세부정보를 숨기고 로그인 버튼을 표시했다. Enter로 활성화한 로컬 로그인 요청의 `returnTo`는 `/auth/company/invitations`였다. 돌아와 새 수신 확인을 한 뒤에만 수락·거절이 표시됐다. 복귀 뒤 추가 수락 POST는 없었다.
