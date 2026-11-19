@@ -96,3 +96,4 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 
 - DEV-30 기존 초대의 [로컬 편집·재발송/취소와 실제6부분 차단](team-members.md#dev-30-local-qa): mock/HTTP 대역·실제 Next 결과와 실제 메일/이전 링크/수신 통합을 구별한다.
 - DEV-31 받은 합류 신청의 [로컬 승인/사유 거절과 실제5소유 부분 차단](team-members.md#dev-31-local-qa): mock·HTTP 대역·실제 Next 검증과 신청자 상태/다른 pending·초대 정리의 실제 통합을 구별한다.
+- DEV-33의 [초대 완료 목적지 QA](team-members.md#dev-33-local-qa)와 [AUTH 회귀](auth.md#dev-33-auth-regression)는 로컬 브라우저·HTTP 대역 결과다. 실제 TEAM-23/24의 DEV-33 두 부분과 기존 AUTH-16은 차단, 초대 AUTH-17은 미실행이다.

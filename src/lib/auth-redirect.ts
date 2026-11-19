@@ -1,6 +1,7 @@
 const DEFAULT_AUTH_NEXT_PATH = "/bids?view=recommended";
 const LOCAL_URL_ORIGIN = "https://mate.local";
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001f\u007f]/;
+export const authExitEvent = "mate:auth-exit";
 
 export function sanitizeLocalNextPath(value?: string): string {
   if (

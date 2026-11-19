@@ -8,12 +8,17 @@ import { ButtonLink } from "./ui/button";
 import { CloseIcon } from "./icons";
 import { NotificationBell } from "./alarms/notification-bell";
 import { useAuthSession } from "@/features/auth/session";
+import { authExitEvent } from "@/lib/auth-redirect";
 
 const navigationItems = [
   { href: "/", label: "홈" },
   { href: "/bids", label: "입찰공고" },
   { href: "/qna", label: "자주 묻는 질문" },
 ] as const;
+
+function leaveAuth() {
+  window.dispatchEvent(new Event(authExitEvent));
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -36,11 +41,11 @@ export function SiteHeader() {
   if (pathname.startsWith("/auth")) {
     return (
       <header className="absolute inset-x-0 top-0 z-10 flex h-14 items-center justify-between px-4 sm:px-8 xl:px-[60px]">
-        <Link className="flex items-center gap-2" href="/" aria-label="메이트 홈으로 이동">
+        <Link className="flex items-center gap-2" href="/" onNavigate={leaveAuth} aria-label="메이트 홈으로 이동">
           <Image src="/icon/mate-brand.svg" alt="" width={32} height={24} />
           <span className="type-heading-9 text-grayscale-800">메이트</span>
         </Link>
-        <Link className="rounded-lg p-2 text-grayscale-800 hover:bg-primary-100" href="/" aria-label="가입 및 로그인 닫기">
+        <Link className="rounded-lg p-2 text-grayscale-800 hover:bg-primary-100" href="/" onNavigate={leaveAuth} aria-label="가입 및 로그인 닫기">
           <CloseIcon aria-hidden className="h-8 w-8" />
         </Link>
       </header>

@@ -405,16 +405,24 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
       runtime.store.write("anonymous", "company-invitation", { context, accountKey: token.endsWith("account-2") || runtime.scenario("company") === "invite-mismatch" ? "2" : null, status: "pending" });
       if (expired) throw new ApiError(410, "INVITATION_EXPIRED", "초대가 만료됐습니다."); return context;
     },
-    async resumeInvitation(access) { const account = await mockAccount(runtime, access, "company"); return checkedInvitation(account).context; },
+    async resumeInvitation(access) {
+      const account = await mockAccount(runtime, access, "company");
+      access.assertRequestScope?.();
+      return checkedInvitation(account).context;
+    },
     async acceptInvitation(access, expectedVersion) {
-      const account = await mockAccount(runtime, access, "company"); const pending = checkedInvitation(account, expectedVersion);
+      const account = await mockAccount(runtime, access, "company");
+      access.assertRequestScope?.();
+      const pending = checkedInvitation(account, expectedVersion);
       if (!pending.context.emailMatched) throw new ApiError(403, "INVITATION_ACCOUNT_MISMATCH", "초대 받은 가상 계정으로 로그인해 주세요.");
       const state = read(account); state.overview = { status: "connected", profile: basicProfile(pending.context.companyId) }; write(account, state);
       pending.status = "accepted"; pending.context.version += 1; runtime.store.write("anonymous", "company-invitation", pending);
       return { companyId: pending.context.companyId, membershipId: 9101 };
     },
     async declineInvitation(access, expectedVersion) {
-      const account = await mockAccount(runtime, access, "company"); const pending = checkedInvitation(account, expectedVersion);
+      const account = await mockAccount(runtime, access, "company");
+      access.assertRequestScope?.();
+      const pending = checkedInvitation(account, expectedVersion);
       if (!pending.context.emailMatched) throw new ApiError(403, "INVITATION_ACCOUNT_MISMATCH", "초대 받은 가상 계정으로 로그인해 주세요.");
       pending.status = "declined"; pending.context.version += 1; pending.context.canAccept = false; runtime.store.write("anonymous", "company-invitation", pending); return pending.context;
     },
