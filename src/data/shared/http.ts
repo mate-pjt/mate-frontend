@@ -14,6 +14,7 @@ export type ApiOptions = {
   idempotencyKey?: string;
   signal?: AbortSignal;
   allowEmptyData?: boolean;
+  retryUnauthorized?: boolean;
 };
 export type HttpClient = ReturnType<typeof createHttpClient>;
 
@@ -50,7 +51,8 @@ export function createHttpClient(baseUrl: string, fetcher: typeof fetch = (...ar
       if (accountKey !== access.getAccountKey()) throw new ApiError(401, "ACCOUNT_CHANGED", "로그인 계정이 변경됐습니다. 다시 시도해 주세요.");
       return result;
     } catch (error) {
-      if (!(error instanceof ApiError) || error.status !== 401 || error.code === "ACCOUNT_CHANGED" || accountKey !== access.getAccountKey()) throw error;
+      if (options.retryUnauthorized === false || !(error instanceof ApiError) || error.status !== 401 || error.code === "ACCOUNT_CHANGED"
+        || accountKey !== access.getAccountKey()) throw error;
       const session = await access.refresh();
       if (!session || accountKey !== access.getAccountKey()) throw error;
       const result = await request<T>(path, { ...options, token: session.accessToken }, access.assertRequestScope);

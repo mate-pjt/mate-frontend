@@ -88,8 +88,14 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
   }
 
   async function acceptInvitation(access: AuthAccess, expectedVersion: number): Promise<{ companyId: number; membershipId: number; sessionWarning?: string }> {
-    const result = await authorizedRequest<{ companyId: number; membershipId: number }>(access, "/api/v1/company-membership-invitations/acceptance", { method: "POST", body: { expectedVersion } });
-    return postCommit(access, result);
+    const result = await authorizedRequest<{ companyId: number; membershipId: number }>(access, "/api/v1/company-membership-invitations/acceptance", {
+      method: "POST", body: { expectedVersion }, retryUnauthorized: false,
+    });
+    if (!Number.isSafeInteger(result?.companyId) || result.companyId <= 0
+      || !Number.isSafeInteger(result?.membershipId) || result.membershipId <= 0) {
+      throw new ApiError(0, "INVITATION_ACCEPTANCE_UNCONFIRMED", "초대 수락 결과를 확인하지 못했어요.");
+    }
+    return postCommit(access, { companyId: result.companyId, membershipId: result.membershipId });
   }
 
   function declineInvitation(access: AuthAccess, expectedVersion: number): Promise<InvitationContext> {
