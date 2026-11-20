@@ -2,7 +2,8 @@ import type { AlarmKind, AlarmNotification } from "@/types/alarm";
 import { safeNotificationPath } from "@/lib/notification-path";
 import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
-import type { NotificationPage, NotificationsRepository } from "./contracts";
+import type { NotificationDeletion, NotificationDeletionResult, NotificationPage, NotificationsRepository } from "./contracts";
+import { parseNotificationDeletion } from "./deletion-input";
 
 export function createHttpNotificationsRepository(http: HttpClient): NotificationsRepository {
   const authorizedRequest = http.authorized;
@@ -116,16 +117,26 @@ export function createHttpNotificationsRepository(http: HttpClient): Notificatio
     return data.unreadCount;
   }
 
-  async function markNotificationRead(access: AuthAccess, id: string): Promise<AlarmNotification> {
+  async function markNotificationRead(access: AuthAccess, id: string, signal?: AbortSignal): Promise<AlarmNotification> {
     const data = await authorizedRequest<NotificationDto>(
       access,
       `/api/v1/me/notifications/${encodeURIComponent(id)}/read`,
-      { method: "PATCH" },
+      { method: "PATCH", signal },
     );
     const alarm = mapNotification(data);
     if (alarm.id !== id || alarm.unread) invalidResponse();
     return alarm;
   }
 
-  return { getNotifications, getUnreadNotificationCount, markNotificationRead };
+  async function deleteNotifications(access: AuthAccess, deletion: NotificationDeletion, signal?: AbortSignal): Promise<NotificationDeletionResult> {
+    const body = parseNotificationDeletion(deletion);
+    const result = await authorizedRequest<NotificationDeletionResult>(access, "/api/v1/me/notification-deletions", {
+      method: "POST", body, signal, retryUnauthorized: false,
+    });
+    if (!validCount(result?.deletedCount) || !validCount(result?.unreadCount) ||
+      (body.scope === "SELECTED" && result.deletedCount > new Set(body.notificationIds).size)) invalidResponse();
+    return { deletedCount: result.deletedCount, unreadCount: result.unreadCount };
+  }
+
+  return { getNotifications, getUnreadNotificationCount, markNotificationRead, deleteNotifications };
 }
