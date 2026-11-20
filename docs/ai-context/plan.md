@@ -326,3 +326,7 @@ Final reports should include:
 ## 2026-11-20 · POL-18 계정 탈퇴의 책임과 재개 조건
 
 서비스 계정 탈퇴의 자격·회사 소속·세션·데이터와 철회/재가입은 백엔드 계약 및 소유 정책에 따른다. [POL-18](../development/figma-v01/tasks/POL-18.md#pol-18-brief)에서 사용자가 확인한 책임과 인증 방식·화면 예외의 보류를 기록했다. 전용 계약 확인 후 [시안과 재개 조건](../development/figma-v01/tasks/POL-18.md#pol-18-contract) 및 [WDRAW QA 계획](../qa/my-settings-home.md#pol-18-withdrawal-qa)을 적용한다. 파기 기간이나 화면 예외의 확정 근거는 해당 소유 정책을 확인한다.
+
+## 2026-11-20 · POL-19 알림 채널과 수신처 인증
+
+[POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract)에서 08:30 맞춤 이메일과 공고별 내부 알림의 범위, 대체 수신 이메일 3분/60초 정책을 고정했다. [DEV-41](../development/figma-v01/tasks/DEV-41.md#dev-41-pol-19-handoff)에 mock·개발 가이드 기준을, [DEV-66](../development/figma-v01/tasks/DEV-66.md#dev-66-pol-19-boundary)에 세 항목의 화면 범위와 활성화 선행을 연결한다. 실제 NSET/NREC의 기존 차단과 현재 실행 대응 미확인은 각각의 QA·Task 기록에서 확인한다.
