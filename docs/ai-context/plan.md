@@ -334,3 +334,7 @@ Final reports should include:
 ## 2026-11-20 · DEV-41 수신 이메일 mock 인증
 
 대체 수신처 mock에 3분 만료와 계정별 진행 요청의 시작·재전송 60초 대기, 다섯 번째 오입력 차단, 새 요청·번호와 구형 탭 기한 보정을 적용했다. [자동·브라우저 결과](../development/figma-v01/tasks/DEV-41.md#dev-41-verification)와 [기존 실제 API 차단](../qa/notification-email-recipient.md#dev-41-local-qa)을 함께 확인한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-20 · POL-20 받은 알림의 수동 삭제
+
+[POL-20](../development/figma-v01/tasks/POL-20.md#pol-20-contract)은 기존 사용자 승인과 최신 소유 근거를 연결해 본인 알림 단건·선택·전체의 논리 삭제, 명령 결과와 목록·건수 재조회를 정리했다. 보존 기간·7일 안내·자동 삭제·물리 파기·복구는 소유 정책과 지원 계약 확인까지 보류한다. [DEV-43 인계](../development/figma-v01/tasks/DEV-43.md#dev-43-pol-20-handoff)와 [NDEL 미실행 계획](../qa/alarms.md#pol-20-alarm-deletion-qa)에 실제 실행 대응과 QA 준비 조건을 기록했다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)가 소유한다.

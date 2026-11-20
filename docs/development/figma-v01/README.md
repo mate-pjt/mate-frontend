@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-20 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-20 · 받은 알림 삭제/숨김·보존 정책 확정](tasks/POL-20.md#pol-20-dev-41-handoff) · P2, DOC-001 선행 |
-| 다음 첫 행동 | 최신 main의 N02 기준선, 중앙 알림 정책과 백엔드 삭제 계약, 기존 받은 알림 QA를 대조해 요구사항 Gate를 작성한다. [POL-20 인계](tasks/POL-20.md#pol-20-dev-41-handoff) |
+| 다음 작업 | [DEV-43 · 받은 알림 선택·삭제/숨김 연결](tasks/DEV-43.md#dev-43-pol-20-handoff) · P2, POL-20 선행 |
+| 다음 첫 행동 | 최신 main의 받은 알림 화면·Repository를 POL-20 계약 및 NDEL 계획과 대조하고, 현재 실행 대응과 실제 QA 자원·승인으로 자체 요구사항 Gate를 작성한다. [DEV-43 인계](tasks/DEV-43.md#dev-43-pol-20-handoff) |
+| POL-20 이번 승인 범위 | 2026-10-22 받았던 수동 삭제 승인을 적용한다. 2026-11-20 사용자가 문서 검증과 두 리뷰, Git 전달·조건부 정상 병합·로컬 fast-forward 및 이번 PR의 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/POL-20.md#pol-20-brief) · [계약](tasks/POL-20.md#pol-20-contract) |
+| POL-20 Git 전달 | [작업 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-20-alarm-deletion-policy)에서 최종 head 검증·리뷰와 병합을 확인한다. [전달 기준](tasks/POL-20.md#pol-20-delivery) |
 | DEV-41 이번 승인 범위 | 2026-11-20 사용자가 mock·가이드 교정과 검증·두 리뷰, Git 전달·조건부 정상 병합과 로컬 fast-forward를 승인했다. 이번 PR의 Chromatic 월간 한도 예외가 적용된다. [Brief](tasks/DEV-41.md#dev-41-brief) |
 | DEV-41 Git 전달 | [작업 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afix%2Fdev-41-notification-email-mock)에서 최종 head의 검증과 병합을 확인한다. [전달 기준](tasks/DEV-41.md#dev-41-delivery) |
 | POL-19 이번 결정과 승인 범위 | 중앙 정책과 2026-11-11 사용자 화면 결정을 적용했다. 2026-11-20 사용자는 문서 검증·두 리뷰·Git 전달과 이번 PR의 Chromatic 월간 한도 예외를 승인했다. [범위](tasks/POL-19.md#pol-19-brief) · [정책](tasks/POL-19.md#pol-19-contract) |
@@ -238,8 +240,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-40 · 탈퇴 실행·완료·승인된 철회 연결](tasks/DEV-40.md) | 개발 | P2 | 대기 | S03 | [DEV-39](tasks/DEV-39.md) |
 | [POL-19 · 알림 디자인·중앙 정책·인증 시간 정합성 결정](tasks/POL-19.md#pol-19-close) · **정책·문서 범위** | 정책 결정 | P2 | 완료 | S06, S09 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-41 · mock 이메일 인증 시간·개발 가이드 동기화](tasks/DEV-41.md#dev-41-verification) · **로컬 검증 및 가이드** | 개발 | P2 | 완료 | S09 | [POL-19](tasks/POL-19.md) |
-| [POL-20 · 받은 알림 삭제/숨김·보존 정책 확정](tasks/POL-20.md#pol-20-dev-41-handoff) | 정책 결정 | P2 | 준비 | N02 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-43 · 받은 알림 선택·삭제/숨김 연결](tasks/DEV-43.md) | 개발 | P2 | 대기 | N02 | [POL-20](tasks/POL-20.md) |
+| [POL-20 · 받은 알림 삭제/숨김·보존 정책 확정](tasks/POL-20.md#pol-20-close) · **수동 삭제 확정·보존 기간 및 파기 보류** | 정책 결정 | P2 | 완료 | N02 | [DOC-001](tasks/DOC-001.md) |
+| [DEV-43 · 받은 알림 선택·삭제/숨김 연결](tasks/DEV-43.md#dev-43-pol-20-handoff) | 개발 | P2 | 준비 | N02 | [POL-20](tasks/POL-20.md) |
 | [POL-21 · 가입 중 실적·인증 직접 편집 계약](tasks/POL-21.md) | 정책 결정 | P2 | 대기 | O09 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-44 · 가입 실적·인증 직접 수정 UI 연결](tasks/DEV-44.md) | 개발 | P2 | 대기 | O09 | [POL-21](tasks/POL-21.md) |
 | [POL-22 · 회사 조건을 개인 필터로 가져오는 정책](tasks/POL-22.md) | 정책 결정 | P2 | 대기 | L11 | [POL-06](tasks/POL-06.md) |
@@ -572,3 +574,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-41](tasks/DEV-41.md#dev-41-close)에서 대체 수신 이메일 mock의 3분·60초, 다섯 번째 오입력 차단과 이전 요청·번호 무효화를 검증하고 개발 가이드를 동기화했다. [로컬 및 HTTP 대역](../../qa/notification-email-recipient.md#dev-41-local-qa) 검증과 [두 리뷰](reviews/DEV-41.md)를 통과했다. 실제 NSET-07 및 NREC 6건의 기존 차단을 보존한다.
 - DOC-001을 충족한 [POL-20](tasks/POL-20.md#pol-20-dev-41-handoff)이 기존 높은 우선순위 차단과 앞선 P2 선행을 적용한 표 순서의 첫 후보다. 받은 알림 삭제·숨김·보존 정책의 요구사항 Gate만 다음 대화에 인계했다.
+
+## 2026-11-20 · POL-20 수동 삭제 정책과 DEV-43 인계
+
+- [POL-20](tasks/POL-20.md#pol-20-contract)은 MAT-254 사용자 승인과 현행 계약을 근거로 본인 알림 단건·선택·전체의 논리 삭제와 목록·미확인 수의 재조회 원칙을 기록했다. 7일 안내·자동 만료·물리 파기 및 복구는 소유 결정에 보류하고, 기존 ALARM 이력과 [NDEL 9건의 미실행 계획](../../qa/alarms.md#pol-20-alarm-deletion-qa)을 남겼다. [문서 검증과 리뷰](reviews/POL-20.md)
+- 기존 P0/P1 차단과 앞선 P2 선행을 적용해 POL-20을 충족한 [DEV-43](tasks/DEV-43.md#dev-43-pol-20-handoff)을 선정했다. 다음 범위는 받은 알림 화면과 삭제 계약 연결이다. 첫 행동인 현행 계약·실행 대응·QA 승인 확인을 인계했다.
