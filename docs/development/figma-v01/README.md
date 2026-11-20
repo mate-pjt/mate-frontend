@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-20 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-18 · 탈퇴 조건·회사 권한·데이터 처리 결정](tasks/POL-18.md#pol-18-dev-38-handoff) · P2, POL-14·POL-17 선행 충족 |
-| 다음 첫 행동 | 최신 main에서 POL-14·POL-17의 승인 범위와 S03/C02를 대조해, 대표자·마지막 관리자·탈퇴 인증·보존/삭제의 결정 질문을 정리한다. [POL-18 인계](tasks/POL-18.md#pol-18-dev-38-handoff) |
+| 다음 작업 | [POL-19 · 알림 디자인·중앙 정책·인증 시간 정합성 결정](tasks/POL-19.md#pol-19-pol-18-handoff) · P2, DOC-001 선행 충족 |
+| 다음 첫 행동 | 최신 main에서 POL-19의 마지막 정책 체크포인트와 S06/S09, 중앙 알림 정책·현재 개발 계약의 적용 범위를 확인한다. [POL-19 인계](tasks/POL-19.md#pol-19-pol-18-handoff) |
+| POL-18 이번 결정과 승인 범위 | 2026-11-20 사용자 답변은 회사·데이터 처리의 백엔드 책임을 확인하고, 탈퇴 인증 방식과 화면 예외를 보류했다. 문서 검증·두 리뷰·Git 전달 및 이번 PR의 Chromatic 월간 한도 예외가 적용된다. [답변과 범위](tasks/POL-18.md#pol-18-brief) |
+| POL-18 Git 전달 | [작업 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-18-withdrawal-policy)에서 문서 전달의 최종 head·CI·리뷰·병합을 확인한다. [전달 기준](tasks/POL-18.md#pol-18-delivery) |
 | DEV-38 이번 승인 범위 | 사용자는 2026-11-20 기존 개발 QA 계정 직접 로그인·조회·새로고침·테스트 세션 로그아웃과 실제 응답 확인을 승인했다. 현재 실행 digest는 미확인으로 남기고 Git 전달을 진행한다. 이번 PR의 Chromatic 월간 한도만 예외다. [결정 기록](tasks/DEV-38.md#dev-38-brief) |
 | DEV-38 Git 전달 | [작업 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-38-account-settings)에서 최종 head 검사·리뷰·병합을 확인한다. [전달 기준](tasks/DEV-38.md#dev-38-delivery) |
 | POL-17 이번 승인 범위 | 2026-11-20 사용자 D1으로 본인 연락용 이메일 조회 전용과 S02 이메일 ‘인증하기’ 생략을 확정했다. 이번 문서 검증·두 리뷰·목적별 Git 전달·조건부 정상 병합과 로컬 fast-forward, 이번 PR의 Chromatic 월간 한도 예외를 승인받았다. [착수 및 승인 기록](tasks/POL-17.md#pol-17-brief) |
@@ -108,7 +110,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료47 · 차단24 · 대기40 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료47 · 차단25 · 대기39 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -227,10 +229,10 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [QA-14 · 설정 홈·현재 메뉴·로그아웃 회귀](tasks/QA-14.md#qa-14-verification) · **로컬 회귀 통과·실제 MSET-02 재확인 대기** | 검증 | P2 | 완료 | S01 | [PREP-01](tasks/PREP-01.md) |
 | [POL-17 · 계정 정보 변경·인증 방식 결정](tasks/POL-17.md#pol-17-close) · **조회 전용 정책·문서 범위** | 정책 결정 | P2 | 완료 | S02, C02 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-38 · 계정 정보 조회·승인된 변경 연결](tasks/DEV-38.md#dev-38-verification) · **본인 이메일 조회 차수, 변경·재인증 계약 대기** | 개발 | P2 | 완료 | S02 | [POL-17](tasks/POL-17.md) |
-| [POL-18 · 탈퇴 조건·회사 권한·데이터 처리 결정](tasks/POL-18.md#pol-18-dev-38-handoff) | 정책 결정 | P2 | 준비 | S03, C02 | [POL-14](tasks/POL-14.md) / [POL-17](tasks/POL-17.md) |
+| [POL-18 · 탈퇴 조건·회사 권한·데이터 처리 결정](tasks/POL-18.md#pol-18-contract) · **서버 계약·보존/철회 정책과 D2 인증/화면 결정 필요** | 정책 결정 | P2 | 차단 | S03, C02 | [POL-14](tasks/POL-14.md) / [POL-17](tasks/POL-17.md) |
 | [DEV-39 · 탈퇴 조건 확인·인증·확인 UI](tasks/DEV-39.md) | 개발 | P2 | 대기 | S03, C02 | [POL-18](tasks/POL-18.md) / [DEV-38](tasks/DEV-38.md) |
 | [DEV-40 · 탈퇴 실행·완료·승인된 철회 연결](tasks/DEV-40.md) | 개발 | P2 | 대기 | S03 | [DEV-39](tasks/DEV-39.md) |
-| [POL-19 · 알림 디자인·중앙 정책·인증 시간 정합성 결정](tasks/POL-19.md) | 정책 결정 | P2 | 대기 | S06, S09 | [DOC-001](tasks/DOC-001.md) |
+| [POL-19 · 알림 디자인·중앙 정책·인증 시간 정합성 결정](tasks/POL-19.md#pol-19-pol-18-handoff) | 정책 결정 | P2 | 준비 | S06, S09 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-41 · mock 이메일 인증 시간·개발 가이드 동기화](tasks/DEV-41.md) | 개발 | P2 | 대기 | S09 | [POL-19](tasks/POL-19.md) |
 | [POL-20 · 받은 알림 삭제/숨김·보존 정책 확정](tasks/POL-20.md) | 정책 결정 | P2 | 대기 | N02 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-43 · 받은 알림 선택·삭제/숨김 연결](tasks/DEV-43.md) | 개발 | P2 | 대기 | N02 | [POL-20](tasks/POL-20.md) |
@@ -551,3 +553,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - `/my/settings/account`에서 현재 세션의 본인 연락용 이메일을 조회한다. [로컬 ACCT-01~07과 실제 ACCT-08](../../qa/my-settings-home.md#dev-38-account-qa)·[두 리뷰](reviews/DEV-38.md)를 통과했다. 실제 조회·복원 응답과 현재 실행 digest 미확인, 실제 로그아웃 응답 미확인을 기록했다.
 - 먼저 배치된 P0/P1과 P2의 외부 차단 및 선행 조건을 유지한다. POL-14·POL-17을 충족한 [POL-18](tasks/POL-18.md#pol-18-dev-38-handoff)을 다음 요구사항 Gate로 선정했다. 계정 탈퇴의 인증·회사 권한·보존/삭제를 정책 범위로 인계했다.
+
+## 2026-11-20 · POL-18 백엔드 계약 대기와 POL-19 인계
+
+- [POL-18 사용자 답변](tasks/POL-18.md#pol-18-brief)과 [재개 계약](tasks/POL-18.md#pol-18-contract)은 서비스 탈퇴의 자격·회사·세션/데이터 처리를 백엔드 책임으로 연결한다. 인증 방식과 화면 예외는 보류됐고 탈퇴 전용 계약 및 데이터·재가입·철회 기준이 필요하다. DEV-39/40의 선행 대기와 [WDRAW 9사례 미실행](../../qa/my-settings-home.md#pol-18-withdrawal-qa)을 기록했다. [문서 검증·리뷰](reviews/POL-18.md)
+- 높은 우선순위의 기존 차단과 앞선 P2 선행을 적용했다. DOC-001이 충족된 [POL-19](tasks/POL-19.md#pol-19-pol-18-handoff)의 선정과 첫 행동을 인계했다.
