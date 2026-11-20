@@ -152,3 +152,7 @@ F03/C02의 [DEV-24 사용자 D1](tasks/DEV-24.md#dev-24-brief)은 기존 회사 
 ## 2026-11-16 · F03/DEV-25 삭제의 로컬 범위
 
 F03의 [DEV-25 사용자 D1](tasks/DEV-25.md#dev-25-brief)은 전체 series 삭제 확인/취소·검증된 응답 뒤 완료/원본 해제·목록 갱신과 권한/미확정·계정/회사 수명을 로컬 구현/검증한다. [로컬·source·실제 QA 구분](../../qa/company-documents.md#dev-25-local-qa)과 DBOX-17~22 실제6차단을 보존한다. 전체 원본22사례는 고유21차단/1대기(16)이며 신규 추가·F04/MAT-162·worker의 완료를 뜻하지 않는다. 원본79개·114Task/156의존성과 앞선 snapshot/판정을 유지하고 상태는 WBS만 소유한다.
+
+## 2026-11-20 · S02/C02 계정 관리 범위
+
+[POL-17 D1](tasks/POL-17.md#pol-17-contract)은 본인 연락용 이메일 읽기와 시안의 이메일 ‘인증하기’ 생략을 [DEV-38](tasks/DEV-38.md#dev-38-pol-17-handoff)에 연결한다. C02 비밀번호 상태는 Google-only 정책에 따라 제품에서 미연결이며, 계정 필드 변경·재인증은 계약을 확보한 뒤 재검토한다. 탈퇴와 다른 C02 팝업의 소유, 원본 79개 행과 기존 의존성을 보존한다. [ACCT-01~08](../../qa/my-settings-home.md#pol-17-account-qa)은 미실행 계획이며 작업 상태는 WBS에서 확인한다.
