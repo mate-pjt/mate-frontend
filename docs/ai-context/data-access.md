@@ -206,6 +206,7 @@ src/data/
 
 - 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정 등의 ‘준비 중’ 기능을 이 리팩터링으로 활성화하지 않는다. 당시 미연결이던 금액 직접 범위의 후속 연결은 아래 DEV-11 기록을 따른다.
 - 받은 알림 읽음은 성공 응답 뒤에만 반영한다. 구독 해제는 받은 알림 삭제와 다르다. 7일 보존·카카오톡/SMS는 미확정/미구현 정책을 유지한다. actionPath의 2026-11-05 사용자 승인 [POL-04 v1](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)은 당시 공고 상세(선택 bidClsfcNo)·`/my/company`를 허용했고, 현재는 위 DEV-28 D2의 정확한 양수 안전정수 동의 상세 경로도 허용한다. 위험/미지원 경로는 목록 유지·안내, 읽음 성공 뒤 이동/실패 시 목록 유지, 이미 읽음은 PATCH 없이 이동한다. 경계 및 이동 직전 allowlist를 적용하고 최종401/로그아웃·계정 교체/해제 뒤 사용자 행동을 자동 재생하지 않는다. hybrid에서도 목적지 ID 치환·자동 fallback·새 공급원 제약은 없다. 로컬 구현/대역/브라우저와 미실행 실제 통합의 증거는 [DEV-06](../development/figma-v01/tasks/DEV-06.md), [ANAV QA](../qa/alarms.md#dev-06-local-qa)를 구분해 확인한다.
+- 받은 알림 수동 삭제는 백엔드의 계정별 논리 삭제 계약을 사용한다. 선택 입력·전체 범위·집계 재조회·결과 미확정은 [POL-20](../development/figma-v01/tasks/POL-20.md#pol-20-contract)을 따른다. DEV-43의 연결은 기존 `notifications` 공급원 경계와 공개 client를 사용한다. 현재 공개 계약은 목록·미확인 수·읽음이고 삭제는 연결 전이다.
 - 공개 목록의 UI page는 1부터, API page는 0부터다. 조회 metadata에서 코드/라벨을 변환하고 KST를 표시한다. 기관 역할·nullable 금액과 결과 값을 그대로 구분한다.
 - 공개 상세 본문 404와 section 실패는 별도다. 실제 첨부는 backend 스트리밍 URL이고 mock 첨부는 `/mock/bid-attachment.txt`다. 명세 없는 정정 이력·지시사항을 만들지 않는다.
 - 수신 주소와 맞춤 이메일 ON/OFF endpoint는 독립적이다. 맞춤 공고 이메일은 매일 08:30 KST에 발송하며 이 채널에는 야간 옵션이 없다. 공고별 알림은 서비스 내부에서 전달한다. 개발 백엔드의 별도 상세·야간 설정 API와 현재 웹의 연결 범위, 대체 수신처 인증 시간은 [POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract)를 따른다.
