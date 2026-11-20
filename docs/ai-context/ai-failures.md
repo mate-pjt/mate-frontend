@@ -409,3 +409,7 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 ## 2026-11-20 · DEV-38 Figma 응답 출력
 
 S02의 구조를 읽을 때 예시 주소를 가렸으나 도구 텍스트에 임시 Figma 자산 URL이 포함됐다. Figma 응답은 구조·노드·스타일 위주로 선별하고 임시 URL을 제외한 뒤 출력한다. 이 작업의 Git·QA 증거는 합성 브라우저 캡처와 비식별 관측만 사용한다.
+
+## 2026-11-20 · POL-20 로컬 Git 출력의 작성자 필드
+
+과거 변경 파일을 확인할 때 `git show --stat --format=short`가 불필요한 작성자 연락처 필드를 표시했다. 사용자에게 알렸으며 해당 값은 작업 기록에 옮기지 않았다. 파일 목록은 `git show --format= --name-only <ref>`로, SHA와 제목은 `git log -1 --format='%H %s' <ref>`로 출력한다. [POL-20 검토 기록](../development/figma-v01/reviews/POL-20.md)
