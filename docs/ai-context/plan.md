@@ -314,3 +314,7 @@ Final reports should include:
 ## 2026-11-20 · POL-16 회사 간 통합 정책
 
 [사용자 D1~D3](../development/figma-v01/tasks/POL-16.md#pol-16-brief)로 같은 사업자번호의 현행 사건 및 양방향 개시, 팀원 검토·회사 정보 요약과 일괄 이전/건너뛰기, 부분 승인과 명시적 원자 최종화의 [웹 정책](../development/figma-v01/tasks/POL-16.md#pol-16-contract)을 기록했다. 인증 회사의 사건 거절 화면에는 실제 사유 조회 계약이 선행한다. 철회·재발송 백엔드 이슈는 [Linear 등록 한도 차단](../development/figma-v01/tasks/POL-16.md#pol-16-withdrawal)으로 보존한다. [후속 QA 계획](../qa/company-merge.md#pol-16-merge-qa)은 미실행이며 상태와 다음 작업은 WBS가 소유한다.
+
+## 2026-11-20 · DEV-34 현재 회사 통합 사건
+
+[DEV-34](../development/figma-v01/tasks/DEV-34.md#dev-34-verification)에 POL-16 G01의 현재 사건·권한·기한 조회와 명시 신청·제안·응답 및 충돌/미확정의 읽기 재확인을 기록했다. 승인된 [로컬 검증](../qa/company-merge.md#dev-34-local-qa)과 실제 MERGE-01~04 차단은 별도다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.
