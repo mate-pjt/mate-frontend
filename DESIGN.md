@@ -86,7 +86,7 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 - Interaction: 미읽음 항목은 읽음 성공 뒤 해당 알림과 미확인 건수를 갱신하고 허용된 `actionPath`로 이동한다. 이미 읽은 항목은 읽음 요청 없이 이동한다. 허용 목적지는 공고 상세(`/bids/{양의 정수 ID}`, 선택 `bidClsfcNo`)와 `/my/company`다. 경로가 없거나 위험/미지원이면 목록을 유지하고 안내한다. 편집·선택·삭제는 아직 연결하지 않았다.
 - Feedback: 읽음 요청이 실패하면 기존 미확인 상태와 목록을 유지하고 재시도를 제공한다. 중복 요청·계정 교체/로그아웃·화면 해제 뒤 늦은 이동을 방어한다. 현재 페이지에 삭제 완료 toast는 없다.
 - Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공한다. 항목은 키보드로 조작하는 버튼이며 읽음 요청 중 `aria-busy`와 비활성 상태를 제공한다. 편집 미지원 사유는 화면 본문과 `aria-describedby`로 연결한다.
-- Evidence: [현재 화면](src/components/alarms/alarm-page-client.tsx), [목록 항목](src/components/alarms/alarm-list-item.tsx), [POL-04 v1](docs/development/figma-v01/tasks/POL-04.md#pol-04-decisions), [DEV-06 로컬 구현/검증](docs/development/figma-v01/tasks/DEV-06.md), [실제 API QA와 미결 정책](docs/qa/alarms.md#dev-06-local-qa). DEV-06의 로컬 검증은 실제 ANAV-01~10의 차단을 해소하지 않는다. 삭제 operation 존재와 POL-20 정책·DEV-43 프론트 미연결을 구분한다. 과거 편집·삭제 디자인 검증 이력은 현재 동작의 증거가 아니다.
+- Evidence: DEV-06의 로컬 검증과 실제 ANAV-01~10의 차단은 [받은 알림 QA](docs/qa/alarms.md#dev-06-local-qa)에 기록한다. [POL-20](docs/development/figma-v01/tasks/POL-20.md#pol-20-contract)은 이미 승인된 본인 알림의 선택·전체 삭제 계약을 적용한다. 현재 프런트의 편집은 준비 중이며 연결과 화면 검증은 [DEV-43](docs/development/figma-v01/tasks/DEV-43.md) 범위다. [현재 화면](src/components/alarms/alarm-page-client.tsx) · [목록 항목](src/components/alarms/alarm-list-item.tsx) · [POL-04 v1](docs/development/figma-v01/tasks/POL-04.md#pol-04-decisions)
 
 ### Notification guidance
 
@@ -156,7 +156,7 @@ Mixed 전략을 사용한다.
 | 인증 | 공개 auth client가 빌드 설정에 따라 HTTP/mock Repository를 선택한다. API는 서버 중심 Google OAuth와 메모리 access token·refresh cookie로 세션을 복원한다. 실제 token은 localStorage/sessionStorage에 저장하지 않는다. mock 인증은 외부 OAuth/API 없이 탭의 합성 계정 ID·만료 시각으로 복원한다. | [Provider](src/features/auth/session.tsx)·[session controller](src/data/auth/session-controller.ts)·[auth client](src/data/auth/client.ts). [기존 인증 QA](docs/qa/auth.md)는 부분 실행 이력과 남은 사례를 구분하며, 현재 통합 재검증은 [QA-04](docs/development/figma-v01/tasks/QA-04.md) 범위다. |
 | 받은 알림 | notifications Repository가 목록·미확인 건수·읽음을 제공한다. HTTP 구현은 목록/건수 GET과 읽음 PATCH에 연결돼 있다. mock의 목록/읽음 상태는 설정·환경·계정별 sessionStorage에 보존하며, 저장소 제한 시 메모리로 동작해 새로고침 유지를 보장하지 않는다. | [공개 client](src/data/notifications/client.ts)·[HTTP 구현](src/data/notifications/http-repository.ts)·[mock 구현](src/data/notifications/mock-repository.ts)·[탭 저장소](src/data/mock/store.ts). [기존 알림 QA](docs/qa/alarms.md)의 빈 목록·로그인 관련 과거 통과와 알림 fixture/읽음/21건 이상 대기를 유지한다. [QA-11](docs/development/figma-v01/tasks/QA-11.md)은 테스트 알림 준비가 필요하다. |
 
-공급원은 동일한 빌드 snapshot에서 선택하며 API 오류의 자동 mock 대체는 없다. 상세 계약은 [data-access.md](docs/ai-context/data-access.md)와 [architecture.md](docs/ai-context/architecture.md)를 따른다. 받은 알림 편집·삭제는 삭제/숨김 계약 미확정으로 준비 중이며, 공고별 구독 해제와 다르다. 이동/읽음 정책은 [POL-04](docs/development/figma-v01/tasks/POL-04.md), 변경 신호·REST 재조회 계약은 [POL-05](docs/development/figma-v01/tasks/POL-05.md), 삭제/숨김·보존은 [POL-20](docs/development/figma-v01/tasks/POL-20.md)에서 별도로 결정한다. 이 문서 정정으로 해당 기능이나 7일 자동 삭제를 활성화하지 않는다.
+공급원은 동일한 빌드 snapshot에서 선택하며 API 오류의 자동 mock 대체는 없다. 받은 알림 편집·삭제는 프런트 연결 전이라 준비 중이다. 수동 삭제는 본인 받은 알림을 숨긴다. 공고별 구독 관리는 별도 동작이다. 7일 안내·자동 삭제·물리 파기·복구 정책은 소유 결정에 보류한다. [데이터 접근](docs/ai-context/data-access.md) · [구조](docs/ai-context/architecture.md) · [POL-04 이동/읽음](docs/development/figma-v01/tasks/POL-04.md) · [POL-05 변경 신호](docs/development/figma-v01/tasks/POL-05.md) · [POL-20 삭제/보존](docs/development/figma-v01/tasks/POL-20.md#pol-20-contract)
 
 ### Accepted Debt
 
