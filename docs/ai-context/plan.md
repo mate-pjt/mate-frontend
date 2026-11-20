@@ -318,3 +318,7 @@ Final reports should include:
 ## 2026-11-20 · DEV-34 현재 회사 통합 사건
 
 [DEV-34](../development/figma-v01/tasks/DEV-34.md#dev-34-verification)에 POL-16 G01의 현재 사건·권한·기한 조회와 명시 신청·제안·응답 및 충돌/미확정의 읽기 재확인을 기록했다. 승인된 [로컬 검증](../qa/company-merge.md#dev-34-local-qa)과 실제 MERGE-01~04 차단은 별도다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.
+
+## 2026-11-20 · POL-17 계정 정보와 인증
+
+[사용자 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)으로 세션의 본인 연락용 이메일 조회와 S02 이메일 ‘인증하기’ 생략을 정했다. 중앙 Google-only 정책을 유지하며 계정 변경·재인증은 소유 정책과 계약을 확보한 뒤 판단한다. [DEV-38 인계](../development/figma-v01/tasks/DEV-38.md#dev-38-pol-17-handoff)와 [ACCT-01~08 미실행 계획](../qa/my-settings-home.md#pol-17-account-qa)은 구현과 실제 QA의 후속 기준이다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.
