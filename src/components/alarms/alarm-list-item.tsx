@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { CheckboxCircle } from "@/components/ui/checkbox";
 import type { AlarmKind, AlarmNotification } from "@/types/alarm";
 
 const alarmIconPaths: Record<AlarmKind, string> = {
@@ -13,6 +14,7 @@ type AlarmListItemProps = {
   index: number;
   onActivate: (alarm: AlarmNotification) => void;
   pending: boolean;
+  selection?: { checked: boolean; disabled: boolean; toggle: () => void };
 };
 
 export function AlarmListItem({
@@ -20,6 +22,7 @@ export function AlarmListItem({
   index,
   onActivate,
   pending,
+  selection,
 }: AlarmListItemProps) {
   const alternatingSurface = index % 2 === 0 ? "bg-grayscale-50" : "bg-basic-white";
 
@@ -52,15 +55,26 @@ export function AlarmListItem({
               ))}
             </p>
           </div>
-          <span className="flex h-full w-4 shrink-0 items-start" aria-hidden>
+          {!selection && <span className="flex h-full w-4 shrink-0 items-start" aria-hidden>
             {alarm.unread && (
               <Image className="size-4" src="/icon/24dp/state.svg" alt="" width={16} height={16} />
             )}
-          </span>
+          </span>}
         </div>
       </div>
     </div>
   );
+
+  if (selection) {
+    return (
+      <div className={`flex w-full items-center gap-3 rounded-2xl p-4 ${alternatingSurface}`}>
+        <CheckboxCircle active={selection.checked} disabled={selection.disabled} onActiveChange={selection.toggle}
+          ariaLabel={`${alarm.messageLines[0] ?? alarm.label} 선택`} size="lg"
+          className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+        {content}
+      </div>
+    );
+  }
 
   return (
     <button
