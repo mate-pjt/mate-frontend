@@ -3,6 +3,7 @@ import { createMockAuthRepository } from "@/data/auth/mock-repository";
 import { createHttpAuthRepository } from "@/data/auth/http-repository";
 import { createHttpClient } from "@/data/shared/http";
 import { createSessionController } from "@/data/auth/session-controller";
+import { readContactEmail } from "@/features/auth/contact-email";
 import { sanitizeLocalNextPath } from "@/lib/auth-redirect";
 import { createMockCompanyRepository } from "@/data/company/mock-repository";
 import { authentication, mockRuntime, ok } from "./helpers";
@@ -88,6 +89,25 @@ describe("인증 Repository와 세션", () => {
     expect(refreshBrowserSession).toHaveBeenCalledTimes(1); expect(session.getSnapshot().status).toBe("anonymous");
     expect(logoutBrowserSession).toHaveBeenCalledTimes(1);
   });
+  it.each([true, false])("로그아웃 처리 중 계정 범위를 닫고 실패하면 현재 범위를 다시 알린다 (성공: %s)", async (succeeds) => {
+    const session = createSessionController({
+      refreshBrowserSession: async () => authentication(),
+      logoutBrowserSession: async () => {
+        if (!succeeds) throw new Error("synthetic logout failure");
+      },
+    });
+    session.setAuthentication(authentication());
+    const accountKeys: Array<string | null> = [];
+    session.subscribe(() => accountKeys.push(session.getAccountKey()));
+
+    const logout = session.logout();
+    expect(accountKeys).toEqual([null]);
+    if (succeeds) await expect(logout).resolves.toBeUndefined();
+    else await expect(logout).rejects.toThrow("synthetic logout failure");
+
+    expect(accountKeys.at(-1)).toBe(succeeds ? null : "1");
+    expect(session.getSnapshot().status).toBe(succeeds ? "anonymous" : "authenticated");
+  });
   it("계정 교체 중 늦은 refresh가 새 계정을 덮어쓰지 않는다", async () => {
     let resolve!: (value: ReturnType<typeof authentication>) => void;
     const session = createSessionController({ refreshBrowserSession: () => new Promise(done => { resolve = done; }), logoutBrowserSession: async () => {} });
@@ -104,4 +124,31 @@ describe("인증 Repository와 세션", () => {
     resolves[1](authentication(2)); expect((await current)?.account.id).toBe(2); expect(session.getAccountKey()).toBe("2");
   });
   it.each(["https://outside.test", "//outside.test", "/\\outside", "/\u0000bad"])("외부 복귀 경로를 차단한다", value => { expect(sanitizeLocalNextPath(value)).toBe("/bids?view=recommended"); });
+});
+
+describe("계정 관리의 연락용 이메일 읽기", () => {
+  it("세션 응답의 연락용 이메일을 원문 그대로 사용한다", async () => {
+    const address = "synthetic+contact@example.test";
+    const wire = { ...authentication(), account: { id: 1, email: address, nickname: null } };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(ok(wire));
+    const repository = createHttpAuthRepository(createHttpClient("https://synthetic.test", fetcher));
+    const session = await repository.refreshBrowserSession();
+
+    expect(readContactEmail(session.account.email)).toEqual({ status: "available", address });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith(
+      "https://synthetic.test/api/v1/auth/token/refresh",
+      expect.objectContaining({ method: "POST" }),
+    );
+  });
+
+  it.each([undefined, null, "", " \t "])("연락용 이메일 결측을 표시한다 (%s)", (value) => {
+    expect(readContactEmail(value)).toEqual({ status: "missing" });
+  });
+
+  it.each([123, {}, "wrong-value", "synthetic@example.test\n", `${"a".repeat(250)}@example.test`])(
+    "잘못된 값은 화면 표시용 주소로 반환하지 않는다 (%s)", (value) => {
+      expect(readContactEmail(value)).toEqual({ status: "invalid" });
+    },
+  );
 });
