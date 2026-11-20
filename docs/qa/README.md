@@ -15,7 +15,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`bid-alert.md`](./bid-alert.md): 상세의 계정별 공고 알림 설정·해제·로그인 복귀·오류 상태
 - [`my-bid-notice-alerts.md`](./my-bid-notice-alerts.md): 마이페이지 ‘알림 설정 공고’ 목록의 전체 조회 API 차단 사항과 후속 검증 항목
 - [`home.md`](./home.md): 홈 전체 입찰공고 카드·상태·상세 이동과 홈 진입
-- [`alarms.md`](./alarms.md): 받은 알림 목록·읽음의 기존 QA와 [POL-20 수동 삭제 계획](./alarms.md#pol-20-alarm-deletion-qa), 보류된 7일 안내
+- [`alarms.md`](./alarms.md)에는 받은 알림 목록·읽음의 기존 QA, [POL-20 삭제 계획](./alarms.md#pol-20-alarm-deletion-qa), [DEV-43 로컬 검증과 실제 9사례 차단](./alarms.md#dev-43-local-qa)이 있다. 7일 안내는 정책 대기다.
 - [`notification-settings.md`](./notification-settings.md): 마이페이지 맞춤 공고 이메일 설정 조회·변경과 로그인 안내
 - [`notification-email-recipient.md`](./notification-email-recipient.md): 알림 수신 주소 선택, 대체 주소 인증·재전송·전환
 - [`my-settings-home.md`](./my-settings-home.md): 설정 및 관리 첫 화면, 알림 설정 진입·로그아웃·로그인 복귀
