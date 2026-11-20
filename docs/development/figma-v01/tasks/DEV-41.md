@@ -24,15 +24,15 @@
 
 ## 완료 기준
 
-- [ ] Clock 기반 만료 직전/직후·재전송 제한 경계를 검증한다
-- [ ] API/mock의 expiresAt/resendAvailableAt 표시와 가이드가 일치하는지 확인한다
-- [ ] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다.
-- [ ] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다.
-- [ ] Documentation Update Check 및 verifier/ai-review를 통과한다. 구현만 마친 상태는 완료가 아니다.
+- [x] Clock 기반 만료 직전/직후·재전송 제한 경계를 검증한다.
+- [x] API/mock의 expiresAt/resendAvailableAt 표시와 가이드가 일치하는지 확인한다.
+- [x] 현재 package scripts로 필요한 test/lint/build·diff-check와 Storybook 검증을 통과한다.
+- [x] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다. 이번 로컬 범위와 실제 API 미실행은 [QA 기록](../../../qa/notification-email-recipient.md#dev-41-local-qa)에 연결했다.
+- [x] Documentation Update Check 및 [verifier와 ai-review](../reviews/DEV-41.md)를 통과한다.
 
-## 착수 전 Implementation Brief / 설계 Gate
+## 2026-10-27 · 착수 전 Implementation Brief 후보
 
-이 기록은 작업 후보 정의다. DOC-001 외의 작업은 아직 실행하거나 설계 승인을 받은 상태가 아니다. 착수 시 아래를 현재 소스 기준으로 채우고 편집 전에 제시한다.
+당시에는 작업 후보를 정의했다. 실제 착수 판단과 설계는 [2026-11-20 Brief](#dev-41-brief)에 있다.
 
 - 요구사항/성공 기준 확정: 미작성.
 - in/out scope와 확인한 기존 패턴: 위 후보 범위를 검토해 확정.
@@ -53,7 +53,7 @@
 | --- | --- | --- | --- |
 | 2026-10-27 / 문서화 | feature/my-company-overview / f84af24b5f9d + 기존 미커밋 변경 | 보고서에서 작업 정의만 생성. 구현/실제 QA 미실행 | 선행 작업의 결과와 현재 요구사항을 확인한 뒤 착수한다. |
 
-## 검증·리뷰·인계 기록
+## 2026-10-27 · 검증·리뷰·인계 후보 상태
 
 | 구분 | 실행 명령/사례·환경 | 결과 | 증거/미실행 이유 |
 | --- | --- | --- | --- |
@@ -85,3 +85,54 @@
 - 고정 Clock으로 동일 계정의 한 발송 이후 재전송과 새 인증 요청 모두에서 60초 직전 거절·60초 도달 허용을 확인한다. 3분 경계, 다섯 번째 오입력의 차단, 재전송 뒤 새 요청/번호 발급과 이전 요청/번호 거절도 검증한다. 실패·만료·취소·재전송 중에는 기존 주소를 두고 최신 요청 확인 성공에만 바꾼다. 계정 격리, 이전 탭 mock snapshot과 시나리오(`expired`, `blocked`)의 처리를 자체 Brief에서 정한다.
 - 실제 Next의 합성 화면과 HTTP 대역은 구분한다. 대역에 다른 유효 시각을 반환해 UI가 고정 3분/60초를 다시 계산하지 않는지 확인한다. 기존 [QA-12](QA-12.md#qa-12-resume)의 실제 오류 1건과 [QA-13](QA-13.md#qa-13-resume)의 실제 수신처 6건 차단은 유지한다. 새 실서버 발송·수신·주소 변경과 원복은 필요한 자원·승인을 자체 Gate에서 판단한다.
 - **선정 이유와 첫 행동** · 기존 P0/P1 차단·미충족 선행과 앞선 P2의 대기 조건을 적용하면, POL-19를 선행으로 두는 이 작업이 WBS 표 순서에서 첫 후보다. 다음 대화에서 최신 `main`과 POL-19의 병합 근거를 확인하고 [mock Repository](../../../../src/data/notification-settings/mock-repository.ts)·[인증 담당 테스트](../../../../tests/account-repositories.test.ts)·개발 가이드의 10분/30초와 재전송 동작을 먼저 대조한다. 고정 Clock·이전 상태·브라우저와 실제 QA 경계를 그 자리에서 요구사항으로 정한다. 이번에는 인계만 기록했다.
+
+<a id="dev-41-brief"></a>
+
+## 2026-11-20 · 착수 Brief
+
+- S09의 개발 범위는 대체 수신 이메일의 mock과 합성 검증 가이드다. 중앙 정책과 [POL-19](POL-19.md#pol-19-contract)에 따라 발송부터 3분 유효, 진행 중인 계정별 요청의 시작·재전송 공통 60초 대기, 다섯 번째 오입력 즉시 차단, 새 요청과 번호의 발급 및 이전 요청·번호의 무효화를 적용한다. 인증 성공 때만 새 수신처를 적용한다.
+- 중앙 정책 §7의 현행 문서 blob `c649b309` 및 백엔드 개발 인증 서비스 blob `24952229`를 확인했다. 근거는 [정책과 개발 계약](POL-19.md#pol-19-evidence)에 연결된다. 화면은 [S09의 4자리 입력/재전송](POL-19.md#pol-19-evidence) 및 [현행 팝업](../../../../src/components/my/notification-email-verification-dialog.tsx)의 절대 시각 표시를 따른다. 서버 배포 기록, 실행 SHA, 실제 업무 응답의 확인 수준은 선행 조사에 명시돼 있다.
+- [Repository](../../../../src/data/notification-settings/mock-repository.ts)의 주입 Clock과 탭·계정별 저장을 사용한다. 첫 합성 번호는 1234이며 다음 발송부터 번호를 순서대로 바꾼다. 구형 요청은 저장된 발송 시각에서 새 기한을 계산해 기존 수신 주소와 ON/OFF, 현재까지의 시도 횟수를 보존한다. `expired`는 확인에서 만료 응답을, `blocked`는 횟수 제한 응답을 재현한다. 합성 만료 응답을 발송 직후 재현하더라도 발송 대기를 적용한다. 이들은 Codex가 2026-11-20 정한 개발 fixture 선택이다.
+- 편집 순서는 이 Brief와 WBS 착수 → mock에서 시작·재전송 공통 발급과 복원 → [고정 Clock 계약](../../../../tests/account-repositories.test.ts) 및 [HTTP 대역](../../../../tests/http-contracts.test.ts) → [개발 가이드](../../repositories.md#4-가상-계정회사이메일-사용), 공통 데이터 접근/계획, QA, WBS와 리뷰다. 시각 경계 누락, 구형 상태 유실, 이전 코드 허용과 계정 간 영향 여부를 검증한다.
+- `pnpm test`, `pnpm lint`, API/mock/hybrid `pnpm build`, `pnpm build-storybook`, 실제 Next의 합성 mock과 loopback HTTP 대역, 문서 링크·ID·상태·기준선·범위 보존, `git diff --check` 및 두 리뷰를 수행한다. 대역은 3분·60초와 다른 시각을 반환해 현행 UI와 HTTP 응답의 연결을 확인한다.
+- 2026-11-20 사용자가 DEV-41 단일 실행·검증·두 리뷰와 목적별 커밋, push, PR, 최종 CI 확인, 조건부 정상 병합 및 로컬 fast-forward를 승인했다. Chromatic 월간 한도 예외는 이번 PR에 적용한다. 현행 API/화면 표시 계약과 알림 채널 정책을 사용한다. 실제 업무 발송·주소 설정 변경/복구와 운영·배포는 별도 자원·승인이 필요하다. QA-12/13 실제 차단과 그때의 승인 범위를 보존한다. 이번 요구사항 Gate의 필수 미결 결정은 없다.
+
+### 착수 체크포인트
+
+2026-11-20 13:57 KST · Codex가 GitHub의 [POL-19 PR #99](https://github.com/mate-pjt/mate-frontend/pull/99) 병합 및 최신 `main` 일치를 확인했다. `fix/dev-41-notification-email-mock`의 시작점은 `1a553daeb9dbc087bccfdd8b9189b2b6791a5923`이며 기존 미커밋 변경은 0건이다. 재전송과 시작의 공통 발급, 3분 경계 및 다섯 번째 오입력 처리부터 교정한다.
+
+### 구현 및 자동 검증 체크포인트
+
+2026-11-20 14:02 KST · mock 흐름과 고정 Clock/HTTP 대역 테스트를 검증했다. Node 22.20.0·pnpm 11.3.0의 격리 복사본에서 `pnpm test` 41파일·1,226건, `pnpm lint`, API/mock/hybrid 빌드 및 Storybook 빌드가 통과했다. 브라우저 mock 서버의 첫 포트가 이미 사용 중이어서 빈 포트로 재시작했다. 다음 행동은 합성 로그인으로 시작·만료·재전송·전환을 확인하고, 별도 loopback 대역의 시각 및 응답 수신처를 화면에서 검증하는 것이다.
+
+<a id="dev-41-verification"></a>
+
+## 2026-11-20 · 검증 결과와 Documentation Update Check
+
+| 검증 | 결과 | 근거 |
+| --- | --- | --- |
+| `pnpm test` · Vitest Node | PASS · 41파일 1,226건 | 고정 Clock/Storage·HTTP fetch 대역, config-store/architecture 포함. [사례별 결과](../../../qa/notification-email-recipient.md#dev-41-local-qa) |
+| `pnpm lint` | PASS | Node 22.20.0 · pnpm 11.3.0 |
+| `pnpm build` | PASS · API/mock/hybrid | Preview, CI와 같은 hybrid 그룹 구성 및 loopback 전용 API 주소. TypeScript와 빌드/페이지 출력 확인 |
+| `pnpm build-storybook` | PASS | Vite 번들 크기 경고와 빌드 완료를 확인했다. |
+| `pnpm dev` · Aside 브라우저 | PASS · mock/HTTP 대역 | 로컬 Next의 320/390px mock, 1280px의 다른 응답 시각과 최신 응답 수신처. 테스트 복사본은 저장소의 환경 파일을 포함하지 않는다. [QA](../../../qa/notification-email-recipient.md#dev-41-local-qa) |
+| 실제 API 통합 | 이번 실행 0건 | [QA-12](QA-12.md#qa-12-resume) 실제 오류 1건, [QA-13](QA-13.md#qa-13-resume) 수신처 6건의 기존 차단과 재개 조건 유지 |
+
+개발 가이드와 데이터 접근의 합성 시나리오, 공통 계획의 날짜별 이력, QA와 작업 기록 및 WBS를 갱신했다. 현재·다음·상태의 소유 문서는 WBS다. package/scripts, 폴더/공개 계약, 운영 guard, 하네스 변화가 없으므로 base·architecture·harness는 기존 내용을 적용한다. 신규 재발 방지 항목이 없어 ai-failures는 유지한다. S09의 기준선과 coverage 매핑이 유지된다.
+
+### 검증 체크포인트
+
+2026-11-20 14:05 KST · 두 로컬 브라우저 흐름과 자동 검증의 결과를 QA에 남겼다. 실제 업무 데이터 변경·메일 발송·복구 대상은 0건이다. 다음 행동은 문서 검증과 두 리뷰에서 정책 경계, 구현 및 이전 QA 보존을 확인하는 것이다.
+
+<a id="dev-41-close"></a>
+
+## 2026-11-20 · 검증 판정과 다음 인계
+
+- [Context Audit와 두 리뷰](../reviews/DEV-41.md)에서 착수 시 불일치의 해소를 확인했고 독립 verifier·ai-review가 승인 범위를 통과했다. 자동 수정 0/3회다. 종료·인계 기록이 추가된 diff도 두 리뷰 대상으로 삼는다. 실제 API 검증은 0건이며 기존 QA-12/13 차단을 유지한다.
+- 다음 하나는 [POL-20](POL-20.md#pol-20-dev-41-handoff)이다. P0/P1에서 선행과 착수 조건을 충족한 미착수 Task가 없고, 앞선 P2의 차단 및 선행 대기를 적용하면 DOC-001이 충족된 첫 대기 후보다. 새 대화에서는 N02의 받은 알림 편집·삭제 기준선과 현행 중앙 정책·백엔드 명세 및 기존 QA의 차이를 확인한다. 선정과 인계 범위를 기록했다.
+
+<a id="dev-41-delivery"></a>
+
+## 2026-11-20 · Git 전달 확인
+
+[작업 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afix%2Fdev-41-notification-email-mock)의 최종 head를 기준으로 목적별 fix/test/docs 커밋, 라벨, CI·리뷰 및 일반 merge 결과를 확인한다. 이번 사용자 승인으로 Chromatic 월간 한도 관련 검사만 예외를 적용할 수 있다. 최종 PR head와 main의 실제 로컬/원격 SHA는 PR과 종료 보고에서 확인한다.

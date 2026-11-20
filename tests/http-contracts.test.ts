@@ -39,7 +39,7 @@ function wireServer(initialFilter?: PersonalFilterSnapshot): typeof fetch {
     if (p.endsWith("/matched-bid-notice-email-settings")) { if (method === "PATCH") enabled = body.enabled; return ok({ enabled }); }
     if (p.endsWith("/notification-email-settings")) { if (method === "PATCH") email = { ...email,recipientType:body.recipientType,recipientEmail:body.recipientType === "SIGNUP_EMAIL" ? email.signupEmail : email.alternateEmail! }; return ok(email); }
     if (p.endsWith("/confirm")) { if (body.code !== "1234") return ok(null,400); email = { ...email, alternateEmail:pendingEmail,recipientType:"ALTERNATE_EMAIL",recipientEmail:pendingEmail }; return ok(email); }
-    if (p.includes("/notification-email-verifications")) { pendingEmail = body.email; return ok({verificationId:"00000000-0000-4000-8000-000000000001",expiresAt:new Date(testNow+600_000).toISOString(),resendAvailableAt:new Date(testNow+30_000).toISOString()}); }
+    if (p.includes("/notification-email-verifications")) { pendingEmail = body.email; return ok({verificationId:"00000000-0000-4000-8000-000000000001",expiresAt:new Date(testNow+95_000).toISOString(),resendAvailableAt:new Date(testNow+7_000).toISOString()}); }
     throw new Error("Unexpected test endpoint");
   };
 }
@@ -64,6 +64,47 @@ for (const source of ["mock","http"] as const) describe(`${source} 동일 Reposi
     expect(await filters.getPersonalFilter(access)).toEqual(latest);
   });
   it("이메일 인증·주소 변경·ON/OFF 계약이 일치한다",async()=>{const{email}=repos();const verification=await email.startNotificationEmailVerification(access,"recipient@example.test");expect((await email.confirmNotificationEmailVerification(access,verification.verificationId,"1234")).recipientEmail).toBe("recipient@example.test");await email.changeMatchedBidEmailSetting(access,true);expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);await email.changeNotificationEmailRecipient(access,"SIGNUP_EMAIL");expect((await email.getNotificationEmailSetting(access)).recipientEmail).toBe("demo1@example.test");expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);});
+});
+
+it("수신 이메일 HTTP Repository는 시작·재전송의 응답 시각과 최신 주소를 전달한다", async () => {
+  const path = "/api/v1/me/notification-email-verifications";
+  const first = {
+    verificationId: "00000000-0000-4000-8000-000000000001",
+    expiresAt: new Date(testNow + 95_000).toISOString(),
+    resendAvailableAt: new Date(testNow + 7_000).toISOString(),
+  };
+  const latest = {
+    verificationId: "00000000-0000-4000-8000-000000000002",
+    expiresAt: new Date(testNow + 122_000).toISOString(),
+    resendAvailableAt: new Date(testNow + 19_000).toISOString(),
+  };
+  const verified = {
+    signupEmail: "demo1@example.test", alternateEmail: "verified@example.test",
+    recipientType: "ALTERNATE_EMAIL", recipientEmail: "verified@example.test",
+  };
+  const received: { path: string; method?: string; body: unknown }[] = [];
+  const fetcher: typeof fetch = async (input, init) => {
+    const url = new URL(String(input));
+    received.push({
+      path: url.pathname,
+      method: init?.method,
+      body: init?.body ? JSON.parse(String(init.body)) : null,
+    });
+    if (url.pathname === path) return ok(first);
+    if (url.pathname === `${path}/${first.verificationId}/resend`) return ok(latest);
+    if (url.pathname === `${path}/${latest.verificationId}/confirm`) return ok(verified);
+    throw new Error("Unexpected test endpoint");
+  };
+  const repo = createHttpNotificationSettingsRepository(createHttpClient("https://synthetic-api.test", fetcher));
+
+  expect(await repo.startNotificationEmailVerification(access, "requested@example.test")).toEqual(first);
+  expect(await repo.resendNotificationEmailVerification(access, first.verificationId)).toEqual(latest);
+  expect(await repo.confirmNotificationEmailVerification(access, latest.verificationId, "9876")).toEqual(verified);
+  expect(received).toEqual([
+    { path, method: "POST", body: { email: "requested@example.test" } },
+    { path: `${path}/${first.verificationId}/resend`, method: "POST", body: null },
+    { path: `${path}/${latest.verificationId}/confirm`, method: "POST", body: { code: "9876" } },
+  ]);
 });
 
 describe("개인 필터 reset HTTP 대역 경계 (실제 API 아님)", () => {

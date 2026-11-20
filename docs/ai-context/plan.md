@@ -330,3 +330,7 @@ Final reports should include:
 ## 2026-11-20 · POL-19 알림 채널과 수신처 인증
 
 [POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract)에서 08:30 맞춤 이메일과 공고별 내부 알림의 범위, 대체 수신 이메일 3분/60초 정책을 고정했다. [DEV-41](../development/figma-v01/tasks/DEV-41.md#dev-41-pol-19-handoff)에 mock·개발 가이드 기준을, [DEV-66](../development/figma-v01/tasks/DEV-66.md#dev-66-pol-19-boundary)에 세 항목의 화면 범위와 활성화 선행을 연결한다. 실제 NSET/NREC의 기존 차단과 현재 실행 대응 미확인은 각각의 QA·Task 기록에서 확인한다.
+
+## 2026-11-20 · DEV-41 수신 이메일 mock 인증
+
+대체 수신처 mock에 3분 만료와 계정별 진행 요청의 시작·재전송 60초 대기, 다섯 번째 오입력 차단, 새 요청·번호와 구형 탭 기한 보정을 적용했다. [자동·브라우저 결과](../development/figma-v01/tasks/DEV-41.md#dev-41-verification)와 [기존 실제 API 차단](../qa/notification-email-recipient.md#dev-41-local-qa)을 함께 확인한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
