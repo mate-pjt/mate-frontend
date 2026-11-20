@@ -16,7 +16,8 @@ export function createSessionController(repository: Pick<AuthRepository, "refres
   const pendingRefreshes = new Set<Promise<Authentication | null>>();
   const listeners = new Set<() => void>();
   const getAccountKey = () => state.status === "authenticated" && !loggingOut ? String(state.authentication.account.id) : null;
-  function update(next: SessionState) { state = next; onAccount(getAccountKey()); listeners.forEach(listener => listener()); }
+  function publish() { onAccount(getAccountKey()); listeners.forEach(listener => listener()); }
+  function update(next: SessionState) { state = next; publish(); }
   function setAuthentication(authentication: Authentication) {
     epoch += 1;
     update({ status: "authenticated", authentication, expiresAt: now() + authentication.expiresInSeconds * 1000 });
@@ -50,9 +51,9 @@ export function createSessionController(repository: Pick<AuthRepository, "refres
   }
   async function logout() {
     if (loggingOut) return;
-    loggingOut = true; epoch += 1; onAccount(null);
+    loggingOut = true; epoch += 1; publish();
     try { await Promise.allSettled(pendingRefreshes); await repository.logoutBrowserSession(); update(anonymous); }
-    finally { loggingOut = false; onAccount(getAccountKey()); }
+    finally { loggingOut = false; publish(); }
   }
   return { getSnapshot: () => state, getServerSnapshot: () => initialSession,
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },

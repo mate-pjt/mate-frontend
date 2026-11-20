@@ -8,6 +8,7 @@ import type { Authentication } from "@/data/auth/contracts";
 
 type AuthSessionContextValue = {
   state: SessionState;
+  subscribe: (listener: () => void) => () => void;
   setAuthentication: (authentication: Authentication) => void;
   refresh: (options?: { preserveOnError?: boolean }) => Promise<Authentication | null>;
   getAccessToken: () => Promise<string>;
