@@ -338,3 +338,7 @@ Final reports should include:
 ## 2026-11-20 · POL-20 받은 알림의 수동 삭제
 
 [POL-20](../development/figma-v01/tasks/POL-20.md#pol-20-contract)은 기존 사용자 승인과 최신 소유 근거를 연결해 본인 알림 단건·선택·전체의 논리 삭제, 명령 결과와 목록·건수 재조회를 정리했다. 보존 기간·7일 안내·자동 삭제·물리 파기·복구는 소유 정책과 지원 계약 확인까지 보류한다. [DEV-43 인계](../development/figma-v01/tasks/DEV-43.md#dev-43-pol-20-handoff)와 [NDEL 미실행 계획](../qa/alarms.md#pol-20-alarm-deletion-qa)에 실제 실행 대응과 QA 준비 조건을 기록했다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)가 소유한다.
+
+## 2026-11-20 · POL-21 가입 실적·인증 직접 편집 정책
+
+[사용자 결정](../development/figma-v01/tasks/POL-21.md#pol-21-brief)에 따라 두 가입 경로에서 조회값을 수정하거나 누락을 보완하고, 금액 공란과 미확인을 허용한다. 같은 등록 후보 화면의 입력 수명과 회사 등록·보정의 공동 저장을 [정책](../development/figma-v01/tasks/POL-21.md#pol-21-contract)에 기록했다. [DEV-44 서버 선행](../development/figma-v01/tasks/DEV-44.md#dev-44-pol-21-contract-gate)과 [O09 미실행 QA](../qa/auth.md#pol-21-o09-qa)는 별도다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
