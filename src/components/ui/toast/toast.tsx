@@ -39,13 +39,18 @@ export function showToast(message: string, { duration = DEFAULT_TOAST_DURATION }
     sonnerToast.dismiss(activeToastId);
   }
 
-  activeToastId = sonnerToast.custom(() => <ToastContent message={message} />, {
+  const id = sonnerToast.custom(() => <ToastContent message={message} />, {
     duration,
     onAutoClose: (closedToast) => clearActiveToast(closedToast.id),
     onDismiss: (dismissedToast) => clearActiveToast(dismissedToast.id),
     toasterId: TOASTER_ID,
     unstyled: true,
   });
+  activeToastId = id;
+  return () => {
+    sonnerToast.dismiss(id);
+    clearActiveToast(id);
+  };
 }
 
 export function ToastViewport() {

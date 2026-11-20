@@ -13,6 +13,7 @@ import { mapDocumentDeletion } from "./document-deletion-api";
 import type { DocumentDeletion } from "./contracts";
 import { createMockTeamManagement } from "./team-management-mock";
 import { createMockTeamInvitations } from "./team-invitation-mock";
+import { createMockCompanyMerge, mockMergeCompanyId } from "./company-merge-mock";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -195,9 +196,11 @@ function validInvitation(value: unknown): value is PendingInvitation | null {
 function fingerprint(value: unknown) { let hash = 2166136261; for (const char of JSON.stringify(value)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return String(hash >>> 0); }
 
 export function createMockCompanyRepository(runtime: MockRuntime): CompanyRepository {
-  function initial(): CompanyState {
+  function initial(account: string): CompanyState {
     let overview: CompanyOverview = { status: "empty" }; const scenario = runtime.scenario("company");
     if (scenario === "connected" || scenario.startsWith("documents") || scenario.startsWith("team-")) overview = { status: "connected", profile: basicProfile() };
+    const mergeCompany = mockMergeCompanyId(scenario, account);
+    if (mergeCompany !== null) overview = { status: "connected", profile: basicProfile(mergeCompany, mergeCompany === 7002 ? "UNVERIFIED" : "VERIFIED") };
     if (["pending", "rejected", "canceled", "approved-stale"].includes(scenario)) {
       const createdAt = new Date(runtime.now()).toISOString();
       const request: MyMembershipRequest = { requestId: 8001, version: 1, company: companies[0], requestedRepresentative: false, requestedPositionName: "담당자", proposedPositionName: null, status: scenario === "pending" ? "PENDING" : scenario === "rejected" ? "REJECTED" : scenario === "canceled" ? "CANCELED" : "APPROVED", rejectionReason: scenario === "rejected" ? "가상 거절 사유" : null, createdAt, updatedAt: createdAt, completedAt: scenario === "pending" ? null : createdAt };
@@ -215,7 +218,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
   }
   const read = (account: string) => {
     let migrated = false;
-    const state = runtime.store.read<CompanyState>(account, "company", initial, (value): value is CompanyState => {
+    const state = runtime.store.read<CompanyState>(account, "company", () => initial(account), (value): value is CompanyState => {
       if (isRecord(value)) {
         if (!Object.hasOwn(value, "signupEvidenceVersion")) {
           if (!migrateLegacyState(value)) return false;
@@ -303,7 +306,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
   }
   const { referencePositionName, ...team } = createMockTeamManagement(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }, account => { const state = read(account); state.overview = { status: "empty" }; write(account, state); });
   return {
-    ...team, ...createMockTeamInvitations(runtime, { ...team, referencePositionName }),
+    ...team, ...createMockTeamInvitations(runtime, { ...team, referencePositionName }), ...createMockCompanyMerge(runtime, team),
     async getDocumentBoxContext(access, signal) {
       const account = await mockAccount(runtime, access, "company", signal);
       const view = read(account).overview;

@@ -2,6 +2,9 @@ import type { CompanyTeamRepository } from "./team-contracts";
 import type { CompanyTeamManagementRepository } from "./team-management-contracts";
 import type { CompanyTeamInvitationRepository } from "./team-invitation-contracts";
 import type { CompanyTeamMembershipRequestRepository } from "./team-membership-request-contracts";
+import type { CompanyMergeRepository } from "./company-merge-contracts";
+export type * from "./company-merge-contracts";
+export { canSubmitCompanyMerge, normalizeCompanyMergeAction } from "./company-merge-input";
 export type * from "./team-membership-request-contracts";
 export { membershipRejectionReason, normalizeMembershipApproval } from "./team-membership-request-input";
 export type * from "./team-invitation-contracts";
@@ -323,4 +326,4 @@ export interface CompanyDocumentRepository {
   }, idempotencyKey: string): Promise<RegistrationResult>;
 }
 
-export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository & CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamInvitationRepository & CompanyTeamMembershipRequestRepository;
+export type CompanyRepository = CompanyDirectoryRepository & CompanyOnboardingRepository & CompanyDocumentRepository & CompanyTeamRepository & CompanyTeamManagementRepository & CompanyTeamInvitationRepository & CompanyTeamMembershipRequestRepository & CompanyMergeRepository;

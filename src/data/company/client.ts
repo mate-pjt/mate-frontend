@@ -36,6 +36,9 @@ export const getRegistrationProposal: CompanyRepository["getRegistrationProposal
 export const getIndustries: CompanyRepository["getIndustries"] = (...args) => getRepository().getIndustries(...args);
 export const createVerifiedCompany: CompanyRepository["createVerifiedCompany"] = (...args) => getRepository().createVerifiedCompany(...args);
 export const getMyCompanyOverview: CompanyRepository["getMyCompanyOverview"] = (...args) => getRepository().getMyCompanyOverview(...args);
+export const getCurrentCompanyMergeCase: CompanyRepository["getCurrentCompanyMergeCase"] = (...args) => getRepository().getCurrentCompanyMergeCase(...args);
+export const getCompanyMergeCase: CompanyRepository["getCompanyMergeCase"] = (...args) => getRepository().getCompanyMergeCase(...args);
+export const submitCompanyMerge: CompanyRepository["submitCompanyMerge"] = (...args) => getRepository().submitCompanyMerge(...args);
 
 export function documentStorageKey(accountId: number): string {
   return getDataConfig().sources.company === "api" ? `mate:signup-document:${accountId}` : getMockRuntime().store.key(String(accountId), "document-target");

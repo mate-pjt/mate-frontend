@@ -25,7 +25,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`team-members.md` DEV-28](./team-members.md#dev-28-local-qa): 직접/명시 동의·본인 변경/최후 관리자·알림/수명·가변 mock의 로컬 검증과 실제9소유 부분 차단. 이전 조회 QA/다른 소유 범위의 예외를 확대하지 않음
 - [`team-members.md` DEV-29](./team-members.md#dev-29-local-qa): 초대 생성/보낸 목록·상세·입력/권한·배송 상태, 공유 mock 경쟁·실제 Next mock/loopback HTTP의 로컬 검증과 실제7소유 부분 차단. 원본 TEAM26·수신 AUTH-16/17과 후속 재발송/취소 소유는 보존
 - [`team-members.md` DEV-32](./team-members.md#dev-32-local-qa)에서 회사 직급 목록·추가·이름 변경·삭제의 실제 Next mock/로컬 HTTP 검증 및 실제 API 4개 부분의 차단과 재개 조건을 확인한다.
-- [`company-merge.md`](./company-merge.md#pol-16-merge-qa)에서 POL-16의 회사 간 통합과 DEV-34~37의 미실행 QA 계획을 확인한다.
+- [`company-merge.md`](./company-merge.md#pol-16-merge-qa)에 POL-16의 원본 QA 계획과 [DEV-34 로컬 검증·실제 차단](./company-merge.md#dev-34-local-qa)이 있다.
 - [`qna.md`](./qna.md): 자주 묻는 질문의 정책 문구·아코디언·모바일·의견 배너
 - 이후 기능마다 `docs/qa/<기능-slug>.md`를 하나씩 만들고 아래 목록에 추가한다.
 
@@ -48,7 +48,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 | 나의 회사 정보 | `/my/company`, `/my/company/start` | [미연결 3162:51271](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=3162-51271) 외 3개 상태 | [my-company.md](./my-company.md) | 2026-11-02 QA-05 조회 4통과·6차단（이전 0통과·5차단·5대기 보존）. 상태별 계정/회사·검색 fixture/신청 변경·복구·실행 버전 잔여로 전체 통합 차단. AUTH-07 부분 확인/08 차단 별도 |
 | 가입 후 서류함 | `/my/documents`·`/my/documents/[documentId]`(DEV-22/23)·후속 처리 별도 | [서류함 3135:75612](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3135-75612) 외 POL-13 지정 상태 | [company-documents.md](./company-documents.md#dev-22-local-qa) | 2026-11-16 DEV-22/23 각각의 사용자 로컬 선행 범위·실제 Next/mock/loopback HTTP·모바일/키보드. DEV-23은[상세 근거](./company-documents.md#dev-23-local-qa)와 실제6차단이며 두 후속 고유 실제0통과·12차단/다른10대기. 당시 DEV-22 8차단/다른14대기·원본22계획·가입/회사 QA/추가·OCR 계약 Gate 보존 |
 | 팀원 권한·초대·합류·직급 | `/my/team`·`/my/team/[membershipId]`(조회), 나머지 route는 후속 자체 Gate | [팀원 3137:52702](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3137-52702) 외 POL-14 지정 상태 | [team-members.md](./team-members.md#pol-14-team-qa) | 2026-11-17 DEV-27 로컬 조회/계약·브라우저20PASS/추가1미실행. 실제0통과·DEV-27 조회 부분6차단/나머지 소유 대기. 합성 자원·실행 대응/열람·복구 Gate 미확보. 기존 AUTH-16 0통과1차단·초대 AUTH-17 미실행 및 QA-08/회사/다른 Task 차단 보존 |
-| 회사 간 통합 | 후속 DEV-34~37 자체 Gate에서 결정 | [G01~G03 지정 상태](../development/figma-v01/tasks/POL-16.md#pol-16-contract) | [company-merge.md](./company-merge.md#pol-16-merge-qa) | 실제 0통과·16미실행. 실행 버전 대응·합성 사건·사용/잔존/복구 승인과 DEV-37 거절 사유 조회 계약이 필요하다. |
+| 회사 간 통합 | G01 `/my/company-merge` | [G01~G03 지정 상태](../development/figma-v01/tasks/POL-16.md#pol-16-contract) | [DEV-34](./company-merge.md#dev-34-local-qa) | 실제 0통과·DEV-34 4차단·후속 12미실행. 실행 버전 대응·합성 사건·사용/잔존/복구 승인과 DEV-37 거절 사유 조회 계약이 필요하다. |
 
 새 Figma 기능이나 화면을 구현할 때 실제 통합 테스트가 미뤄졌다면 해당 기능의 펀치리스트 파일을 즉시 만든다. 위 목록의 `미작성`은 검증 완료를 뜻하지 않는다. 기능이 늘면 같은 표에 행을 추가한다. 하나의 화면에서 정상·빈 상태·오류·권한·모바일 등 서로 다른 결과가 나오면 별도 case ID를 쓴다.
 

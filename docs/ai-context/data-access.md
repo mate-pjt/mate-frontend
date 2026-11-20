@@ -45,13 +45,13 @@ src/data/
 | --- | --- | --- |
 | `auth` | 로그인 시작, 가입, 완료, 복원, 로그아웃 | `auth/client.ts` |
 | `bids` | 홈, 목록/metadata, 상세/첨부/관련/개찰/물품/참여업체 | `bids/server.ts` |
-| `company` | 회사·업종 검색, 소속 신청/초대, 사업자번호, 증명서, 등록, 나의 회사 | `company/client.ts` |
+| `company` | 회사·업종 검색, 소속 신청/초대, 사업자번호, 증명서, 등록, 나의 회사, 회사 간 통합 사건 | `company/client.ts` |
 | `notifications` | 받은 알림 목록, 미확인 건수, 읽음 | `notifications/client.ts` |
 | `bidAlerts` | 공고별 알림 조회/설정/해제 | `bid-alerts/client.ts` |
 | `personalFilters` | 개인 필터 조회/저장/초기화 | `personal-filters/client.ts` |
 | `notificationSettings` | 수신 주소, 이메일 인증/재전송/확인, 맞춤 이메일 ON/OFF | `notification-settings/client.ts` |
 
-회사 계약은 Directory/Onboarding/Document/Team 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
+회사 계약은 Directory/Onboarding/Document/Team/Merge 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
 
 ## 4. 빌드 설정과 운영 guard
 
@@ -83,6 +83,7 @@ src/data/
 - `AuthSessionProvider`와 `session-controller.ts`는 메모리 access token, 같은 계정 epoch의 refresh 공유, 만료 전 갱신, 로그아웃 epoch와 늦은 응답 방어를 담당한다. 계정 교체 후에는 이전 refresh flight를 공유하지 않는다. 실제 토큰을 session/localStorage나 서버 props에 저장하지 않는다.
 - 회사 변경 후 API 구현이 세션을 갱신한다. 변경 성공 뒤 갱신만 실패하면 `sessionWarning`을 반환해 성공을 유지한다. 이 갱신의 일시적 네트워크 실패는 기존 인증 세션을 유지하며, 401/403 처리는 유지한다.
 - 초대 수락은 현재 토큰으로 POST를 한 번 발행하고 응답 401의 자동 재전송을 사용하지 않는다. 양의 안전 정수인 회사·소속 ID를 검증한다. 유실/손상 응답과 이미 소모된 문맥일 수 있는 `CI005/CI012`는 결과 미확정이다. 후속 확인은 동일 company 공급원의 현재 회사와 `memberships/me`를 읽는다. 실제 서버에서의 수락과 갱신은 별도 QA다. [DEV-33](../development/figma-v01/tasks/DEV-33.md#dev-33-verification)
+- 회사 통합의 `GET …/merge-cases/current`만 opt-in HTTP 204를 빈 값으로 받는다. 활성 소속과 leaf를 확인해 열람 가능한 사건 없음과 열람 범위 미확인을 구분한다. 공개 모델은 회사 쌍, 상태, 기한·개시 근거와 G01 행동만 복사한다. `request`·`proposals`·`proposal-responses`는 같은 회사·사건의 최신 revision과 필요한 leaf/capability로 제출하며 401 자동 재전송을 사용하지 않는다. 충돌/결과 미확정 뒤에는 동일 사건 상세를 읽는다. [DEV-34](../development/figma-v01/tasks/DEV-34.md#dev-34-verification)
 - mock 인증은 초기 비로그인, 두 기존 가상 계정 및 신규 가입을 지원한다. 같은 callback/signup·복귀 경로 검증을 사용하고 외부 OAuth/API로 이동하지 않는다.
 - 인증 내부 `account.nickname`은 `string|null`이다. HTTP 경계는 로그인 완료·가입·refresh의 값을 보존하고, 구형 응답의 누락만 null로 정규화하며 잘못된 타입은 오류로 남긴다. 이메일·회사명·suggestedName으로 이름을 합성하지 않는다. mock 기존 두 계정은 고정 합성 이름을 제공하며 신규 가입 이름은 Repository 메모리에만 유지한다. 새 Repository/새로고침 뒤 신규 계정 이름은 null이고 탭 저장소에 가입 입력을 보존하지 않는다. [DEV-57](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)의 로컬 mock/HTTP 대역 검증과 실제 nickname 통합 미실행을 구분한다.
 - 전체 mock의 보호 요청은 가상 token 만료 시 로컬 refresh를 수행한다. 가상 세션이 만료되면 변경을 거부한다. auth API와 업무 mock의 혼합에서는 실제 token/refresh를 추가 요청하지 않는다.
@@ -179,6 +180,7 @@ src/data/
 - 조회 전후 같은 회사·현재 소속/leaf와 catalog를 확인하고, 제출 직전에 선택 직급 정의/version·서버 capabilities·현재 grant를 다시 검사한다. 단일 scope는 중복/계정·epoch/Abort·화면 종료를 방어하고 한 번 보낸 뒤 자동 재생성하지 않는다. 유실/손상2xx/409는 명시 GET/새 작성부터 확인한다. 검증된 생성 성공·초대 수락 대기·메일 PENDING/SENDING/SENT/FAILED/SUPERSEDED·실제 수신/수락은 별개다. 후속 GET 실패/최종401은 확인된 성공을 잃거나 재발송하는 사유가 아니다.
 - mock의 `company-team-invitations` version1은 기존 schema/공급원/계정 namespace 안에 합성 입력/필요 결과만 저장한다. 손상/추가 비공개 필드가 있으면 이 영역만 초기화하며 기존 company/관리/서류·수신 초대/다른 계정은 보존한다. `team-mock-command.ts`는 기존 관리 명령과 초대 생성을 같은 store/account queue로 묶어 상태 검사부터 쓰기까지 직렬화한다. 실패 뒤 release·외부 대표자 취임의 양방향 순서를 회귀로 검증한다. 표시용 빈 목록을 대표자 공석으로 추정하지 않는다.
 - `team-invitation-mail-failed`는 초대를 만들되 합성 delivery만 FAILED로 반환한다. 실제 메일/원문·발송 링크는 생성하지 않는다. 수신 포트의 기존 합성 fixture 회귀는 발송된 초대의 실제 수신/수락 연결 증거가 아니다.
+- 회사 통합 mock은 `merge`, `merge-proposal`, `merge-in-place`에서 역할별 합성 사건을 탭·계정별 `company-merge` 영역에 보존한다. 합성 Clock으로 최초 보호 종료와 제안 무응답 자동 개시를 모사한다. 명령은 같은 계정의 회사 쓰기 직렬화와 revision 검사를 사용한다. [실행 가이드](../development/repositories.md#dev-34-merge-mock)
 - [DEV-29 QA](../qa/team-members.md#dev-29-local-qa)는 Node·mock 브라우저·API profile/loopback HTTP 대역과 실제7소유 부분 차단을 구분한다. TCP 유실 실험의 앱 fetch1회/HTTP wire2회(재전송은409) 관찰은 전송 계층과 앱의 자동 명령을 구분하는 한계이며, 실제 서버의 멱등 보장/메일 도착 PASS가 아니다.
 
 ### 기존 초대 편집·재발송·취소 · DEV-30

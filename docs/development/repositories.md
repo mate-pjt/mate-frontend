@@ -88,7 +88,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-requests, team-requests-empty, team-reviewer, team-invitation-mail-failed |
+| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-requests, team-requests-empty, team-reviewer, team-invitation-mail-failed, merge, merge-proposal, merge-in-place |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -202,3 +202,18 @@ mock은 실제 메일/비밀 링크를 만들지 않으며 독립 수신 fixture
 `company=team-requests`는 `/my/team/membership-requests`에서23건의 합성 신청·기존 직급/제안명/대표자·결측·page를 확인한다. `team-requests-empty`는 빈 목록, `team-reviewer`는 VIEWER+REVIEW만 가진 검토자의 원직급/VIEWER 승인·사유 거절과 직급 변경/초과 grant 제한을 확인한다. `team-no-representative`의 기존 공석 상태에서는 대표자 원신청 승인을 테스트할 수 있다. 설정은 dev 재시작/Preview 재빌드가 필요하다.
 
 승인/거절은 기존 계정별 관리 상태와 공유 명령 lane을 사용한다. 승인 당시 결과는 현재 팀원 상태와 별개이며 후속 직급 변경/종료 뒤에도 남은 신청을 검토할 수 있다. 신청 상세 GET은 PENDING 전용이므로 처리 뒤404는 정상일 수 있고 특정 결정의 성공을 대신하지 않는다. 합성 reviewer의 목록/receipt·팀원 반영은 다른 신청자 계정 overview·다른 회사 pending/수신 초대의 실제 원자 정리 검증이 아니다. 실제5소유 부분의 자원/실행·변경/복구 조건은 [QA](../qa/team-members.md#dev-31-local-qa)와 [Task](figma-v01/tasks/DEV-31.md#dev-31-brief)를 따른다.
+
+<a id="dev-34-merge-mock"></a>
+
+## 13. 회사 간 통합 현행 사건 · DEV-34
+
+전체 mock에 회사 통합 fixture를 선택하고 `/my/company-merge`를 연다.
+
+```bash
+MATE_APP_ENV=local MATE_DATA_PROFILE=mock \
+MATE_MOCK_SCENARIOS='{"company":"merge"}' pnpm dev
+```
+
+- `merge`의 가상 계정 1은 미인증 원본에서 검토를 신청하고 계정 2는 인증 회사에서 최초 제안을 보낸다. 두 계정은 같은 사업자번호 설정의 회사 쌍을 사용하며 별도의 사건과 상태를 갖는다. 같은 계정의 새로고침은 상태를 복원한다.
+- `merge-proposal`로 시작하면 원본 계정에서 미리 준비된 최초 제안에 응답한다. `merge-in-place`는 가상 계정 1의 기존 회사 인증 검토이며 회사 간 명령을 열지 않는다. `connected`는 연결된 회사에 현재 사건이 없는 경우다.
+- 공급원·시나리오 변경은 dev 재시작이나 재빌드가 필요하다. 기한 경계는 테스트의 고정 Clock으로 재현한다. 가상 신청과 제안은 실제 API, 메일, 회사·소속 이전을 실행하지 않는다. [검증과 실제 QA 재개 조건](../qa/company-merge.md#dev-34-local-qa)
