@@ -1,34 +1,44 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { UpArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
+import { BasicPopup } from "@/components/ui/popup";
+import { showToast } from "@/components/ui/toast";
 import { errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { createNotificationActivationController } from "@/features/notifications/activation-controller";
 import type { AlarmNotification } from "@/types/alarm";
 import {
+  deleteNotifications,
   getNotifications,
+  getUnreadNotificationCount,
   markNotificationRead,
+  MAX_NOTIFICATION_SELECTION,
   NOTIFICATIONS_CHANGED_EVENT,
+  type NotificationCountUpdate,
+  type NotificationDeletion,
   type NotificationPage,
 } from "@/data/notifications/client";
 
 import { AlarmEmpty } from "./alarm-empty";
 import { AlarmListItem } from "./alarm-list-item";
 
+const allDeletionDescription = "아직 불러오지 않은 소식도 함께 삭제돼요.";
+
 export function AlarmPageClient() {
-  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey, getSessionEpoch } = useAuthSession();
 
   if (state.status === "authenticated") {
     return (
       <AuthenticatedAlarmPage
         getAccessToken={getAccessToken}
         getAccountKey={getAccountKey}
-        key={state.authentication.account.id}
+        getSessionEpoch={getSessionEpoch}
+        key={`${state.authentication.account.id}:${getSessionEpoch()}`}
         refresh={refresh}
       />
     );
@@ -60,7 +70,38 @@ export function AlarmPageClient() {
   );
 }
 
-function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: AuthAccess) {
+type InboxScope = {
+  access: AuthAccess;
+  accountKey: string;
+  sessionEpoch: number;
+  signal: AbortSignal;
+  current: () => boolean;
+  reading: boolean;
+  busy: boolean;
+  dismissToast?: () => void;
+};
+
+function appendPage(current: NotificationPage, next: NotificationPage): NotificationPage {
+  const ids = new Set(current.items.map((item) => item.id));
+  return { ...next, items: [...current.items, ...next.items.filter((item) => !ids.has(item.id))] };
+}
+
+async function loadExpandedList(scope: InboxScope, lastPage: number): Promise<NotificationPage> {
+  let result = await getNotifications(scope.access, 0, scope.signal);
+  for (let index = 1; index <= lastPage && index < result.totalPages; index += 1) {
+    const next = await getNotifications(scope.access, index, scope.signal);
+    result = appendPage(result, next);
+  }
+  return result;
+}
+
+function publishCount(scope: InboxScope, count: number | null) {
+  window.dispatchEvent(new CustomEvent<NotificationCountUpdate>(NOTIFICATIONS_CHANGED_EVENT, {
+    detail: { accountKey: scope.accountKey, sessionEpoch: scope.sessionEpoch, count },
+  }));
+}
+
+function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSessionEpoch }: AuthAccess & { getSessionEpoch: () => number }) {
   const router = useRouter();
   const [page, setPage] = useState<NotificationPage | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -69,15 +110,35 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
   const [notice, setNotice] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [readingIds, setReadingIds] = useState<readonly string[]>([]);
-  const [retry, setRetry] = useState(0);
+  const [editing, setEditing] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(() => new Set());
+  const [deleting, setDeleting] = useState(false);
+  const [deletionError, setDeletionError] = useState<string | null>(null);
   const activation = useRef<ReturnType<typeof createNotificationActivationController> | null>(null);
-  const lifetime = useRef<AbortController | null>(null);
+  const lifetime = useRef<InboxScope | null>(null);
   const readVersion = useRef(0);
+  const refreshThrough = useRef<number | null>(null);
+  const confirmAllRef = useRef<HTMLDialogElement>(null);
+  const editRef = useRef<HTMLButtonElement>(null);
+  const selectAllRef = useRef<HTMLButtonElement>(null);
+  const retryRef = useRef<HTMLButtonElement>(null);
+  const emptyRef = useRef<HTMLElement>(null);
+  const restoreFocus = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const accountKey = getAccountKey();
+    if (accountKey === null) return;
+    const sessionEpoch = getSessionEpoch();
+    const abort = new AbortController();
+    const current = () => !abort.signal.aborted && getAccountKey() === accountKey && getSessionEpoch() === sessionEpoch;
+    const access = { getAccessToken, refresh, getAccountKey, assertRequestScope: () => {
+      if (!current()) throw new DOMException("Alarm session ended", "AbortError");
+    } };
+    const scope: InboxScope = { accountKey, sessionEpoch, signal: abort.signal, access, current, reading: false, busy: false };
+    lifetime.current = scope;
     const controller = createNotificationActivationController({
-      getAccountKey,
-      markRead: (id) => markNotificationRead({ getAccessToken, refresh, getAccountKey }, id),
+      getAccountKey: () => current() ? accountKey : null,
+      markRead: (id) => markNotificationRead(access, id, scope.signal),
       onRead: (updated) => {
         readVersion.current += 1;
         setPage((current) => current && {
@@ -87,64 +148,149 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
         });
         window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED_EVENT));
       },
-      onPending: setReadingIds,
+      onPending: (ids) => { scope.reading = ids.length > 0; setReadingIds(ids); },
       onNotice: setNotice,
       onError: (error, alarm) => setReadError({ message: errorMessage(error), alarm }),
       clearError: () => setReadError(null),
       navigate: (path) => router.push(path),
     });
     activation.current = controller;
-    return () => { controller.dispose(); activation.current = null; };
-  }, [getAccountKey, getAccessToken, refresh, router]);
+    void getNotifications(access, 0, scope.signal).then(
+      (result) => { if (current()) setPage(result); },
+      (error: unknown) => { if (current()) setLoadError(errorMessage(error)); },
+    );
+    return () => {
+      abort.abort();
+      controller.dispose();
+      scope.dismissToast?.();
+      activation.current = null;
+      lifetime.current = null;
+    };
+  }, [getAccessToken, refresh, getAccountKey, getSessionEpoch, router]);
 
   useEffect(() => {
-    const controller = new AbortController();
-    lifetime.current = controller;
-    const account = getAccountKey();
-    const access = { getAccessToken, refresh, getAccountKey };
+    if (!restoreFocus.current) return;
+    const selectAll = selectAllRef.current;
+    const target = (editing && selectAll && !selectAll.disabled ? selectAll : editRef.current) ?? emptyRef.current ?? retryRef.current;
+    if (!target) return;
+    restoreFocus.current = false;
+    target.focus();
+  }, [editing, page, loadError]);
 
-    void getNotifications(access, 0, controller.signal).then(
-      (result) => {
-        if (!controller.signal.aborted && getAccountKey() === account) setPage(result);
-      },
-      (error: unknown) => {
-        if (!controller.signal.aborted && getAccountKey() === account) setLoadError(errorMessage(error));
-      },
-    );
+  async function refreshAfterDeletion(scope: InboxScope, lastPage: number) {
+    publishCount(scope, null);
+    const [list, count] = await Promise.allSettled([
+      loadExpandedList(scope, lastPage),
+      getUnreadNotificationCount(scope.access, scope.signal),
+    ]);
+    if (!scope.current()) return;
+    if (count.status === "fulfilled") publishCount(scope, count.value);
+    if (list.status === "rejected" || count.status === "rejected") {
+      setLoadError("삭제 결과는 받았지만 최신 소식이나 미확인 건수를 불러오지 못했어요.");
+      return;
+    }
+    refreshThrough.current = null;
+    setPage({ ...list.value, unreadCount: count.value });
+  }
 
-    return () => controller.abort();
-  }, [getAccessToken, refresh, getAccountKey, retry]);
-
-  function retryLoad() {
+  async function retryLoad() {
+    const scope = lifetime.current;
+    if (!scope?.current() || scope.busy) return;
+    scope.busy = true;
+    restoreFocus.current = true;
     setLoadError(null);
-    setPage(null);
-    setRetry((current) => current + 1);
+    try {
+      if (refreshThrough.current !== null) {
+        await refreshAfterDeletion(scope, refreshThrough.current);
+      } else {
+        const result = await getNotifications(scope.access, 0, scope.signal);
+        if (scope.current()) setPage(result);
+      }
+    } catch (error) {
+      if (scope.current()) setLoadError(errorMessage(error));
+    } finally {
+      scope.busy = false;
+    }
   }
 
   async function loadMore() {
-    if (!page || loadingMore || page.page + 1 >= page.totalPages) return;
     const scope = lifetime.current;
-    const account = getAccountKey();
+    if (!page || page.page + 1 >= page.totalPages || !scope?.current() || scope.busy) return;
+    scope.busy = true;
     const version = readVersion.current;
-    const currentAccount = () => scope && !scope.signal.aborted && getAccountKey() === account;
     setLoadingMore(true);
     setMoreError(null);
     try {
-      const next = await getNotifications({ getAccessToken, refresh, getAccountKey }, page.page + 1, scope?.signal);
-      if (!currentAccount()) return;
+      const next = await getNotifications(scope.access, page.page + 1, scope.signal);
+      if (!scope.current()) return;
       setPage((current) => {
         if (!current || current.page + 1 !== next.page) return current;
-        const ids = new Set(current.items.map((item) => item.id));
         return {
-          ...next,
+          ...appendPage(current, next),
           unreadCount: version === readVersion.current ? next.unreadCount : current.unreadCount,
-          items: [...current.items, ...next.items.filter((item) => !ids.has(item.id))],
         };
       });
     } catch (error) {
-      if (currentAccount()) setMoreError(errorMessage(error));
+      if (scope.current()) setMoreError(errorMessage(error));
     } finally {
-      if (currentAccount()) setLoadingMore(false);
+      scope.busy = false;
+      if (scope.current()) setLoadingMore(false);
+    }
+  }
+
+  function toggleEditing() {
+    const scope = lifetime.current;
+    if (!scope?.current() || scope.reading || deleting) return;
+    if (!editing) {
+      scope.dismissToast?.();
+      scope.dismissToast = undefined;
+    }
+    restoreFocus.current = true;
+    setEditing(!editing);
+    setSelectedIds(new Set());
+    setNotice(null);
+    setReadError(null);
+    setDeletionError(null);
+  }
+
+  function toggleSelection(id: string) {
+    setSelectedIds((selection) => {
+      const next = new Set(selection);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < MAX_NOTIFICATION_SELECTION) next.add(id);
+      return next;
+    });
+  }
+
+  async function submitDeletion(deletion: NotificationDeletion) {
+    const scope = lifetime.current;
+    if (!page || !editing || !scope?.current() || scope.busy || scope.reading) return;
+    scope.busy = true;
+    setDeleting(true);
+    setDeletionError(null);
+    try {
+      const result = await deleteNotifications(scope.access, deletion, scope.signal);
+      if (!scope.current()) return;
+
+      if (result.deletedCount > 0) {
+        const message = deletion.scope === "ALL" ? "소식을 삭제했어요!"
+          : result.deletedCount === deletion.notificationIds.length ? "선택한 소식을 삭제했어요!"
+          : `선택한 소식 중 ${result.deletedCount}개를 삭제했어요.`;
+        scope.dismissToast = showToast(message);
+      }
+      setNotice(result.deletedCount === 0 ? "삭제할 소식이 없어요. 최신 목록을 확인해 주세요." : null);
+      setEditing(false);
+      setSelectedIds(new Set());
+      setMoreError(null);
+      setPage(null);
+      restoreFocus.current = true;
+      refreshThrough.current = page.page;
+      await refreshAfterDeletion(scope, page.page);
+    } catch (error) {
+      if (scope.current()) setDeletionError(errorMessage(error));
+    } finally {
+      scope.busy = false;
+      if (scope.current()) setDeleting(false);
     }
   }
 
@@ -155,13 +301,17 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
           <p className="type-body-3 text-grayscale-600" role={loadError ? "alert" : "status"}>
             {loadError ?? "받은 소식을 확인하고 있어요."}
           </p>
-          {loadError && <Button onClick={retryLoad} variant="outline">다시 시도하기</Button>}
+          {loadError && <Button onClick={() => void retryLoad()} ref={retryRef} variant="outline">다시 시도하기</Button>}
         </div>
       </section>
     );
   }
 
-  if (page.items.length === 0) return <AlarmEmpty />;
+  if (page.items.length === 0) return <AlarmEmpty focusRef={emptyRef} />;
+
+  const loadedIds = page.items.map((item) => item.id);
+  const allLoadedSelected = loadedIds.every((id) => selectedIds.has(id));
+  const canSelectAllLoaded = loadedIds.length <= MAX_NOTIFICATION_SELECTION;
 
   return (
     <section
@@ -181,12 +331,30 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
       </header>
 
       <div className="flex flex-col gap-6">
-        <div className="flex min-h-[38px] flex-wrap items-center justify-end gap-3">
-          <p className="type-body-7 text-grayscale-600" id="alarm-edit-help">받은 알림의 편집·삭제는 아직 지원하지 않아요.</p>
-          {/* POL-20의 삭제 정책 확인 후 DEV-43에서 기존 삭제 API를 연결한다. */}
-          <Button aria-describedby="alarm-edit-help" disabled variant="tertiary">편집 (준비 중)</Button>
+        <div className="flex min-h-[38px] flex-wrap items-center justify-end gap-2">
+          {editing ? (
+            <>
+              <div className="mr-auto flex flex-wrap items-center gap-2">
+                <Button aria-label={allLoadedSelected ? "선택 해제" : "불러온 소식 전체선택"} disabled={deleting || !canSelectAllLoaded}
+                  onClick={() => setSelectedIds(new Set(allLoadedSelected ? [] : loadedIds))} ref={selectAllRef} variant="outline">
+                  {allLoadedSelected ? "선택 해제" : "전체선택"}
+                </Button>
+                <Button disabled={deleting || loadingMore} onClick={() => confirmAllRef.current?.showModal()} variant="tertiary">모든 소식 삭제</Button>
+              </div>
+              <span className="type-body-7 text-grayscale-600" role="status">{selectedIds.size}개 선택</span>
+              <Button aria-label="선택한 소식 삭제" disabled={deleting || loadingMore || selectedIds.size === 0}
+                onClick={() => void submitDeletion({ scope: "SELECTED", notificationIds: [...selectedIds] })} variant="danger">
+                {deleting ? "삭제 중…" : "삭제"}
+              </Button>
+              <Button disabled={deleting} onClick={toggleEditing} ref={editRef}>완료</Button>
+            </>
+          ) : (
+            <Button disabled={readingIds.length > 0} onClick={toggleEditing} ref={editRef} variant="tertiary">편집</Button>
+          )}
         </div>
 
+        {editing && !canSelectAllLoaded && <p className="type-body-7 text-grayscale-600">한 번에 최대 {MAX_NOTIFICATION_SELECTION}개까지 선택할 수 있어요.</p>}
+        {deletionError && <p className="type-body-7 text-danger" role="alert">{deletionError}</p>}
         {notice && <p className="type-body-7 text-grayscale-600" role="status">{notice}</p>}
         {readError && (
           <div className="flex flex-wrap items-center gap-3">
@@ -202,6 +370,11 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
                 index={index}
                 onActivate={(alarm) => void activation.current?.activate(alarm)}
                 pending={readingIds.includes(alarm.id)}
+                selection={editing ? {
+                  checked: selectedIds.has(alarm.id),
+                  disabled: deleting || (selectedIds.size >= MAX_NOTIFICATION_SELECTION && !selectedIds.has(alarm.id)),
+                  toggle: () => toggleSelection(alarm.id),
+                } : undefined}
               />
             </li>
           ))}
@@ -210,12 +383,27 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey }: Auth
         {page.page + 1 < page.totalPages && (
           <div className="flex flex-col items-center gap-3">
             {moreError && <p className="type-body-7 text-danger" role="alert">{moreError}</p>}
-            <Button disabled={loadingMore} onClick={() => void loadMore()} variant="outline">
+            <Button disabled={loadingMore || deleting} onClick={() => void loadMore()} variant="outline">
               {loadingMore ? "불러오는 중..." : "더 보기"}
             </Button>
           </div>
         )}
       </div>
+
+      {editing && (
+        <dialog aria-describedby="alarm-all-deletion-description" aria-label="모든 소식 삭제 확인" ref={confirmAllRef}
+          className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-[420px] overflow-y-auto border-0 bg-transparent p-0 text-grayscale-800 backdrop:bg-grayscale-900/50">
+          <p className="sr-only" id="alarm-all-deletion-description">{allDeletionDescription}</p>
+          <BasicPopup className="max-w-full" title="받은 소식을 모두 삭제할까요?"
+            description={allDeletionDescription}
+            onClose={() => confirmAllRef.current?.close()}
+            secondaryAction={{ label: "돌아가기", onClick: () => confirmAllRef.current?.close() }}
+            primaryAction={{ label: "모든 소식 삭제", tone: "danger", onClick: () => {
+              confirmAllRef.current?.close();
+              void submitDeletion({ scope: "ALL" });
+            } }} />
+        </dialog>
+      )}
 
       {page.items.length >= 4 && (
         <a

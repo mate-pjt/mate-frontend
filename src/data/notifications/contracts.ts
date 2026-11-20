@@ -1,6 +1,14 @@
 import type { AuthAccess } from "../shared/http";
 import type { AlarmNotification } from "@/types/alarm";
 export const NOTIFICATIONS_CHANGED_EVENT = "mate:notifications-changed";
+export const MAX_NOTIFICATION_SELECTION = 1000;
+
+export type NotificationCountUpdate = { accountKey: string; sessionEpoch: number; count: number | null };
+export type NotificationDeletion =
+  | { scope: "SELECTED"; notificationIds: readonly string[] }
+  | { scope: "ALL" };
+export type NotificationDeletionResult = { deletedCount: number; unreadCount: number };
+
 export type NotificationPage = {
   items: readonly AlarmNotification[];
   page: number;
@@ -12,5 +20,6 @@ export type NotificationPage = {
 export interface NotificationsRepository {
   getNotifications(access: AuthAccess, page: number, signal?: AbortSignal): Promise<NotificationPage>;
   getUnreadNotificationCount(access: AuthAccess, signal?: AbortSignal): Promise<number>;
-  markNotificationRead(access: AuthAccess, id: string): Promise<AlarmNotification>;
+  markNotificationRead(access: AuthAccess, id: string, signal?: AbortSignal): Promise<AlarmNotification>;
+  deleteNotifications(access: AuthAccess, deletion: NotificationDeletion, signal?: AbortSignal): Promise<NotificationDeletionResult>;
 }

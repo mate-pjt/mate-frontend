@@ -21,7 +21,7 @@ src/
     auth/              # contracts, HTTP/mock Repository, client, session-controller
     bids/              # 목록·상세 contracts, HTTP/DTO/mapper, mock, server
     company/           # 조회·가입·문서 contracts, HTTP/mock, client
-    notifications/     # 받은 알림·건수·읽음
+    notifications/     # 받은 알림·건수·읽음·삭제
     bid-alerts/        # 공고별 구독
     personal-filters/  # 계정 필터
     notification-settings/ # 수신처·인증·ON/OFF

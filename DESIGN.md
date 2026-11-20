@@ -80,13 +80,13 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 
 ### AlarmList
 
-- Structure: 페이지 제목과 설명, 비활성 `편집 (준비 중)` 버튼과 화면에 보이는 미지원 사유, 받은 알림 목록 또는 빈 상태, 20건 단위 `더 보기`
-- States: 로딩, 조회 오류/재시도, 빈 목록, 미확인/확인, 읽음 처리 중/오류, 다음 페이지 로딩/오류
+- 페이지 제목과 설명, 편집 버튼, 받은 알림 목록 또는 빈 상태, 20건 단위 더 보기를 제공한다.
+- 로딩·오류·빈 목록, 읽음 처리, 편집·선택, 삭제 처리, 삭제 후 조회 실패의 상태를 표시한다.
 - Surface: 현재 표시 순번의 홀수 항목은 `grayscale-50`, 짝수 항목은 흰색을 사용하며 읽음 여부와 배경을 연결하지 않는다.
-- Interaction: 미읽음 항목은 읽음 성공 뒤 해당 알림과 미확인 건수를 갱신하고 허용된 `actionPath`로 이동한다. 이미 읽은 항목은 읽음 요청 없이 이동한다. 허용 목적지는 공고 상세(`/bids/{양의 정수 ID}`, 선택 `bidClsfcNo`)와 `/my/company`다. 경로가 없거나 위험/미지원이면 목록을 유지하고 안내한다. 편집·선택·삭제는 아직 연결하지 않았다.
-- Feedback: 읽음 요청이 실패하면 기존 미확인 상태와 목록을 유지하고 재시도를 제공한다. 중복 요청·계정 교체/로그아웃·화면 해제 뒤 늦은 이동을 방어한다. 현재 페이지에 삭제 완료 toast는 없다.
-- Accessibility: 미확인 여부는 우측 파란 점과 보조 텍스트로 함께 제공한다. 항목은 키보드로 조작하는 버튼이며 읽음 요청 중 `aria-busy`와 비활성 상태를 제공한다. 편집 미지원 사유는 화면 본문과 `aria-describedby`로 연결한다.
-- Evidence: DEV-06의 로컬 검증과 실제 ANAV-01~10의 차단은 [받은 알림 QA](docs/qa/alarms.md#dev-06-local-qa)에 기록한다. [POL-20](docs/development/figma-v01/tasks/POL-20.md#pol-20-contract)은 이미 승인된 본인 알림의 선택·전체 삭제 계약을 적용한다. 현재 프런트의 편집은 준비 중이며 연결과 화면 검증은 [DEV-43](docs/development/figma-v01/tasks/DEV-43.md) 범위다. [현재 화면](src/components/alarms/alarm-page-client.tsx) · [목록 항목](src/components/alarms/alarm-list-item.tsx) · [POL-04 v1](docs/development/figma-v01/tasks/POL-04.md#pol-04-decisions)
+- 미읽음 항목은 읽음 성공 뒤 미확인 건수를 갱신하고 허용된 `actionPath`로 이동한다. 이미 읽은 항목은 바로 이동한다. 경로가 없거나 허용 목록 밖이면 현재 화면을 유지하고 안내한다. [목적지 허용 목록](src/lib/notification-path.ts)
+- 편집은 원형 체크박스, 불러온 행의 전체선택, 선택 수, 삭제와 완료 버튼을 제공한다. 모든 소식 삭제는 미로딩 알림까지 포함한다는 범위를 확인한 뒤 실행한다. 삭제 건수가 확인되면 Toast를 표시하고 받은 목록과 헤더 미확인 수를 다시 조회한다. [Figma N02](docs/development/figma-v01/tasks/POL-20.md#pol-20-evidence) · [POL-20](docs/development/figma-v01/tasks/POL-20.md#pol-20-contract)
+- 목록 버튼과 편집 체크박스를 키보드로 조작할 수 있다. 일반 모드의 미확인 여부는 파란 점과 보조 텍스트로 표시한다. 편집·완료, 확인창 취소와 삭제 후 빈 화면에 초점을 옮긴다. [화면](src/components/alarms/alarm-page-client.tsx) · [항목](src/components/alarms/alarm-list-item.tsx)
+- 로컬 화면 증거와 실제 통합 검증 상태는 각각 [이동 QA](docs/qa/alarms.md#dev-06-local-qa)와 [삭제 QA](docs/qa/alarms.md#dev-43-local-qa)에 기록한다.
 
 ### Notification guidance
 
