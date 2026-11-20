@@ -104,7 +104,7 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 - TODO: 개찰결과의 낙찰금액 범위 필터 API 계약과 맞춤공고 목록 API 계약을 백엔드 담당자와 확정한 뒤 별도 기능으로 연결한다.
 - TODO: Figma의 최근·추천 검색어 팝업은 실제 검색 기록과 추천어의 데이터 공급원·저장 정책이 정해지면 별도 기능으로 복원한다.
 - TODO: `docs/qa/README.md` 목록의 기존 화면과 새 Figma 기능에 대한 브라우저 통합 항목을 기능별로 채운다.
-- `/my`의 계정 관리는 [POL-17 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)에 따라 본인 연락용 이메일 조회를 연결한다. 서비스 이용안내·의견 보내기는 각 화면의 정책과 API가 확정되면 별도 요구사항으로 구현한다. 회사 정보의 시공능력·인증·희망 금액 카드, 수정, 신청 취소는 별도 범위다.
+- 2026-11-20 계정 관리의 본인 연락용 이메일 조회는 [POL-17 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)에 따라 [DEV-38](../development/figma-v01/tasks/DEV-38.md#dev-38-brief)에 연결했다. 서비스 이용안내·의견 보내기는 각 화면의 정책과 API가 확정되면 별도 요구사항으로 구현한다. 회사 정보의 시공능력·인증·희망 금액 카드, 수정, 신청 취소는 별도 범위다.
 
 2026-11-12 DEV-55 후속은 사용자 확정에 따라 클릭마다 최신 개인 필터 GET·전체 조건 동등성 표시·탐색 의도에서 조회 취소를 조합한다. [후속 Brief](../development/figma-v01/tasks/DEV-55.md#dev-55-followup-brief)와 검증 기록을 따르며 실제 QA-10의12차단·POL-02 미결을 유지한다. 현재/다음/상태는 WBS만 소유하며 다음 POL-30은 선정/인계만 보존한다.
 
@@ -322,3 +322,7 @@ Final reports should include:
 ## 2026-11-20 · POL-17 계정 정보와 인증
 
 [사용자 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)으로 세션의 본인 연락용 이메일 조회와 S02 이메일 ‘인증하기’ 생략을 정했다. 중앙 Google-only 정책을 유지하며 계정 변경·재인증은 소유 정책과 계약을 확보한 뒤 판단한다. [DEV-38 인계](../development/figma-v01/tasks/DEV-38.md#dev-38-pol-17-handoff)와 [ACCT-01~08 미실행 계획](../qa/my-settings-home.md#pol-17-account-qa)은 구현과 실제 QA의 후속 기준이다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)에서 확인한다.
+
+## 2026-11-20 · POL-18 계정 탈퇴의 책임과 재개 조건
+
+서비스 계정 탈퇴의 자격·회사 소속·세션·데이터와 철회/재가입은 백엔드 계약 및 소유 정책에 따른다. [POL-18](../development/figma-v01/tasks/POL-18.md#pol-18-brief)에서 사용자가 확인한 책임과 인증 방식·화면 예외의 보류를 기록했다. 전용 계약 확인 후 [시안과 재개 조건](../development/figma-v01/tasks/POL-18.md#pol-18-contract) 및 [WDRAW QA 계획](../qa/my-settings-home.md#pol-18-withdrawal-qa)을 적용한다. 파기 기간이나 화면 예외의 확정 근거는 해당 소유 정책을 확인한다.
