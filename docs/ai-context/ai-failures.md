@@ -405,3 +405,7 @@ Use this file to record recurring AI workflow failures and prevention rules. Do 
 
 - native dialog를 먼저 화면에서 제거하면 Escape 뒤 초점이 호출 버튼으로 돌아오지 않았다. 사용자 닫기 이벤트에서 `close()`를 먼저 호출한 뒤 React 상태를 바꾸고, 실제 브라우저에서 입력 보존과 원래 버튼 초점을 확인했다.
 - 초기 Figma 조사 도구 출력에는 만료형 자산 참조 일부가 섞였다. 이후 레이어 이름·치수는 필요한 항목만 남겼고 주소를 작업 문서나 소스에 복사하지 않았다. 이전 Figma 사례와 같은 출력 경계로 기록한다.
+
+## 2026-11-20 · DEV-38 Figma 응답 출력
+
+S02의 구조를 읽을 때 예시 주소를 가렸으나 도구 텍스트에 임시 Figma 자산 URL이 포함됐다. Figma 응답은 구조·노드·스타일 위주로 선별하고 임시 URL을 제외한 뒤 출력한다. 이 작업의 Git·QA 증거는 합성 브라우저 캡처와 비식별 관측만 사용한다.
