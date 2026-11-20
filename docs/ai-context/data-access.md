@@ -81,6 +81,7 @@ src/data/
 - `AuthAccess`는 토큰 접근·세션 갱신·현재 계정 식별키를 제공한다. 요청 도중 계정이 바뀌면 이전 계정의 재시도를 막는다.
 - 실제 인증은 서버 중심 OAuth/OIDC다. 브라우저 origin을 `returnOrigin`, 검증한 내부 복귀 경로를 `returnTo`로 전달한다. callback/signup에 `flowId`가 없으면 인증 완료 요청을 하지 않는다. GIS 방식으로 변경하지 않는다.
 - `AuthSessionProvider`와 `session-controller.ts`는 메모리 access token, 같은 계정 epoch의 refresh 공유, 만료 전 갱신, 로그아웃 epoch와 늦은 응답 방어를 담당한다. 계정 교체 후에는 이전 refresh flight를 공유하지 않는다. 실제 토큰을 session/localStorage나 서버 props에 저장하지 않는다.
+- `/my/settings/account`는 현재 세션의 `account.email`만 표시한다. 로그아웃 시작·종료에서 발행하는 계정 키를 구독해 주소를 가리고, 기존 access token 유효 시간이 지나면 주소를 내린 뒤 명시 세션 복원을 제공한다. 화면은 이메일 결측과 잘못된 값을 구분하며 주소를 별도 상태·URL·저장소에 복사하지 않는다. 알림 수신처·가입 후보는 각 Repository의 값이다. [DEV-38](../development/figma-v01/tasks/DEV-38.md#dev-38-brief)
 - 회사 변경 후 API 구현이 세션을 갱신한다. 변경 성공 뒤 갱신만 실패하면 `sessionWarning`을 반환해 성공을 유지한다. 이 갱신의 일시적 네트워크 실패는 기존 인증 세션을 유지하며, 401/403 처리는 유지한다.
 - 초대 수락은 현재 토큰으로 POST를 한 번 발행하고 응답 401의 자동 재전송을 사용하지 않는다. 양의 안전 정수인 회사·소속 ID를 검증한다. 유실/손상 응답과 이미 소모된 문맥일 수 있는 `CI005/CI012`는 결과 미확정이다. 후속 확인은 동일 company 공급원의 현재 회사와 `memberships/me`를 읽는다. 실제 서버에서의 수락과 갱신은 별도 QA다. [DEV-33](../development/figma-v01/tasks/DEV-33.md#dev-33-verification)
 - 회사 통합의 `GET …/merge-cases/current`만 opt-in HTTP 204를 빈 값으로 받는다. 활성 소속과 leaf를 확인해 열람 가능한 사건 없음과 열람 범위 미확인을 구분한다. 공개 모델은 회사 쌍, 상태, 기한·개시 근거와 G01 행동만 복사한다. `request`·`proposals`·`proposal-responses`는 같은 회사·사건의 최신 revision과 필요한 leaf/capability로 제출하며 401 자동 재전송을 사용하지 않는다. 충돌/결과 미확정 뒤에는 동일 사건 상세를 읽는다. [DEV-34](../development/figma-v01/tasks/DEV-34.md#dev-34-verification)

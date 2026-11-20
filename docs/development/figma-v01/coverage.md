@@ -156,3 +156,5 @@ F03의 [DEV-25 사용자 D1](tasks/DEV-25.md#dev-25-brief)은 전체 series 삭�
 ## 2026-11-20 · S02/C02 계정 관리 범위
 
 [POL-17 D1](tasks/POL-17.md#pol-17-contract)은 본인 연락용 이메일 읽기와 시안의 이메일 ‘인증하기’ 생략을 [DEV-38](tasks/DEV-38.md#dev-38-pol-17-handoff)에 연결한다. C02 비밀번호 상태는 Google-only 정책에 따라 제품에서 미연결이며, 계정 필드 변경·재인증은 계약을 확보한 뒤 재검토한다. 탈퇴와 다른 C02 팝업의 소유, 원본 79개 행과 기존 의존성을 보존한다. [ACCT-01~08](../../qa/my-settings-home.md#pol-17-account-qa)은 미실행 계획이며 작업 상태는 WBS에서 확인한다.
+
+[DEV-38의 S02 구현](tasks/DEV-38.md#dev-38-brief)은 `/my/settings/account`의 이메일 행 `3139:53069`와 인증/오류/모바일 상태에 해당한다. [실행 결과](../../qa/my-settings-home.md#dev-38-account-qa)에서 로컬·실제 조회와 각 디자인 상태의 적용 범위를 확인한다. 시안의 탈퇴 행 `3139:53096` 적용은 [POL-18](tasks/POL-18.md)과 S03 소유 작업에 연결된다.

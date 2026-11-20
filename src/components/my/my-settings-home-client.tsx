@@ -14,6 +14,7 @@ const cards = [
     title: "계정 관리",
     description: "계정을 더 안전하게 지킬 수 있어요!",
     icon: "/icon/24dp/setting.svg",
+    href: "/my/settings/account",
   },
   {
     title: "알림 설정",
