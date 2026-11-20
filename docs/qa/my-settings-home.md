@@ -169,3 +169,44 @@ HTTP 대역은3102→소유 합성 서버4300(auth/notifications만 api·나머�
 - Node22.20.0 `pnpm test`414/414·`pnpm lint`·`pnpm build` api/mock/hybrid·`pnpm build-storybook` PASS. 격리 symlink·pnpm 자동 설치 오류는 복사본/실행 옵션만 수정해 해결했다. 제품 자동 수정0/3, Source/패키지/의존성 변경 없음.
 - 로그/비식별 결과는 저장소 밖 `/tmp/mate-dev56-20261113`에 보관한다. 영속 캡처는 위 합성 이미지뿐이다. 실제 이름 없는 로그아웃 화면도 비식별 결과로 보관했다.
 - [Context Audit](../development/figma-v01/reviews/DEV-56-context.md)·[6항목 ai-review/검증](../development/figma-v01/reviews/DEV-56.md)·[Task 최종 Gate](../development/figma-v01/tasks/DEV-56.md#dev-56-verification)를 따른다. Git/CI/병합은 실제 PR/최종 보고로 별도 확인한다.
+
+<a id="qa-14-local-regression"></a>
+
+## 2026-11-20 · QA-14 설정 홈 회귀
+
+[QA-14 착수 범위](../development/figma-v01/tasks/QA-14.md#qa-14-brief)에 따라 기존 MSET-01~07을 현행 소스와 로컬 브라우저에서 다시 확인했다. 위 2026-09-28 개발 API 이력과 DEV-56의 HUI/HAPI 결과를 보존한다.
+
+| 실행 ID · 시각 | 프론트 · 공급원 | 브라우저·화면 | 데이터·수행자 |
+| --- | --- | --- | --- |
+| `QA14-20261120` · 11:13~11:17 KST | `42529881bb0486270186420569e02942bee6ef6c`, `http://127.0.0.1:35630` 전체 mock, 회사 `merge` 시나리오 | Aside Chromium UA `Chrome/156.0.0.0`, 1920×1080·320×700·390×844 CSS px | 합성 가상 계정 · Codex |
+| 같은 실행 · 11:14~11:16 KST | 같은 commit, `http://127.0.0.1:35632` hybrid, 인증·알림 설정은 `http://127.0.0.1:35631` HTTP 대역 | 같은 Chromium, 1920×1080·390×844 CSS px | 메모리 합성 세션과 수신 설정 읽기 응답 · Codex |
+
+Node 22.20.0·pnpm 11.3.0·Next 16.2.9를 사용했다. `git archive 4252988` 격리본 두 개에서 `pnpm dev -H 127.0.0.1 --port <포트> --webpack`으로 실행했다. mock의 7개 공급원과 HTTP 대역의 2개 API 공급원을 분리했다. 실제 백엔드 배포/실행 SHA는 이번 로컬 실행에 적용되지 않는다. 종료 후 합성 탭을 닫고 세 로컬 리스너를 종료했다.
+
+### 기존 사례에 대응하는 현행 증거
+
+| 사례 | 실행 환경과 조작 | 로컬 결과 |
+| --- | --- | --- |
+| MSET-01 | `3139:52490` · 인증 후 `/my` 새로고침, mock·HTTP 대역 | 통과. 제목·현재 항목을 포함한 메뉴 7개·카드 3개·배너 표시. 대역 `POST /api/v1/auth/token/refresh` 200. 현재 항목에 `aria-current="page"`가 있다. |
+| MSET-02 | `3139:52522` · mock에서 회사 정보·서류함·팀원·회사 통합 메뉴 왕복 | 통과. 각각 `/my/company`·`/my/documents`·`/my/team`·`/my/company-merge`로 이동했다. 회사 정보·팀원·회사 통합은 목적지 현재 메뉴를 확인했고, 서류함은 breadcrumb로 복귀했다. 모두 `/my`로 돌아와 설정 메뉴가 선택됐다. 알림 설정 공고와 의견 보내기는 disabled, 계정 관리·서비스 이용안내는 준비 중 비링크 카드다. Tab과 Shift+Tab은 비활성 메뉴를 건너뛰고, 회사 통합은 Enter로 이동했다. |
+| MSET-03 | `3139:52510` · 320px mock과 데스크톱 HTTP 대역에서 알림 설정 카드와 breadcrumb 클릭 | 통과. `/my/settings/notifications` 진입 뒤 `/my`로 복귀했다. 대역 `GET /api/v1/me/notification-email-settings`와 `GET /api/v1/me/matched-bid-notice-email-settings` 각각 200. |
+| MSET-04 | `3139:52557` · 390px mock에서 Enter 로그아웃, 390px HTTP 대역에서 로그아웃 응답 지연·실패·재시도 | 현행 동작 통과. 버튼이 ‘로그아웃 중...’인 동안 비활성이고 추가 Enter 뒤에도 첫 `POST /api/v1/auth/logout`은 한 건이다. 503에서 오류를 표시하고 로그인 상태를 유지했다. 명시 재시도 200 뒤 `/my`에 비로그인 안내가 표시됐다. 새로고침의 refresh 401 뒤에도 `/my`에서 보호 메뉴가 숨겨졌으며 ‘로그인하고 돌아오기’를 눌러 `/auth?mode=login&next=%2Fmy`로 이동했다. 확인 팝업은 아래 차이 참고. |
+| MSET-05 | `3139:52490` · 로그아웃 뒤 가상 로그인과 HTTP 대역의 Google 버튼으로 재로그인 | 로컬 복귀 통과. 대역은 Google 로그인 진입 GET에서 `returnTo=/my`와 로컬 반환 Origin을 확인해 302를 반환했다. `/auth/callback`을 거쳐 합성 session-completion POST 200, `/my` 및 현재 메뉴 복원. 실제 Google OAuth는 미실행. |
+| MSET-06 | `3139:52490` 데스크톱 배치의 모바일 적응 · 320×700·390×844 mock | 통과. 320px에서 문서 client/scroll 너비 305/305px, 메뉴·카드·배너 너비 273px. 390px에서는 각각 375/375px와 343px. 세 카드가 한 열이고 가로 넘침이 없다. 320px 알림 설정 이동, 390px 로그아웃을 직접 실행했다. |
+| MSET-07 | `/my` refresh를 합성 503으로 바꾸고 새로고침, 정상 응답으로 되돌려 ‘다시 시도하기’ 클릭 | 통과. 오류 alert가 보이는 동안 보호 메뉴 0개. 대역 refresh 200 뒤 설정 메뉴 복원. 2026-09-28의 브라우저 네트워크 차단 증거와 별개인 503 대역 재현이다. |
+
+화면 증거는 실행 세션의 `qa-14-settings-1920.png`, `qa-14-menu-320.png`·`qa-14-menu-390.png`, `qa-14-settings-320.png`·`qa-14-settings-390.png`, `qa-14-logout-busy-390.png`·`qa-14-logout-error-390.png`·`qa-14-session-retry.png`에 있다. 모바일 화면은 최초 전체 페이지 캡처가 상단을 반복해 메뉴와 카드에 스크롤한 뷰포트를 따로 캡처했다. `qa-14-http-evidence.json`에는 method·path·status, 복귀 경로/Origin 일치 여부를 남겼다.
+
+### Figma 대조와 메뉴 소유
+
+| 화면·정책 근거 | 현행 확인 | 판정과 후속 책임 |
+| --- | --- | --- |
+| [3139:52490 기본](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52490) · `/my` 로그인 | 데스크톱 제목 `(378,94)`, 카드 시작 `(370,214)`, 배너 `(370,438)`가 일치한다. Figma 메뉴는 6개이고 현행 메뉴는 서류함을 포함해 7개다. 준비 중 표기와 비활성 상태도 보인다. | 주요 배치 일치. 서류함·팀원·회사 통합의 실제 메뉴 연결은 [DEV-22](../development/figma-v01/tasks/DEV-22.md), [DEV-27](../development/figma-v01/tasks/DEV-27.md), [DEV-34](../development/figma-v01/tasks/DEV-34.md#dev-34-close) 범위다. GNB 이름 표시는 [DEV-56 D1](../development/figma-v01/tasks/DEV-56.md#dev-56-brief), 시안의 메이트 소식 메뉴는 [DEV-51](../development/figma-v01/tasks/DEV-51.md) 범위다. |
+| [3139:52557 로그아웃](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52557) · [DEV-56 D2](../development/figma-v01/tasks/DEV-56.md#dev-56-brief) | 시안의 `3139:52590`은 420×330 확인/취소 팝업과 ‘첫 화면’ 이동 안내를 표시한다. 현행 `/my`는 메뉴 선택으로 즉시 로그아웃하고 성공 시 같은 경로에 비로그인 안내를 표시한다. | 시안과 불일치. D2에서 확정한 범위는 `/my`의 로그아웃 위치와 동작 검증이다. 팝업 생략과 완료 목적지의 명시적 화면 예외 승인은 확보되지 않았다. 화면/동작 결정이 필요하면 [POL-29의 상태 기준](../development/figma-v01/tasks/POL-29.md#pol-29-states)과 S01의 소유 결정에 연결한다. |
+| 320/390px에서 로그인 상태 · 메뉴와 카드 | 로컬 폭·조작을 확인했다. | 두 Figma 데스크톱 프레임을 참조한 적응 검증이다. 모바일 시안의 동일성 및 전체 픽셀 비교는 미실행이다. |
+
+계정 관리 활성화는 [POL-17](../development/figma-v01/tasks/POL-17.md) 뒤 [DEV-38](../development/figma-v01/tasks/DEV-38.md), 알림 설정 공고 목록은 [POL-03](../development/figma-v01/tasks/POL-03.md) 뒤 [DEV-04](../development/figma-v01/tasks/DEV-04.md)·[DEV-05](../development/figma-v01/tasks/DEV-05.md)의 소유다. 서비스 이용안내와 의견 보내기는 각각 [DEV-49](../development/figma-v01/tasks/DEV-49.md)와 [DEV-50](../development/figma-v01/tasks/DEV-50.md)이 정책 결정 후 연결한다.
+
+### 실제 통합 잔여
+
+이번 실제 개발 API·Google OAuth 재실행은 0건이다. 새 회사 메뉴의 실제 MSET-02 재확인 대기를 포함해 기존 실제 QA 결과를 유지한다. 실제 재개는 QA 담당자가 DEV-56과 별개로 허용된 테스트 계정·로그인/로그아웃·조회/복구 범위를 확인하고, 백엔드 담당자가 실행 버전을 대응시킨 뒤 수행한다. 제품 변경, 실제 회사/알림 설정 변경 및 메일 발송은 0건이다.
