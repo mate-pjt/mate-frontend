@@ -61,6 +61,14 @@ function readOpening(value: unknown): CompanyMergeCase["reviewOpening"] {
   return { openedAt: time(opening.openedAt), origin };
 }
 
+function readRound(value: unknown): CompanyMergeCase["requestRound"] {
+  if (value == null) return null;
+  const round = object(value);
+  if (!isMergeId(round.roundId)) invalid();
+  return { roundId: round.roundId, status: parseEnum(round.status, ["ACTIVE", "WITHDRAWN", "RESPONDED", "EXPIRED", "SUPERSEDED"]),
+    sentAt: time(round.sentAt), message: optionalText(round.message, 1000) };
+}
+
 export function mapCompanyMergeCase(raw: unknown, companyId: number, caseId?: number): CompanyMergeCase {
   const value = object(raw);
   const { sourceCompanyId, verifiedCompanyId, sourceCompanyName, verifiedCompanyName, revision, reviewRequested } = value;
@@ -82,10 +90,13 @@ export function mapCompanyMergeCase(raw: unknown, companyId: number, caseId?: nu
     caseId: value.caseId, type, status, revision, reviewRequested,
     source: { id: sourceCompanyId, name: sourceCompanyName }, verified: { id: verifiedCompanyId, name: verifiedCompanyName },
     requestMessage: optionalText(value.requestMessage, 1000), proposal, proposalResponse,
+    requestRound: readRound(value.requestRound), proposalRound: readRound(value.proposalRound),
     decisionDueAt: value.decisionDueAt == null ? null : time(value.decisionDueAt), finalizedAt,
     reviewOpening: readOpening(value.reviewOpening),
     rejectionOrigin: value.rejectionOrigin == null ? null : parseEnum(value.rejectionOrigin, ["SOURCE_PROPOSAL_DECLINED", "TARGET_REVIEW_REJECTED"]),
-    actions: { canRequest: capability(actions.canRequest), canPropose: capability(actions.canPropose), canRespondToProposal: capability(actions.canRespondToProposal) },
+    actions: { canRequest: capability(actions.canRequest), canPropose: capability(actions.canPropose), canRespondToProposal: capability(actions.canRespondToProposal),
+      canWithdrawRequest: capability(actions.canWithdrawRequest), canResendRequest: capability(actions.canResendRequest),
+      canWithdrawProposal: capability(actions.canWithdrawProposal), canResendProposal: capability(actions.canResendProposal) },
   };
 }
 
@@ -105,13 +116,21 @@ export function createCompanyMergeApi(http: HttpClient): CompanyMergeRepository 
       requireMergeIds(companyId, caseId, expectedRevision);
       const action = normalizeCompanyMergeAction(raw);
       const base = `${path(companyId)}/${caseId}`;
+      if (action.kind === "withdraw-request" || action.kind === "withdraw-proposal" || action.kind === "resend-request" || action.kind === "resend-proposal") {
+        const rounds = action.kind.endsWith("request") ? "request-rounds" : "proposal-rounds";
+        const resend = "commandId" in action;
+        return mapCompanyMergeCase(await http.authorized(access, `${base}/${rounds}/${action.roundId}/${resend ? "resends" : "withdrawals"}`, {
+          method: "POST", body: resend ? { expectedRevision, commandId: action.commandId, message: action.message } : { expectedRevision },
+          signal, retryUnauthorized: false,
+        }), companyId, caseId);
+      }
       if (action.kind === "request" || action.kind === "propose") {
         return mapCompanyMergeCase(await http.authorized(access, `${base}/${action.kind === "request" ? "request" : "proposals"}`, {
           method: "POST", body: { expectedRevision, message: action.message }, signal, retryUnauthorized: false,
         }), companyId, caseId);
       }
       return mapCompanyMergeCase(await http.authorized(access, `${base}/proposal-responses`, {
-        method: "POST", body: { expectedRevision, decision: action.kind === "accept" ? "ACCEPT" : "DECLINE", reason: action.kind === "decline" ? action.reason : null },
+        method: "POST", body: { expectedRevision, decision: action.kind === "accept" ? "ACCEPT" : "DECLINE", reason: action.kind === "decline" ? action.reason : null, ...(action.roundId === undefined ? {} : { roundId: action.roundId }) },
         signal, retryUnauthorized: false,
       }), companyId, caseId);
     },

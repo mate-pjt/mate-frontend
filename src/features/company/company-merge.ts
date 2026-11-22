@@ -72,6 +72,10 @@ export async function loadCompanyMerge(access: AuthAccess, signal: AbortSignal, 
 
 function matchesReceipt(value: CompanyMergeCase, action: CompanyMergeAction): boolean {
   switch (action.kind) {
+    case "withdraw-request": return value.requestRound?.roundId === action.roundId && value.requestRound.status === "WITHDRAWN";
+    case "withdraw-proposal": return value.proposalRound?.roundId === action.roundId && value.proposalRound.status === "WITHDRAWN";
+    case "resend-request": return !!value.requestRound && value.requestRound.roundId !== action.roundId && value.requestRound.status === "ACTIVE" && value.requestRound.message === action.message;
+    case "resend-proposal": return !!value.proposalRound && value.proposalRound.roundId !== action.roundId && value.proposalRound.status === "ACTIVE" && value.proposalRound.message === action.message;
     case "request": return value.reviewRequested && value.reviewOpening !== null && value.requestMessage === action.message;
     case "propose": return value.proposal !== null && value.proposal.message === action.message;
     case "accept": return value.proposalResponse?.decision === "ACCEPT" && value.reviewOpening !== null;
@@ -86,6 +90,10 @@ export async function submitCurrentCompanyMerge(access: AuthAccess, signal: Abor
   const latest = await loadCompanyMerge(scoped, signal, isCurrent, undefined, repository);
   if (latest.status !== "case" || !matches(latest.value, reference) || latest.value.revision !== reference.revision
     || latest.actor.companyId !== reference.companyId || latest.actor.membershipId !== reference.membershipId) changed();
+  if ("roundId" in action && action.roundId !== undefined) {
+    const round = action.kind === "withdraw-request" || action.kind === "resend-request" ? latest.value.requestRound : latest.value.proposalRound;
+    if (!round || round.roundId !== action.roundId) changed();
+  }
   if (!canSubmitCompanyMerge(latest.value, latest.actor.companyId, latest.actor.permissionCodes, action.kind)) {
     throw new ApiError(403, "MERGE_ACTION_UNAVAILABLE", "현재 상태나 권한으로 통합 요청을 처리할 수 없어요.");
   }

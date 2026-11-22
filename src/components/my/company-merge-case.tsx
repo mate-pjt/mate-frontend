@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { StrokeRightArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { canSubmitCompanyMerge, type CompanyMergeCase, type CompanyMergeOpening, type CompanyMergeStatus } from "@/data/company/contracts";
+import { canSubmitCompanyMerge, type CompanyMergeAction, type CompanyMergeCase, type CompanyMergeOpening, type CompanyMergeStatus } from "@/data/company/contracts";
 import type { CompanyMergeSnapshot } from "@/features/company/company-merge";
 import { teamDate } from "@/features/company/team";
 import type { MergeDialogIntent } from "./company-merge-dialog";
@@ -29,7 +29,8 @@ const closed: Record<Exclude<CompanyMergeStatus, "REVIEW_PENDING">, { label: str
 function phase(value: CompanyMergeCase) {
   if (value.status !== "REVIEW_PENDING") return closed[value.status];
   if (value.reviewOpening || value.reviewRequested) return { label: "검토 중", title: "회사 통합을 검토하고 있어요." };
-  if (value.proposal) return { label: "응답 대기", title: "최초 통합 제안의 응답을 기다리고 있어요." };
+  if (value.proposal && (!value.proposalRound || value.proposalRound.status === "ACTIVE")) return { label: "응답 대기", title: "최초 통합 제안의 응답을 기다리고 있어요." };
+  if (value.requestRound?.status === "WITHDRAWN" || value.proposalRound?.status === "WITHDRAWN") return { label: "철회됨", title: "보낸 통합 요청을 철회했어요." };
   return { label: "", title: "기존 팀원과 회사 정보의 통합을 시작할까요?" };
 }
 
@@ -59,8 +60,10 @@ export function CompanyMergeCaseView({ snapshot, onOpen, onReload }: {
 }) {
   const [message, setMessage] = useState("");
   const { value, actor } = snapshot;
-  const allowed = (kind: "request" | "propose" | "accept") => canSubmitCompanyMerge(value, actor.companyId, actor.permissionCodes, kind);
+  const allowed = (kind: CompanyMergeAction["kind"]) => canSubmitCompanyMerge(value, actor.companyId, actor.permissionCodes, kind);
   const compose = allowed("request") ? "request" : allowed("propose") ? "propose" : null;
+  const resendKind = allowed("resend-request") ? "resend-request" : allowed("resend-proposal") ? "resend-proposal" : null;
+  const withdrawKind = allowed("withdraw-request") ? "withdraw-request" : allowed("withdraw-proposal") ? "withdraw-proposal" : null;
   const canRespond = allowed("accept");
   const pending = value.status === "REVIEW_PENDING";
   const legacy = value.type === "IN_PLACE_MEMBER_REVIEW";
@@ -89,17 +92,29 @@ export function CompanyMergeCaseView({ snapshot, onOpen, onReload }: {
         {value.finalizedAt && <div><dt>통합 확정</dt><dd>{teamDate(value.finalizedAt, true)} KST</dd></div>}
       </dl>
       {canRespond && <div className="flex flex-wrap justify-end gap-2">
-        <Button onClick={() => onOpen({ kind: "decline" })} variant="gray">제안 거절</Button>
-        <Button onClick={() => onOpen({ kind: "accept" })}>제안 수락</Button>
+        <Button onClick={() => onOpen({ kind: "decline", roundId: value.proposalRound?.roundId })} variant="gray">제안 거절</Button>
+        <Button onClick={() => onOpen({ kind: "accept", roundId: value.proposalRound?.roundId })}>제안 수락</Button>
       </div>}
-      {compose && <div>
+      {(compose || resendKind) && <div>
         <label className="mb-2 block type-body-2 text-grayscale-800" htmlFor="company-merge-message">{canRespond ? "직접 검토 신청 메시지 (선택)" : "전달 메시지 (선택)"}</label>
         <textarea className="block min-h-[150px] w-full resize-y rounded-lg border border-grayscale-200 px-3 py-3 type-body-3 placeholder:text-grayscale-500 focus-visible:outline-primary"
           id="company-merge-message" value={message} onChange={event => setMessage(event.target.value)} maxLength={1000}
           placeholder="확인이 필요한 내용이나 전달할 말이 있다면 적어 주세요." />
         <div className="mt-6 flex justify-end">
-          <Button className="min-h-12 min-w-[180px]" onClick={() => onOpen({ kind: compose, message })}>{compose === "request" ? "검토 신청하기" : "최초 제안하기"}</Button>
+          <Button className="min-h-12 min-w-[180px]" onClick={() => {
+            if (resendKind) {
+              const round = resendKind === "resend-request" ? value.requestRound : value.proposalRound;
+              if (round) onOpen({ kind: resendKind, roundId: round.roundId, commandId: crypto.randomUUID(), message });
+            } else if (compose) onOpen({ kind: compose, message });
+          }}>{resendKind ? "다시 보내기" : compose === "request" ? "검토 신청하기" : "최초 제안하기"}</Button>
         </div>
+      </div>}
+      {resendKind && <p className="type-body-7 text-grayscale-600">다시 보내도 기존 마감은 연장되지 않아요.</p>}
+      {withdrawKind && <div className="flex justify-end">
+        <Button variant="gray" className="min-h-12 min-w-[180px]" onClick={() => {
+          const round = withdrawKind === "withdraw-request" ? value.requestRound : value.proposalRound;
+          if (round) onOpen({ kind: withdrawKind, roundId: round.roundId });
+        }}>요청 취소하기</Button>
       </div>}
       <div className="flex flex-wrap items-center justify-between gap-2">
         {!compose && !canRespond && pending && !value.reviewOpening && !value.proposal &&

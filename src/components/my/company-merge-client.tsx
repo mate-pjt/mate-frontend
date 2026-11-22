@@ -16,6 +16,8 @@ import { MySideMenu } from "./my-side-menu";
 
 const path = "/my/company-merge";
 const receipts: Record<CompanyMergeAction["kind"], string> = {
+  "withdraw-request": "검토 신청을 철회했어요.", "withdraw-proposal": "통합 제안을 철회했어요.",
+  "resend-request": "검토 신청을 다시 보냈어요!", "resend-proposal": "통합 제안을 다시 보냈어요!",
   request: "검토 신청을 보냈어요!", propose: "최초 통합 제안을 보냈어요!", accept: "통합 제안을 수락했어요!", decline: "통합 제안을 거절했어요.",
 };
 const errors = {

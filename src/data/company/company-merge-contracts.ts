@@ -1,9 +1,21 @@
 import type { AuthAccess } from "../shared/http";
 
 export type CompanyMergeAction =
-  | { kind: "request" | "propose"; message: string | null }
-  | { kind: "accept" }
-  | { kind: "decline"; reason: string };
+  | { kind: "request"; message: string | null }
+  | { kind: "propose"; message: string | null }
+  | { kind: "accept"; roundId?: number }
+  | { kind: "decline"; reason: string; roundId?: number }
+  | { kind: "withdraw-request"; roundId: number }
+  | { kind: "withdraw-proposal"; roundId: number }
+  | { kind: "resend-request"; roundId: number; commandId: string; message: string | null }
+  | { kind: "resend-proposal"; roundId: number; commandId: string; message: string | null };
+
+export type CompanyMergeRound = {
+  roundId: number;
+  status: "ACTIVE" | "WITHDRAWN" | "RESPONDED" | "EXPIRED" | "SUPERSEDED";
+  sentAt: string;
+  message: string | null;
+};
 
 export type CompanyMergeStatus = "REVIEW_PENDING" | "REJECTED" | "APPEAL_SUBMITTED" | "FINALIZED"
   | "CLEANUP_PENDING" | "CLEANUP_COMPLETED" | "VERIFICATION_CANCELLED";
@@ -26,7 +38,11 @@ export type CompanyMergeCase = {
   decisionDueAt: string | null;
   rejectionOrigin: "SOURCE_PROPOSAL_DECLINED" | "TARGET_REVIEW_REJECTED" | null;
   finalizedAt: string | null;
-  actions: { canRequest: boolean | null; canPropose: boolean | null; canRespondToProposal: boolean | null };
+  requestRound?: CompanyMergeRound | null;
+  proposalRound?: CompanyMergeRound | null;
+  actions: { canRequest: boolean | null; canPropose: boolean | null; canRespondToProposal: boolean | null;
+    canWithdrawRequest?: boolean | null; canResendRequest?: boolean | null;
+    canWithdrawProposal?: boolean | null; canResendProposal?: boolean | null };
 };
 
 export interface CompanyMergeRepository {

@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { normalizeCompanyMergeAction, type CompanyMergeAction } from "@/data/company/contracts";
 import { errorMessage } from "@/data/shared/errors";
 
-export type MergeDialogIntent = Exclude<CompanyMergeAction, { kind: "decline" }> | { kind: "decline" } | { kind: "eligibility" };
+export type MergeDialogIntent = Exclude<CompanyMergeAction, { kind: "decline" }> | { kind: "decline"; roundId?: number } | { kind: "eligibility" };
 
 const copy = {
+  "withdraw-request": { title: "검토 신청을 철회할까요?", description: "검토 신청을 철회해요. 이전 통합 제안은 다시 활성화되지 않아요.", submit: "신청 철회하기" },
+  "withdraw-proposal": { title: "통합 제안을 철회할까요?", description: "이 제안에 더 이상 응답할 수 없어요. 이전 발송 기록은 남아요.", submit: "제안 철회하기" },
+  "resend-request": { title: "검토 신청을 다시 보낼까요?", description: "새 발송으로 기록되며 기존 마감은 연장되지 않아요.", submit: "다시 보내기" },
+  "resend-proposal": { title: "통합 제안을 다시 보낼까요?", description: "새 발송으로 기록되며 기존 응답 마감은 연장되지 않아요.", submit: "다시 보내기" },
   request: { title: "검토를 신청할까요?", description: "인증 회사에 검토 신청을 보내요. 검토는 접수 후 시작돼요.", submit: "검토 신청 보내기" },
   propose: { title: "최초 통합 제안을 보낼까요?", description: "원본 회사에 제안을 보내고 응답을 기다려요.", submit: "최초 제안 보내기" },
   accept: { title: "통합 제안을 수락할까요?", description: "수락하면 검토가 시작돼요. 팀원과 회사 정보의 이전은 검토와 별도 확정이 필요해요.", submit: "제안 수락하기" },
@@ -43,7 +47,7 @@ export function CompanyMergeDialog({ intent, pending, close, submit }: {
         event.preventDefault();
         if (pending) return;
         if (intent.kind === "eligibility") { dismiss(); return; }
-        try { submit(normalizeCompanyMergeAction(intent.kind === "decline" ? { kind: "decline", reason } : intent)); }
+        try { submit(normalizeCompanyMergeAction(intent.kind === "decline" ? { ...intent, reason } : intent)); }
         catch (cause) { setError(errorMessage(cause)); }
       }}>
         <h2 className="type-heading-7 text-grayscale-800" id="merge-dialog-title">{title}</h2>
