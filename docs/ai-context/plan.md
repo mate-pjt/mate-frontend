@@ -342,3 +342,7 @@ Final reports should include:
 ## 2026-11-20 · POL-21 가입 실적·인증 직접 편집 정책
 
 [사용자 결정](../development/figma-v01/tasks/POL-21.md#pol-21-brief)에 따라 두 가입 경로에서 조회값을 수정하거나 누락을 보완하고, 금액 공란과 미확인을 허용한다. 같은 등록 후보 화면의 입력 수명과 회사 등록·보정의 공동 저장을 [정책](../development/figma-v01/tasks/POL-21.md#pol-21-contract)에 기록했다. [DEV-44 서버 선행](../development/figma-v01/tasks/DEV-44.md#dev-44-pol-21-contract-gate)과 [O09 미실행 QA](../qa/auth.md#pol-21-o09-qa)는 별도다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-23 · POL-22 회사 조건 가져오기
+
+[사용자 결정과 정책](../development/figma-v01/tasks/POL-22.md#pol-22-brief)에 따라 확인한 전체 교체를 계정에 저장하고 목록은 `내 맞춤`으로 별도 적용한다. 가져올 조건이 전부 비면 기존 값과 버전을 보존한다. 기능 진입은 [DEV-45의 권한·결측 계약 및 DEV-08 선행](../development/figma-v01/tasks/DEV-45.md#dev-45-pol-22-gate) 확인 이후 판단하며 [CIMP QA 10건](../qa/personal-bid-filter.md#pol-22-company-import-qa)은 미실행 계획이다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
