@@ -56,6 +56,7 @@ export function NotificationEmailVerificationDialog({
     if (open && !dialog.open) {
       setNow(Date.now());
       dialog.showModal();
+      dialog.querySelector("input")?.focus();
     }
     if (!open && dialog.open) dialog.close();
   }, [open]);

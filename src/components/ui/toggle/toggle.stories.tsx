@@ -36,12 +36,20 @@ export const Disabled: Story = {
     },
 };
 
+export const Unavailable: Story = {
+    args: {
+        ariaLabel: "지원되지 않는 알림 설정",
+        unavailable: true,
+    },
+};
+
 export const States: Story = {
     render: () => (
         <div className="flex items-center gap-4">
             <Toggle ariaLabel="켜짐" />
             <Toggle ariaLabel="꺼짐" defaultChecked={false} />
             <Toggle ariaLabel="비활성" disabled />
+            <Toggle ariaLabel="미지원" unavailable />
         </div>
     ),
 };

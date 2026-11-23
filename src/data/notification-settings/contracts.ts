@@ -13,6 +13,10 @@ export type NotificationEmailVerification = {
   expiresAt: string;
   resendAvailableAt: string;
 };
+export type UnavailableNotificationSetting = Readonly<{
+  status: "unavailable";
+  reason: "web-connection-pending" | "night-delivery-not-supported";
+}>;
 
 export interface NotificationSettingsRepository {
   getNotificationEmailSetting(access: AuthAccess, signal?: AbortSignal): Promise<NotificationEmailSetting>;

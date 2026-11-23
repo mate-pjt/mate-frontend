@@ -91,8 +91,9 @@ Mate는 복잡한 입찰 탐색을 차분하고 친근하게 정리해 주는 �
 ### Notification guidance
 
 - 공고별 변경 소식은 서비스 내부 알림이며 상단 알림(`/alarms`)에서 확인한다. 설정·해제는 해당 공고 상세에서 한다. 비활성 `알림 설정 공고` 메뉴를 전체 관리 목적지로 안내하지 않는다.
-- 매일 한국 시각 오전08:30 맞춤 공고 이메일과 공고별 내부 알림은 독립이다. 이메일은 마이페이지의 [알림 설정](src/components/my/notification-settings-page-client.tsx)(`/my/settings/notifications`)에서 따로 설정하며 이메일 OFF로 공고별 알림을 해제하지 않는다. 없는 전역/야간 토글을 안내하지 않는다.
-- [DEV-62의 문구/접근성 검증](docs/development/figma-v01/tasks/DEV-62.md#dev-62-brief)과 기존 QA-09/11/12/13의 실제 통합 대기·차단은 별개다. POL-29의 Figma3항목/미지원 disabled 화면 준비는 DEV-66 소유다.
+- 매일 한국 시각 오전 8시 30분의 맞춤 공고 이메일과 공고별 내부 알림은 독립이다. 마이페이지의 [알림 설정](src/components/my/notification-settings-page-client.tsx)(`/my/settings/notifications`)에서 이메일 수신 여부를 저장한다. 이메일을 꺼도 해당 공고에 등록한 내부 알림은 유지된다.
+- 알림 설정 카드는 수신 이메일 선택과 맞춤 공고 이메일·입찰공고 상세·야간 알림 세 행을 표시한다. 설명은 처음 펼쳐 두며 제목과 화살표로 접고 펼친다. 상세·야간은 각 이유와 함께 중립 위치의 비활성 제어를 표시한다. 지원 여부는 접근성 설명에서도 확인할 수 있다. [DEV-66 화면 결정](docs/development/figma-v01/tasks/DEV-66.md#dev-66-brief)
+- [기존 알림 안내 검증](docs/development/figma-v01/tasks/DEV-62.md#dev-62-brief)과 [설정 로컬 회귀](docs/qa/notification-settings.md#dev-66-local-qa), QA-09/11/12/13의 실제 통합 이력에 각각 증거를 기록한다.
 
 ### QnaAccordion
 
