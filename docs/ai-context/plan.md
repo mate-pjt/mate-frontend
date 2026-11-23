@@ -350,3 +350,7 @@ Final reports should include:
 ## 2026-11-23 · DEV-64 공개 상세 화면 정렬
 
 [POL-29 D1](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)의 상세 본문·사이드 폭과 breadcrumb 우측 금액 전환을 적용했다. 승인된 입찰분류 선택과 회차·페이지 조회는 [DEV-64 로컬 회귀](../qa/bid-detail.md#dev-64-local-qa)에서 검증했다. QA-03·QA-09의 실제 통합 이력과 현재·다음 작업은 각각 해당 QA와 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-23 · DEV-66 알림 설정 화면
+
+[POL-29 D3](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)와 [POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract)에 따라 수신처와 세 설정 항목을 배치했다. 맞춤 공고 이메일의 조회·저장 및 인증을 사용하고 상세·야간은 비활성 사유를 표시한다. [로컬 mock·HTTP 대역](../qa/notification-settings.md#dev-66-local-qa)과 기존 QA-12/13 실서버 차단은 각 기록을 확인한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.

@@ -6,7 +6,7 @@
 - 화면: `/my` → `/my/settings/notifications`
 - 실제 API: `GET /api/v1/me/notification-email-settings`, `GET|PATCH /api/v1/me/matched-bid-notice-email-settings`
 - 정책: [mate-docs 알림과 맞춤 공고 이메일](https://github.com/mate-pjt/mate-docs/blob/b3251bba2a9fbc7de8857ee73dfb955db5720a3c/docs/domain/notification/overview.md). 맞춤 이메일은 매일 한국 시각 08:30에 조건에 맞는 새 공고가 있을 때 보내며 신규 계정 기본값은 OFF다. 수신 이메일 주소와 이메일 ON/OFF는 별개 설정이다.
-- 이 문서는 맞춤 이메일 ON/OFF를 검증한다. 다른 이메일 인증·전환은 [별도 펀치리스트](./notification-email-recipient.md)에서 검증한다. Figma의 공고 상세 알림 일괄 스위치와 야간 수신 스위치는 현행 정책/API에 없어 표시하지 않는다. 날짜 예시도 실제 데이터가 아니므로 표시하지 않는다.
+- 2026-09-28의 실제 테스트는 맞춤 이메일 ON/OFF를 대상으로 했다. 다른 이메일 인증·전환 이력은 [별도 펀치리스트](./notification-email-recipient.md)에 있다. 당시 화면에는 상세·야간 스위치와 시안의 예시 날짜가 없었다. 이후 세 설정 항목과 상세·야간 비활성 제어는 [DEV-66 로컬 회귀](#dev-66-local-qa)를 따른다.
 - 정적 검증: Node 22.20.0의 `pnpm lint`, `pnpm build`, `git diff --check` 통과.
 
 ## 실행 환경 기록
@@ -151,3 +151,22 @@ Chrome 첫 접속에서는 로컬 인증서에 `ERR_CERT_AUTHORITY_INVALID` 경�
 - ‘공고별 변경 소식은 해당 공고의 알림 설정과 별개’라는 모호한 문구를 내부 알림/이메일의 독립 설명으로 교정했다. 맞춤 이메일OFF에도 공고별 설정이 유지됨을 mock에서 확인했다. 실제 설정 경로는 `/my/settings/notifications`다.
 - 수신처 인증·전역/야간 구성·설정 API 동작은 바꾸지 않았다. 기존 NSET-07 실제1차단과 QA-13 실제6차단은 유지한다.
 - 이번 근거는 [알림 안내 로컬 검증](notification-guidance.md)과 [DEV-62](../development/figma-v01/tasks/DEV-62.md)에서 확인한다. 기존 실제 API 결과·미실행/차단을 보존한다.
+
+<a id="dev-66-local-qa"></a>
+
+## 2026-11-23 · DEV-66 세 설정 항목과 비활성 제어 검증
+
+- Codex, 09:37 KST부터 실행·재검증. 기준 `98e3941`, DEV-66 작업트리를 별도 디렉터리에 복제해 Node 22.20.0과 Next 16.2.9로 실행했다. Chromium에서 전원 mock과 별도의 API 프로필/loopback HTTP 대역을 사용했다. 테스트 데이터는 합성 계정 두 개, 주소와 공고 10001이다. Aside 격리 프로필 연결 실패 뒤 Playwright CLI로 수행했다.
+- Figma [설정 3139:52591](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52591)의 카드·수신처·세 항목 구성을 대조했다. [인증번호 3139:56715](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-56715)는 배경·입력 단계의 근거로 사용했다. 예시 설정 날짜와 두 기능의 효력 안내는 제품 정책과 준비 범위에 맞췄다. 모바일은 구현한 반응형의 검사다.
+
+| 사례 | 수준 | 결과 |
+| --- | --- | --- |
+| D66-01 · 설정 카드와 수신처 | Next mock | PASS. 1920px에서 카드 폭 1180px·안쪽 여백 24px·모서리 20px, 제어 48×24px. 320/390px 가로 넘침 0. 수신처와 세 항목 순서 유지, 세 화살표의 마스크 ID 6개 고유 및 인스턴스별 참조 일치. |
+| D66-02 · 비활성 제어와 설명 | Next mock | PASS. 클릭·Tab 대상 여부·Space/Enter·390px 터치로 확인했다. 두 제어는 native disabled이고 중립 위치였다. 설명은 기본 펼침, 접힘 시 hover `title` 및 키보드·터치로 재열기. Chromium AX 트리에서 비활성·설명과 `checked` 속성 없음 확인. 비활성 조작 전후 mock 설정값 일치, 외부/업무 요청 0. |
+| D66-03 · 맞춤 이메일과 채널 독립 | Next mock | PASS. 키보드 저장과 새로고침, 다른 탭·계정 격리, 수신처 보존을 확인했다. 합성 공고 10001의 기존 팝업으로 내부 알림을 켠 뒤 설정 화면에서 이메일 ON→OFF 후 상세로 돌아가 공고 등록의 ON을 확인했다. |
+| D66-04 · 인증·세션 수명 | Next mock | PASS. 320px에서 주소 초점, 4자리 입력 초점, 최초 재전송 대기·시계 전진에 따른 만료·제출 비활성, Escape 뒤 수신처 라디오 복귀와 기존 주소 유지. 세션 만료 뒤 로그인 안내로 돌아왔다. 별도 실제 보조기술 음성 테스트는 미실행이다. |
+| D66-05 · 초기 조회와 저장 | Next + HTTP 대역 | PASS. 로그인/설정 로딩, 합성 GET 503 뒤 재시도, 지연 PATCH 중 중복 저장 방지와 이전 값 유지, PATCH 503 후 재저장과 새로고침을 확인했다. 기존 두 GET과 맞춤 이메일 PATCH만 사용했다. |
+| D66-06 · 미지원과 인증 시작 | Next + HTTP 대역 | PASS. 상세·야간 제어/설명 조작 전후 요청·저장 0건. 전체 실행에서 브라우저와 대역 서버의 `/api/v1/me/notification-settings` 호출 각각 0. 수신처 인증은 기존 POST, 응답 시각과 Escape를 확인했다. |
+| D66-07 · 계정 전환과 만료 | Next + HTTP 대역 | PASS. PATCH 401 뒤 새 계정으로 세션 갱신 시 그 계정의 설정만 조회하고 이전 PATCH를 재전송하지 않았다. 최종 세션 갱신 401은 비로그인 안내로 전환했다. 외부 업무 요청·처리되지 않은 페이지 오류 0건. |
+
+합성 화면 캡처는 [1920px의 설정 카드](assets/dev66/desktop-card.jpg)와 [390px의 설정 카드](assets/dev66/mobile-card.jpg)에 있다. 실제 API 실행과 신규 통과는 각각 0건이다. NSET-07의 실제 오류 차단과 [대체 이메일 6건 차단](notification-email-recipient.md#qa-13-20261105)은 본인 계정/수신처·안전한 오류·Mailpit·복구 및 실행 버전 대응의 기존 재개 조건을 따른다. [DEV-66 검증·문서 갱신](../development/figma-v01/tasks/DEV-66.md#dev-66-verification)

@@ -53,6 +53,8 @@ src/data/
 
 회사 계약은 Directory/Onboarding/Document/Team/Merge 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
 
+전역 상세·야간 알림 행은 `notification-settings/client.ts`의 `notificationSettingsCapabilities`에서 화면 지원 상태와 비활성 사유를 읽는다. 이 값은 모든 프로필에서 같고 계정 설정과 별개다. 상세·야간의 Repository 메서드, HTTP DTO 및 mock 저장은 별도 활성화 Gate의 범위다. [DEV-66 연결 경계](../development/figma-v01/tasks/DEV-66.md#dev-66-brief) · [POL-19 후속 조건](../development/figma-v01/tasks/POL-19.md#pol-19-contract)
+
 ## 4. 빌드 설정과 운영 guard
 
 - `MATE_DATA_PROFILE`: `api`(기본), `mock`(7개 모두), `hybrid`(API 기본 + overrides).
