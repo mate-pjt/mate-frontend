@@ -6,6 +6,7 @@ import { createHttpNotificationsRepository } from "@/data/notifications/http-rep
 import { createMockNotificationsRepository } from "@/data/notifications/mock-repository";
 import { createHttpPersonalFiltersRepository } from "@/data/personal-filters/http-repository";
 import { createMockPersonalFiltersRepository } from "@/data/personal-filters/mock-repository";
+import { notificationSettingsCapabilities } from "@/data/notification-settings/client";
 import { createHttpNotificationSettingsRepository } from "@/data/notification-settings/http-repository";
 import { createMockNotificationSettingsRepository } from "@/data/notification-settings/mock-repository";
 import { emptyPersonalFilter, samePersonalFilter } from "@/features/bid-notice-filters/model";
@@ -64,6 +65,13 @@ for (const source of ["mock","http"] as const) describe(`${source} 동일 Reposi
     expect(await filters.getPersonalFilter(access)).toEqual(latest);
   });
   it("이메일 인증·주소 변경·ON/OFF 계약이 일치한다",async()=>{const{email}=repos();const verification=await email.startNotificationEmailVerification(access,"recipient@example.test");expect((await email.confirmNotificationEmailVerification(access,verification.verificationId,"1234")).recipientEmail).toBe("recipient@example.test");await email.changeMatchedBidEmailSetting(access,true);expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);await email.changeNotificationEmailRecipient(access,"SIGNUP_EMAIL");expect((await email.getNotificationEmailSetting(access)).recipientEmail).toBe("demo1@example.test");expect((await email.getMatchedBidEmailSetting(access)).enabled).toBe(true);});
+});
+
+it("상세·야간의 지원 상태는 저장값 없이 각각의 비활성 사유만 제공한다", () => {
+  expect(notificationSettingsCapabilities).toEqual({
+    detailAlerts: { status: "unavailable", reason: "web-connection-pending" },
+    nightAlerts: { status: "unavailable", reason: "night-delivery-not-supported" },
+  });
 });
 
 it("수신 이메일 HTTP Repository는 시작·재전송의 응답 시각과 최신 주소를 전달한다", async () => {
