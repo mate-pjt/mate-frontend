@@ -333,7 +333,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-end gap-2">
-          <BidListSearch initialValue={state.query} key={state.query} onSearch={(query) => updateParams({ query: query || undefined, page: undefined })} />
+          <BidListSearch initialValue={state.query} onSearch={(query) => updateParams({ query: query || undefined, page: undefined })} />
           <Select
             align="right"
             ariaLabel="페이지당 공고 수"

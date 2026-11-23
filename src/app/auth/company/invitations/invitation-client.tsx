@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
 import { Button } from "@/components/ui/button";
 import { ApiError, errorMessage } from "@/data/shared/errors";
-import { googleAuthorizationUrl } from "@/data/auth/client";
 import { acceptInvitation, declineInvitation, previewInvitation, resumeInvitation } from "@/data/company/client";
 import { useAuthSession } from "@/features/auth/session";
 import type { InvitationContext } from "@/data/company/contracts";
@@ -49,7 +48,7 @@ export function InvitationClient() {
 }
 
 function InvitationFlow({ account }: { account: number | null }) {
-  const { state, getAccessToken, refresh, getAccountKey, logout } = useAuthSession();
+  const { state, getAccessToken, refresh, getAccountKey, logout, startGoogleLogin } = useAuthSession();
   const access = useMemo<AuthAccess>(() => ({ getAccessToken, refresh, getAccountKey }), [getAccessToken, refresh, getAccountKey]);
   const scope = useCompanyFlowScope();
   const leaving = useRef(false);
@@ -162,7 +161,7 @@ function InvitationFlow({ account }: { account: number | null }) {
     setBusy(true);
     try {
       await logout();
-      if (onInvitationPage()) window.location.assign(googleAuthorizationUrl(invitationPath, "alternate"));
+      if (onInvitationPage()) startGoogleLogin(invitationPath, "alternate");
     } catch (reason) {
       if (onInvitationPage()) {
         setError(errorMessage(reason));
@@ -206,7 +205,7 @@ function InvitationFlow({ account }: { account: number | null }) {
       {needsSignIn ? (
         <div className="mt-[30px] space-y-3">
           <p className="text-grayscale-600 type-body-7">초대받은 Google 계정으로 로그인해 주세요.</p>
-          <button className="w-full rounded-xl bg-primary px-5 py-4 text-white" onClick={() => window.location.assign(googleAuthorizationUrl(invitationPath, "alternate"))} type="button">Google로 로그인</button>
+          <button className="w-full rounded-xl bg-primary px-5 py-4 text-white" onClick={() => startGoogleLogin(invitationPath, "alternate")} type="button">Google로 로그인</button>
         </div>
       ) : null}
       {accountMismatch ? (
