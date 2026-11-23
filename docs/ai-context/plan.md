@@ -366,3 +366,7 @@ Final reports should include:
 ## 2026-11-23 · POL-24의 MVP 소셜 로그인 범위
 
 [중앙 승인 근거를 적용한 POL-24 결정](../development/figma-v01/tasks/POL-24.md#pol-24-contract)에 따라 Google만 지원하고 O02 네이버 ‘준비 중’ 비활성 안내를 유지한다. [DEV-48 재개 조건](../development/figma-v01/tasks/DEV-48.md#dev-48-pol-24-handoff)은 신규 제공자 승인, OAuth·계정 계약, 실행 환경과 합성 QA 자원이다. [문서·소스 확인](../qa/auth.md#pol-24-o02-qa) 범위의 기록이며 앱 동작과 기존 실제 인증 QA 이력은 유지한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-24 · POL-25 서비스 이용안내의 MVP 범위
+
+[사용자 결정 D1](../development/figma-v01/tasks/POL-25.md#pol-25-contract)으로 로그인한 사용자가 `/my`에서 실제 웹 배포 버전을 확인하는 팝업을 선택했다. ‘최신’ 표시는 동일한 환경·채널의 공식 값과 일치할 때 적용한다. D2의 후속 구현 조건은 공식 출처, 갱신 책임과 조회 실패 기준이다. [소유 소스와 배포 기록 조사](../development/figma-v01/tasks/POL-25.md#pol-25-evidence) · [DEV-49 요구사항 Gate](../development/figma-v01/tasks/DEV-49.md#dev-49-pol-25-gate) · [미실행 S07 QA](../qa/my-settings-home.md#pol-25-s07-qa). 현재 작업과 다음 작업은 [WBS](../development/figma-v01/README.md)에서 확인한다.
