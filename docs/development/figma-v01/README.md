@@ -6,8 +6,9 @@
 | --- | --- |
 | 갱신일 | 2026-11-23 KST |
 | 현재 작업 | — |
-| 다음 작업 | [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md#dev-64-pol-22-handoff) · P2, POL-29 선행 |
-| 다음 첫 행동 | POL-29와 CF-10의 상세 화면·상태 기준을 현행 소스와 대조해 단위 전환, 본문·사이드 폭/간격, 분류 선택과 URL 보존의 요구사항 Gate를 작성한다. [인계](tasks/DEV-64.md#dev-64-pol-22-handoff) |
+| 다음 작업 | [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-dev-64-handoff) · P2, POL-29·POL-19 선행 |
+| 다음 첫 행동 | POL-29·POL-19의 비활성 화면 범위와 Figma 설정 프레임을 현재 알림 설정 화면과 대조해 DEV-66 요구사항 Gate를 작성한다. [인계](tasks/DEV-66.md#dev-66-dev-64-handoff) |
+| DEV-64 이번 승인과 Git 전달 | 2026-11-23 사용자가 단일 개발·검증·두 리뷰·Git 전달과 해당 PR의 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/DEV-64.md#dev-64-brief) · [PR 최종 head 확인](tasks/DEV-64.md#dev-64-delivery) |
 | POL-22 이번 결정과 승인 | 2026-11-23 사용자는 확인 뒤 전체 교체·별도 목록 적용, 권한 경계 확인 전 노출 보류, 전부 결측이면 기존 값 보존을 확정했다. 문서 검증·두 리뷰·Git 전달과 이번 PR의 Chromatic 월간 한도 예외를 승인했다. [결정](tasks/POL-22.md#pol-22-brief) · [정책](tasks/POL-22.md#pol-22-contract) |
 | POL-22 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-22-company-filter-import-policy)에서 최종 head의 검사·리뷰·main 병합을 확인한다. [전달 기준](tasks/POL-22.md#pol-22-delivery) |
 | POL-21 이번 결정과 승인 | 사용자가 2026-11-20 양쪽 가입 경로의 선택 입력, 등록과 보정의 공동 저장, 같은 등록 화면의 입력 보존을 확정했다. 문서 검증·두 리뷰·Git 전달과 해당 PR의 Chromatic 월간 한도 예외를 승인했다. [결정](tasks/POL-21.md#pol-21-brief) · [전달 기준](tasks/POL-21.md#pol-21-delivery) |
@@ -121,7 +122,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료53 · 차단26 · 대기32 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료54 · 차단26 · 대기31 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -289,9 +290,9 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-61 · 관련 공고 mock의 동일 업종·품목 정책 정합성](tasks/DEV-61.md) | 개발 | P1 | 완료 | D09 | [POL-30](tasks/POL-30.md) |
 | [DEV-62 · 알림 채널·관리 기능 안내 문구 정합성](tasks/DEV-62.md) | 개발 | P1 | 완료 | D04, A01, N02, S04, C01 | [QA-17](tasks/QA-17.md) |
 | [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) | 개발 | P0 | 완료 | L11 | [QA-17](tasks/QA-17.md) |
-| [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md#dev-64-pol-22-handoff) | 개발 | P2 | 준비 | D01, D02, C01 | [POL-29](tasks/POL-29.md) |
+| [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md#dev-64-close) | 개발 | P2 | 완료 | D01, D02, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-65 · 공개 목록·홈 mock의 검색·view 정책 정합성](tasks/DEV-65.md) | 개발 | P0 | 완료 | H02, L01, L03, L12 | [QA-17](tasks/QA-17.md) |
-| [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-pol-19-boundary) · **비활성 화면 범위와 별도 활성화 선행** | 개발 | P2 | 대기 | S04, S06, C01 | [POL-29](tasks/POL-29.md) / [POL-19](tasks/POL-19.md) |
+| [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-dev-64-handoff) · **비활성 화면 범위와 별도 활성화 선행** | 개발 | P2 | 준비 | S04, S06, C01 | [POL-29](tasks/POL-29.md) / [POL-19](tasks/POL-19.md) |
 
 ## 2026-11-11 · POL-29 화면 기준 인계
 
@@ -601,3 +602,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - [POL-22](tasks/POL-22.md#pol-22-contract)는 현재 소속 회사의 활성 지역·업종·희망금액을 투영해, 사용자 확인 뒤 계정 필터를 전체 교체하고 `내 맞춤`으로 목록에 별도 적용하는 정책을 확정했다. 전부 결측이면 개인 값을 보존하고 소유자 권한 확인 전에는 기능 노출을 보류한다. [문서 검증과 두 리뷰](reviews/POL-22.md)
 - [DEV-45](tasks/DEV-45.md#dev-45-pol-22-gate)는 DEV-08 및 권한·전체 결측·동일 소속의 서버 계약 선행을 기다린다. [CIMP 10건](../../qa/personal-bid-filter.md#pol-22-company-import-qa)은 미실행이며 기존 QA-10 실제 12차단을 보존한다.
 - 앞선 우선순위와 선행 조건을 적용해 POL-29를 충족한 첫 P2 [DEV-64](tasks/DEV-64.md#dev-64-pol-22-handoff)를 다음 Task로 선정했다. 공개 상세에서 본문·사이드 폭/간격과 단위 전환 위치를 대조하고, 승인된 입찰분류 선택과 URL을 보존하는 것이 첫 행동이다. 선정과 인계 범위다.
+
+## 2026-11-23 · DEV-64 상세 화면과 DEV-66 인계
+
+- [DEV-64 종료](tasks/DEV-64.md#dev-64-close)는 승인된 792/16/372px 배치와 breadcrumb 우측 전환기, 320/390px 내부 스크롤, 분류·회차·페이지 URL, 알림 팝업 초점 복귀를 로컬에서 검증했다. [검증·두 리뷰](reviews/DEV-64.md) · [상세 QA](../../qa/bid-detail.md#dev-64-local-qa). 신규 실서버 통합 0건이며 기존 QA-03/09의 차단을 유지한다.
+- 먼저 배치된 P0/P1과 앞선 P2의 차단 및 미충족 선행 조건을 적용했다. POL-29와 POL-19를 충족한 첫 P2 [DEV-66](tasks/DEV-66.md#dev-66-dev-64-handoff)의 자체 요구사항 Gate를 인계했다. 세 설정 항목과 지원되는 맞춤 이메일, 전역 상세·야간 비활성 화면의 근거 확인이 첫 행동이다.

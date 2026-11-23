@@ -113,6 +113,7 @@ function AuthenticatedAlertCard({
 
   function closeModal() {
     if (savingRef.current) return;
+    dialogRef.current?.close();
     setOpen(false);
     setMutationError(null);
   }
@@ -144,6 +145,7 @@ function AuthenticatedAlertCard({
         throw new ApiError(200, "ALERT_STATUS_MISMATCH", "서버의 알림 상태를 확인하지 못했습니다. 다시 시도해 주세요.");
       }
       setLoaded({ phase: "ready", value: next });
+      dialogRef.current?.close();
       setOpen(false);
       showToast(draftEnabled ? "공고 알림을 설정했어요!" : "공고 알림을 해제했어요!");
     } catch (error) {
@@ -230,10 +232,10 @@ function AlertCardShell({
   title: string;
 }) {
   return (
-    <aside className="rounded-[20px] bg-white p-6 shadow-[0_0_12px_var(--grayscale-100)] lg:sticky lg:top-6 lg:self-start">
+    <aside className="rounded-[20px] bg-white p-6 shadow-[0_0_12px_var(--grayscale-100)] lg:sticky lg:top-6 lg:col-start-2 lg:row-start-2 lg:self-start">
       <div className="flex flex-col items-center gap-4 text-center">
         <Image alt="" aria-hidden height={80} src={icon} width={80} />
-        <p className="max-w-[250px] text-grayscale-800 type-heading-9">{title}</p>
+        <p className="max-w-[250px] break-keep text-balance text-grayscale-800 type-heading-9">{title}</p>
       </div>
       <div className="mt-6 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-grayscale-50 px-4 py-3 text-grayscale-800 type-body-7">
         <span className="inline-flex items-center gap-2 font-semibold">
