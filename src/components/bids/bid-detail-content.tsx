@@ -15,7 +15,7 @@ import type {
 
 import { BidDetailShare } from "./bid-detail-actions";
 import { BidDetailAlertCard } from "./bid-detail-alert-card";
-import { BidDetailAmounts } from "./bid-detail-amounts";
+import { BidDetailAmountProvider, BidDetailAmounts, BidDetailAmountToggle } from "./bid-detail-amounts";
 
 const numberFormatter = new Intl.NumberFormat("ko-KR");
 const decimalFormatter = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 20 });
@@ -39,21 +39,23 @@ export function BidDetailContent({ data, itemPage, participantsPage }: BidDetail
     : null;
 
   return (
-    <main className="min-h-screen bg-grayscale-50 pb-20" id="top">
-      <div className="mx-auto max-w-[1112px] px-5 pb-12 pt-7 sm:px-7">
-        <nav aria-label="현재 위치" className="mb-5 text-grayscale-600 type-body-7">
-          <Link className="hover:text-primary-400" href="/bids">입찰공고</Link>
-          <span aria-hidden className="mx-2">›</span>
-          <span className="font-semibold text-grayscale-800">입찰공고 상세</span>
-        </nav>
-
-        <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <div className="min-w-0 space-y-4">
+    <main className="min-h-screen bg-grayscale-50 px-5 pb-20 sm:px-7" id="top">
+      <BidDetailAmountProvider>
+        <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-start gap-4 pb-12 pt-7 lg:grid-cols-[minmax(0,1fr)_372px]">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 lg:col-start-1 lg:row-start-1">
+            <nav aria-label="현재 위치" className="flex flex-wrap items-center gap-1 text-grayscale-700 type-body-3">
+              <Link className="hover:text-primary-700" href="/bids">입찰공고</Link>
+              <span aria-hidden="true">›</span>
+              <span aria-current="page" className="font-bold">입찰공고 상세</span>
+            </nav>
+            <BidDetailAmountToggle />
+          </div>
+          <div className="min-w-0 space-y-4 lg:col-start-1 lg:row-start-2">
             <section className="rounded-xl bg-white p-5 shadow-[0_0_12px_var(--grayscale-100)] sm:p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="font-semibold text-primary-400 type-body-7">{bid.noticeNumber}{bid.classificationNo ? ` · 분류 ${bid.classificationNo}` : ""}</p>
-                  <h1 className="mt-1 break-keep font-bold text-grayscale-900 type-heading-9">{bid.title}</h1>
+                  <p className="wrap-anywhere font-semibold text-primary-400 type-body-7">{bid.noticeNumber}{bid.classificationNo ? ` · 분류 ${bid.classificationNo}` : ""}</p>
+                  <h1 className="mt-1 break-keep wrap-anywhere font-bold text-grayscale-900 type-heading-9">{bid.title}</h1>
                 </div>
                 <div className="flex shrink-0 items-center gap-1">
                   {bid.sourceUrl ? (
@@ -206,14 +208,14 @@ export function BidDetailContent({ data, itemPage, participantsPage }: BidDetail
 
           <BidDetailAlertCard bidId={bid.id} closeAt={bid.schedule.bidCloseAt} />
         </div>
-      </div>
+      </BidDetailAmountProvider>
       <a className="fixed bottom-5 right-5 flex size-12 items-center justify-center rounded-full bg-grayscale-800 text-white shadow-lg hover:bg-grayscale-700" href="#top" aria-label="맨 위로">↑</a>
     </main>
   );
 }
 
 function ClassLink({ active, href, label }: { readonly active: boolean; readonly href: string; readonly label: string }) {
-  return <Link aria-current={active ? "page" : undefined} className={`rounded-md px-3 py-2 type-body-7 ${active ? "bg-primary-400 font-semibold text-white" : "bg-grayscale-50 text-grayscale-700 hover:bg-primary-100"}`} href={href}>{label}</Link>;
+  return <Link aria-current={active ? "page" : undefined} className={`max-w-full rounded-md px-3 py-2 wrap-anywhere type-body-7 ${active ? "bg-primary-400 font-semibold text-white" : "bg-grayscale-50 text-grayscale-700 hover:bg-primary-100"}`} href={href}>{label}</Link>;
 }
 
 function SectionCard({ children, title }: { readonly children: React.ReactNode; readonly title: string }) {
@@ -286,7 +288,7 @@ function ResultCard({ bid, itemPage, participants, participantsPage, podium: pod
         {results.map((result) => (
           <Link
             aria-current={result.id === selectedResult?.id ? "page" : undefined}
-            className={`rounded-md px-3 py-2 type-body-7 ${result.id === selectedResult?.id ? "bg-primary-400 font-semibold text-white" : "bg-grayscale-50 text-grayscale-700"}`}
+            className={`max-w-full rounded-md px-3 py-2 wrap-anywhere type-body-7 ${result.id === selectedResult?.id ? "bg-primary-400 font-semibold text-white" : "bg-grayscale-50 text-grayscale-700"}`}
             href={detailQueryHref(bid, { itemPage, resultId: result.id })}
             key={result.id}
           >
@@ -326,7 +328,7 @@ function ResultCard({ bid, itemPage, participants, participantsPage, podium: pod
             <h3 className="font-semibold text-grayscale-800 type-body-6">참여업체</h3>
             {participants?.status === "error" ? <div className="mt-3"><SectionError /></div> : participants?.status === "ready" ? (
               <>
-                {participants.data.items.length > 0 ? <div className="mt-3 overflow-x-auto">
+                {participants.data.items.length > 0 ? <div aria-label="참여업체 표" className="mt-3 overflow-x-auto focus-visible:outline-2 focus-visible:outline-primary-700" role="region" tabIndex={0}>
                   <table className="w-full min-w-[560px] text-left type-body-7">
                     <thead className="border-b border-grayscale-200 text-grayscale-600"><tr><th className="py-2">순위</th><th>업체</th><th>투찰금액</th><th>투찰률</th><th>투찰일</th></tr></thead>
                     <tbody className="text-grayscale-800">{participants.data.items.map((item, index) => <tr className="border-b border-grayscale-100" key={`${item.rank ?? index}:${item.companyName ?? ""}`}><td className="py-3">{item.rank ?? "—"}</td><td>{item.companyName ?? "—"}</td><td>{formatWon(item.bidAmount) ?? "—"}</td><td>{formatPercent(item.bidRate) ?? "—"}</td><td>{item.bidAt ?? "—"}</td></tr>)}</tbody>

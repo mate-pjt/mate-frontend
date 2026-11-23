@@ -230,10 +230,10 @@ function AlertCardShell({
   title: string;
 }) {
   return (
-    <aside className="rounded-[20px] bg-white p-6 shadow-[0_0_12px_var(--grayscale-100)] lg:sticky lg:top-6 lg:self-start">
+    <aside className="rounded-[20px] bg-white p-6 shadow-[0_0_12px_var(--grayscale-100)] lg:sticky lg:top-6 lg:col-start-2 lg:row-start-2 lg:self-start">
       <div className="flex flex-col items-center gap-4 text-center">
         <Image alt="" aria-hidden height={80} src={icon} width={80} />
-        <p className="max-w-[250px] text-grayscale-800 type-heading-9">{title}</p>
+        <p className="max-w-[250px] break-keep text-balance text-grayscale-800 type-heading-9">{title}</p>
       </div>
       <div className="mt-6 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-grayscale-50 px-4 py-3 text-grayscale-800 type-body-7">
         <span className="inline-flex items-center gap-2 font-semibold">
