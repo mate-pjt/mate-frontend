@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-23 KST |
 | 현재 작업 | — |
-| 다음 작업 | [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-dev-64-handoff) · P2, POL-29·POL-19 선행 |
-| 다음 첫 행동 | POL-29·POL-19의 비활성 화면 범위와 Figma 설정 프레임을 현재 알림 설정 화면과 대조해 DEV-66 요구사항 Gate를 작성한다. [인계](tasks/DEV-66.md#dev-66-dev-64-handoff) |
+| 다음 작업 | [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md#pol-23-dev-66-handoff) · P3, DOC-001 선행 |
+| 다음 첫 행동 | L04의 최근·추천 검색어 시안과 현재 검색 입력·URL 동작을 비교해 공급원·저장 범위·보존/삭제 결정의 자체 Gate를 준비한다. [인계](tasks/POL-23.md#pol-23-dev-66-handoff) |
+| DEV-66 이번 승인 | 2026-11-23 사용자가 단일 개발·검증·두 리뷰, 목적별 Git 전달·조건부 정상 병합·로컬 fast-forward 및 이번 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/DEV-66.md#dev-66-brief) |
+| DEV-66 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-66-notification-settings)의 최종 head에서 CI·리뷰 및 main 반영을 확인한다. [전달 기록](tasks/DEV-66.md#dev-66-delivery) |
 | DEV-64 이번 승인과 Git 전달 | 2026-11-23 사용자가 단일 개발·검증·두 리뷰·Git 전달과 해당 PR의 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/DEV-64.md#dev-64-brief) · [PR 최종 head 확인](tasks/DEV-64.md#dev-64-delivery) |
 | POL-22 이번 결정과 승인 | 2026-11-23 사용자는 확인 뒤 전체 교체·별도 목록 적용, 권한 경계 확인 전 노출 보류, 전부 결측이면 기존 값 보존을 확정했다. 문서 검증·두 리뷰·Git 전달과 이번 PR의 Chromatic 월간 한도 예외를 승인했다. [결정](tasks/POL-22.md#pol-22-brief) · [정책](tasks/POL-22.md#pol-22-contract) |
 | POL-22 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-22-company-filter-import-policy)에서 최종 head의 검사·리뷰·main 병합을 확인한다. [전달 기준](tasks/POL-22.md#pol-22-delivery) |
@@ -257,7 +259,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
-| [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md) | 정책 결정 | P3 | 대기 | L04 | [DOC-001](tasks/DOC-001.md) |
+| [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md#pol-23-dev-66-handoff) | 정책 결정 | P3 | 준비 | L04 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-47 · 승인된 최근·추천 검색어 팝업](tasks/DEV-47.md) | 개발 | P3 | 대기 | L04 | [POL-23](tasks/POL-23.md) |
 | [POL-24 · 네이버 로그인 지원 여부 결정](tasks/POL-24.md) | 정책 결정 | P3 | 대기 | O02 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-48 · 승인된 네이버 OAuth 연결](tasks/DEV-48.md) | 개발 | P3 | 대기 | O02 | [POL-24](tasks/POL-24.md) |
@@ -292,7 +294,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-63 · 개인 필터 reset의 빈 SAVED 계약 정합성](tasks/DEV-63.md) | 개발 | P0 | 완료 | L11 | [QA-17](tasks/QA-17.md) |
 | [DEV-64 · 공개 상세 레이아웃·단위 전환 UI 정합성](tasks/DEV-64.md#dev-64-close) | 개발 | P2 | 완료 | D01, D02, C01 | [POL-29](tasks/POL-29.md) |
 | [DEV-65 · 공개 목록·홈 mock의 검색·view 정책 정합성](tasks/DEV-65.md) | 개발 | P0 | 완료 | H02, L01, L03, L12 | [QA-17](tasks/QA-17.md) |
-| [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-dev-64-handoff) · **비활성 화면 범위와 별도 활성화 선행** | 개발 | P2 | 준비 | S04, S06, C01 | [POL-29](tasks/POL-29.md) / [POL-19](tasks/POL-19.md) |
+| [DEV-66 · 알림 설정 Figma 화면·미지원 API 연결 경계](tasks/DEV-66.md#dev-66-close) · **비활성 화면 범위와 별도 활성화 선행** | 개발 | P2 | 완료 | S04, S06, C01 | [POL-29](tasks/POL-29.md) / [POL-19](tasks/POL-19.md) |
 
 ## 2026-11-11 · POL-29 화면 기준 인계
 
@@ -607,3 +609,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-64 종료](tasks/DEV-64.md#dev-64-close)는 승인된 792/16/372px 배치와 breadcrumb 우측 전환기, 320/390px 내부 스크롤, 분류·회차·페이지 URL, 알림 팝업 초점 복귀를 로컬에서 검증했다. [검증·두 리뷰](reviews/DEV-64.md) · [상세 QA](../../qa/bid-detail.md#dev-64-local-qa). 신규 실서버 통합 0건이며 기존 QA-03/09의 차단을 유지한다.
 - 먼저 배치된 P0/P1과 앞선 P2의 차단 및 미충족 선행 조건을 적용했다. POL-29와 POL-19를 충족한 첫 P2 [DEV-66](tasks/DEV-66.md#dev-66-dev-64-handoff)의 자체 요구사항 Gate를 인계했다. 세 설정 항목과 지원되는 맞춤 이메일, 전역 상세·야간 비활성 화면의 근거 확인이 첫 행동이다.
+
+## 2026-11-23 · DEV-66 세 설정 항목과 POL-23 인계
+
+- [DEV-66](tasks/DEV-66.md#dev-66-close)의 수신처와 세 설정 항목, 맞춤 이메일 저장·인증, 상세·야간의 비활성 설명과 요청·저장 0건을 로컬에서 검증했다. [QA](../../qa/notification-settings.md#dev-66-local-qa) · [두 리뷰](reviews/DEV-66.md). 실제 기존 QA-12 1차단과 QA-13 6차단, 상세·야간의 활성화 선행을 보존한다.
+- 상위 P0~P2의 차단 및 선행 미충족을 반영한 뒤, DOC-001이 완료된 첫 P3 [POL-23](tasks/POL-23.md#pol-23-dev-66-handoff)을 선정했다. 최근·추천 검색어의 공급원 및 기록 보존·삭제 정책을 정하는 Gate를 인계한다.
