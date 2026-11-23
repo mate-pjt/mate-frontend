@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-23 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md#pol-23-dev-66-handoff) · P3, DOC-001 선행 |
-| 다음 첫 행동 | L04의 최근·추천 검색어 시안과 현재 검색 입력·URL 동작을 비교해 공급원·저장 범위·보존/삭제 결정의 자체 Gate를 준비한다. [인계](tasks/POL-23.md#pol-23-dev-66-handoff) |
+| 다음 작업 | [DEV-47 · 공개 목록의 최근 검색어 팝업](tasks/DEV-47.md#dev-47-pol-23-handoff) · P3, POL-23 선행 충족 |
+| 다음 첫 행동 | 최신 main의 검색 제출·URL·인증 세션 경계를 확인하고 BKEY QA 계획으로 DEV-47의 자체 요구사항 Gate를 연다. [인계](tasks/DEV-47.md#dev-47-pol-23-handoff) |
+| POL-23 이번 결정과 승인 | 2026-11-23 사용자가 탭 메모리 최근 검색어, 관리형 추천 검토 조건과 L04 화면 예외를 결정했다. 이번 문서 검증·두 리뷰·Git 전달과 Chromatic 월간 한도 예외를 승인했다. [승인](tasks/POL-23.md#pol-23-brief) |
+| POL-23 Git 전달 | 최종 head의 검사·리뷰·정상 main 반영은 [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-23-search-term-policy)에서 확인한다. [전달 기록](tasks/POL-23.md#pol-23-delivery) |
 | DEV-66 이번 승인 | 2026-11-23 사용자가 단일 개발·검증·두 리뷰, 목적별 Git 전달·조건부 정상 병합·로컬 fast-forward 및 이번 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/DEV-66.md#dev-66-brief) |
 | DEV-66 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-66-notification-settings)의 최종 head에서 CI·리뷰 및 main 반영을 확인한다. [전달 기록](tasks/DEV-66.md#dev-66-delivery) |
 | DEV-64 이번 승인과 Git 전달 | 2026-11-23 사용자가 단일 개발·검증·두 리뷰·Git 전달과 해당 PR의 Chromatic 월간 한도 예외를 승인했다. [Brief](tasks/DEV-64.md#dev-64-brief) · [PR 최종 head 확인](tasks/DEV-64.md#dev-64-delivery) |
@@ -124,7 +126,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료54 · 차단26 · 대기31 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료56 · 차단26 · 대기29 · 준비1 · 보류2 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서/두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -259,8 +261,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 | 작업 | 유형 | 순위 | 상태 | 원본 ID | 선행 작업 |
 | --- | --- | --- | --- | --- | --- |
-| [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md#pol-23-dev-66-handoff) | 정책 결정 | P3 | 준비 | L04 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-47 · 승인된 최근·추천 검색어 팝업](tasks/DEV-47.md) | 개발 | P3 | 대기 | L04 | [POL-23](tasks/POL-23.md) |
+| [POL-23 · 최근/추천 검색어 공급원·보존 결정](tasks/POL-23.md#pol-23-close) · **최근 기록 정책·문서 검증 완료, 관리형 추천의 표시 보류** | 정책 결정 | P3 | 완료 | L04 | [DOC-001](tasks/DOC-001.md) |
+| [DEV-47 · 승인된 최근·추천 검색어 팝업](tasks/DEV-47.md#dev-47-pol-23-handoff) · **최근 검색어만 인계** | 개발 | P3 | 준비 | L04 | [POL-23](tasks/POL-23.md) |
 | [POL-24 · 네이버 로그인 지원 여부 결정](tasks/POL-24.md) | 정책 결정 | P3 | 대기 | O02 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-48 · 승인된 네이버 OAuth 연결](tasks/DEV-48.md) | 개발 | P3 | 대기 | O02 | [POL-24](tasks/POL-24.md) |
 | [POL-25 · 서비스 이용안내 콘텐츠·목적지 결정](tasks/POL-25.md) | 정책 결정 | P3 | 대기 | S07 | [DOC-001](tasks/DOC-001.md) |
@@ -614,3 +616,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [DEV-66](tasks/DEV-66.md#dev-66-close)의 수신처와 세 설정 항목, 맞춤 이메일 저장·인증, 상세·야간의 비활성 설명과 요청·저장 0건을 로컬에서 검증했다. [QA](../../qa/notification-settings.md#dev-66-local-qa) · [두 리뷰](reviews/DEV-66.md). 실제 기존 QA-12 1차단과 QA-13 6차단, 상세·야간의 활성화 선행을 보존한다.
 - 상위 P0~P2의 차단 및 선행 미충족을 반영한 뒤, DOC-001이 완료된 첫 P3 [POL-23](tasks/POL-23.md#pol-23-dev-66-handoff)을 선정했다. 최근·추천 검색어의 공급원 및 기록 보존·삭제 정책을 정하는 Gate를 인계한다.
+
+## 2026-11-23 · POL-23 검색어 정책과 DEV-47 인계
+
+- [POL-23 정책](tasks/POL-23.md#pol-23-contract)은 공개 보기의 최근 검색어를 같은 탭 메모리에 최신순 5개·항목당 30분으로 제한한다. 빈 입력·삭제 화면 예외와 관리형 추천의 소유자·확정 목록·갱신 기준 확보 전 미노출을 기록했다. [문서 검증과 두 리뷰](reviews/POL-23.md) · [BKEY 8건 미실행 계획](../../qa/bid-list.md#pol-23-search-term-qa)
+- 상위 우선순위의 차단·미충족 선행을 적용하면 POL-23을 충족한 [DEV-47](tasks/DEV-47.md#dev-47-pol-23-handoff)이 첫 P3 후보다. 기존 검색·세션 및 탭 수명 확인으로 최근 검색어 요구사항 Gate를 여는 첫 행동을 인계했다.
