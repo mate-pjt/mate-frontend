@@ -1,10 +1,15 @@
 import { getDataConfig } from "../config";
 import { getMockRuntime } from "../mock/runtime";
 import { getHttpClient } from "../shared/client";
-import type { NotificationSettingsRepository } from "./contracts";
+import type { NotificationSettingsRepository, UnavailableNotificationSetting } from "./contracts";
 import { createHttpNotificationSettingsRepository } from "./http-repository";
 import { createMockNotificationSettingsRepository } from "./mock-repository";
 export type * from "./contracts";
+
+export const notificationSettingsCapabilities = {
+  detailAlerts: { status: "unavailable", reason: "web-connection-pending" },
+  nightAlerts: { status: "unavailable", reason: "night-delivery-not-supported" },
+} as const satisfies Readonly<Record<"detailAlerts" | "nightAlerts", UnavailableNotificationSetting>>;
 
 let repository: NotificationSettingsRepository | null = null;
 function getRepository(): NotificationSettingsRepository { return repository ??= getDataConfig().sources.notificationSettings === "mock" ? createMockNotificationSettingsRepository(getMockRuntime()) : createHttpNotificationSettingsRepository(getHttpClient()); }
