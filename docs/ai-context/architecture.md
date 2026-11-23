@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-20
+Last updated: 2026-11-23
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -28,6 +28,7 @@ src/
     qna/               # contracts, content, static-repository, server
   features/
     auth/session.tsx   # 세션 Provider와 사용자 행동 조합
+    bids/recent-searches.ts # 공개 입찰 최근 검색어의 탭 메모리와 만료
     bid-notice-filters/model.ts # URL 왕복과 필터 UI 조합
     notifications/activation-controller.ts # 읽음/이동·중복/계정 수명 조합
   lib/                 # 복귀 경로·상세 URL·사이트·metadata
@@ -52,6 +53,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `/my`의 계정 관리 카드는 [DEV-38](../development/figma-v01/tasks/DEV-38.md#dev-38-brief)의 `/my/settings/account`로 연결한다. 인접 알림 설정의 상세 레이아웃을 따르고, 현재 세션의 연락용 이메일을 회사 소속과 관계없이 클라이언트에서 읽는다. 쓰기·별도 인증·탈퇴는 각각 소유 정책의 후속 범위다. [POL-17 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)
 - `DESIGN.md` codifies the existing visual tokens, shared component patterns, layout rules, and accepted design debt.
 - HTML language is set to `ko`.
+- 공개 입찰공고의 최근 검색어는 앱 루트의 `AuthSessionProvider`가 현재 문서의 메모리로 관리하고 공통 목록 검색 입력에서 구독한다. 세션 controller의 계정·epoch·확정 상태와 Google 로그인 진입, `pagehide`에서 이전 기록을 폐기한다. 일반 토큰 갱신은 같은 문맥을 유지한다. 항목 선택은 기존 `query` 제출을 사용하며 기록은 저장소나 Repository에 기록하지 않는다. [DEV-47 설계](../development/figma-v01/tasks/DEV-47.md#dev-47-brief)
 - Global body classes use Tailwind utilities and CSS custom properties: `bg-background`, `text-foreground`, `antialiased`.
 - `src/lib/site.ts` centralizes site name, URL fallback, and Korean description.
 - `src/app/globals.css` is the canonical source for design tokens. It defines CSS variables, Tailwind `@theme inline`, base styles, and type utility classes.
