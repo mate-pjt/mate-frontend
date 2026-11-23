@@ -113,6 +113,7 @@ function AuthenticatedAlertCard({
 
   function closeModal() {
     if (savingRef.current) return;
+    dialogRef.current?.close();
     setOpen(false);
     setMutationError(null);
   }
@@ -144,6 +145,7 @@ function AuthenticatedAlertCard({
         throw new ApiError(200, "ALERT_STATUS_MISMATCH", "서버의 알림 상태를 확인하지 못했습니다. 다시 시도해 주세요.");
       }
       setLoaded({ phase: "ready", value: next });
+      dialogRef.current?.close();
       setOpen(false);
       showToast(draftEnabled ? "공고 알림을 설정했어요!" : "공고 알림을 해제했어요!");
     } catch (error) {
