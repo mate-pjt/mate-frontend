@@ -362,3 +362,7 @@ Final reports should include:
 ## 2026-11-23 · DEV-47 공개 입찰공고 최근 검색어
 
 빈 입력의 최근 목록, 키보드 검색과 단건·전체 삭제를 공개 3개 보기에 적용했다. 같은 문서의 브라우저 메모리와 인증 세션 수명을 사용하고 기존 목록의 `query` 제출을 재사용한다. [BKEY 8건 로컬 검증](../qa/bid-list.md#dev-47-local-qa)은 mock·HTTP 대역이며 QA-02 실제 통합 이력은 별도다. 관리형 추천의 소유자·확정 목록·갱신 기준은 [POL-23](../development/figma-v01/tasks/POL-23.md#pol-23-contract)에 남아 있다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-23 · POL-24의 MVP 소셜 로그인 범위
+
+[중앙 승인 근거를 적용한 POL-24 결정](../development/figma-v01/tasks/POL-24.md#pol-24-contract)에 따라 Google만 지원하고 O02 네이버 ‘준비 중’ 비활성 안내를 유지한다. [DEV-48 재개 조건](../development/figma-v01/tasks/DEV-48.md#dev-48-pol-24-handoff)은 신규 제공자 승인, OAuth·계정 계약, 실행 환경과 합성 QA 자원이다. [문서·소스 확인](../qa/auth.md#pol-24-o02-qa) 범위의 기록이며 앱 동작과 기존 실제 인증 QA 이력은 유지한다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
