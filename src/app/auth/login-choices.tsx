@@ -1,15 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { getLoginChoices, googleAuthorizationUrl } from "@/data/auth/client";
+import { getLoginChoices } from "@/data/auth/client";
+import { useAuthSession } from "@/features/auth/session";
 
 export function LoginChoices({ nextPath }: { nextPath: string }) {
+  const { startGoogleLogin } = useAuthSession();
   return (
     <div className="space-y-[10px]">
       {getLoginChoices().map((choice) => <button
         key={choice.id}
         className="flex h-14 w-full items-center justify-center gap-[10px] rounded-xl border border-grayscale-200 bg-white text-grayscale-800 type-body-1 hover:bg-grayscale-50"
-        onClick={() => window.location.assign(googleAuthorizationUrl(nextPath, choice.id))}
+        onClick={() => startGoogleLogin(nextPath, choice.id)}
         type="button"
       >
         <Image src="/images/auth/google-logo.png" alt="" width={20} height={20} />

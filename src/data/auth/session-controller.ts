@@ -16,6 +16,10 @@ export function createSessionController(repository: Pick<AuthRepository, "refres
   const pendingRefreshes = new Set<Promise<Authentication | null>>();
   const listeners = new Set<() => void>();
   const getAccountKey = () => state.status === "authenticated" && !loggingOut ? String(state.authentication.account.id) : null;
+  function getConfirmedSessionScope() {
+    if (loggingOut || state.status === "loading" || state.status === "error") return null;
+    return `${state.authentication?.account.id ?? "anonymous"}:${epoch}`;
+  }
   function publish() { onAccount(getAccountKey()); listeners.forEach(listener => listener()); }
   function update(next: SessionState) { state = next; publish(); }
   function setAuthentication(authentication: Authentication) {
@@ -57,5 +61,5 @@ export function createSessionController(repository: Pick<AuthRepository, "refres
   }
   return { getSnapshot: () => state, getServerSnapshot: () => initialSession,
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
-    setAuthentication, refresh, getAccessToken, getAccountKey, getSessionEpoch: () => epoch, logout };
+    setAuthentication, refresh, getAccessToken, getAccountKey, getConfirmedSessionScope, getSessionEpoch: () => epoch, logout };
 }

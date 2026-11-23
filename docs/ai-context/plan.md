@@ -358,3 +358,7 @@ Final reports should include:
 ## 2026-11-23 · POL-23 최근 검색어의 탭 보존 정책
 
 [사용자 결정](../development/figma-v01/tasks/POL-23.md#pol-23-brief)에 따라 공개 목록의 최근 검색어는 같은 탭 메모리에 최신 5개·항목당 30분 보관한다. 빈 입력에 기록이 있을 때 단건·전체 삭제를 제공하는 화면 예외를 승인했다. 관리형 추천은 소유자·확정 목록·갱신 기준을 확보한 뒤 검토한다. [DEV-47 인계](../development/figma-v01/tasks/DEV-47.md#dev-47-pol-23-handoff)와 [미실행 QA 8건](../qa/bid-list.md#pol-23-search-term-qa)을 연결했다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-23 · DEV-47 공개 입찰공고 최근 검색어
+
+빈 입력의 최근 목록, 키보드 검색과 단건·전체 삭제를 공개 3개 보기에 적용했다. 같은 문서의 브라우저 메모리와 인증 세션 수명을 사용하고 기존 목록의 `query` 제출을 재사용한다. [BKEY 8건 로컬 검증](../qa/bid-list.md#dev-47-local-qa)은 mock·HTTP 대역이며 QA-02 실제 통합 이력은 별도다. 관리형 추천의 소유자·확정 목록·갱신 기준은 [POL-23](../development/figma-v01/tasks/POL-23.md#pol-23-contract)에 남아 있다. 현재·다음·상태는 [WBS](../development/figma-v01/README.md)를 따른다.
