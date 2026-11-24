@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-24 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-27 · 메이트 소식 발행·콘텐츠 공급원 결정](tasks/POL-27.md#pol-27-dev-50-handoff) · P3, DOC-001 선행 충족 |
-| 다음 첫 행동 | POL-27의 자체 Gate에서 W01·W02 목록·상세 시안과 현행 GNB를 대조하고, 메이트 소식의 실제 발행 주체·콘텐츠 공급원에 관한 승인 근거를 확인한다. [인계](tasks/POL-27.md#pol-27-dev-50-handoff) |
+| 다음 작업 | [POL-28 · 운영 canonical URL·OG 이미지 결정](tasks/POL-28.md#pol-28-pol-27-handoff) · P3, DOC-001 선행 충족 |
+| 다음 첫 행동 | POL-28 자체 Gate에서 현행 canonical 설정과 승인된 운영 URL·OG 이미지의 소유 원문을 대조한다. [인계](tasks/POL-28.md#pol-28-pol-27-handoff) |
+| POL-27 이번 승인과 검증 | 2026-11-24 사용자가 백엔드 공식 공급원, 사용자 웹 조회 전용과 발행 글의 비로그인 열람을 승인했다. 목록·본문 정책의 [문서 검증과 두 리뷰](reviews/POL-27.md) 및 DEV-51·52 재개 조건을 기록했다. |
+| POL-27 Git 전달 | 이번 승인 범위의 최종 head·CI·리뷰·정상 병합 상태는 [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-27-mate-news-policy)에서 확인한다. [전달 기준](tasks/POL-27.md#pol-27-delivery) |
 | DEV-50 승인과 검증 | 2026-11-24 사용자가 단일 개발·검증·두 리뷰와 Git 전달, 이번 PR의 Chromatic 월간 한도 예외를 승인했다. POL-26 공통 링크의 [S08 브라우저 QA 5건](../../qa/qna.md#dev-50-local-qa)이 통과했다. [검토 기록](reviews/DEV-50.md) |
 | DEV-50 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-50-feedback-link)에서 최종 head의 CI·리뷰와 main 반영을 확인한다. [전달 기준](tasks/DEV-50.md#dev-50-delivery) |
 | POL-26 결정과 이번 승인 | 2026-11-24 사용자 D1/D2로 설정·FAQ의 공통 의견 폼을 지정했고 D3로 링크 정책까지 마무리한다. 이번 문서 검증·두 리뷰·Git 전달과 이 PR의 Chromatic 월간 한도 예외를 승인했다. [결정](tasks/POL-26.md#pol-26-contract) · [작업 범위](tasks/POL-26.md#pol-26-brief) |
@@ -136,7 +138,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료61 · 차단27 · 대기22 · 준비1 · 보류3 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서·두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료62 · 차단28 · 대기20 · 준비1 · 보류3 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서·두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -279,10 +281,10 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-49 · 서비스 이용안내 진입 연결](tasks/DEV-49.md#dev-49-pol-25-gate) · **공식 버전 출처·책임·조회 실패 기준 선행** | 개발 | P3 | 차단 | S07 | [POL-25](tasks/POL-25.md) |
 | [POL-26 · 의견 보내기·문의 수집 채널 결정](tasks/POL-26.md#pol-26-close) · **공통 외부 폼 링크 정책과 프론트 데이터 경계** | 정책 결정 | P3 | 완료 | S08 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-50 · 설정·FAQ 의견 보내기 연결](tasks/DEV-50.md#dev-50-close) · **공통 폼 링크·공개 열람·두 진입점 검증** | 개발 | P3 | 완료 | S08 | [POL-26](tasks/POL-26.md) |
-| [POL-27 · 메이트 소식 발행·콘텐츠 공급원 결정](tasks/POL-27.md#pol-27-dev-50-handoff) | 정책 결정 | P3 | 준비 | W01, W02 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-51 · 메이트 소식 목록·필터·GNB 연결](tasks/DEV-51.md) | 개발 | P3 | 대기 | W01 | [POL-27](tasks/POL-27.md) |
-| [DEV-52 · 소식 상세·이미지·목록 복귀](tasks/DEV-52.md) | 개발 | P3 | 대기 | W02 | [DEV-51](tasks/DEV-51.md) |
-| [POL-28 · 운영 canonical URL·OG 이미지 결정](tasks/POL-28.md) | 정책 결정 | P3 | 대기 | C03 | [DOC-001](tasks/DOC-001.md) |
+| [POL-27 · 메이트 소식 발행·콘텐츠 공급원 결정](tasks/POL-27.md#pol-27-close) · **공식 API와 공개 조회 정책·문서 범위** | 정책 결정 | P3 | 완료 | W01, W02 | [DOC-001](tasks/DOC-001.md) |
+| [DEV-51 · 메이트 소식 목록·필터·GNB 연결](tasks/DEV-51.md#dev-51-pol-27-handoff) · **공개 목록 API 계약·개발 배포 선행** | 개발 | P3 | 차단 | W01 | [POL-27](tasks/POL-27.md) |
+| [DEV-52 · 소식 상세·이미지·목록 복귀](tasks/DEV-52.md#dev-52-pol-27-handoff) · **DEV-51과 공개 상세 계약 선행** | 개발 | P3 | 대기 | W02 | [DEV-51](tasks/DEV-51.md) |
+| [POL-28 · 운영 canonical URL·OG 이미지 결정](tasks/POL-28.md#pol-28-pol-27-handoff) | 정책 결정 | P3 | 준비 | C03 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-53 · OG 이미지·canonical 메타데이터 연결](tasks/DEV-53.md) | 개발 | P3 | 대기 | C03 | [POL-28](tasks/POL-28.md) |
 | [DEV-54 · 상세 페이지 main 랜드마크 중첩 해소](tasks/DEV-54.md) | 개발 | P3 | 대기 | C04 | [DOC-001](tasks/DOC-001.md) |
 | [QA-15 · 정적 홈·FAQ·공용 UI의 조건부 회귀](tasks/QA-15.md) | 검증 | P3 | 보류 | H01, Q01, C01 | [DOC-001](tasks/DOC-001.md) |
@@ -656,3 +658,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - 인증 설정과 공개 FAQ의 의견 링크를 공통 배너에 연결했다. 1,258개 테스트, lint·Next·Storybook 빌드, [S08 브라우저 QA](../../qa/qna.md#dev-50-local-qa), [두 리뷰](reviews/DEV-50.md)를 통과했다. 실제 Mate OAuth·업무 API와 폼 제출·운영은 미실행이다. [완료 범위](tasks/DEV-50.md#dev-50-close)
 - P0~P2의 차단과 미충족 선행, DEV-48 보류·DEV-49 차단을 반영했다. DOC-001이 완료된 P3 중 표 순서가 가장 앞선 [POL-27](tasks/POL-27.md#pol-27-dev-50-handoff)을 선정했다. W01·W02의 시안·현행 GNB·발행 근거를 자체 Gate에서 확인하도록 인계했다.
+
+## 2026-11-24 · POL-27 공개 조회 정책과 POL-28 인계
+
+- [POL-27의 승인 정책](tasks/POL-27.md#pol-27-contract)은 백엔드 API의 발행 글을 사용자 웹에서 로그인 없이 읽는 범위다. 문서 검증·두 리뷰를 연결했고, 실제 목록 API·개발 배포 선행은 [DEV-51](tasks/DEV-51.md#dev-51-pol-27-handoff)에, DEV-51과 상세 계약은 [DEV-52](tasks/DEV-52.md#dev-52-pol-27-handoff)에 보존했다.
+- 상위 우선순위의 남은 차단과 선행, DEV-48 보류·DEV-49 차단과 DEV-51·52의 계약 조건을 보존했다. DOC-001을 충족한 P3 독립 후보 중 표에서 앞선 [POL-28](tasks/POL-28.md#pol-28-pol-27-handoff)을 선정하고 자체 Gate의 첫 확인만 인계했다.

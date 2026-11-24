@@ -378,3 +378,7 @@ Final reports should include:
 ## 2026-11-24 · DEV-50 설정·FAQ 의견 링크 검증
 
 인증 설정과 공개 FAQ에 공통 배너를 연결했다. 전체 mock의 로그인 경계와 정적 FAQ, 실제 공개 폼 열람, 브라우저 HTTP 장애 대역을 구분해 [S08-01~05](../qa/qna.md#dev-50-local-qa)에 기록했다. 실제 Mate 업무 API나 양식 제출은 이 링크 범위의 통과에 포함되지 않는다. [설계](../development/figma-v01/tasks/DEV-50.md#dev-50-brief) · [현재 상태와 다음 작업](../development/figma-v01/README.md)
+
+## 2026-11-24 KST · POL-27 메이트 소식의 사용자 웹 정책
+
+백엔드 API를 공식 공급원으로 정하고 사용자 웹은 발행된 글의 공개 목록·상세 조회를 담당한다. 게시 변경은 별도 인가된 관리 경로의 책임이다. [사용자 결정](../development/figma-v01/tasks/POL-27.md#pol-27-contract)과 [DEV-51·52의 계약 및 배포 확인 조건](../development/figma-v01/tasks/POL-27.md#pol-27-verification)을 따른다. 제품 개발과 실제 API 통합 검증은 이 정책 작업에서 미실행이다. [현재 상태와 다음 작업](../development/figma-v01/README.md)
