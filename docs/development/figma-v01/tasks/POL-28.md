@@ -25,9 +25,11 @@
 ## 완료 기준
 
 - [ ] 운영 주소/이미지 소유·제공 경로와 Figma OG 적용 범위를 기록한다
-- [ ] 기본 이미지·크기/대체텍스트·canonical 중복/잘못된 fallback 처리를 확정한다
-- [ ] 원문/소유 소스·버전·결정자·시각·선택/보류 이유를 기록한다. 추천안은 승인으로 간주하지 않는다.
+- [x] 기본 이미지·크기/대체텍스트·canonical 중복/잘못된 fallback 처리를 확정한다. [D2·D3](#pol-28-contract)
+- [x] 원문/소유 소스·확인한 버전·결정자·시각·선택/보류 이유를 기록한다. [조사](#pol-28-evidence) · [주소 보류](#pol-28-domain-decision) · [승인](#pol-28-contract)
 - [ ] 근거 있는 기존 승인 또는 필요한 개발자 결정을 확보하고, 후속 개발의 범위/완료 기준/차단을 갱신한다. 정책 작업도 Review Gate를 수행한다.
+
+열린 기준에는 승인된 운영 주소가 필요하다. D2·D3를 받은 뒤의 전달·검증 범위는 [이번 Brief](#pol-28-brief)에서 확인한다.
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -71,3 +73,56 @@
 [POL-27의 정책 범위](POL-27.md#pol-27-close)가 종료됐다. DEV-51은 공개 소식 API 계약과 개발 배포가 선행이고 DEV-52는 DEV-51의 결과와 상세 계약이 필요하다. WBS의 상위 차단·미충족 선행, DEV-48 보류와 DEV-49 차단을 적용한 뒤, DOC-001을 충족한 P3 독립 후보 중 표에서 앞선 POL-28을 선정했다. [현재와 다음 작업](../README.md)
 
 다음 첫 행동은 자체 요구사항 Gate에서 현행 canonical 설정을 확인하고, 승인된 운영 URL·OG 이미지의 소유 원문과 공유 시안의 적용 범위를 대조하는 것이다. 기본값과 페이지별 메타데이터의 정책은 그 Gate에서 판단한다. 이번 기록의 범위는 선정과 인계다.
+
+<a id="pol-28-evidence"></a>
+
+## 2026-11-24 KST · 현행 근거 조사
+
+| 근거 | 이번에 확인한 범위 |
+| --- | --- |
+| 프론트 소스 | 기준 SHA `404ba20b15b736398a2e7825928e14e1944e57d3`. [사이트 설정](../../../../src/lib/site.ts)은 `NEXT_PUBLIC_SITE_URL`과 소스에 적힌 예시 주소 `https://mate.example.com`을 사용한다. [루트 레이아웃](../../../../src/app/layout.tsx)의 `metadataBase`와 [공개 페이지 헬퍼](../../../../src/lib/metadata.ts)가 이를 사용한다. 실제 환경변수 값은 조사 범위에서 제외했다. |
+| 페이지별 소스 | [홈](../../../../src/app/page.tsx), [입찰 목록](../../../../src/app/bids/page.tsx), [입찰 상세](../../../../src/app/bids/%5BbidId%5D/page.tsx), [FAQ](../../../../src/app/qna/page.tsx)는 이미 상대 경로의 canonical과 `og:url`, X 카드용 `summary_large_image`를 설정한다. 상세는 공고 ID의 기본 경로를 쓰고 조회 결과가 없을 때도 같은 경로를 메타데이터에 넘긴다. 공유 이미지 필드와 전용 배포 자산은 현행 소스에서 확인되지 않았다. [로그인](../../../../src/app/auth/page.tsx), [마이](../../../../src/app/my/page.tsx), [받은 알림](../../../../src/app/alarms/page.tsx)의 `noindex`는 기존 설정이다. |
+| 디자인 원본 | 2026-11-24 KST에 [Figma C03 `2869:43486`](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2869-43486) 한 프레임의 크기와 렌더를 확인했다. 원본은 **1200×630**이며 ‘새로운 입찰의 시작’ 문구, 로고와 입찰 탐색 일러스트가 들어 있다. 프레임 링크와 확인일을 근거로 남긴다. 고정된 디자인 버전 ID와 게시 자산은 미확보다. |
+| 운영·개발 주소 | [프론트 Production 배포 기록 `8021463276`](https://api.github.com/repos/mate-pjt/mate-frontend/deployments/8021463276)과 [성공 상태](https://api.github.com/repos/mate-pjt/mate-frontend/deployments/8021463276/statuses)는 소스 SHA `404ba20`과 Vercel의 배포별 주소를 연결한다. 실행 중 앱 SHA, 정식 사용자 주소의 지정과 운영 설정은 미확인이다. [개발 QA 기록](../../../qa/README.md)에 있는 `dev.mate-bid.com`은 읽기 전용 HEAD에서 200을 반환했다. `mate-bid.com`과 `www.mate-bid.com`은 같은 조사 환경에서 DNS가 확인되지 않았다(curl 종료 6). Vercel 도메인 조회는 404로 프로젝트 설정을 확인하지 못했다. |
+| 소유 문서 | [중앙 문서 `c9e50ff5`](https://github.com/mate-pjt/mate-docs/tree/c9e50ff591ae18023164e1a94581c611bf1e4f29)의 운영 목차와 주소·canonical·OG 관련 검색, Linear의 관련 검색에서 승인 원문을 확보하지 못했다. 조사한 범위에서의 결과다. 정식 도메인은 제품·배포 책임자가 제공할 공개 주소와 승인 기록이 필요하다. |
+
+<a id="pol-28-domain-decision"></a>
+
+## 2026-11-24 16:36 KST 기록 · 운영 주소 결정
+
+- **D1 · 사용자 결정.** 이 대화에서 ‘정식 운영 주소 확정 전까지 보류’를 선택했다. 운영 canonical origin 적용은 공식 주소가 확정될 때 재개한다. 배포별 Vercel URL과 테스트 주소에는 운영 승인 근거가 없다.
+- **이번 Git 전달 승인.** 사용자가 POL-28 단일 작업의 문서 검증·두 리뷰·커밋·푸시·PR·최종 head 검사·조건 충족 시 정상 병합·로컬 main fast-forward를 요청했다. 이번 PR에서는 실제 확인한 Chromatic 월간 한도 문제에 한해 예외가 적용된다. 제품 변경·운영 설정과 배포·다음 Task 착수는 각 작업의 승인 범위에서 다룬다.
+- **조사 체크포인트.** `docs/pol-28-canonical-og-policy`, 시작 HEAD `404ba20`, 기존 미커밋 0건. [선행 POL-27 PR #114](https://github.com/mate-pjt/mate-frontend/pull/114)와 DOC-001 완료를 확인했다. 다음 행동은 D2 공유 이미지와 D3 발행 기준에 대한 설명을 확인한 사용자 답변을 기록하고 DEV-53의 진행 조건과 문서 검증 기준을 연결하는 일이다. D1 재개에는 제품·배포 책임자가 승인한 공개 HTTPS 주소와 소유 근거가 필요하다.
+
+<a id="pol-28-brief"></a>
+
+## 2026-11-24 KST · 문서 작업 범위와 검증 계획
+
+- **성공 기준.** C03의 현행·시안·배포 근거, D1 보류와 D2·D3 확정 범위, DEV-53의 재개 조건을 역추적할 수 있게 한다. 승인된 부분의 문서 검증과 두 리뷰를 완료한다. 정책 전체의 완료 기준에는 정식 운영 주소 확정이 남는다.
+- **수정 대상과 영향.** 이 기록, DEV-53의 C03 인계, WBS와 DEV-54의 선정 기록, 공통 계획·아키텍처의 정책 참조, 리뷰 기록의 Markdown을 갱신한다. 현행 `site.ts`·루트 레이아웃·페이지 헬퍼와 기존 noindex를 기준으로 조사했다. 이미지 내보내기·제품 코드·환경 설정·실제 업무 API·배포는 후속 범위다.
+- **순서와 위험.** 사용자 결정을 정책과 후속 검증 기준에 연결한 뒤 WBS의 상태·집계·선행을 맞춘다. 특히 생성 배포 주소와 승인된 사용자 주소, 시안 렌더와 배포 자산, 문서 검증과 실제 HTML 검증을 각각 근거에 연결한다. Vercel Production 표기만으로 공식 사용자 웹을 식별할 수 있는지는 확인되지 않았다.
+- **검증.** Python 3 문서 검사로 Markdown·로컬 링크와 앵커·HTTPS 형식·79개 원본과 114개 Task·156개 선행 관계·WBS 상태·원본/QA 보존을 확인한다. `git diff --check 404ba20` 및 read-only verifier와 ai-review를 수행한다. `package.json`의 실제 스크립트와 Node pin을 확인했다. 앱·의존성·빌드 입력에 영향 없는 Markdown 변경이라 로컬 앱 test/lint/build·Storybook, 제품 브라우저와 실제 API 통합은 미실행으로 기록한다.
+
+<a id="pol-28-contract"></a>
+
+## 2026-11-24 16:38 KST 기록 · 공유 이미지와 메타데이터 기준 승인
+
+| 결정 | 결정자와 근거 | 적용 범위 |
+| --- | --- | --- |
+| D1 · 운영 주소 | 사용자가 [정식 운영 주소 확정 전 보류](#pol-28-domain-decision)를 선택했다. | 제품·배포 책임자가 단일 공개 HTTPS origin과 소유 근거를 승인한 뒤 적용한다. |
+| D2 · 공통 공유 이미지 | 링크를 공유할 때 나타나는 미리보기 그림의 역할을 설명한 뒤, 사용자가 ‘공통 그림으로 승인’을 선택했다. | [Figma C03](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2869-43486)의 ‘새로운 입찰의 시작’ **1200×630 PNG**를 공개 페이지의 OG·X(Twitter) 기본 이미지로 사용한다. 원본은 디자인 프레임이고 배포본은 프론트 저장소가 `public/images/og/mate-default.png`로 버전 관리한다. 공개 경로는 `/images/og/mate-default.png`, 대체텍스트는 `메이트 — 새로운 입찰의 시작`이다. |
+| D3 · 페이지·환경·실패 처리 | 대표 주소·공유 URL과 개발/운영 구분을 설명한 뒤, 사용자가 ‘설명한 기준 승인’을 선택했다. | 운영 공개 페이지마다 대표 주소 1개, 개발·프리뷰·로그인 필요 페이지의 공개 URL 정보 생략, 주소·이미지 미준비 시 관련 태그 생략을 적용한다. 아래 표의 경로와 실패 기준을 따른다. |
+
+| 페이지 또는 상태 | 대표 주소와 공유 카드 |
+| --- | --- |
+| 운영 홈 `/`, 공개 FAQ `/qna` | 각 페이지의 기본 경로를 사용한다. 기존 페이지별 제목·설명과 공통 이미지로 카드를 만든다. |
+| 운영 공개 입찰 목록 `/bids` | 전체·마감임박·결과 보기와 검색·필터·페이지 상태는 `/bids` 한 곳으로 대표한다. 탐색과 URL 상태는 기존대로 사용한다. |
+| 운영 정상 공개 입찰 상세 `/bids/[bidId]` | 공고별 기본 경로를 사용한다. 분류·회차·부분 목록 페이지 등의 선택 query는 대표 주소에서 제외한다. 상세 제목·설명은 확인된 공개 공고의 정보를 사용한다. |
+| 로그인 필요 페이지, 개발·프리뷰 | `noindex`와 공개 canonical·`og:url`·이미지 URL 태그 생략을 적용한다. 로그인 후 맞춤 보기인 `/bids?view=recommended`도 공개 목록 범위에서 제외한다. 기존 로그인·권한 검사는 접근을 계속 제어한다. |
+| 없는 공고·조회 실패 | 정상 공개 상세의 canonical·공유 카드 적용 대상에서 제외한다. 기존 404와 조회 오류 의미를 보존한다. |
+
+- **대표 주소의 일관성.** 적용 대상은 `rel="canonical"` 1개와 동일한 절대 HTTPS `og:url`을 사용한다. 승인된 origin과 해당 페이지의 기본 경로로 조합한다. 요청 Host, 배포별 주소, 개발 주소와 예시 fallback은 공식 origin 후보에서 제외한다. 승인 주소의 경로·query·fragment 없는 origin을 확인하고, Vercel 환경 레이블과 사용자 공개 환경의 매핑은 DEV-53의 재개 시 확인한다. [Google canonical 지침](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls) · [Next.js 메타데이터](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase)
+- **미준비 또는 오류.** 승인 origin이 없거나 설정이 일치하지 않으면 URL을 만드는 공개 태그는 생략한다. 주소가 유효하고 그림만 미준비라면 해당 이미지 URL·크기·대체텍스트와 큰 이미지 카드를 생략하고, 대표 주소와 텍스트는 유지한다. 정식 발행 검증에서는 주소나 승인 이미지 미확보를 차단으로 남긴다. [Open Graph 이미지 속성](https://ogp.me/#structured)
+- **기본값과 적용 방법.** 처음 연결하는 이미지는 C03 공통 그림 한 장이다. 페이지별 제목과 설명을 유지하면서 기본 이미지의 URL·크기·대체텍스트가 최종 HTML에 남는지 확인한다. Next.js에서 페이지 `openGraph`가 레이아웃 값을 덮을 수 있어 DEV-53이 페이지 헬퍼 및 루트 결과를 함께 검증한다. 별도 화면 예외와 페이지 전용 이미지의 승인 범위는 확인되지 않았다. [Next.js 병합 동작](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#merging)
+
+**결정 체크포인트.** D2·D3의 승인 범위는 [DEV-53](DEV-53.md#dev-53-pol-28-handoff)에 연결한다. 미해결 D1은 이 대화의 문서 전달 뒤에도 WBS에서 관리한다. 다음 행동은 문서 검증과 Review Gate다.
