@@ -6,8 +6,10 @@
 | --- | --- |
 | 갱신일 | 2026-11-24 KST |
 | 현재 작업 | — |
-| 다음 작업 | [DEV-54 · 상세 페이지 main 랜드마크 중첩 해소](tasks/DEV-54.md#dev-54-pol-28-handoff) · P3, DOC-001 선행 충족 |
-| 다음 첫 행동 | DEV-54 자체 Gate에서 루트·입찰 상세의 `<main>` 소유 위치와 기존 상세 QA를 대조하고 접근성 회귀 기준을 정한다. [인계](tasks/DEV-54.md#dev-54-pol-28-handoff) |
+| 다음 작업 | [QA-15 · 정적 홈·FAQ·공용 UI의 조건부 회귀](tasks/QA-15.md#qa-15-dev-54-handoff) · P3, DOC-001 선행 충족, 조건 재확인 |
+| 다음 첫 행동 | QA-15 자체 Gate에서 DEV-50 FAQ 검증과 DEV-54 대조 결과를 기존 착수 조건과 비교해 관련 UI 변경 또는 출시 회귀 범위가 있는지 확인한다. [인계](tasks/QA-15.md#qa-15-dev-54-handoff) |
+| DEV-54 구현과 검증 | 정상 상세와 입찰 공용 오류의 DOM·접근성 트리 main을 각각 2개에서 1개로 정리했다. [상세 QA](../../qa/bid-detail.md#dev-54-local-qa) · [검토 기록](reviews/DEV-54.md) |
+| DEV-54 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afix%2Fdev-54-bid-main-landmark)에서 최종 head 검사·리뷰·병합을 확인한다. [전달 기준](tasks/DEV-54.md#dev-54-close) |
 | POL-28 결정과 검증 | 2026-11-24 사용자 D1로 운영 주소 적용을 보류했고 D2·D3로 C03 공통 그림과 공개 메타데이터 기준을 승인했다. [정책](tasks/POL-28.md#pol-28-contract) · [문서 검증과 리뷰](reviews/POL-28.md) · [DEV-53 재개 조건](tasks/DEV-53.md#dev-53-pol-28-handoff) |
 | POL-28 Git 전달 | [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-28-canonical-og-policy)에서 최종 head 검증·리뷰·병합을 확인한다. [전달 기준](tasks/POL-28.md#pol-28-delivery) |
 | POL-27 이번 승인과 검증 | 2026-11-24 사용자가 백엔드 공식 공급원, 사용자 웹 조회 전용과 발행 글의 비로그인 열람을 승인했다. 목록·본문 정책의 [문서 검증과 두 리뷰](reviews/POL-27.md) 및 DEV-51·52 재개 조건을 기록했다. |
@@ -140,7 +142,7 @@ P0 기존 기능의 실제 QA·공개 준비 → P1 맞춤/알림 여정·회사
 DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 때문에 P0로 올렸다. QA-03은 P0 상세 통합에서 이미 구현된 P2 표시도 함께 확인한다. 나머지 원본 항목 우선순위는 coverage.md에 그대로 보존했다.
 기존 기능의 대기 QA/승인 예외를 새 기능 전체의 예외로 확대하지 않는다. 작업 차단 시 다음 기능으로 자동 전환하지 않으며 아래 workflow의 재개·예외 규칙을 따른다.
 
-현재 집계: **완료62 · 차단29 · 대기19 · 준비1 · 보류3 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서·두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
+현재 집계: **완료63 · 차단29 · 대기19 · 보류3 =114개**. POL-14의 기존 정책 PASS와 이번 MAT-290 연결 문서 후속 PASS를 구분해 보존한다. DEV-27은 이번 로컬 선행 범위 완료이며 실제 조회 부분 차단·추가 hidden 미실행을 보존한다. DEV-28은 병합 직전 새 원격 Major2/FAIL을 보존하고 사용자 추가1회 승인 뒤 두 수정·842 tests/로컬 QA/문서·두 리뷰를 통과했다. 실제 API QA9소유 부분 차단을 보존한다. DEV-29의 당시 D1 로컬 범위·실제7부분 차단과 DEV-30의 이번 D1/D2 로컬 범위·실제6부분 차단은 별개다. DEV-30은 초기 독립 FAIL/마지막 자동 수정3/3 뒤1001 tests·로컬 QA·문서·두 리뷰를 통과했으며 DEV-31은 선정·인계만 했다. 선행 DEV-29의 main 반영을 확인했다. DEV-25의 로컬/실제 삭제 QA6차단과 전달 이력은 보존한다. DEV-24 신규 추가/실통합·MAT-162와 기존 QA/예외·원본79개/Task114개·의존성156개를 보존하며 Git 전달은 실제 PR/최종 head에서 별도 확인한다.
 
 상태: **대기**(순서/선행 조건 대기), **준비**(다음 요구사항 Gate 대상으로 선택), **진행**, **검증**, **리뷰**, **차단**(알려진 외부 조건), **보류**(정책/조건부 범위), **완료**(해당 단위 검증·리뷰 근거 확보). 상태 정의와 전환 조건은 [workflow.md](workflow.md)를 따른다.
 
@@ -288,7 +290,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [DEV-52 · 소식 상세·이미지·목록 복귀](tasks/DEV-52.md#dev-52-pol-27-handoff) · **DEV-51과 공개 상세 계약 선행** | 개발 | P3 | 대기 | W02 | [DEV-51](tasks/DEV-51.md) |
 | [POL-28 · 운영 canonical URL·OG 이미지 결정](tasks/POL-28.md#pol-28-contract) · **공통 이미지·발행 기준 승인, 정식 운영 주소 확정 대기** | 정책 결정 | P3 | 차단 | C03 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-53 · OG 이미지·canonical 메타데이터 연결](tasks/DEV-53.md#dev-53-pol-28-handoff) · **POL-28 운영 주소 결정과 공개 자산 확인 선행** | 개발 | P3 | 대기 | C03 | [POL-28](tasks/POL-28.md) |
-| [DEV-54 · 상세 페이지 main 랜드마크 중첩 해소](tasks/DEV-54.md#dev-54-pol-28-handoff) | 개발 | P3 | 준비 | C04 | [DOC-001](tasks/DOC-001.md) |
+| [DEV-54 · 상세 페이지 main 랜드마크 중첩 해소](tasks/DEV-54.md#dev-54-close) · **정상·오류 본문 랜드마크와 접근성 회귀 검증** | 개발 | P3 | 완료 | C04 | [DOC-001](tasks/DOC-001.md) |
 | [QA-15 · 정적 홈·FAQ·공용 UI의 조건부 회귀](tasks/QA-15.md) | 검증 | P3 | 보류 | H01, Q01, C01 | [DOC-001](tasks/DOC-001.md) |
 
 ## 9. 전수 점검 후 정합성 보완
@@ -670,3 +672,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - 사용자가 C03의 공통 이미지와 공개 메타데이터 기준을 승인했다. 정식 운영 주소 확정 전까지 D1 적용을 보류했으므로 POL-28의 주소 기준과 DEV-53 선행은 남아 있다. [결정과 재개 조건](tasks/POL-28.md#pol-28-contract) · [문서 검증과 리뷰](reviews/POL-28.md)
 - 상위 P0~P2의 차단·미충족 선행, DEV-48 보류, DEV-49·51 차단, DEV-52·53의 미충족 선행을 적용했다. DOC-001을 충족한 P3 [DEV-54](tasks/DEV-54.md#dev-54-pol-28-handoff)를 선정하고 자체 Gate의 첫 행동만 인계했다.
+
+## 2026-11-24 KST · DEV-54 로컬 검증과 QA-15 인계
+
+- [DEV-54](tasks/DEV-54.md#dev-54-close)는 정상 상세와 입찰 목록·상세 공용 오류의 본문 랜드마크를 교정했다. 자동 검사, [격리 Chrome](../../qa/bid-detail.md#dev-54-local-qa), 문서 검사 및 [두 리뷰](reviews/DEV-54.md)를 근거로 해당 단위를 완료했다. 기존 QA-03의 실백엔드 통합 상태를 보존한다.
+- P0~P2의 미충족 선행과 차단, P3의 계약·정책 조건을 유지한다. DOC-001을 충족한 [QA-15](tasks/QA-15.md#qa-15-dev-54-handoff)를 조건 재확인 대상으로만 선정한다. 다음 자체 Gate에서 관련 정적 화면·공유 UI 변경 또는 출시 회귀 범위를 확인한다. QA-15의 보류 상태를 유지한다.

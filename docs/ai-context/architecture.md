@@ -50,6 +50,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 
 - Next.js App Router is used under `src/app`.
 - Root layout imports `SiteHeader`, local Pretendard font, site config, and `globals.css`.
+- RootLayout은 하위 페이지의 본문 `<main>`을 제공한다. 입찰 상세와 목록·상세 공용 오류는 그 안에서 레이아웃 래퍼와 페이지 제목을 렌더링한다. [DEV-54 접근성 QA](../qa/bid-detail.md#dev-54-local-qa)
 - [DEV-56](../development/figma-v01/tasks/DEV-56.md#dev-56-brief)의 공통 헤더는 인증 nickname+‘님’과 기존 Figma 아이콘에서 `/my`로 이동한다. 이름 null/공백은 아이콘만·접근성 이름 ‘설정 및 관리’, 세션 loading/error/retry는 별도 표시다. 회사명/이메일 유추나 회사 조회는 없으며 로그아웃은 기존 `/my` 메뉴에 둔다. 실제 일반 QA와 준비되지 않은 특수 사례는 [헤더 QA](../qa/my-settings-home.md#dev-56-header-qa)에서 구분한다.
 - `/my`의 계정 관리 카드는 [DEV-38](../development/figma-v01/tasks/DEV-38.md#dev-38-brief)의 `/my/settings/account`로 연결한다. 인접 알림 설정의 상세 레이아웃을 따르고, 현재 세션의 연락용 이메일을 회사 소속과 관계없이 클라이언트에서 읽는다. 쓰기·별도 인증·탈퇴는 각각 소유 정책의 후속 범위다. [POL-17 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)
 - 인증된 `/my`와 공개 `/qna`는 [DEV-50](../development/figma-v01/tasks/DEV-50.md#dev-50-brief)의 `FeedbackBanner`를 공유한다. 브라우저 링크는 [POL-26 고정 의견 폼](../development/figma-v01/tasks/POL-26.md#pol-26-contract)을 새 탭에 열며 계정 문맥을 전달하지 않는다. 입력과 제출은 외부 폼에서 맡는다. [S08 브라우저 QA](../qa/qna.md#dev-50-local-qa)
