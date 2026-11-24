@@ -39,7 +39,7 @@ export function BidDetailContent({ data, itemPage, participantsPage }: BidDetail
     : null;
 
   return (
-    <main className="min-h-screen bg-grayscale-50 px-5 pb-20 sm:px-7" id="top">
+    <div className="min-h-screen bg-grayscale-50 px-5 pb-20 sm:px-7" id="top">
       <BidDetailAmountProvider>
         <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-start gap-4 pb-12 pt-7 lg:grid-cols-[minmax(0,1fr)_372px]">
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 lg:col-start-1 lg:row-start-1">
@@ -210,7 +210,7 @@ export function BidDetailContent({ data, itemPage, participantsPage }: BidDetail
         </div>
       </BidDetailAmountProvider>
       <a className="fixed bottom-5 right-5 flex size-12 items-center justify-center rounded-full bg-grayscale-800 text-white shadow-lg hover:bg-grayscale-700" href="#top" aria-label="맨 위로">↑</a>
-    </main>
+    </div>
   );
 }
 

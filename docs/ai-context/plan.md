@@ -386,3 +386,7 @@ Final reports should include:
 ## 2026-11-24 KST · POL-28 공유 이미지와 대표 주소 기준
 
 사용자가 [C03 기본 그림과 공개 메타데이터 발행 기준](../development/figma-v01/tasks/POL-28.md#pol-28-contract)을 승인하고, 정식 운영 주소가 확정될 때까지 주소 적용을 보류했다. [DEV-53](../development/figma-v01/tasks/DEV-53.md#dev-53-pol-28-handoff)은 승인 주소와 디자인 자산을 확인한 뒤 생성 HTML·공개 이미지·실패 처리를 검증한다. 이번 범위는 정책 문서와 인계다. [현재와 다음 작업](../development/figma-v01/README.md)
+
+## 2026-11-24 KST · DEV-54 상세 페이지 본문 랜드마크
+
+입찰 상세와 공용 오류 화면의 레이아웃 래퍼를 교체해 RootLayout의 본문 랜드마크 하나를 사용한다. [상세 브라우저 QA](../qa/bid-detail.md#dev-54-local-qa)에 정상·404·오류의 접근성 트리와 기존 배치·키보드 결과를 기록했다. 현재 상태와 인계는 [WBS](../development/figma-v01/README.md)를 따른다.
