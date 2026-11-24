@@ -382,3 +382,7 @@ Final reports should include:
 ## 2026-11-24 KST · POL-27 메이트 소식의 사용자 웹 정책
 
 백엔드 API를 공식 공급원으로 정하고 사용자 웹은 발행된 글의 공개 목록·상세 조회를 담당한다. 게시 변경은 별도 인가된 관리 경로의 책임이다. [사용자 결정](../development/figma-v01/tasks/POL-27.md#pol-27-contract)과 [DEV-51·52의 계약 및 배포 확인 조건](../development/figma-v01/tasks/POL-27.md#pol-27-verification)을 따른다. 제품 개발과 실제 API 통합 검증은 이 정책 작업에서 미실행이다. [현재 상태와 다음 작업](../development/figma-v01/README.md)
+
+## 2026-11-24 KST · POL-28 공유 이미지와 대표 주소 기준
+
+사용자가 [C03 기본 그림과 공개 메타데이터 발행 기준](../development/figma-v01/tasks/POL-28.md#pol-28-contract)을 승인하고, 정식 운영 주소가 확정될 때까지 주소 적용을 보류했다. [DEV-53](../development/figma-v01/tasks/DEV-53.md#dev-53-pol-28-handoff)은 승인 주소와 디자인 자산을 확인한 뒤 생성 HTML·공개 이미지·실패 처리를 검증한다. 이번 범위는 정책 문서와 인계다. [현재와 다음 작업](../development/figma-v01/README.md)

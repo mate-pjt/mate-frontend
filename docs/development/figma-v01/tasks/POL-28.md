@@ -31,7 +31,7 @@
 
 열린 기준에는 승인된 운영 주소가 필요하다. D2·D3를 받은 뒤의 전달·검증 범위는 [이번 Brief](#pol-28-brief)에서 확인한다.
 
-## 착수 전 Implementation Brief / 설계 Gate
+## 2026-10-27 후보 당시 Implementation Brief / 설계 Gate
 
 이 기록은 작업 후보 정의다. DOC-001 외의 작업은 아직 실행하거나 설계 승인을 받은 상태가 아니다. 착수 시 아래를 현재 소스 기준으로 채우고 편집 전에 제시한다.
 
@@ -54,11 +54,11 @@
 | --- | --- | --- | --- |
 | 2026-10-27 / 문서화 | feature/my-company-overview / f84af24b5f9d + 기존 미커밋 변경 | 보고서에서 작업 정의만 생성. 구현/실제 QA 미실행 | 선행 작업의 결과와 현재 요구사항을 확인한 뒤 착수한다. |
 
-## 검증·리뷰·인계 기록
+## 2026-10-27 후보 당시 검증·리뷰·인계 기록
 
 | 구분 | 실행 명령/사례·환경 | 결과 | 증거/미실행 이유 |
 | --- | --- | --- | --- |
-| 이번 작업 | 미실행 | 미판정 | 기준선의 과거 결과와 구분 |
+| 후보 작성 시점 | 미실행 | 미판정 | 현재 문서 검증과 구분 |
 
 - 자동 수정 시도: 0/3. 실패 시 명령·오류·원인·최소 수정·재검증 결과를 추가한다.
 - Documentation Update Check: 착수 후 판단. base/architecture/data-access/plan/harness/ai-failures 중 영향 문서와 갱신/미갱신 이유를 기록.
@@ -126,3 +126,12 @@
 - **기본값과 적용 방법.** 처음 연결하는 이미지는 C03 공통 그림 한 장이다. 페이지별 제목과 설명을 유지하면서 기본 이미지의 URL·크기·대체텍스트가 최종 HTML에 남는지 확인한다. Next.js에서 페이지 `openGraph`가 레이아웃 값을 덮을 수 있어 DEV-53이 페이지 헬퍼 및 루트 결과를 함께 검증한다. 별도 화면 예외와 페이지 전용 이미지의 승인 범위는 확인되지 않았다. [Next.js 병합 동작](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#merging)
 
 **결정 체크포인트.** D2·D3의 승인 범위는 [DEV-53](DEV-53.md#dev-53-pol-28-handoff)에 연결한다. 미해결 D1은 이 대화의 문서 전달 뒤에도 WBS에서 관리한다. 다음 행동은 문서 검증과 Review Gate다.
+
+<a id="pol-28-delivery"></a>
+
+## 2026-11-24 KST · 전달 범위와 다음 작업
+
+- 승인된 정책과 차단·재개 조건의 문서를 전달한다. 주소 적용과 OG 이미지 파일·제품 구현은 DEV-53의 후속 범위다. [문서 검증과 Review Gate](../reviews/POL-28.md)
+- **검증 체크포인트.** Markdown·링크·원본 ID·WBS·선행·기존 자료 보존을 검사했다. 첫 `git diff --check`에서 WBS 행 끝 공백이 발견돼 해당 행을 고쳤고 재검증을 통과했다. 자동 수정 1/3이다. 승인된 문서 범위의 독립 verifier와 ai-review에서 Blocker·Major가 없었고, 후보 당시의 미실행 표기를 명시하라는 Minor를 반영했다. 결과 기록과 문구 수정이 포함된 최종 변경은 다시 검토한다. [검증 명령과 결과](../reviews/POL-28.md#pol-28-verification)
+- `docs/pol-28-canonical-og-policy`의 PR은 문서 커밋 단위로 제출한다. 최종 head의 CI·리뷰와 병합 조건을 확인하고 저장소 허용 방식으로 커밋을 보존한다. 실제 PR·최종 head·CI·병합·로컬 fast-forward 결과는 PR과 종료 보고에서 확인한다. [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-28-canonical-og-policy)
+- 정식 주소 확정이 필요한 POL-28·DEV-53과 상위 선행의 상태를 적용했다. 다음은 DOC-001을 충족한 P3의 [DEV-54](DEV-54.md#dev-54-pol-28-handoff)다. 첫 행동은 루트와 입찰 상세의 `<main>`과 기존 QA를 자체 Gate에서 대조하는 일이다. 이 기록은 선정과 인계 범위다.
