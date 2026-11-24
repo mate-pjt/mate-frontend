@@ -172,7 +172,7 @@ Confirmed:
 ## TODO
 
 - TODO: 실제 API 회사·메일·계정별 통합 검증의 승인·데이터 준비 항목은 기존 docs/qa 펀치리스트를 유지한다.
-- TODO: Confirm the final deployment host and production `NEXT_PUBLIC_SITE_URL` policy without reading actual environment values.
+- TODO: 제품·배포 책임자의 정식 운영 origin을 확인한다. C03 공유 이미지와 공개 메타데이터의 승인 범위 및 미결 주소는 [POL-28](../development/figma-v01/tasks/POL-28.md#pol-28-contract)을, 적용·검증 조건은 [DEV-53](../development/figma-v01/tasks/DEV-53.md#dev-53-pol-28-handoff)을 따른다. 환경변수는 `NEXT_PUBLIC_SITE_URL` 이름만 기록하고 공개 주소는 소유자의 승인 원문으로 확인한다.
 
 ## 회사 직급 관리
 
