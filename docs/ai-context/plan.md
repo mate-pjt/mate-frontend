@@ -370,3 +370,7 @@ Final reports should include:
 ## 2026-11-24 · POL-25 서비스 이용안내의 MVP 범위
 
 [사용자 결정 D1](../development/figma-v01/tasks/POL-25.md#pol-25-contract)으로 로그인한 사용자가 `/my`에서 실제 웹 배포 버전을 확인하는 팝업을 선택했다. ‘최신’ 표시는 동일한 환경·채널의 공식 값과 일치할 때 적용한다. D2의 후속 구현 조건은 공식 출처, 갱신 책임과 조회 실패 기준이다. [소유 소스와 배포 기록 조사](../development/figma-v01/tasks/POL-25.md#pol-25-evidence) · [DEV-49 요구사항 Gate](../development/figma-v01/tasks/DEV-49.md#dev-49-pol-25-gate) · [미실행 S07 QA](../qa/my-settings-home.md#pol-25-s07-qa). 현재 작업과 다음 작업은 [WBS](../development/figma-v01/README.md)에서 확인한다.
+
+## 2026-11-24 · POL-26 의견 보내기 채널의 범위
+
+[사용자 결정 D1/D2](../development/figma-v01/tasks/POL-26.md#pol-26-contract)로 인증 설정과 공개 FAQ에서 같은 기존 의견 폼을 사용한다. 입력·제출·응답 관리는 기존 폼의 범위다. DEV-50의 프론트 범위는 고정 URL로 이동하는 링크와 검증이며, Mate의 의견 API·저장소·계정 정보 전달은 적용 범위에 없다. [DEV-50 첫 행동](../development/figma-v01/tasks/DEV-50.md#dev-50-pol-26-handoff) · [S08 링크 QA 계획](../qa/qna.md#pol-26-s08-qa) · [현재와 다음 작업](../development/figma-v01/README.md).
