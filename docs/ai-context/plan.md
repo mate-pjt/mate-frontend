@@ -374,3 +374,7 @@ Final reports should include:
 ## 2026-11-24 · POL-26 의견 보내기 채널의 범위
 
 [사용자 결정 D1/D2](../development/figma-v01/tasks/POL-26.md#pol-26-contract)로 인증 설정과 공개 FAQ에서 같은 기존 의견 폼을 사용한다. 입력·제출·응답 관리는 기존 폼의 범위다. DEV-50의 프론트 범위는 고정 URL로 이동하는 링크와 검증이며, Mate의 의견 API·저장소·계정 정보 전달은 적용 범위에 없다. [DEV-50 첫 행동](../development/figma-v01/tasks/DEV-50.md#dev-50-pol-26-handoff) · [S08 링크 QA 계획](../qa/qna.md#pol-26-s08-qa) · [현재와 다음 작업](../development/figma-v01/README.md).
+
+## 2026-11-24 · DEV-50 설정·FAQ 의견 링크 검증
+
+인증 설정과 공개 FAQ에 공통 배너를 연결했다. 전체 mock의 로그인 경계와 정적 FAQ, 실제 공개 폼 열람, 브라우저 HTTP 장애 대역을 구분해 [S08-01~05](../qa/qna.md#dev-50-local-qa)에 기록했다. 실제 Mate 업무 API나 양식 제출은 이 링크 범위의 통과에 포함되지 않는다. [설계](../development/figma-v01/tasks/DEV-50.md#dev-50-brief) · [현재 상태와 다음 작업](../development/figma-v01/README.md)
