@@ -46,7 +46,7 @@ src/data/
 | `auth` | 로그인 시작, 가입, 완료, 복원, 로그아웃 | `auth/client.ts` |
 | `bids` | 홈, 목록/metadata, 상세/첨부/관련/개찰/물품/참여업체 | `bids/server.ts` |
 | `company` | 회사·업종 검색, 소속 신청/초대, 사업자번호, 증명서, 등록, 나의 회사, 회사 간 통합 사건 | `company/client.ts` |
-| `notifications` | 받은 알림 목록, 미확인 건수, 읽음 | `notifications/client.ts` |
+| `notifications` | 받은 알림 목록, 미확인 건수, 읽음, 선택·전체 수동 삭제 | `notifications/client.ts` |
 | `bidAlerts` | 공고별 알림 조회/설정/해제 | `bid-alerts/client.ts` |
 | `personalFilters` | 개인 필터 조회/저장/초기화 | `personal-filters/client.ts` |
 | `notificationSettings` | 수신 주소, 이메일 인증/재전송/확인, 맞춤 이메일 ON/OFF | `notification-settings/client.ts` |
