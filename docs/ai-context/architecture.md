@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-24
+Last updated: 2026-11-25
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -151,7 +151,7 @@ Confirmed:
 - Google 로그인은 현재 브라우저의 `window.location.origin`을 `returnOrigin`으로, 내부 복귀 경로를 `returnTo`로 전달하며 백엔드 `/api/v1/auth/oauth/google/authorizations`로 전체 페이지 이동한다. 백엔드가 귀환 URL에 넣은 `flowId`를 기존 계정의 `/auth/callback` session completion, 신규 계정의 `/auth/signup` 현재 거래 조회·가입 완료 요청에 전달한다. `flowId`가 없는 귀환 화면은 인증 요청을 보내지 않고 재로그인을 안내한다.
 - `AuthSessionProvider`는 access token을 메모리에만 보관하고, 백엔드 refresh cookie로 새로고침 후 세션을 복원한다. 브라우저 요청은 `credentials: include`를 사용하며 보호 API는 Bearer token을 보낸다.
 - API 기본 주소는 테스트 서버이고 `NEXT_PUBLIC_MATE_API_BASE_URL`로 변경할 수 있다. 실제 credentialed 브라우저 호출에는 API가 해당 프론트 Origin과 cookie/CORS를 허용해야 한다.
-- 테스트 서버의 공통 응답 성공 플래그는 `isSuccess`로 판정한다. Swagger의 `success` 표기와의 불일치는 백엔드 확인 사항이다.
+- 프런트는 테스트 서버의 공통 응답 성공 플래그를 `isSuccess`로 판정한다. 2026-11-25 개발 OpenAPI의 공통 응답 스키마도 `isSuccess`를 게시한다. 이전 Swagger 표기는 데이터 접근 규칙에 이력으로 남겼다. [데이터 접근 규칙](data-access.md)
 - Authenticated home CTA users go to `/bids?view=recommended`.
 - `/bids?view=recommended`는 인증되지 않은 직접 접근을 현재 URL을 `next`로 보존해 로그인 화면으로 보내고, 로그인 후에는 준비 중 안내를 표시한다. 맞춤공고 mock 목록은 노출하지 않는다.
 - `/bids`의 보기 query는 `all`(생략), `closing`, `result`, `recommended`를 지원한다. 검색·필터·페이지 상태도 URL query로 보존한다.
