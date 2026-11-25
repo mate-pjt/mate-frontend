@@ -77,7 +77,7 @@ src/data/
 
 ## 5. HTTP·인증 계약
 
-- 성공 wrapper는 배포 서버에서 확인한 `isSuccess`다. Swagger의 `success` 불일치는 백엔드 확인 사항이다. HTTP 대역 테스트도 wire wrapper를 사용한다.
+- 성공 wrapper는 배포 서버에서 확인한 `isSuccess`다. 2026-11-25 개발 OpenAPI의 응답 스키마 71개도 `isSuccess`를 게시한다. 과거 Swagger의 `success` 불일치는 당시 관찰로 보존한다. HTTP 대역 테스트도 wire wrapper를 사용한다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
 - `ApiError`의 `status`, `code`, 사용자 안내를 보존한다. 잘못된 JSON/wrapper, 필수 data 누락, HTTP 오류와 연결 실패를 구분하고 AbortError는 전달한다.
 - 보호 요청은 `credentials: include`, `cache: no-store`, Bearer token 및 필요 시 `Idempotency-Key`를 사용한다. 401에서 세션을 갱신해 한 번 재요청한다. 공개 입찰은 기존 Accept/`no-store` 정책을 유지한다.
 - `AuthAccess`는 토큰 접근·세션 갱신·현재 계정 식별키를 제공한다. 요청 도중 계정이 바뀌면 이전 계정의 재시도를 막는다.
