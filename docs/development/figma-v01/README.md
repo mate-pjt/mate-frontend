@@ -6,8 +6,9 @@
 | --- | --- |
 | 갱신일 | 2026-11-25 KST |
 | 현재 작업 | — |
-| 다음 작업 | [QA-09 · 상세 공고별 알림 실제 QA](tasks/QA-09.md) · P0, 재개 조건 확인 후보 |
-| 다음 첫 행동 | QA-09의 체크포인트·PREP 준비표·ALERT-01~08을 대조하고, 승인된 계정·공고와 초기·종료 구독 상태, 실행 식별자, 변경과 생성 알림·이력 정리 범위를 확인한다. [인계](tasks/QA-08.md#qa-08-20261125-handoff) |
+| 다음 작업 | [QA-10 · 개인 필터 12개 기존 사례 재검증](tasks/QA-10.md) · P0, 재개 조건 확인 후보 |
+| 다음 첫 행동 | 최신 main과 QA-10의 재개표·PREP 준비표·PBF-01~12를 확인한다. 승인된 EMPTY_DEFAULT/COMPANY_DEFAULT 계정, 시작 snapshot/version·매칭·409·오류, reset 대역 차이와 빈 SAVED 잔존·복구 범위를 대조한다. [인계](tasks/QA-09.md#qa-09-20261125-handoff) |
+| QA-09 재개 점검 | 공고별 알림의 단건 계약·해제 이력의 의미와 Node 계약 테스트를 확인했다. 실제 ALERT-01~08은 기존 0통과·8차단을 유지한다. [공고별 알림 QA](../../qa/bid-alert.md#qa-09-20261125-alert) · [검증·리뷰](reviews/QA-09.md#qa-09-20261125-review) · [Git 전달 기준](tasks/QA-09.md#qa-09-20261125-delivery) |
 | QA-08 재개 점검 | 초대 수신의 소유 계약과 Node 계약 테스트를 확인했다. 기존 실제 AUTH-16 0통과·1차단과 초대 화면 AUTH-17 미실행을 유지한다. [인증 QA](../../qa/auth.md#qa-08-20261125-auth) · [검증·리뷰](reviews/QA-08.md#qa-08-20261125-review) · [Git 전달 기준](tasks/QA-08.md#qa-08-20261125-delivery) |
 | QA-07 재개 점검 | 업로드·OCR·제안·등록의 소유 계약과 Node 계약 테스트를 확인했다. 기존 실제 AUTH-09~13 0통과·5차단과 문서 AUTH-17 미실행을 유지한다. [인증 QA](../../qa/auth.md#qa-07-20261125-auth) · [검증·리뷰](reviews/QA-07.md#qa-07-20261125-review) · [Git 전달 기준](tasks/QA-07.md#qa-07-20261125-delivery) |
 | QA-06 재개 점검 | 번호 연결·등록과 가입 표시의 현행 계약, Node 계약 테스트를 확인했다. 기존 실제 AUTH-14/15 0통과·2차단을 유지한다. [인증 QA](../../qa/auth.md#qa-06-20261125-auth) · [검증·리뷰](reviews/QA-06.md#qa-06-20261125-review) · [Git 전달 기준](tasks/QA-06.md#qa-06-20261125-delivery) |
@@ -180,7 +181,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [QA-06 · 사업자번호 등록·가입 정보 실제 QA](tasks/QA-06.md) · **진행 예외 보존·11/25 재점검·기존 실제 0통과/2차단** | 검증 | P0 | 차단 | O06, O08 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-07 · 가입 문서 업로드·OCR 실제 QA](tasks/QA-07.md) · **진행 예외 보존·11/25 재점검·기존 실제 0통과/5차단** | 검증 | P0 | 차단 | O07, O08 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-08 · 초대 수신·계정 불일치·수락/거절 실제 QA](tasks/QA-08.md) · **진행 예외 보존·11/25 재점검·기존 실제 0통과/1차단** | 검증 | P0 | 차단 | O10 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
-| [QA-09 · 상세 공고별 알림 실제 QA](tasks/QA-09.md) · **진행 예외 승인·사전 점검·실제0통과/8차단** | 검증 | P0 | 차단 | D04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
+| [QA-09 · 상세 공고별 알림 실제 QA](tasks/QA-09.md) · **진행 예외 보존·11/25 재점검·실제 0통과/8차단** | 검증 | P0 | 차단 | D04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-10 · 개인 필터 12개 기존 사례 재검증](tasks/QA-10.md) · **진행 예외 승인·사전 점검·실제0통과/12차단** | 검증 | P0 | 차단 | L11 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-11 · 받은 알림·읽음·21건 이상 실제 QA](tasks/QA-11.md) · **진행 예외 승인·사전 점검·실제0통과/재검증8차단·04차단/05보류 별도** | 검증 | P0 | 차단 | N01 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-12 · 이메일 ON/OFF의 실제 서버 오류 QA](tasks/QA-12.md) · **사전 점검·실제0통과/1차단** | 검증 | P0 | 차단 | S04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
