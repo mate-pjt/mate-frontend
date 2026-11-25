@@ -552,3 +552,14 @@ Safari 로그 유지 OFF는 같은 창의 공개 문서 이동 후 이전 terms/
 [POL-24](../development/figma-v01/tasks/POL-24.md#pol-24-contract)에서 승인된 Google 단독 범위를 확인했다. O02 시안의 초록색 버튼, 현행 `/auth`의 `disabled` ‘준비 중’ 안내, Google 전용 시작/완료 소스와 게시 개발 OpenAPI를 대조했다. 이는 문서·소스 확인이며 Google과 네이버의 실제 OAuth, 앱 브라우저, mock/HTTP 대역은 모두 미실행이다.
 
 AUTH-01의 네이버 비활성·요청 없음 기대와 AUTH-04/05의 Google 복귀·세션 회귀, 기존 가입 및 실제 QA 이력을 보존한다. 네이버 사례의 등록과 실행은 [DEV-48](../development/figma-v01/tasks/DEV-48.md#dev-48-pol-24-handoff)에서 신규 지원 결정·계약·현재 실행 버전·합성 자원과 사용/복구 범위가 확보된 뒤 결정한다.
+
+<a id="qa-05-20261125-auth"></a>
+
+## 2026-11-25 KST · QA-05 회사 찾기와 소속 신청 재개 점검
+
+| 사례·시안 | 이번 관찰과 현행 계약 | 실제 QA 판정 |
+| --- | --- | --- |
+| AUTH-07 · [회사 찾기 3140:121614](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-121614) | 격리된 mock에서 설정 경유 찾기 화면의 검색 입력과 빈 검색어의 조회 버튼 비활성을 확인했다. 현행 검색 GET의 필수 `query`와 0부터의 `page`, 화면 요청 `size=10`을 대조했다. 소스에서 회사명 최소 두 글자와 번호 10자리 분기를 확인했다. | 차단. 11월 2일의 실제 빈 결과·연결 실패/복구만 부분 확인으로 유지한다. 이름·번호의 결과/페이지 기대값이 있는 승인 합성 회사와 실제 검색 오류의 안전한 재현 조건이 필요하다. |
+| AUTH-08 · [대표/팀원 3140:121981](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-121981) · [3140:122094](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-122094) · [3140:122231](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-122231) | 소스와 게시 명세에서 신청 입력 GET과 제출 POST를 확인했다. 대표자는 일반 직급을 선택하지 않으며 팀원은 기존 일반 직급 또는 새 이름 하나를 선택한다. 서버가 제출 자격과 직급을 검증한다. 명세와 source에서 생성 성공은 201이며 프론트는 대상 회사·요청 ID·`PENDING`을 확인한다. [중앙 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/company/membership-and-positions.md#L30-L61) | 차단. 이번에는 실제 입력 문맥 GET과 신청 POST 모두 0건이다. 전용 신청자·회사·검토자, 중복/기존 소속/대기 초대/권한 기대값, 제출과 남는 신청 이력·검토 알림의 정리 승인이 필요하다. |
+
+화면의 ‘통합 요청’은 [POL-11](../development/figma-v01/tasks/POL-11.md#pol-11-contract)의 문구 결정에 따라 유지한다. 회사 간 통합은 별도 흐름이다. 대표/팀원 화면과 완료 화면을 브라우저에서 다시 확인하지 않았으며 새 시각 예외 승인은 없다. 11월 2일의 조회 전용 승인과 인증·타 업무 이력은 날짜별 근거로 적용한다. [회사 QA](my-company.md#qa-05-20261125-company) · [QA-05 작업 기록](../development/figma-v01/tasks/QA-05.md)
