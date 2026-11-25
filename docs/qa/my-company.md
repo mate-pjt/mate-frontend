@@ -8,6 +8,7 @@
 - 기존 구현 범위: 회사 기본 정보·소속 신청 조회. 2026-11-02 QA-05는 기존 QA-A/QA-B의 조회만 허용하며 회사 검색을 함께 확인한다. 신청 취소·제출/상태 생성, 회사 수정, 시공능력·인증·희망 금액 카드는 제외한다.
 - 정적 검증: 2026-09-29, Node 22.20.0에서 `pnpm lint`, `pnpm build`, `git diff --check` 통과.
 - 실제 API 통합 판정: **차단**. 2026-11-02 MCO 4통과·6차단. 승인된 연결·상태별 계정과 필수 사례 없이 전체 통합 PASS로 표시하지 않는다. [최신 실행](#qa-05-20261102)에서 과거 시뮬레이션과 구분한다.
+- 2026-11-25에는 비로그인 세션 응답과 격리된 mock의 시작 동선을 확인했다. 현행 제품 기준과 남은 실제 확인 조건을 [재개 점검](#qa-05-20261125-company)에 정리했다.
 
 ## 실행 환경 기록
 
@@ -358,3 +359,25 @@
 | CUPD-18 | 해당 DEV | 자체 Figma 상태별 실제 Next/브라우저·키보드/focus·모바일320/390px·대형자료/표·loading/empty/error/명시 retry·기존 기본정보/대시보드/가입 회귀 | 미실행 |
 
 이번 정책 문서 검증과 위18사례의 제품/mock/HTTP 대역/실제 통합 판정은 별개다. 후속 Task 시작/면제·필수 fixture 준비가 승인된 것으로 해석하지 않는다.
+
+<a id="qa-05-20261125-company"></a>
+
+## QA-05 회사 조회 재개 점검 · 2026-11-25 KST
+
+14:49~14:52 KST에 [개발 명세](https://api-test.mate-bid.com/v3/api-docs)와 현행 소스를 확인했다. 11월 2일 사용자가 직접 로그인한 QA-A는 그 실행에서 로그아웃했다. 이번에 사용할 실제 QA-A/QA-B 세션과 상태별 합성 자료는 확인되지 않았다. [QA-05 작업 기록](../development/figma-v01/tasks/QA-05.md)
+
+| 구분 | 관찰 | 판정 범위 |
+| --- | --- | --- |
+| 실제 개발 API의 비로그인 세션 | `https://local.mate-bid.com:3000` Origin을 보낸 preflight는 200, 쿠키 없는 `POST /api/v1/auth/token/refresh`는 401·`isSuccess:false`였다. 두 응답에서 요청 Origin과 credentials 허용을 확인했다. | MCO-01의 세션 보호 근거. 로그인이나 회사·신청 데이터 조회는 0건이다. |
+| 격리된 브라우저 비로그인 | Node 22.20.0·Next 16.2.9, `http://127.0.0.1:3015` mock, Aside Chrome 156. `/my/company`와 `/my/company/start`가 로그인 안내와 각각의 `next`를 표시했다. | 기존 두 경로의 로컬 확인. 실제 인증 사례 집계는 11월 2일 기록을 따른다. |
+| 격리된 브라우저 미연결과 두 선택지 | 가상 계정으로 로그인해 미연결 CTA를 눌렀다. 390×844의 시작 화면 DOM 폭과 스크롤 폭은 375/375였다. 찾기는 Enter로 열렸고 뒤로 가기로 선택 화면에 복귀했다. 등록은 클릭으로 시작 화면이 열렸다. 두 경로에 `from=settings`가 붙었다. | MCO-02·03과 MCO-10 일부의 로컬 확인. 등록·검색 제출과 실제 데이터 검증은 미실행이다. |
+
+| 기존 사례·시안 기준 | 현행 상태별 확인 기준 | 실제 재개에 필요한 자료 |
+| --- | --- | --- |
+| MCO-02·03 · 미연결과 선택 [3162:51271](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-51271) · [3162:51281](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-51281) | 세션에 회사가 없고 내 신청 GET이 404/`CR001`이면 빈 회사 화면이다. 기존 등록·찾기 경로에 설정 문맥을 전달한다. [DEV-16](#dev-16-local-qa) | 해당 실제 상태의 승인 계정과 이력 기대값. |
+| MCO-04·05 · 신청 대기/종료 [3162:52364](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52364) · [3162:52427](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52427) | `PENDING`에는 본인 취소 버튼이 있다. 기존 MCO-04의 취소 미제공은 11월 2일의 읽기 전용 기대다. `REJECTED`는 거절·재시작을, `CANCELED`는 회사 화면의 빈 상태와 시작 화면의 종료 안내를 확인한다. 취소 명령과 완료 Toast는 DEV-15의 별도 사례다. [POL-10](../development/figma-v01/tasks/POL-10.md#pol-10-contract) · [DEV-15](#dev-15-local-qa) | 대기·거절·취소 각각의 승인 계정과 기대 상태. |
+| MCO-06 · 승인 뒤 연결 반영 | `APPROVED`를 읽으면 세션을 다시 확인한다. 연결이 반영되면 기본정보를 조회하고, 세션이 아직 미연결이면 지연 안내와 재시도를 표시한다. [회사 Repository](../../src/data/company/http-repository.ts#L265-L285) | 승인 직후 세션 반영 전후의 상태 또는 합의된 안전한 재현 조건. |
+| MCO-07·08 · 연결 기본정보/권한 [3134:64574](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3134-64574) | 저장된 기본정보 8개 항목에서 전체 주력업종 목록·결측·설립연도를 확인한다. 조회에는 `COMPANY_INFORMATION_VIEW`가 필요하며 실제 403은 권한 안내로 이어진다. [DEV-60](#dev-60-local-qa) · [권한 검사](https://github.com/mate-pjt/mate-backend/blob/74a770b9dc28446edd821befd213f754f27cc39d/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companyprofile/query/CompanyBasicProfileQueryService.kt#L24-L35) | 연결·제한 권한의 승인 계정과 기본정보·복수 업종·결측 기대값. |
+| MCO-09·10 · 장애 복구/화면 | 이전 브라우저 차단·복구 결과와 이번 mock 선택 화면 관찰을 사용한다. | 실제 서버 오류 재현에는 승인된 조건이 필요하다. 대기/연결 화면의 모바일과 키보드 확인은 해당 상태 자원과 함께 재개한다. |
+
+시안은 위 상태의 추적 근거다. 취소와 설정 복귀 동작은 기존 POL-10·POL-11 결정을 적용했다. 전체 화면 정합성은 미검증이며 새 화면 예외 승인은 없다. 기존 실제 **4통과·6차단**과 AUTH-07·08의 차단을 유지한다. 소유 탭은 모두 닫았고 격리 서버를 종료해 3015 포트를 반환했다. 실제 계정이나 업무 데이터에 대한 변경·복구는 0건이다. [인증 QA](auth.md#qa-05-20261125-auth)
