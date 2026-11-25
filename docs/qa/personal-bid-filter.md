@@ -287,3 +287,43 @@
 | CIMP-10 | 승인된 화면의 정상·취소·오류·결측/권한 안내를 320/390px 및 키보드로 사용 | 제목/단계·레이블, Tab·Escape, 초점 복귀, 가로 넘침과 소속 변경 시 안내를 확인한다. 일반 목록의 조회만으로 계정 필터가 바뀌지 않는다. | 미실행 |
 
 가져오기 기능의 서버 권한과 전체 결측 처리, DEV-08 선행, 실행 버전, 합성 계정·회사·경계 공고와 안전한 오류, 실제 조회·변경·잔존·복구 승인이 갖춰져야 실제 QA를 재개할 수 있다. 실행 전 기존 조건과 버전·회사 원본을 기록하고 완료 시 개인 상태와 회사 원본을 검증한다. 특히 미저장 `null` 상태는 일반 reset으로 되돌릴 수 없으므로 disposable 계정의 잔존 또는 승인된 초기화 절차를 준비한다. Node 계약·mock/HTTP 대역·실제 Next 브라우저·실제 API 결과는 해당 QA 실행에서 따로 기록한다.
+
+<a id="qa-10-20261125-filter"></a>
+
+## QA-10 · 2026-11-25 개인 필터 재개 점검
+
+실제 PBF-01~12는 **0통과·12차단, 실행 0건**이다. 최초 [0통과·12대기](#판정)와 [11월 4일 사전 점검](#qa-10-20261104)을 보존한다. 브라우저·업무 API·OAuth를 실행한 증거와 실행 중인 프런트/백엔드의 식별자는 이번에 확보하지 못했다. [Task 체크포인트](../development/figma-v01/tasks/QA-10.md) · [문서·Node 검증 및 리뷰](../development/figma-v01/reviews/QA-10.md)
+
+### 근거와 현재 화면
+
+| 근거 | 2026-11-25 확인 |
+| --- | --- |
+| 중앙 정책 | Accepted ADR-0014는 `SAVED → COMPANY_DEFAULT → EMPTY_DEFAULT`를 적용한다. GET은 개인 저장을 생성하지 않고, reset은 빈 `SAVED`를 남겨 회사 기본값의 자동 재적용을 막는다. [ADR-0014](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/decisions/ADR-0014-separate-personal-bid-filter-from-company-profile.md) |
+| 백엔드 소스 | dev `3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4`에서 본인 인증 계정의 GET/PUT current와 POST reset을 확인했다. GET은 저장된 snapshot을 먼저 읽고, 활성 회사의 지역·업종·선호 금액 또는 빈 기본값을 version 없이 반환한다. PUT은 `expectedVersion`과 전체 `filter`, reset은 `expectedVersion`을 받는다. 첫 저장 version 1, 값 교체 시 증가, 이미 같은 값의 재요청은 version 유지다. 값이 다른 오래된 쓰기는 409이며 기존 값을 보존한다. 빈 reset 결과의 `canImportCompany`는 활성 소속과 활성 회사 기본값 원천의 유무를 반영한다. [Controller](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt) · [서비스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/personalfilter/PersonalBidNoticeFilterService.kt#L41) · [저장과 충돌](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/personalfilter/PersonalBidNoticeFilterPersistenceAdapter.kt#L38) |
+| 배포 기록 | 위 dev SHA의 verify·publish·deploy 성공 및 test 배포 ID `8050667620`의 success를 확인했다. 실행 중인 서버 SHA와 이미지 digest는 미확보다. [백엔드 CI 실행](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606) |
+| 게시 명세 | 비인증 GET 200, OpenAPI 3.1.0, info.version v1, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 세 작업은 사용자 인증과 같은 `isSuccess`/snapshot 응답 스키마를 게시하고 쓰기에 400·409를 명시한다. snapshot은 3종 `source`, nullable int64 `version`, `canImportCompany`와 `filter`를 담는다. 조건은 배열·nullable 날짜/금액·지역 제한·공동도급이다. Kotlin 저장 요청의 `filter`는 필수이며 내부 기본값은 빈 배열·null 날짜/금액·`false`·`ALL`이다. 게시 스키마에는 `required` 목록이 없다. [요청 소스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/request/PersonalBidNoticeFilterRequests.kt#L17) · [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) |
+| 프런트 소스와 승인 화면 | `4cda98b`의 `/bids` ALL에서 ‘내 맞춤’은 클릭 시 최신 GET으로 조건을 적용한다. 빈 값이면 현재 목록을 유지하고, 전체 조건이 같으면 버튼을 숨긴다. ‘현재 조건 초기화’는 목록 URL을 정리한다. 11월 12일 사용자 승인으로 계정 저장·계정 초기화·확인창 UI가 제거됐다. 기준 화면은 [2048:58606](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2048-58606)과 [2098:65429](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2098-65429)다. 시각 근거는 당시 DEV-09 기록을 사용했다. [목록 소스](../../src/components/bids/bid-list-client.tsx) · [승인과 화면 근거](../development/figma-v01/tasks/DEV-09.md#dev-09-ui-cleanup-brief) |
+| 로컬 계약 | DEV-63이 mock과 HTTP fetch 대역의 reset을 빈 `SAVED`로 교정했다. 이번 Node 재검증에서 빈/회사 기본값, reset 후 재조회·replay/version·계정 격리·실패 시 보존을 확인했다. [로컬 교정 근거](#dev-63-local-qa) · [현행 Repository](../../src/data/personal-filters/client.ts) |
+
+현행 백엔드 소스에서 이미 저장된 값과 같은 PUT은 오래된 version으로 재전송돼도 기존 버전을 반환한다. 현행 mock과 합성 HTTP 테스트는 같은 값의 오래된 PUT에 409를 기대한다. DEV-63의 reset replay 검증은 통과했으며, PBF-08 실제 409에는 현재 저장값과 다른 PUT이 필요하다. [백엔드 저장 처리](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/personalfilter/PersonalBidNoticeFilterPersistenceAdapter.kt#L39) · [mock](../../src/data/personal-filters/mock-repository.ts) · [HTTP 대역 테스트](../../tests/http-contracts.test.ts)
+
+### PBF별 재개 조건
+
+아래 방법은 현행 화면과 기존 API 증거의 확인 범위다. 실제 12건은 모두 차단으로 남고, 쓰기 사례의 실제 실행 방법과 계정 변경·복구는 재개 Gate에서 담당자와 확정한다.
+
+| ID | 현행 동선과 다음 증거 |
+| --- | --- |
+| PBF-01 | 로그아웃 상태에서 ‘내 맞춤’으로 들어가면 경로와 query를 `next`에 보존한다. 현재 프런트 실행 Origin과 로그인 이동 캡처가 필요하다. |
+| PBF-02 | disposable 초기 계정의 첫 GET이 `EMPTY_DEFAULT`/null인지 확인한다. 조건 없는 ALL에서는 ‘내 맞춤’이 숨는다. 목록에만 일반 필터를 넣어 버튼을 다시 노출하고, 클릭 뒤 최신 빈 응답에도 URL과 목록이 유지되는지 확인한다. |
+| PBF-03 | 원래 버튼 조작은 화면에서 제거됐다. 공사 조건을 저장한 뒤 GET의 `SAVED`/version과 reload를 확인할 승인된 쓰기 절차, 시작·종료 snapshot이 필요하다. |
+| PBF-04 | 준비된 `SAVED`에서 클릭 GET과 `personal=1`·유형 query, 공개 ALL 조회와 실제 결과를 확인한다. 매칭 기대값과 화면/Network 증거가 필요하다. |
+| PBF-05 | 일반 필터 변경은 현재 URL에 적용된다. 공사 `SAVED`가 준비된 계정에서 용역 조건 편집과 최신 ‘내 맞춤’ 재적용을 확인하고 이 동선의 계정 쓰기 0건을 기록한다. |
+| PBF-06 | 두 유형·두 지역·정확한 기초금액의 반복 query와 목록 재조회가 필요하다. 계정 저장/재조회 부분은 승인된 쓰기 절차에서 별도로 증명한다. |
+| PBF-07 | 화면의 ‘현재 조건 초기화’는 URL을 지운다. 별도의 승인된 reset 절차로 빈 `SAVED`/version·reload·회사 기본값 재적용 억제와 저장 상태를 확인한다. 빈 snapshot 잔존 승인 또는 담당자의 fixture 복구가 필요하다. |
+| PBF-08 | 원래 두 탭 저장 UI가 제거됐다. 두 요청이 같은 시작 version을 보고 서로 다른 값을 쓰도록 승인된 절차를 확보한다. 오래된 요청의 실제 409와 최신 GET 및 값 보존을 기록한다. |
+| PBF-09 | 저장 이력 없는 회사 계정에서 `COMPANY_DEFAULT`/null·GET 무쓰기·수동 적용을 확인한다. 명시적 PUT 뒤 `SAVED`는 승인된 쓰기 절차와 복구 합의가 필요하다. |
+| PBF-10 | ALL의 유형·지역·업종·계약·날짜·금액·지역 제한·공동도급을 대조할 포함/제외 공고, 정렬·총건수와 금액 경계 기대값이 필요하다. 기관 단독 필터는 현행 ALL의 지원 범위 밖이며, 기관 표시 확인에는 역할별 기대값이 필요하다. |
+| PBF-11 | GET 실패 후 목록 유지·오류 표시·명시 클릭과 세션 갱신 경계를 확인한다. GET·PUT·reset의 안전한 실패/해제와 실제 401·저장값 보존은 승인된 오류 및 쓰기 자원이 필요하다. |
+| PBF-12 | 320/390px에서 ‘내 맞춤’·조건 칩·현재 조건 초기화·일반 팝오버의 Tab/Escape와 초점 복귀를 확인한다. 계정 reset 대화상자는 과거 화면 증거로 보존한다. |
+
+계정·회사·공고 fixture 담당과 API/인증 담당은 두 시작 source, version·매칭·401/409/오류, 종료 snapshot과 허용 잔존·복구 방법을 준비한다. 승인자와 QA 실행자는 로그인·조회·변경·복구 범위를 정하고 배포 담당은 프런트 SHA/공급원 snapshot·Origin/CORS와 백엔드 실행 식별자의 대응을 제공한다. 개인 담당자는 미확인이다. 초기 `EMPTY_DEFAULT`나 `COMPANY_DEFAULT`로 돌려놓을 수단은 이번에 확인되지 않았다. 실제 업무 요청이 없어 이번 점검으로 생긴 데이터나 세션 정리 대상은 없다.
