@@ -6,8 +6,9 @@
 | --- | --- |
 | 갱신일 | 2026-11-26 KST |
 | 현재 작업 | — |
-| 다음 작업 | [QA-13 · 대체 이메일 인증·전환의 남은 실제 QA](tasks/QA-13.md) · P0, 재개 요구사항 확인 |
-| 다음 첫 행동 | 최신 main·PREP 준비표·QA-13 재개표·NREC 사례를 대조한다. Mailpit 제한 열람, 테스트 계정·수신처, 오류 재현, 발송·변경·잔존과 원래 수신처 복구, 실행 버전 대응을 확인한다. [인계](tasks/QA-12.md#qa-12-20261126-handoff) |
+| 다음 작업 | [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md#pol-01-resume) · P0, 정책 재개 요구사항 확인 |
+| 다음 첫 행동 | 최신 main·DOC-001·H04/O03 기준선과 POL-01 재개표를 대조한다. 승인 문서·버전·적용일·공개 URL, 기존 동의 전환 방침, 푸터 공개 정보·문의 목적지와 승인 역할 확보 여부를 확인한다. [QA-13 인계](tasks/QA-13.md#qa-13-20261126-handoff) |
+| QA-13 재개 점검 | 수신처·인증의 현행 계약과 Node 합성 15건을 확인했다. 실제 실행 0건·신규 통과 0건·6건 차단과 기존 3통과·6대기를 보존한다. [NREC QA](../../qa/notification-email-recipient.md#qa-13-20261126-nrec) · [검증·리뷰](reviews/QA-13.md#qa-13-20261126-review) · [Git 전달 기준](tasks/QA-13.md#qa-13-20261126-delivery) |
 | QA-12 재개 점검 | 맞춤 이메일 ON/OFF의 현행 계약과 Node 합성 검사를 확인했다. NSET-07은 실제 0통과·1차단을 유지한다. [설정 QA](../../qa/notification-settings.md#qa-12-20261126-nset) · [검증·리뷰](reviews/QA-12.md#qa-12-20261126-review) · [Git 전달 기준](tasks/QA-12.md#qa-12-20261126-delivery) |
 | QA-11 재개 점검 | 목록·미확인 수·읽음의 현행 계약과 Node 합성 검사를 확인했다. 기존 실제 0통과·재검증 8차단을 유지하며 ALARM-04/05는 별도다. [알림 QA](../../qa/alarms.md#qa-11-20261125-alarms) · [검증·리뷰](reviews/QA-11.md#qa-11-20261125-review) · [Git 전달 기준](tasks/QA-11.md#qa-11-20261125-delivery) |
 | QA-10 재개 점검 | DEV-63의 빈 SAVED 로컬 계약과 DEV-09 이후 목록의 읽기·URL 동선을 확인했다. 기존 실제 0통과·12차단을 유지한다. [개인 필터 QA](../../qa/personal-bid-filter.md#qa-10-20261125-filter) · [검증·리뷰](reviews/QA-10.md#qa-10-20261125-review) · [Git 전달 기준](tasks/QA-10.md#qa-10-20261125-delivery) |
@@ -188,7 +189,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [QA-10 · 개인 필터 12개 기존 사례 재검증](tasks/QA-10.md) · **진행 예외 보존·11/25 재점검·실제 0통과/12차단** | 검증 | P0 | 차단 | L11 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-11 · 받은 알림·읽음·21건 이상 실제 QA](tasks/QA-11.md) · **선정 예외 보존·11/25 재점검·실제 0통과/재검증 8차단·ALARM-04/05 별도** | 검증 | P0 | 차단 | N01 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-12 · 이메일 ON/OFF의 실제 서버 오류 QA](tasks/QA-12.md) · **11/26 재점검·NSET-07 실제 0통과/1차단·선정 예외 보존** | 검증 | P0 | 차단 | S04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
-| [QA-13 · 대체 이메일 인증·전환의 남은 실제 QA](tasks/QA-13.md) · **진행 예외 승인·사전 점검·실제0통과/6차단** | 검증 | P0 | 차단 | S05 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
+| [QA-13 · 대체 이메일 인증·전환의 남은 실제 QA](tasks/QA-13.md) · **11/26 재점검·실제 0통과/6차단·선정 예외 보존** | 검증 | P0 | 차단 | S05 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md) · **진행 예외 승인·승인 자료/동의 전환/공개 정보 차단** | 정책 결정 | P0 | 차단 | H04, O03 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md) | 개발 | P0 | 대기 | O03 | [POL-01](tasks/POL-01.md) |
 | [DEV-02 · 홈 푸터 정보·약관·문의 링크 구현](tasks/DEV-02.md) | 개발 | P0 | 대기 | H04 | [POL-01](tasks/POL-01.md) / [DEV-01](tasks/DEV-01.md) |
@@ -757,3 +758,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [QA-12](tasks/QA-12.md#qa-12-20261126-evidence)는 수신처 조회와 맞춤 이메일 ON/OFF 조회·저장의 현행 계약을 Node 합성 검사와 대조했다. 안전한 4xx/5xx 재현·해제, 승인된 계정·변경·복구와 실행 식별자 대응이 미확보라 NSET-07의 실제 0통과·1차단과 기존 6통과·1대기를 보존한다. [사례 근거와 복구 조건](../../qa/notification-settings.md#qa-12-20261126-nset)
 - 선행을 충족한 대기·준비 작업이 없다. PREP-01·QA-04가 완료된 다음 P0인 [QA-13](tasks/QA-13.md)을 [11월 5일 사용자 선정 예외](tasks/QA-12.md#qa-12-next-qa-13-exception)에 따라 재개 요구사항 확인으로 지정했다. QA-13의 실제 6차단을 유지하며 Mailpit·계정·수신처·오류·복구와 실행 대응 확인을 인계한다. [선정 근거와 첫 행동](tasks/QA-12.md#qa-12-20261126-handoff)
+
+## 2026-11-26 KST · QA-13 재개 점검과 POL-01 인계
+
+- [QA-13](tasks/QA-13.md#qa-13-20261126-evidence)의 수신처·시작·재전송·확인 계약을 현행 개발 소스/Swagger와 대조했다. 제한 열람·테스트 자원 및 변경/복구 승인·안전한 실패·실행 대응이 미확보여서 실제 0통과·6차단과 기존 3통과·6대기를 보존한다. [사례별 조건](../../qa/notification-email-recipient.md#qa-13-20261126-nrec)
+- 선행을 충족한 대기·준비 작업은 없다. P0 표의 다음인 [POL-01](tasks/POL-01.md#pol-01-resume)은 DOC-001이 완료됐고 [2026-11-05 사용자 선정 예외](tasks/QA-13.md#qa-13-next-pol-01-exception)의 대상이다. 정책 자료·기존 동의 전환·푸터 정보의 차단은 유지하며 재개 요구사항 확인만 인계한다. [선정 근거와 첫 행동](tasks/QA-13.md#qa-13-20261126-handoff)
