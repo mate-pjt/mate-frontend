@@ -1,0 +1,796 @@
+{
+  "run": "QA15-20261125-LOCAL",
+  "source": "bf75382c6f2c8222cd8adf426f3ebd6ac804bcea",
+  "started": "2026-11-25T03:52:02.099Z",
+  "browser": "158.0.8127.89",
+  "cases": [
+    {
+      "name": "Q01-1920",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "layout": {
+          "viewport": 1920,
+          "document": 1920,
+          "question": {
+            "x": 370,
+            "width": 1180,
+            "height": 80
+          },
+          "banner": {
+            "x": 370,
+            "width": 1180,
+            "height": 96
+          },
+          "contained": true,
+          "topOverlaps": false,
+          "reduce": false
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "accessibleClosedRows": 5,
+        "keyboard": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          },
+          "independent": true,
+          "reloadResets": true,
+          "feedbackFocus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          }
+        },
+        "policy": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "feedback": {
+          "noOpener": true,
+          "retainedOpenAnswers": 5
+        },
+        "scroll": {
+          "hash": "#qna-top",
+          "before": 537,
+          "after": 0,
+          "expected": 0,
+          "headingVisible": true,
+          "position": "fixed"
+        },
+        "events": {
+          "feedbackDouble": [
+            {
+              "method": "GET",
+              "query": false,
+              "body": false,
+              "referrer": false,
+              "authorization": false,
+              "cookie": false
+            }
+          ],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "H01-1920",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "layout": {
+          "viewport": 1920,
+          "document": 1920,
+          "headingFits": true,
+          "heroFont": "40px",
+          "ctaColor": "rgb(49, 130, 246)",
+          "reduce": false
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "cta": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "localLoginDestination": true
+        },
+        "scroll": {
+          "hash": "#home-top",
+          "before": 3602,
+          "after": 56,
+          "expected": 56,
+          "headingVisible": true,
+          "position": "fixed"
+        },
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "Q01-390",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "layout": {
+          "viewport": 390,
+          "document": 390,
+          "question": {
+            "x": 16,
+            "width": 358,
+            "height": 104
+          },
+          "banner": {
+            "x": 16,
+            "width": 358,
+            "height": 207.15625
+          },
+          "contained": true,
+          "topOverlaps": false,
+          "reduce": false
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "accessibleClosedRows": 5,
+        "keyboard": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          },
+          "independent": true,
+          "reloadResets": true,
+          "feedbackFocus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          }
+        },
+        "policy": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "feedback": {
+          "noOpener": true,
+          "retainedOpenAnswers": 5
+        },
+        "scroll": {
+          "hash": "#qna-top",
+          "before": 1709,
+          "after": 99,
+          "expected": 99,
+          "headingVisible": true,
+          "position": "static"
+        },
+        "events": {
+          "feedbackDouble": [
+            {
+              "method": "GET",
+              "query": false,
+              "body": false,
+              "referrer": false,
+              "authorization": false,
+              "cookie": false
+            }
+          ],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "H01-390",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "layout": {
+          "viewport": 390,
+          "document": 390,
+          "headingFits": true,
+          "heroFont": "40px",
+          "ctaColor": "rgb(49, 130, 246)",
+          "reduce": false
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "cta": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "localLoginDestination": true
+        },
+        "scroll": {
+          "hash": "#home-top",
+          "before": 6499,
+          "after": 155,
+          "expected": 155,
+          "headingVisible": true,
+          "position": "fixed"
+        },
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "Q01-320",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 320,
+          "height": 700
+        },
+        "layout": {
+          "viewport": 320,
+          "document": 320,
+          "question": {
+            "x": 16,
+            "width": 288,
+            "height": 104
+          },
+          "banner": {
+            "x": 16,
+            "width": 288,
+            "height": 229.546875
+          },
+          "contained": true,
+          "topOverlaps": false,
+          "reduce": true
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "accessibleClosedRows": 5,
+        "keyboard": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          },
+          "independent": true,
+          "reloadResets": true,
+          "feedbackFocus": {
+            "focusVisible": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px"
+          }
+        },
+        "policy": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "feedback": {
+          "noOpener": true,
+          "retainedOpenAnswers": 5
+        },
+        "scroll": {
+          "hash": "#qna-top",
+          "before": 2239,
+          "after": 99,
+          "expected": 99,
+          "headingVisible": true,
+          "position": "static"
+        },
+        "events": {
+          "feedbackDouble": [
+            {
+              "method": "GET",
+              "query": false,
+              "body": false,
+              "referrer": false,
+              "authorization": false,
+              "cookie": false
+            }
+          ],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "H01-320",
+      "status": "PASS",
+      "observations": {
+        "status": 200,
+        "viewport": {
+          "width": 320,
+          "height": 700
+        },
+        "layout": {
+          "viewport": 320,
+          "document": 320,
+          "headingFits": true,
+          "heroFont": "40px",
+          "ctaColor": "rgb(49, 130, 246)",
+          "reduce": true
+        },
+        "ax": {
+          "dom": 1,
+          "accessibility": 1,
+          "h1": 1
+        },
+        "cta": {
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "localLoginDestination": true
+        },
+        "scroll": {
+          "hash": "#home-top",
+          "before": 6743,
+          "after": 155,
+          "expected": 155,
+          "headingVisible": true,
+          "position": "fixed"
+        },
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "C01-1920",
+      "status": "PASS",
+      "observations": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "button": {
+          "normal": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "hover": {
+            "color": "rgb(44, 117, 221)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.65625,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "disabled": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "0.4",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "skippedTab": true
+        },
+        "toast": {
+          "x": 782,
+          "bottom": 1030,
+          "width": 257.515625,
+          "height": 56,
+          "viewport": 1920,
+          "viewportHeight": 1080,
+          "reduce": false,
+          "transitionDuration": "0.4s, 0.4s, 0.4s, 0.2s",
+          "animationDuration": "0s",
+          "background": "rgb(33, 37, 41)",
+          "message": "선택한 소식을 삭제했어요!",
+          "live": "polite"
+        },
+        "liveCount": 1,
+        "autoCloses": true,
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "C01-390",
+      "status": "PASS",
+      "observations": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "button": {
+          "normal": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "hover": {
+            "color": "rgb(44, 117, 221)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.65625,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "disabled": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "0.4",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "skippedTab": true
+        },
+        "toast": {
+          "x": 66.234375,
+          "bottom": 794,
+          "width": 257.515625,
+          "height": 56,
+          "viewport": 390,
+          "viewportHeight": 844,
+          "reduce": false,
+          "transitionDuration": "0.4s, 0.4s, 0.4s, 0.2s",
+          "animationDuration": "0s",
+          "background": "rgb(33, 37, 41)",
+          "message": "선택한 소식을 삭제했어요!",
+          "live": "polite"
+        },
+        "liveCount": 1,
+        "autoCloses": true,
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "C01-320",
+      "status": "PASS",
+      "observations": {
+        "viewport": {
+          "width": 320,
+          "height": 700
+        },
+        "button": {
+          "normal": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "hover": {
+            "color": "rgb(44, 117, 221)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "1",
+            "width": 59.65625,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "focus": {
+            "focusVisible": true,
+            "outlineStyle": "auto",
+            "outlineWidth": "1px"
+          },
+          "disabled": {
+            "color": "rgb(49, 130, 246)",
+            "textColor": "rgb(255, 255, 255)",
+            "opacity": "0.4",
+            "width": 59.6875,
+            "height": 38.390625,
+            "radius": "8px",
+            "font": "Pretendard"
+          },
+          "skippedTab": true
+        },
+        "toast": {
+          "x": 31.234375,
+          "bottom": 650,
+          "width": 257.515625,
+          "height": 56,
+          "viewport": 320,
+          "viewportHeight": 700,
+          "reduce": true,
+          "transitionDuration": "0s",
+          "animationDuration": "0s",
+          "background": "rgb(33, 37, 41)",
+          "message": "선택한 소식을 삭제했어요!",
+          "live": "polite"
+        },
+        "liveCount": 1,
+        "autoCloses": true,
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "hydration-after",
+      "status": "OBSERVED",
+      "observations": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "heldScripts": 0,
+        "retained": true,
+        "toggledAfterHydration": true,
+        "hydrationWarnings": 0,
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 0,
+          "warnings": [],
+          "pageErrors": []
+        }
+      }
+    },
+    {
+      "name": "hydration-before",
+      "status": "OBSERVED",
+      "observations": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "heldScripts": 17,
+        "retained": true,
+        "toggledAfterHydration": true,
+        "hydrationWarnings": 1,
+        "events": {
+          "feedbackDouble": [],
+          "blockedExternal": 0,
+          "backendRequests": 0,
+          "writes": 1,
+          "warnings": [
+            {
+              "type": "error",
+              "hydration": true,
+              "message": "A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:"
+            }
+          ],
+          "pageErrors": []
+        }
+      }
+    }
+  ],
+  "finished": "2026-11-25T03:52:16.679Z",
+  "homeComparison": {
+    "started": "2026-11-25T03:53:35.493Z",
+    "finished": "2026-11-25T03:53:36.593Z",
+    "observations": [
+      {
+        "revision": "current",
+        "viewport": {
+          "width": 320,
+          "height": 700
+        },
+        "initial": {
+          "coveredCharacterCenters": 3,
+          "descriptionTop": 603,
+          "descriptionBottom": 670,
+          "scroll": 0,
+          "horizontalOverflow": false
+        },
+        "scrolled": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 423,
+          "descriptionBottom": 490,
+          "scroll": 180,
+          "horizontalOverflow": false
+        },
+        "forwardedExternalRequests": 0,
+        "blockedExternalRequests": 0
+      },
+      {
+        "revision": "beforeDev50",
+        "viewport": {
+          "width": 320,
+          "height": 700
+        },
+        "initial": {
+          "coveredCharacterCenters": 3,
+          "descriptionTop": 603,
+          "descriptionBottom": 670,
+          "scroll": 0,
+          "horizontalOverflow": false
+        },
+        "scrolled": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 423,
+          "descriptionBottom": 490,
+          "scroll": 180,
+          "horizontalOverflow": false
+        },
+        "forwardedExternalRequests": 0,
+        "blockedExternalRequests": 0
+      },
+      {
+        "revision": "current",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "initial": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 491,
+          "descriptionBottom": 558,
+          "scroll": 0,
+          "horizontalOverflow": false
+        },
+        "scrolled": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 311,
+          "descriptionBottom": 378,
+          "scroll": 180,
+          "horizontalOverflow": false
+        },
+        "forwardedExternalRequests": 0,
+        "blockedExternalRequests": 0
+      },
+      {
+        "revision": "beforeDev50",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "initial": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 491,
+          "descriptionBottom": 558,
+          "scroll": 0,
+          "horizontalOverflow": false
+        },
+        "scrolled": {
+          "coveredCharacterCenters": 0,
+          "descriptionTop": 311,
+          "descriptionBottom": 378,
+          "scroll": 180,
+          "horizontalOverflow": false
+        },
+        "forwardedExternalRequests": 0,
+        "blockedExternalRequests": 0
+      }
+    ],
+    "images": [
+      {
+        "loaded": true,
+        "naturalWidth": 340,
+        "naturalHeight": 280
+      },
+      {
+        "loaded": true,
+        "naturalWidth": 340,
+        "naturalHeight": 280
+      }
+    ],
+    "priorSource": "ebc7358b0ec804fdd5769190e4e73b7f75ef887c",
+    "visualFinding": "EXISTING_ON_BOTH_REVISIONS"
+  },
+  "environment": {
+    "node": "22.20.0",
+    "pnpm": "11.3.0",
+    "next": "16.2.9",
+    "storybook": "10.4.6",
+    "profile": "mock",
+    "feedbackNavigation": "local browser response double"
+  },
+  "hydrationNetworkProbe": {
+    "started": "2026-11-25T03:58:34.336Z",
+    "finished": "2026-11-25T03:58:35.439Z",
+    "cases": {
+      "hydration-after": [],
+      "hydration-before": [
+        {
+          "method": "POST",
+          "sameOrigin": true,
+          "path": "/__nextjs_original-stack-frames"
+        }
+      ]
+    }
+  }
+}
