@@ -170,3 +170,29 @@ Chrome 첫 접속에서는 로컬 인증서에 `ERR_CERT_AUTHORITY_INVALID` 경�
 | D66-07 · 계정 전환과 만료 | Next + HTTP 대역 | PASS. PATCH 401 뒤 새 계정으로 세션 갱신 시 그 계정의 설정만 조회하고 이전 PATCH를 재전송하지 않았다. 최종 세션 갱신 401은 비로그인 안내로 전환했다. 외부 업무 요청·처리되지 않은 페이지 오류 0건. |
 
 합성 화면 캡처는 [1920px의 설정 카드](assets/dev66/desktop-card.jpg)와 [390px의 설정 카드](assets/dev66/mobile-card.jpg)에 있다. 실제 API 실행과 신규 통과는 각각 0건이다. NSET-07의 실제 오류 차단과 [대체 이메일 6건 차단](notification-email-recipient.md#qa-13-20261105)은 본인 계정/수신처·안전한 오류·Mailpit·복구 및 실행 버전 대응의 기존 재개 조건을 따른다. [DEV-66 검증·문서 갱신](../development/figma-v01/tasks/DEV-66.md#dev-66-verification)
+
+<a id="qa-12-20261126-nset"></a>
+
+## 2026-11-26 KST · NSET-07 재개 점검
+
+Codex가 08:06 KST부터 macOS에서 프런트 main `4e4901b`와 개발 백엔드의 소스·게시 명세를 대조했다. `git archive HEAD`로 분리한 디렉터리에서 합성 fetch와 mock Repository를 사용하는 Node 계약 검사를 실행했다. 이번에는 Next 서버나 브라우저를 띄우지 않아 브라우저·viewport·화면 캡처·실제 로그인/업무 GET/PATCH의 Network 증거는 없다.
+
+| 근거 | 확인한 내용 |
+| --- | --- |
+| 프런트 소유 소스 | `/my/settings/notifications`는 공개 `notificationSettings` client를 통해 수신처 GET과 맞춤 이메일 GET을 함께 읽는다. 둘 중 하나가 실패하면 오류와 재조회 버튼을 표시하고, 버튼은 두 GET을 다시 시도한다. 저장 중에는 중복 조작을 막고, PATCH 실패 시 안내와 현재 표시값을 유지한다. 성공 응답의 `enabled`가 요청과 일치할 때 표시를 갱신한다. HTTP 실패와 네트워크 단절은 공통 요청 계층에서 구분한다. 같은 계정의 401은 세션 갱신 뒤 1회 재요청할 수 있다. [화면](../../src/components/my/notification-settings-page-client.tsx#L122) · [HTTP Repository](../../src/data/notification-settings/http-repository.ts#L94) · [공통 HTTP](../../src/data/shared/http.ts#L25) |
+| 백엔드 소스 | `dev` `3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4`에서 본인 활성 계정에 `GET/PATCH /api/v1/me/matched-bid-notice-email-settings`를 제공한다. 행이 없으면 OFF, PATCH는 필수 JSON boolean `enabled`를 받아 실제 값이 달라질 때만 저장한다. `GET /api/v1/me/notification-email-settings`는 독립적으로 수신처를 읽는다. [맞춤 설정 Controller](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/matchedbidemail/MatchedBidEmailSettingController.kt#L18-L49) · [DTO](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/matchedbidemail/MatchedBidEmailSettingDtos.kt#L5-L14) · [설정 서비스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/matchedbidemail/MatchedBidEmailSettingService.kt#L28-L51) · [수신처 Controller](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notificationemail/NotificationEmailController.kt#L48-L53) |
+| 개발 배포 기록 | 같은 `dev` SHA의 `verify`, `publish`, 개발 `deploy`가 성공했다. 개발 배포 job 완료는 2026-11-25 16:01 KST이며 운영 배포 job은 건너뛰었다. [CI 실행](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606) |
+| 게시된 개발 명세 | 공개 Swagger GET 200, OpenAPI 3.1.0 / `v1`, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 두 설정 GET과 맞춤 PATCH는 `userAccessJwt`를 요구한다. 맞춤 설정의 PATCH 요청과 200 응답 데이터에 필수 boolean `enabled`가 있다. 두 GET의 게시 오류는 `401/403/404/409/500`이며 맞춤 PATCH는 같은 목록에 `400`을 추가한다. 게시된 상태 코드는 실제 재현 응답의 증거가 아니다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) |
+| 현재 실행 버전·업무 응답 | 프런트 실행 지문과 대상 개발 서버 프로세스의 SHA/이미지 대응은 미확인이다. 이번 인증된 실제 QA 실행과 신규 통과는 각각 0건이다. |
+
+- 화면 근거는 [알림 설정 Figma 3139:52591](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52591)와 DEV-66의 현행 카드/상태 검증이다. API 오류 전용 프레임은 기존 NSET-07 기록에서 별도 정의되지 않았다. 매일 08:30 KST 발송·기본 OFF·공고별 내부 알림 독립은 [POL-19와 중앙 정책](../development/figma-v01/tasks/POL-19.md#pol-19-contract)에 따른다. 세 항목을 배치하고 상세·야간을 비활성으로 표시하는 화면은 [2026-11-11 사용자 결정 POL-29 D3](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)를 따른다. 이번에 Figma를 다시 열거나 정책을 변경하는 작업은 없었다.
+- 기존 NSET-01~06과 2026-09-28 `6/0/0/1` 집계, [11월 5일 사전 점검](#qa-12-20261105)을 보존한다. NSET-05는 브라우저 요청 차단, [D66-05/07](#dev-66-local-qa)은 합성 GET/PATCH 503·401과 재시도·계정 전환, 이번 Node 11건은 공통 요청·설정 계약의 합성 검사다. NSET-07은 이번에도 **실제 실행 0건, 0통과·0실패·1차단·0대기**다.
+
+### 실제 오류·복구 재개 조건
+
+| 조건 | 필요 근거와 확인할 동작 |
+| --- | --- |
+| 테스트 계정과 사용 범위 | 계정 담당과 개발자 승인자가 폐기 가능한 테스트 계정의 별칭·시작 ON/OFF와 수신처 유형, 로그인/갱신/종료·두 설정 조회·맞춤 이메일 변경의 허용 범위를 정한다. 수신처 주소 대신 유형만 기록한다. |
+| 실제 서버 오류와 해제 | 설정 API 담당이 대상 GET 또는 PATCH, 4xx/5xx 상태와 기간, 계정에 한정되는 재현 조건, 해제 방법·담당을 제공한다. 조회 오류는 안내와 두 설정의 재조회 성공을 확인한다. 저장 오류는 안내·이전 UI 값 유지와 해제 후 정상 저장·재조회로 확인한다. 401의 자동 재요청과 사용자의 명시적 재시도는 따로 기록한다. |
+| 서버 저장과 복구 | 오류 후 정상 GET으로 실제 `enabled`를 확인해 표시값과 비교하고, 승인된 방법으로 시작값을 되돌려 종료 GET과 세션 정리를 확인한다. 설정 행 없이 OFF인 계정은 ON 후 OFF로 돌려도 저장 행과 변경 시각이 남을 수 있다. ON 기간의 발송·전달 이력 가능성도 있으므로 담당자가 잔존 허용·추가 정리 범위를 먼저 확인한다. 이번에는 업무 호출과 데이터 변경이 없어 복구 대상이 생기지 않았다. [계정 설정 저장 구현](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/matchedbidemail/MatchedBidEmailSettingPersistenceAdapter.kt#L28-L52) |
+| 실행 대응과 증거 | 배포 담당의 개발 URL·실행 SHA/이미지 대응, 프런트 HEAD·정확한 Origin·`auth`와 `notificationSettings`의 API 실행 설정을 확보한다. 프런트 QA 실행자가 브라우저/뷰포트·KST 시각·비식별 method/path/status와 오류 안내/표시값/종료 상태를 남긴다. [QA-12 기존 재개표](../development/figma-v01/tasks/QA-12.md#qa-12-resume) |
