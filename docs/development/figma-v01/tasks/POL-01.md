@@ -135,3 +135,63 @@
 - 범위/소유: 약관/개인정보 임시본문과 빈 푸터를 재확인했다. 정식 원문/버전·동의전환·공개 정보/문의의 기존 재개 조건은 그대로다.
 - 추가 완료/재개 기준: 이번은 법률 자문/정식 문서 승인이나 실제 가입 검증이 아니다. 기존 DEV-01/02 범위를 유지한다.
 - 이 절은 날짜별 후속 계획이다. 앞선 결정/QA/예외 이력을 대체하지 않으며 제품 구현·실제 업무 API 변경/새 통합 PASS는 없다. 상태는 WBS에서만 관리한다.
+
+<a id="pol-01-20261126-brief"></a>
+
+## 2026-11-26 KST · 정책 재개 요구사항 점검
+
+- **요구사항과 성공 기준** · P0 정책 Task로 H04·O03의 승인된 정식 문서와 동의 전환, 푸터 공개 정보를 확인한다. 정책 완료에는 원문·문서별 버전·적용일·공개 URL, 승인 역할·시각, 기존 동의 전환과 공개 항목·문의 목적지의 승인 근거가 필요하다. 기존 가입 계약과의 대응 및 DEV-01·DEV-02·QA-16의 재개 조건까지 연결한다.
+- **현재 승인 범위** · 2026-11-26 사용자가 POL-01 조사·문서 검증·두 리뷰, 목적별 커밋·push·PR·최종 head CI, 조건 충족 시 정상 병합과 로컬 main 동기화, 다음 Task 하나의 선정·인계를 승인했다. 이번 PR의 Chromatic 월간 한도 실패에 예외를 적용할 수 있다. [11월 5일 결정](#pol-01-resume)과 [당시 후속 선정](#pol-01-next-pol-02-exception)은 이력이다. 새 정책 승인은 제공되는 원문과 결정 기록으로 확인한다.
+- **수정 범위와 단계** · 이 기록, [WBS](../README.md), [POL-01 리뷰](../reviews/POL-01.md), [인증 QA](../../../qa/auth.md)에 현재 근거·결정·후속 착수 조건을 남긴다. [DOC-001](DOC-001.md)과 [H04·O03 연결표](../coverage.md), [CF-18](../audits/2026-11-11.md#cf-18), [데이터 접근 규칙](../../../ai-context/data-access.md), 프런트 소유 소스, 중앙 인증 정책, 개발 백엔드 소스와 Swagger를 대조한다. 임시 약관의 현재 버전이나 공개 디자인에서 법적 승인·출시일을 추정하면 잘못된 버전의 동의를 받거나 미승인 공개 정보를 노출할 수 있다.
+- **검증 범위** · 로컬 링크와 anchor, 원본 79개·Task 114개·의존성 및 WBS 상태, 고정 기준선·기존 QA 이력·허용 파일 범위·Markdown 형식과 `git diff --check`를 확인한다. `context-audit`, read-only verifier, `ai-review`를 수행한다. 현재 `package.json`에는 `dev`, `build`, `start`, `lint`, `test`, `test:watch`, `storybook`, `build-storybook`이 있다. Markdown 작업의 로컬 앱 test/lint/build/Storybook, 브라우저·mock·HTTP 대역·실제 업무 API는 미실행 범위다. 운영 게시·배포, 가입·계정과 동의 이력 변경, 문의 발송은 후속 승인 범위다.
+
+### 시작 체크포인트
+
+2026-11-26 08:38 KST · Codex. `main`과 `origin/main`은 `8fbbcd927a6fc168b86df2dab52fbba8a7cd2198`로 같고 작업트리는 깨끗했다. DOC-001 `9eae9c0`, POL-01 이전 [PR #41](https://github.com/mate-pjt/mate-frontend/pull/41)·[PR #42](https://github.com/mate-pjt/mate-frontend/pull/42), QA-13의 [POL-01 인계](QA-13.md#qa-13-20261126-handoff)가 main에 반영됐다. 같은 Task의 미병합 변경은 발견되지 않았다. fetch와 fast-forward 확인 후 `docs/pol-01-policy-readiness-20261126`에서 재개 점검을 기록한다.
+
+정식 문서, 기존 동의 전환, 푸터 공개 정보의 세 확인에 사용자가 각 **승인 경로를 제공하겠다**고 응답했다. 실제 경로와 승인 메타데이터는 추가 공유 대기 중이다. 다음 행동은 해당 경로의 원문·버전·승인 범위를 대조하는 것이며, 그동안 소유 소스 근거와 문서 검증을 준비한다.
+
+<a id="pol-01-20261126-evidence"></a>
+
+### 소유 근거 재확인
+
+| 근거 | 이번 확인 | 확인 범위 |
+| --- | --- | --- |
+| O03 · [가입 상태 3140:119739](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-119739), [가입폼](../../../../src/app/auth/signup/signup-form.tsx), [본문 경로](../../../../src/app/auth/legal/[document]/page.tsx) | 프런트 `8fbbcd9`의 가입폼은 두 필수 동의 코드와 테스트 안내를 표시한다. 서버의 `requiredAgreements`에 있는 두 `code`·`version`을 제출한다. `/auth/legal/terms`와 `/auth/legal/privacy`는 임시 본문·`noindex`다. | Figma 노드는 고정 기준선의 참조다. 소스에서 화면·동의 연결을 확인했고 운영 본문과 적용 버전은 미확인이다. |
+| H04 · [홈 2016:57355](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2016-57355)·[3261:54545](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3261-54545), [홈 소스](../../../../src/app/page.tsx) | 홈은 콘텐츠와 링크가 없는 푸터 영역을 렌더링한다. | Figma 참조에서 사업자 공개 정보나 문의 채널의 승인 범위를 추론할 수 없다. 화면 예외 승인도 확인되지 않았다. |
+| [중앙 인증 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/auth/account-and-social-identity.md#L93-L149), [MAT-149](https://linear.app/mate-pjt/issue/MAT-149/backend-google-소셜-로그인신규-가입) | `mate-docs` main `c9e50ff`와 연결된 가입 이슈는 현재 필수 버전 동의 및 code·version·수락 시각 보존을 설명한다. 중앙 저장소의 경로 목록과 `약관`, `PRIVACY_POLICY`, `개인정보처리방침`, `푸터` 검색, Linear MAT의 `약관`·`개인정보처리방침`·`푸터` 검색을 확인했다. | 검색·이슈 확인 범위에서 정식 원문, 이전 동의 전환, 사업자 공개 정보와 문의 목적지의 승인 기록을 확인할 수 없었다. |
+| 인접 승인 · [POL-26](POL-26.md#pol-26-contract), [POL-28](POL-28.md#pol-28-contract) | 의견 폼은 S08 설정·FAQ에서 사용하도록 승인됐다. 운영 대표 주소는 공식 승인 전 적용 보류다. | H04 푸터로 폼을 확대하거나 정식 문서의 운영 URL을 확정하는 별도 승인 근거는 미확인이다. |
+| [백엔드 개발 소스](https://github.com/mate-pjt/mate-backend/tree/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api) | `dev` `3fc3acb`의 가입 조회는 DB의 현재 필수 약관에서 `code`·`version`·`title`을 반환한다. 가입 완료는 당시 필수 목록과 제출 `code`·`version`의 중복 없는 정확한 일치를 확인하고 동의 시각과 함께 보존한다. | [가입 완료 트랜잭션](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/socialsignup/SocialSignupTransactionService.kt)으로 확인한 신규 가입 계약이다. 기존 계정의 전환 정책·처리 경로는 확인하지 못했다. |
+| [개발 배포 기록](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606/job/139036270343) | 소스 `3fc3acb`의 verify·publish·test 이미지 배포가 성공했다. test 배포는 2026-11-25 16:01 KST에 완료됐고 운영 배포 job은 skipped다. | 실행 중 서버의 SHA·이미지 식별자 및 개발 약관 DB의 현재 레코드는 미확인이다. |
+| [게시 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) | 공개 GET 200, OpenAPI 3.1.0·문서 `v1`·110 paths, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 가입 GET은 `requiredAgreements`의 세 필드를, 가입 POST는 `agreementAcceptances`의 `code`·`version`을 명시한다. 두 경로의 필수 `flowId`·`Origin`, GET 성공 200과 POST 성공 201을 확인했다. | 본문 URL·적용일 필드와 정식 본문 또는 기존 동의 전환 전용 경로는 해당 명세에서 확인되지 않았다. 가입 API 실측은 0건이다. |
+| [기존 인증 QA](../../../qa/auth.md#pol-01-preflight) | AUTH-02·03에는 테스트 가입에서 동의 버전 전송 및 임시 본문 표시·링크의 이전 근거가 있다. | 기존 QA 판정은 해당 기록을 따른다. 이번 브라우저·가입·mock·HTTP 대역은 0건이다. |
+
+<a id="pol-01-20261126-decisions"></a>
+
+### 이번 결정과 남은 확인
+
+| 항목 | 결정·근거 | 적용 및 남은 확인 |
+| --- | --- | --- |
+| 정식 문서 후보 | 2026-11-26 사용자가 Google 문서 `개인정보 처리방침`과 `서비스 이용약관`의 원문 위치를 제공했다. 두 Drive 파일의 제목과 유형, 시행 문구를 확인했다. 확인 시 공유는 두 파일 모두 링크를 가진 모든 사용자가 편집할 수 있는 상태였다. | 승인된 적용일과 문서 버전은 미확인이다. 콘텐츠 승인 역할·기록, 읽기 전용 운영 공개 URL, 동의 코드와 문서 버전 대응이 필요하다. 링크에 편집 권한이 부여돼 원문 URL은 이 기록에서 생략한다. |
+| 이전 테스트 동의 | 2026-11-26 이 대화에서 사용자가 기존에 임시 약관에 동의한 계정은 전부 테스트 계정으로 신경 쓸 필요 없다고 답했다. | 승인된 범위는 기존 테스트 계정의 동의 이관·재동의 절차 제외다. DEV-01에서 정식 문서와 버전으로 신규 가입을 연결하는 기준은 계속 적용한다. 향후 실제 운영 계정에 적용할 동의 변경과 기존 기록의 삭제·갱신은 별도 범위다. |
+| 푸터 공개 정보 | 사용자가 승인 정보 경로를 제공하겠다고 답했다. | 공개 항목의 승인 기록과 약관 링크·문의 채널 목적지·운영 역할의 확인이 필요하다. S08 의견 폼 승인은 POL-26에 기록된 범위를 따른다. |
+
+기존 테스트 동의 처리의 결정은 [11월 5일의 당시 미결 기록](#pol-01-resume)에 이어 적용한다. 문서와 푸터 승인 근거가 확보되면 DEV-01의 승인 버전·필수 동의·불일치 처리, DEV-02의 공개 항목·링크, QA-16의 공개 준비 증거를 각 Task에서 확인한다.
+
+<a id="pol-01-20261126-handoff"></a>
+
+### 다음 작업 선정과 첫 행동
+
+[WBS](../README.md)의 114개 Task에서 선행이 전부 완료된 대기·준비 항목은 없었다. P0의 DEV-01과 DEV-02는 POL-01 정책 결정을 필요로 하고 QA-16은 그 결과와 실제 QA를 기다린다. 사용자가 정식 문서 후보를 제공한 **POL-01**을 다음 정책 재개 요구사항 확인 대상으로 유지한다. 예전 POL-02 선정은 당시 인계 이력으로 보존한다.
+
+다음 첫 행동은 제공 문서의 읽기 전용 공개 주소·승인 버전·적용일과 승인 기록, 푸터의 공개 항목·문의 목적지를 대조하는 것이다. 테스트 계정 동의 전환 제외 결정을 DEV-01에 넘길 범위로 적용하고 신규 가입의 서버 `code`·`version` 대응을 확인한다. 이후 정책 완료 여부와 DEV-01 착수 조건을 판단한다.
+
+### 문서 갱신 점검과 Git 전달 기준
+
+WBS·이 기록·POL-01 리뷰·인증 QA를 갱신했다. 기존 QA 결과와 기준선, H04·O03 매핑과 의존성은 동일하다. `base.md`의 실행 스크립트, `architecture.md`·`data-access.md`의 실행 구조, `harness.md`의 검토 절차에 영향이 없다. `plan.md`는 현행 상태를 WBS에 위임하며 `ai-failures.md`에 추가할 관련 반복 실패 근거는 없다.
+
+정책 근거와 인증 QA 연결, WBS와 검토 근거를 두 문서 커밋으로 전달한다. [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-01-policy-readiness-20261126)에서 해당 head의 실제 CI·리뷰·병합 조건을 확인한다. 월간 한도에 따른 Chromatic 실패의 예외는 2026-11-26의 이번 PR 승인 범위다. 정상 병합 후 로컬 main을 fast-forward하고 원격 SHA와 작업트리를 대조한다.
+
+### 검증과 리뷰 체크포인트
+
+작업 브랜치에서 대상 4개 Markdown의 링크·anchor, 원본 79개, Task 114개와 의존성 156개, 상태·범위·기존 이력 보존 검사를 통과했다. 검증 후 두 리뷰를 시작했다. 이전 동의 처리 범위를 명확히 하라는 1차 verifier 의견을 반영했고, 최종 인계·검토 기록이 들어간 변경분을 재검증·재검토한 뒤 Git 전달한다. [검증 명령과 Review Gate](../reviews/POL-01.md#pol-01-20261126-review)
