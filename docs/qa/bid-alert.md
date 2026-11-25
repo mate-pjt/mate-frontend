@@ -179,3 +179,36 @@
 - 팝업은 공고별 변경 소식을 상단 알림에서 확인하고 해당 공고 상세에서 설정·해제하도록 안내한다. 매일08:30 맞춤 공고 이메일은 별개이며 마이페이지의 알림 설정에서 따로 변경한다. 미지원 전체 관리 화면이나 없는 전역 토글을 안내하지 않는다.
 - 이번 mock 팝업·설정/해제·키보드/320px 검증을 기존 ALERT 실제8차단의 통과로 세지 않는다.
 - 이번 근거는 [알림 안내 로컬 검증](notification-guidance.md)과 [DEV-62](../development/figma-v01/tasks/DEV-62.md)에서 확인한다. 기존 실제 API 결과·미실행/차단을 보존한다.
+
+<a id="qa-09-20261125-alert"></a>
+
+## QA-09 · 2026-11-25 재개 점검
+
+ALERT-01~08의 실제 통합은 **실행 0건, 0통과·8차단**이다. 10월 기준선의 0통과·8대기와 11월 3일 사전 점검을 보존한다. 승인된 계정·공고별 초기/종료 상태, 허용 변경과 복구 범위, 안전한 오류·만료 조건, 실제 실행 대응이 필요하다. [이전 QA](#qa-09-20261103) · [PREP 준비표](prep-01-readiness.md#qa-0113-준비표)
+
+### 확인한 근거
+
+| 근거 | 2026-11-25 확인 |
+| --- | --- |
+| 프런트 소스 | 시작 `e695616`의 상세 카드는 로그인 전 업무 조회를 시작하지 않고 상세 경로·분류 쿼리를 로그인 복귀에 보존한다. 인증 후 계정과 공고 ID로 카드를 구분한다. 확정할 때만 변경을 보내고 응답의 `active`가 기대값과 같으면 카드·토스트를 갱신한다. 조회 취소와 공통 401 재시도·계정 변경 응답 폐기 경로를 확인했다. [카드](../../src/components/bids/bid-detail-alert-card.tsx) · [HTTP Repository](../../src/data/bid-alerts/http-repository.ts) · [공통 HTTP](../../src/data/shared/http.ts) |
+| 백엔드 소스 | `dev` `3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4`에서 활성 계정 본인과 양수 공고 ID를 사용한다. `PUT`은 공개 공고에 등록하며 활성 상태에서 중복 등록하면 시작 시각을 유지한다. `DELETE`는 기존 행에 최초 해제 시각을 기록하고, 이력이 있으면 응답에 마지막 `registeredAt`을 보존한다. 등록 행이 없다면 조회·해제는 비활성과 null을 반환한다. [컨트롤러](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bidnoticealert/AccountBidNoticeAlertController.kt#L31-L83) · [서비스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bidnoticealert/AccountBidNoticeAlertService.kt#L42-L95) · [저장소](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bidnoticealert/AccountBidNoticeAlertLifecyclePersistenceAdapter.kt#L21-L120) |
+| 배포 기록 | 같은 dev SHA의 `test` 배포 `8050667620`은 16:01 KST 성공으로 기록됐다. CI의 verify·publish·deploy가 성공했고 운영 배포는 건너뛰었다. [백엔드 CI](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606) |
+| 게시된 개발 Swagger | 공개 문서 HTTP 200, OpenAPI 3.1.0/v1, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 단건 `GET/PUT/DELETE`는 사용자 인증, 양의 ID 제약은 소스, 게시 path 타입은 int64다. 세 요청 모두 본문 없이 성공 200과 `isSuccess` wrapper를 게시한다. `data`의 속성은 `bidNoticeId`, boolean `active`, nullable date-time `registeredAt`이며 스키마에 속성별 필수 표시는 없다. 프런트는 성공 데이터와 ID 일치, boolean과 null 또는 문자열을 검사한다. [OpenAPI](https://api-test.mate-bid.com/v3/api-docs) · [프런트 검증](../../src/data/bid-alerts/http-repository.ts) |
+| 실행 인스턴스·업무 응답 | CORS 소스는 GET/PUT/DELETE와 Authorization 헤더, credentialed 요청을 허용하고 Origin은 실행 설정에서 가져온다. 이번에는 현재 인스턴스의 SHA/이미지 대응, 프런트 공급원·실제 허용 Origin, 인증 업무 응답을 확인하지 못했다. 브라우저·화면/Network 기록은 미실행이다. [CORS 소스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/global/config/AuthenticationCorsConfiguration.kt#L28-L46) |
+
+중앙 정책에서 구독 키는 계정과 저장 공고다. 같은 저장 공고의 입찰분류는 구독을 공유하고, 해제 전에 받은 알림은 유지된다. 공고별 내부 알림과 08:30 맞춤 이메일은 독립적이다. 기준선의 [카드·팝업 상태](#테스트-항목)는 해당 사례의 참조이며, 문구의 정책 교정은 DEV-62, 배치·초점 복귀는 DEV-64의 로컬 증거를 따른다. 이번에는 Figma 시안 열람·시각 비교·화면 예외 결정이 없었다. [중앙 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md#L5-L31) · [POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract) · [DEV-62 QA](notification-guidance.md) · [DEV-64 QA](bid-detail.md#dev-64-local-qa)
+
+### 사례별 재개 증거
+
+| 사례 | 재개 시 확보할 증거 |
+| --- | --- |
+| ALERT-01 | 공개 공고·분류와 승인된 세션에서 로그인 전 알림 요청이 없는지, URL 복귀 뒤 조회만 이루어지는지 확인한다. |
+| ALERT-02 | 회사 미가입을 포함한 두 계정의 `active` true/false 초기값과 새로고침 결과를 비교한다. 미등록 조회에서 null 필드의 실제 표현도 확인한다. |
+| ALERT-03 | 꺼짐 공고에서 팝업을 열고 토글한 뒤 닫기·다음에 하기·Escape로 각각 취소한다. 재열기 값과 변경 요청 0건을 확인한다. |
+| ALERT-04 | 승인된 false→true 변경에서 정확한 공고에 본문 없는 PUT 1회, 카드·토스트와 다음 GET의 true, 합의된 종료 상태를 확인한다. |
+| ALERT-05 | 승인된 true→false 변경에서 DELETE 1회, 카드·토스트와 다음 GET의 false, 마지막 등록 시각을 확인한다. 기존 수신 이력의 잔존·정리는 사전에 합의할 범위에 기록한다. |
+| ALERT-06 | 승인된 안전한 실패·권한/만료 조건에서 조회 재시도, 변경 실패의 기존 상태 유지, 401 갱신·재시도·재인증 경계와 중복 요청을 확인한다. |
+| ALERT-07 | 같은 저장 공고 A의 복수 분류와 별도 공고 B, 두 계정의 초기·종료값을 대조한다. 계정·공고 전환 중 늦은 응답도 확인한다. |
+| ALERT-08 | 데스크톱·390px·320px에서 키보드 전환, 초점 가두기·복귀, Escape·바깥 닫기, 스크롤과 취소 후 변경 0건을 확인한다. |
+
+이번 Node 계약 테스트는 mock·HTTP 대역에서 구독의 `active` 전환과 조회, mock 계정 격리·탭 재생성·취소/오류, 공통 HTTP와 공급원 경계를 확인했다. 기존 mock과 HTTP 대역은 해제 시 응답의 `registeredAt`을 null로 돌려준다. 해제 후 마지막 등록 시각을 보존하는 백엔드 계약은 실서버 확인 항목으로 남긴다. 실제 로그인·업무 API·구독 변경과 알림 생성은 0건이며 이번 실행에서 발생한 정리 대상은 없다. [검증 명령과 결과](../development/figma-v01/reviews/QA-09.md) · [재개 조건](../development/figma-v01/tasks/QA-09.md#qa-09-resume)
