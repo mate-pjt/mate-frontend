@@ -190,3 +190,38 @@
 | 실제 API · QA-12/13 | 기존 차단 유지 | 이번 실제 호출·발송·주소 변경 0건. [NSET-07](notification-settings.md#qa-12-20261105)과 위 NREC-03/04/05/06/07/09의 차단을 유지한다. 재개에는 승인된 계정·Mailpit 대상·안전한 오류 조건·잔존/복구 범위 및 실행 버전 대응이 필요하다. |
 
 [DEV-41 범위와 전체 검증](../development/figma-v01/tasks/DEV-41.md#dev-41-brief) · [정책 §7 적용 범위](../development/figma-v01/tasks/POL-19.md#pol-19-contract)
+
+<a id="qa-13-20261126-nrec"></a>
+
+## 2026-11-26 KST · QA-13 재개 점검
+
+[작업과 승인](../development/figma-v01/tasks/QA-13.md#qa-13-20261126-brief) · [PREP 준비표](prep-01-readiness.md#qa-0113-준비표) · [검증·리뷰](../development/figma-v01/reviews/QA-13.md#qa-13-20261126-review)
+
+**이번 실제 실행 0건 · 신규 통과 0건 · 6건 차단.** 대상은 NREC-03/04/05/06/07/09다. 2026-09-28 NREC-01/02/08의 통과와 나머지 6건의 당시 대기를 보존한다. 2026-11-05 Mailpit 접근 가능 회신과 비인증 HEAD 302는 당시 접근 근거다. 현재 제한 열람의 대상·권한을 확인할 자원과 실제 QA 사용·발송·복구 승인은 확보되지 않았다. 이번에 Mailpit에 접속하거나 메일을 읽지 않았다.
+
+### 정책과 현재 근거
+
+- 중앙 알림 정책 §7은 4자리 번호, 3분 유효, 60초 대기와 최대 오입력 5회를 정한다. 확인 성공 시 대체 주소를 저장하고 새 수신처로 선택한다. 가입 주소로 복귀해도 대체 주소가 유지된다. 로그인 이메일과 맞춤 이메일 ON/OFF는 수신처와 별도 설정이다. [중앙 정책 §7](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md#L160-L172)
+- S05 기준선의 화면 상태는 [다른 이메일 입력](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52665), [인증번호 입력](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-56715), [인증 완료](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3139-52894)다. 주소 저장·선택의 근거는 중앙 정책이다. POL-29 D3의 화면 결정은 설정 행 구성·비활성 안내에 적용된다. 이번 근거 대조는 기준선에 연결된 상태를 사용했으며 S05 시각 비교나 별도 화면 예외 판단은 미실행이다. [S05 연결표](../development/figma-v01/coverage.md) · [POL-29 화면 결정](../development/figma-v01/tasks/POL-29.md#pol-29-decisions)
+
+| 증거 | 확인한 내용 |
+| --- | --- |
+| 프런트 소스 | `e458b4f`의 설정 화면은 수신처와 맞춤 이메일을 두 GET으로 읽는다. 인증 화면은 시작·재전송 응답의 `expiresAt`과 `resendAvailableAt`을 사용하며 최신 요청의 확인 응답으로 화면 수신처를 바꾼다. 이미 인증한 주소는 `recipientType` PATCH로 전환하고 응답 성공 후 반영한다. [설정 화면](../../src/components/my/notification-settings-page-client.tsx) · [인증 팝업](../../src/components/my/notification-email-verification-dialog.tsx) · [HTTP Repository](../../src/data/notification-settings/http-repository.ts) |
+| 백엔드 소스 | 개발 `3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4`. 활성·미삭제인 본인 계정에서 수신처 기본값은 `SIGNUP_EMAIL`, 대체 주소는 `null`이다. 인증 성공이 주소 저장과 `ALTERNATE_EMAIL` 선택을 함께 처리한다. 재전송은 최신 요청을 교체한다. 등록된 대체 주소 없이 선택하면 `409/NE001`, 대기 중 발송 `429/NE003`, 틀린 번호·교체된 요청 `400/NE004`, 현재 요청의 만료 `410/NE005`, 횟수 초과 `429/NE006`을 소스에서 확인했다. [수신 설정 서비스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/notificationemail/NotificationEmailSettingService.kt#L35-L81) · [인증 트랜잭션](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/notificationemail/NotificationEmailVerificationTransactionService.kt#L35-L197) · [오류 코드](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/global/exception/NotificationEmailErrorCode.kt) |
+| 개발 배포 기록 | 같은 `dev` SHA의 `verify`, `publish`, 개발 `deploy`가 성공했다. 개발 배포 job은 2026-11-25 16:01 KST에 완료됐고 운영 job은 skipped다. 개발 SMTP 제한은 소스에서 확인했으며 현재 메일 전달을 관찰한 기록은 없다. [개발 배포](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606) · [비운영 SMTP 경계](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/global/config/runtime/NonProductionRuntimeBoundary.kt#L37-L58) |
+| 게시된 개발 명세 | 공개 `GET /v3/api-docs` 200, OpenAPI 3.1.0 / `v1`, 110개 경로, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 수신처 GET/PATCH와 인증 시작·재전송·확인 POST의 `userAccessJwt`, `{recipientType}`·`{email}`·`{code}` 및 재전송 본문 없음, nullable `alternateEmail`, 응답의 ID·두 절대 시각, `isSuccess` 응답 구조를 확인했다. 확인 POST에는 410·429가 게시돼 있다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) |
+| 로컬 합성 검증 | Node 22.20.0의 기존 HTTP fetch 대역 2건과 mock Repository 13건을 통과했다. 현재 mock의 3분·60초와 교체·오입력 한도를 확인했다. 서버/합성 만료의 상태는 `410/NE005`와 `400/NE005`, 발송 대기 코드는 각각 `NE003`과 `NE006`이다. DEV-41의 320/390px·HTTP 대역 브라우저 관찰은 해당 날짜의 기록이다. [합성 검사 명령](../development/figma-v01/reviews/QA-13.md#qa-13-20261126-review) · [DEV-41 브라우저 근거](#dev-41-local-qa) |
+| 실행 중 버전과 업무 응답 | 배포 기록과 게시 스키마를 확인했다. 현재 실행 중인 백엔드 SHA/이미지의 직접 대응, 프런트 실행 지문·Origin·`auth`/`notificationSettings` API 공급원은 미확인이다. 브라우저와 viewport·계정 세션·업무 요청·메일·복구는 미실행이라 화면·Network 증거가 없고 새 복구 대상도 없다. |
+
+### 6개 사례의 재개 조건
+
+| 사례 | 이번 판정 | 재개할 때 확보하고 확인할 것 |
+| --- | --- | --- |
+| NREC-03 · 발송·확인·자동 전환 | 차단·미실행 | 승인된 폐기 가능 계정, 다른 테스트 수신처, 해당 QA 메일만 제한 열람하는 절차. 시작·확인·새로고침 GET의 수신처 선택과 표시를 확인한다. 서버 반환 타이머와 맞춤 ON/OFF의 시작·종료 상태는 승인된 조회 범위에서 관찰한다. |
+| NREC-04 · 다시 가입 주소·대체 주소 선택 | 차단·미실행 | 실제 인증 성공 뒤 `SIGNUP_EMAIL`과 `ALTERNATE_EMAIL` PATCH·GET·새로고침을 확인한다. 시작 수신처가 가입 주소였다면 선택을 되돌릴 수 있다. PATCH는 인증된 대체 주소를 지우거나 새 인증으로 덮어쓴 이전 대체 주소를 복원하지 않는다. 초기 값과 이력 정리가 필요한 경우 담당자와 복구 방법을 먼저 확인한다. |
+| NREC-05 · 재전송과 이전 번호 | 차단·미실행 | 최초·재전송 메일을 구분할 열람·발송 범위. 응답의 재요청 시각 전후와 새 요청·시각을 관찰한다. 이전 요청 거절과 최신 요청에서 이전 번호 거절 후 새 번호 성공을 확인할 경우 번호가 서로 다른 승인된 시험 조건을 사용한다. 주소·번호·요청 ID 원문은 남기지 않는다. |
+| NREC-06 · 만료와 오입력 한도 | 차단·미실행 | 테스트 요청별로 1~4회 오입력 오류, 다섯 번째 차단, 실제 서버 만료와 정상 복구 순서를 합의한다. 브라우저 `00:00` 확인 비활성과 실제 `410/NE005` 응답은 별도다. 서버 오류를 확인할 제한된 재현 조건과 해제 담당·방법이 필요하다. |
+| NREC-07 · 오류 시 기존 선택 보존 | 차단·미실행 | 발송·확인·PATCH별 안전한 서버 실패와 해제를 준비한다. 화면 안내·기존 선택과 서버 저장값을 각각 확인한다. 응답이 끊겨 저장 여부가 불명확하면 승인된 GET으로 확인한 뒤 재시도한다. 오류 뒤 정상 응답과 종료 수신처·잔존 상태를 남긴다. |
+| NREC-09 · 번호 단계 모바일·키보드 | 차단·미실행 | 승인된 새 메일 요청과 390px·320px에서 코드 입력·타이머·오류·재전송·Tab/Enter/Escape 및 포커스 복귀를 확인한다. 기존 NREC-08은 인증 전 관찰 범위에 남긴다. |
+
+Mailpit 담당과 계정·수신 설정 담당의 승인 범위, 메일·인증 시도·대체 주소의 잔존 허용과 정리 책임, 배포 담당의 실행 대응이 필요하다. 실제 담당 배정은 확인되지 않았다. 재개 시 위 조건을 [기존 7조건](../development/figma-v01/tasks/QA-13.md#qa-13-resume)과 대조하고 승인된 종료 상태까지 확인한다.
