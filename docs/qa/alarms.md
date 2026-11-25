@@ -2,6 +2,10 @@
 
 ## 기준과 현재 상태
 
+2026-11-25에 목록·미확인 건수·읽음의 [재개 조건](#qa-11-20261125-alarms)을 재확인했다. 선택·전체 수동 삭제는 프런트에 연결됐으며 [DEV-43 로컬 결과와 실제 통합 조건](#dev-43-local-qa)을 따른다.
+
+### 2026-11-20 · DEV-43 연결 전
+
 2026-11-20 기준 프런트의 편집은 준비 중이고 개발 OpenAPI에 받은 알림 삭제 POST가 게시되어 있다. ALARM-04의 기존 차단 및 ALARM-05의 보류/대기 이력과 새 계정별 삭제 기준은 [POL-20 후속 QA](#pol-20-alarm-deletion-qa)에서 이어간다. 현재 읽음 후 이동은 [DEV-06 로컬 검증](#dev-06-local-qa)을 참고한다.
 
 ### 2026-09 · 최초 기록
@@ -341,3 +345,39 @@ Node 22.20.0, pnpm 11.3.0에서 Next.js mock 및 로컬 API/Preview의 `/alarms`
 | NDEL-09 | 고정 날짜의 합성 45건 및 7일보다 오래된 미삭제 행을 조회했다. 7일 안내와 복구 조작의 제외는 [POL-20 범위](../development/figma-v01/tasks/POL-20.md#pol-20-contract)를 따른다. | 차단 |
 
 실제 **0통과·9차단**. 배포 담당의 현재 프로세스/인스턴스 V133 대응, QA 담당의 실제 disposable 두 계정과 데이터·오류 방법, 로그인/조회/삭제 및 잔존·정리 승인까지는 확보되지 않았다. Swagger GET은 게시 명세 확인이다. ALARM-04의 기존 이력은 두고 이 절에 후속 삭제 QA를 기록한다. ALARM-05는 POL-20 보존 결정 대기를 유지한다.
+
+<a id="qa-11-20261125-alarms"></a>
+
+## 2026-11-25 KST · QA-11 재개 점검
+
+프런트 main `a81ccc6738301642d923919d57c8aa81ce596806`와 [QA-11 재개표](../development/figma-v01/tasks/QA-11.md#qa-11-resume), [PREP-01 준비표](prep-01-readiness.md)를 대조했다. 새로운 실제 업무 요청·브라우저 실행은 **0건**, 신규 통과는 **0건**이다. ALARM-01/02/03/06/07/08/09/10의 실제 재검증 **8차단**과 ALARM-04의 당시 API 차단, ALARM-05의 정책 보류를 보존한다. 9월의 **3통과·1차단·6대기**는 위 사례에 남아 있다.
+
+### 현행 계약과 확인한 환경
+
+| 근거 | 확인한 내용 |
+| --- | --- |
+| 소유 정책 | 계정별 저장 이력이 목록·읽음·미확인 수의 원본이다. 구독 해제 전 이력은 보존한다. 허용 목적지로의 이동 판정은 POL-04/DEV-06이 소유한다. [중앙 알림 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md#L21-L31) · [REST 원본](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md#L208-L214) · [POL-04 결정](../development/figma-v01/tasks/POL-04.md#pol-04-decisions) · [DEV-06 로컬 검증](#dev-06-local-qa) |
+| 백엔드 소스 | 개발 브랜치 `3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4`의 목록·건수·읽음은 인증된 활성 계정의 미삭제 행에 적용하며 응답은 `no-store`다. 목록은 0 기반 offset, 기본 20건, `createdAt DESC, id DESC`다. `unreadOnly`는 `content`·`totalElements`를 거르며 `unreadCount`는 전체 미삭제·미읽음 행을 센다. 양수 ID의 읽음 PATCH는 최초 `readAt`을 보존하고, 타인·부재·삭제 대상은 404 `AN001`이다. [Controller](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/notification/AccountNotificationController.kt) · [서비스](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/application/service/notification/AccountNotificationService.kt#L36-L64) · [저장과 정렬](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/notification/AccountNotificationPersistenceAdapter.kt#L48-L87) · [오류 코드](https://github.com/mate-pjt/mate-backend/blob/3fc3acbfe3a4e0f185c7bd7c5840dfc59a7bc7b4/mate-api/src/main/java/kr/co/mate/mate_api/global/exception/AccountNotificationErrorCode.kt) |
+| 배포 기록 | 같은 SHA의 verify·publish·deploy 성공, test 배포 `8050667620` success, deploy-prod skipped를 확인했다. 현재 실행 중인 서버 SHA·이미지 digest·프런트 실행 Origin과 공급원 snapshot은 미확보다. [백엔드 배포 실행](https://github.com/mate-pjt/mate-backend/actions/runs/45560713606) |
+| 게시 명세 | 개발 OpenAPI 비인증 GET 200, 3.1.0 v1, SHA-256 `2091506401762af62544742eb418b74f637b3bac8a9e283bf8d7b42f782851e1`. 목록·건수 GET 및 읽음 PATCH는 사용자 인증과 `isSuccess` 응답을 게시한다. 목록에 `page`·`size`·`totalElements`·`totalPages`·`unreadCount`·`content`가 있고, 항목의 `title`·`body`·`actionPath`·`readAt`은 nullable이다. 수동 삭제 POST도 게시돼 있다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) |
+| 프런트 소스 | `/alarms`는 공개 `notifications`에서 `size=20&unreadOnly=false`로 읽고, 받은 순서대로 잇는다. 다음 페이지의 기존 ID를 거르고 실패 시 앞 페이지를 보존한다. 읽음 성공에서만 행의 점과 로컬 집계를 갱신하고 헤더는 별도 건수 GET을 다시 수행한다. 동일 ID의 진행 중 클릭은 막는다. 같은 계정의 401 이후 공용 클라이언트는 토큰 갱신 후 한 번 재요청할 수 있다. 오류 시 mock으로 전환하지 않는다. [받은 알림](../../src/components/alarms/alarm-page-client.tsx) · [헤더](../../src/components/alarms/notification-bell.tsx) · [읽음 처리](../../src/features/notifications/activation-controller.ts) · [HTTP Repository](../../src/data/notifications/http-repository.ts) |
+| 실행 증거 | Node 22.20.0의 mock·HTTP fetch 대역·읽음 처리 테스트는 첫 20건·다음 5건, 읽음 뒤 건수 감소, 계정 수명, 연속 클릭 방어와 실패 후 재요청을 확인했다. 실제 업무 호출, 브라우저·화면 크기·UI 캡처·Network 증거는 미실행이다. [검증 명령과 범위](../development/figma-v01/reviews/QA-11.md#qa-11-20261125-review) |
+
+### ALARM별 재개 조건
+
+Figma ID는 위 사례에 기록된 기준 프레임이다. 이번 화면 대조는 소스와 기존 시안 기록에 한정한다. 목적지 이동은 POL-04, 수동 삭제는 POL-20의 승인 범위를 적용하며 신규 화면 예외 승인은 확인되지 않았다.
+
+| 사례·기준 프레임 | 재개 시 확인할 내용 |
+| --- | --- |
+| ALARM-01 · 빈 상태 `2304:89973` | 승인된 빈 계정의 목록 200, `content=[]`·`totalElements=0`·`unreadCount=0`, 빈 UI를 대조한다. |
+| ALARM-02 · 헤더 `2304:29129` | 같은 계정에서 목록·미확인 건수 GET의 0을 맞추고 헤더 점이 표시되지 않는지 확인한다. |
+| ALARM-03 · 읽음 `2304:89716` | 이동 목적지가 없는 합성 미읽음으로 PATCH 성공 후 점·건수, 목록 유지, 새로고침 후 최초 읽음 시각 보존을 확인한다. 이미 읽은 행과 진행 중 연타의 앱 발신 횟수를 확인하고 인증 재요청을 따로 센다. 명시적 실패에서는 요청 전 점·건수와 재시도를, 응답을 잃은 경우에는 후속 조회의 읽음 상태를 확인한다. |
+| ALARM-04 · 편집 `2304:88975` | 당시 계약 부재 차단은 기존 사례에 보존한다. 현재 수동 삭제 연결의 실제 검증은 [DEV-43의 NDEL 9차단](#dev-43-local-qa)을 따른다. 이번 재개 점검에서 삭제를 실행하지 않았다. |
+| ALARM-05 · 목록 `2304:29129` | 7일 안내는 [POL-20](../development/figma-v01/tasks/POL-20.md#pol-20-contract)의 보존 정책 대기다. 실제 목록에서 안내 미노출을 확인할 자료가 필요하다. |
+| ALARM-06 · 목록 `2304:29131` | 읽음·미읽음과 공고·회사·메이트 등 여러 종류의 합성 행을 대조한다. 서버 순서, KST 날짜 경계, 제목·본문 결측, 종류별 아이콘과 레이블, 미확인 점 및 순번별 배경을 확인한다. |
+| ALARM-07 · 목록과 헤더 `2304:29131` | 고정된 데이터의 목록·별도 건수 GET을 읽음 처리 전후에 비교한다. 초기 총수와 미확인 수, 마지막 미읽음 처리 후 미확인 0과 헤더 점 제거를 확인한다. |
+| ALARM-08 · 더 보기 `2304:29131` | 동일 생성 시각의 ID 내림차순도 확인할 수 있는 21건 이상으로 첫 20건·다음/마지막 페이지·중복 없는 순서를 대조한다. 연타, 승인된 다음 페이지 실패 시 기존 목록 유지, 복구 후 재시도와 마지막 버튼 숨김을 확인한다. |
+| ALARM-09 · 로그인 안내 `2855:113653` | 승인된 계정·Origin에서 로그아웃 안내와 `/auth?mode=login&next=%2Falarms`, Google 인증 후 복귀를 검증한다. 비로그인 알림 호출이 없는지 확인하고 승인된 방식으로 세션을 종료한다. |
+| ALARM-10 · 별도 Figma 상태 없음 | 최초 목록·헤더 건수 GET의 승인된 실제 오류를 각각 확인한다. 목록 재시도 성공과 건수 실패 시 점이 사라지는지, 정상 복구 뒤 재조회되는지 기록한다. 브라우저 차단이나 HTTP 대역은 독립된 로컬 증거다. |
+
+계정·알림 담당이 비식별 별칭과 시작·종료의 총수/미확인 수/페이지 순서, 동시 생성 통제, PATCH 대상과 읽음 상태 잔존 또는 재생성·정리 방식을 제공해야 한다. API 담당은 실패 대상·상태·기간과 해제 방법을, 배포 담당은 프런트와 실행 중인 백엔드 식별자를 제공한다. 개발자 승인자의 사용·변경·복구 범위를 확인한 뒤 QA 실행자가 화면과 비식별 요청 증거를 남긴다. 담당 개인은 미지정이며 이번에 생성된 실제 잔존·복구 대상은 없다.
