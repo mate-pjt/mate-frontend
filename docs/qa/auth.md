@@ -616,3 +616,10 @@ AUTH-16 실제 **0통과·1차단**, 초대 화면 AUTH-17 미실행을 유지�
 수신 프레임 `3141:56135`와 완료 프레임 `3141:56172`의 기존 근거를 참조했다. 완료 화면은 POL-15 D1에 따라 같은 회사·소속과 조회 권한이 확인되면 `/my/team`, 회사 정보 조회만 가능하면 `/my/company`를 제공한다. 확인에 실패하면 재조회와 `/bids`를 제공한다. D1은 상태별 목적지 정책이다. 원본 O10 프레임 묶음 `3141:56082`, `3141:56135`, `3141:56172`의 시각 정합성과 초대 화면 AUTH-17의 데스크톱·모바일·키보드 사례는 이번에 검증하지 않았다. [DEV-57 수신 프레임](../development/figma-v01/tasks/DEV-57.md) · [POL-15 완료 프레임과 결정](../development/figma-v01/tasks/POL-15.md#pol-15-contract) · [완료 화면](../../src/app/auth/company/invitations/invitation-completion-card.tsx)
 
 Node 22.20.0의 5파일·84건은 합성 초대의 계정 전환·버전, 수락 응답과 성공 후 세션 갱신 실패의 HTTP fetch 대역, 완료 목적지·계정 격리와 구성 경계를 포함한다. 11월 20일 DEV-33의 로컬 브라우저 관찰은 날짜별 이력으로 참조한다. 실제 재개에는 승인된 자원, 링크 Origin, 실행 버전과 초대·소속의 사용 및 정리 범위가 필요하다. [초대 계약 테스트](../../tests/company-invitation-completion.test.ts) · [DEV-33의 로컬 인증 검증](#dev-33-auth-regression) · [QA-08 재개 조건](../development/figma-v01/tasks/QA-08.md#qa-08-20261125-gate)
+
+<a id="pol-01-20261126-auth"></a>
+
+## 2026-11-26 KST · 정식 약관 검증 선행 조건
+
+- O03의 기존 AUTH-02·03에는 임시 약관 필수 동의, `code`·`version` 전송 및 두 임시 본문 링크의 검증 이력이 있다. 이번 정책 점검은 프런트 소스와 개발 Swagger에서 신규 가입의 동의 계약을 재확인했다. 실제 가입·브라우저·mock·HTTP 대역의 새 실행과 신규 실제 통과는 각각 0건이다. [QA-04 최종 증거](#qa-04-범위의-최종-증거-연결--2026-10-30-1402-kst) · [이번 소유 근거](../development/figma-v01/tasks/POL-01.md#pol-01-20261126-evidence)
+- 이번 사용자 결정으로 기존 임시 동의 테스트 계정의 이관·재동의 절차가 DEV-01 범위에서 제외됐다. DEV-01은 신규 가입 화면·제출의 승인 버전과 문서 URL, 필수 동의 누락과 버전 불일치 처리를 검증한다. 실제 자원과 계정·동의 이력의 잔존/복구 승인, 프런트·백엔드 실행 식별자는 해당 개발/QA 시점에 확인한다. [POL-01 결정](../development/figma-v01/tasks/POL-01.md#pol-01-20261126-decisions) · [DEV-01](../development/figma-v01/tasks/DEV-01.md)
