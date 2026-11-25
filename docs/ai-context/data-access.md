@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-20
+Last updated: 2026-11-25
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -218,7 +218,9 @@ src/data/
 
 ## 9. 새 기능의 개발 순서와 검증
 
-금액 직접 입력은 [DEV-11](../development/figma-v01/tasks/DEV-11.md#dev-11-brief)에서 ALL/closing 조회 URL·HTTP/mock에 연결한다. BASE_PRICE는 canonical 분류 행 기초금액, ESTIMATED_PRICE는 공고 추정가격이며 두 경계는 포함한다. 0..9,007,199,254,740,991의 정수 원과 null 무제한을 구분하고 양쪽 빈값은 종류까지 해제한다. 음수/소수/초과/역전/중복·종류 누락 URL은 오류/원문을 보존하고 목록 요청 전에 차단한다. preset은 기존 정확한 경계와 선택 종류를 유지한다. RESULT의 기초/추정 금액·낙찰금액 연결은 추가하지 않는다. 팝업의 ‘저장’은 현재 조회 URL 적용이며 계정 쓰기/회사 투영 변경이 아니다. 최신 GET→URL 및 기존 Repository 저장/재조회 계약은 로컬에서 검증하고 실제 ADV/ADVP·QA-02/QA-10 통합 차단은 보존한다.
+금액 직접 입력은 [DEV-11](../development/figma-v01/tasks/DEV-11.md#dev-11-brief)에서 ALL/closing 조회 URL·HTTP/mock에 연결한다. BASE_PRICE는 canonical 분류 행 기초금액, ESTIMATED_PRICE는 공고 추정가격이며 두 경계는 포함한다. 0..9,007,199,254,740,991의 정수 원과 null 무제한을 구분하고 양쪽 빈값은 종류까지 해제한다. 음수/소수/초과/역전/중복·종류 누락 URL은 오류/원문을 보존하고 목록 요청 전에 차단한다. preset은 기존 정확한 경계와 선택 종류를 유지한다. 팝업의 ‘저장’은 현재 조회 URL을 적용한다. 최신 GET→URL 및 기존 Repository 저장/재조회 계약은 로컬에서 검증했고 실제 ADV/ADVP·QA-02/QA-10 통합 차단은 보존한다.
+
+RESULT의 낙찰금액 조회는 URL과 `GET /api/v1/bid-notices`에서 `successfulBidAmountMin`·`successfulBidAmountMax`를 사용한다. 정수 원 입력과 양끝 포함을 적용하며 범위가 있으면 결과 값이 null인 행을 제외한다. 적용과 해제는 첫 페이지로 돌아가며, 다른 보기로 전환할 때 두 키를 지운다. HTTP는 `openAt,desc`와 서버 페이지·집계를 사용하고 mock은 행의 최종 낙찰금액을 페이지 자르기 전에 비교한다. 이 범위는 개인 필터 저장 모델에 속하지 않는다. [DEV-12 결정](../development/figma-v01/tasks/DEV-12.md#dev-12-brief) · [검증 범위](../qa/bid-list.md#dev-12-local-qa)
 
 1. 현재 필요한 내부 입력/출력·Repository 계약 정의.
 2. mock으로 정상/빈/오류/변경/복원 화면 개발.

@@ -660,6 +660,7 @@ function DateField({ disabled = false, errorId, label, onChange, value }: { disa
 export type PriceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     FilterActionsProps & {
         activeType?: AmountFilterType;
+        heading?: string;
         maxLabel?: string;
         minLabel?: string;
         maxValue?: string;
@@ -667,9 +668,11 @@ export type PriceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
         errorMessage?: string;
         onMaxValueChange?: (value: string) => void;
         onMinValueChange?: (value: string) => void;
-        selectedPreset?: (typeof pricePresetLabels)[number];
+        presetLabels?: readonly string[];
+        selectedPreset?: string;
+        showTypeSelector?: boolean;
         advancedDisabled?: boolean;
-        onPresetSelect?: (preset: (typeof pricePresetLabels)[number]) => void;
+        onPresetSelect?: (preset: string) => void;
         onTypeSelect?: (type: AmountFilterType) => void;
     };
 
@@ -677,6 +680,7 @@ export function PriceCategoryPopover({
     activeType = "base",
     advancedDisabled = false,
     className,
+    heading = "금액",
     maxLabel = DEFAULT_MAX_PRICE_LABEL,
     minLabel = DEFAULT_MIN_PRICE_LABEL,
     maxValue,
@@ -691,7 +695,9 @@ export function PriceCategoryPopover({
     resetDisabled,
     saveDisabled,
     labels,
+    presetLabels = pricePresetLabels,
     selectedPreset,
+    showTypeSelector = true,
     ...props
 }: PriceCategoryPopoverProps) {
     const errorId = useId();
@@ -699,11 +705,11 @@ export function PriceCategoryPopover({
         Boolean(selectedPreset) || minLabel !== DEFAULT_MIN_PRICE_LABEL || maxLabel !== DEFAULT_MAX_PRICE_LABEL;
 
     return (
-        <FilterPanel className={mergeClasses("max-[360px]:p-4 max-[360px]:[&_button]:px-1.5", className)} height="min-h-[460px]" {...props}>
+        <FilterPanel className={mergeClasses("max-[360px]:p-4 max-[360px]:[&_button]:px-1.5", className)} height={showTypeSelector ? "min-h-[460px]" : undefined} {...props}>
             <div className="flex w-full flex-col gap-6">
                 <div className="flex w-full flex-col gap-4">
-                    <SectionTitle>금액</SectionTitle>
-                    <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={amountTypeOptions} value={activeType} />
+                    <SectionTitle>{heading}</SectionTitle>
+                    {showTypeSelector && <SegmentedControl disabled={advancedDisabled} onValueChange={onTypeSelect} options={amountTypeOptions} value={activeType} />}
                 </div>
                 <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col items-center gap-5">
@@ -724,7 +730,7 @@ export function PriceCategoryPopover({
                     {errorMessage && <p className="text-danger type-body-7" id={errorId} role="alert">{errorMessage}</p>}
                     <div className="flex w-full flex-col gap-2 [&_button]:break-keep max-[400px]:[&_button]:px-1.5">
                         <div className="flex gap-2">
-                            {pricePresetLabels.slice(0, 2).map((label) => (
+                            {presetLabels.slice(0, 2).map((label) => (
                                 <ChoiceButton
                                     key={label}
                                     onClick={() => onPresetSelect?.(label)}
@@ -735,7 +741,7 @@ export function PriceCategoryPopover({
                             ))}
                         </div>
                         <div className="flex gap-2">
-                            {pricePresetLabels.slice(2, 4).map((label) => (
+                            {presetLabels.slice(2, 4).map((label) => (
                                 <ChoiceButton
                                     key={label}
                                     onClick={() => onPresetSelect?.(label)}
@@ -745,12 +751,15 @@ export function PriceCategoryPopover({
                                 </ChoiceButton>
                             ))}
                         </div>
-                        <ChoiceButton
-                            onClick={() => onPresetSelect?.(pricePresetLabels[4])}
-                            selected={pricePresetLabels[4] === selectedPreset}
-                        >
-                            {pricePresetLabels[4]}
-                        </ChoiceButton>
+                        {presetLabels.slice(4).map((label) => (
+                            <ChoiceButton
+                                key={label}
+                                onClick={() => onPresetSelect?.(label)}
+                                selected={label === selectedPreset}
+                            >
+                                {label}
+                            </ChoiceButton>
+                        ))}
                     </div>
                 </div>
                 <div className="flex justify-end">

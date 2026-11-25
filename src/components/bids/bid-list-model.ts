@@ -2,7 +2,7 @@ import type { BidListQuery, BidView } from "@/data/bids/contracts";
 import type { BidKind } from "@/types/bid";
 import { readPersonalFilterParams } from "@/features/bid-notice-filters/model";
 import { readBidDateParams } from "@/features/bid-notice-filters/date-filter";
-import { readBidAmountParams } from "@/features/bid-notice-filters/amount-filter";
+import { readBidAmountParams, readBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
 
 export type { BidFilters, BidView } from "@/data/bids/contracts";
 
@@ -54,6 +54,7 @@ export function readBidListState(searchParams: URLSearchParams): BidListState {
     personalFilter,
     ...dates,
     ...amounts,
+    ...(view === "result" ? readBidResultAmountParams(searchParams) : {}),
   };
 }
 

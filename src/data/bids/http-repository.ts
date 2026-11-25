@@ -4,7 +4,7 @@ import { cache } from "react";
 
 import type { BidListRepository, BidListQuery } from "./contracts";
 import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
-import { bidAmountUrlKeys, currentBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
+import { bidAmountUrlKeys, currentBidAmountFilter, currentBidResultAmountFilter, writeBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
 import {
   findContractMethodCode,
   findIndustryCode,
@@ -54,6 +54,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
       }
       const dates = currentBidDateFilter(query);
       const amounts = currentBidAmountFilter(query);
+      const resultAmounts = currentBidResultAmountFilter(query);
 
       const params = new URLSearchParams({
         view: viewCodes[query.view],
@@ -86,6 +87,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
       for (const key of bidAmountUrlKeys) {
         if (amounts[key] !== null) params.set(key, String(amounts[key]));
       }
+      if (resultAmounts) writeBidResultAmountParams(params, resultAmounts);
 
       const result = await getData<BidNoticeListDto>(`/api/v1/bid-notices?${params}`);
       return mapBidListResult(result);

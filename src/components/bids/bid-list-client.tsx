@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import type { BidAmountFilter, BidDateFilter, BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
 import { currentBidDateFilter, writeBidDateParams } from "@/features/bid-notice-filters/date-filter";
-import { bidAmountUrlKeys, currentBidAmountFilter, writeBidAmountParams } from "@/features/bid-notice-filters/amount-filter";
+import { bidAmountUrlKeys, currentBidAmountFilter, emptyBidAmountFilter, writeBidAmountParams, writeBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
 import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 import { createPersonalFilterApplyController } from "@/features/bid-notice-filters/apply-controller";
@@ -118,6 +118,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   function changeView(view: BidView) {
     const next = new URLSearchParams(searchParams.toString());
     writePersonalFilterParams(next);
+    if (view !== state.view) writeBidResultAmountParams(next);
     if (view === "all") next.delete("view");
     else next.set("view", view);
     next.delete("page");
@@ -150,6 +151,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   function resetSearchAndFilters() {
     const next = new URLSearchParams(searchParams.toString());
     writePersonalFilterParams(next);
+    writeBidResultAmountParams(next);
     ["query", "category", "region", "industry", "contract", "agency", "period", "amount", "page"].forEach((key) => next.delete(key));
     navigate(next);
   }
@@ -165,7 +167,8 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
 
   function changeAmountFilter(amounts: BidAmountFilter) {
     const next = new URLSearchParams(searchParams.toString());
-    if (state.personalFilter) writePersonalFilterParams(next, { ...state.personalFilter, ...amounts });
+    if (state.view === "result") writeBidResultAmountParams(next, amounts);
+    else if (state.personalFilter) writePersonalFilterParams(next, { ...state.personalFilter, ...amounts });
     else writeBidAmountParams(next, amounts);
     next.delete("amount");
     next.delete("page");
@@ -218,7 +221,9 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   const personalDisplay = personal ? personalFilterDisplay(personal, filterOptions) : null;
   const currentFilter = state.view === "all" && !state.dateError && !state.amountError ? currentPersonalFilter(state, filterOptions) : null;
   const dateFilter = state.dateFilter ?? currentBidDateFilter(state);
-  const amountFilter = state.amountFilter ?? currentBidAmountFilter(state);
+  const amountFilter = state.view === "result"
+    ? { ...emptyBidAmountFilter(), ...state.resultAmountFilter }
+    : state.amountFilter ?? currentBidAmountFilter(state);
   const personalApplied = Boolean(currentFilter && snapshot && samePersonalFilter(currentFilter, snapshot.filter));
   const filters: BidFilters = {
     category: personal?.bidTypes.length === 1

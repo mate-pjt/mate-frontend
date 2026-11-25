@@ -1,6 +1,7 @@
-import type { BidAmountDraft, BidAmountFilter, BidListQuery, BidView } from "@/data/bids/contracts";
+import type { BidAmountDraft, BidAmountFilter, BidListQuery, BidResultAmountFilter, BidView } from "@/data/bids/contracts";
 
 export const bidAmountUrlKeys = ["amountType", "amountMin", "amountMax"] as const;
+export const resultBidAmountUrlKeys = ["successfulBidAmountMin", "successfulBidAmountMax"] as const;
 export const bidAmountTypes = ["BASE_PRICE", "ESTIMATED_PRICE"] as const;
 export const bidAmountPresets: Record<string, { min: number | null; max: number | null }> = {
   "1억 원 이하": { min: null, max: 100_000_000 },
@@ -9,6 +10,13 @@ export const bidAmountPresets: Record<string, { min: number | null; max: number 
   "50억 ~ 100억 원 이하": { min: 5_000_000_001, max: 10_000_000_000 },
   "100억 원+": { min: 10_000_000_001, max: null },
 };
+export const resultBidAmountPresets: typeof bidAmountPresets = {
+  "1억 원 이하": { min: null, max: 100_000_000 },
+  "1억 원 ~ 5억 원": { min: 100_000_000, max: 500_000_000 },
+  "5억 원 ~ 10억 원": { min: 500_000_000, max: 1_000_000_000 },
+  "10억 원 ~ 50억 원": { min: 1_000_000_000, max: 5_000_000_000 },
+  "50억 원 이상": { min: 5_000_000_000, max: null },
+};
 
 export function emptyBidAmountFilter(): BidAmountFilter {
   return { amountType: null, amountMin: null, amountMax: null };
@@ -16,9 +24,22 @@ export function emptyBidAmountFilter(): BidAmountFilter {
 
 export function bidAmountFilterError(filter: BidAmountFilter): string | undefined {
   if (filter.amountType !== null && !bidAmountTypes.includes(filter.amountType)) return "금액 기준을 다시 선택해 주세요.";
-  if ([filter.amountMin, filter.amountMax].some(value => value !== null && (!Number.isSafeInteger(value) || value < 0))) return "금액은 0부터 9,007,199,254,740,991까지 정수 원으로 입력해 주세요.";
+  const boundsError = bidAmountBoundsError(filter);
+  if (boundsError) return boundsError;
   if ((filter.amountMin !== null || filter.amountMax !== null) && filter.amountType === null) return "금액 범위를 지정하려면 기준을 선택해 주세요.";
+  return bidAmountOrderError(filter);
+}
+
+function bidAmountBoundsError(filter: BidResultAmountFilter): string | undefined {
+  if ([filter.amountMin, filter.amountMax].some(value => value !== null && (!Number.isSafeInteger(value) || value < 0))) return "금액은 0부터 9,007,199,254,740,991까지 정수 원으로 입력해 주세요.";
+}
+
+function bidAmountOrderError(filter: BidResultAmountFilter): string | undefined {
   if (filter.amountMin !== null && filter.amountMax !== null && filter.amountMin > filter.amountMax) return "최대금액은 최소금액과 같거나 커야 해요.";
+}
+
+function bidResultAmountFilterError(filter: BidResultAmountFilter): string | undefined {
+  return bidAmountBoundsError(filter) ?? bidAmountOrderError(filter);
 }
 
 export function normalizeBidAmountFilter(filter: BidAmountFilter): BidAmountFilter {
@@ -29,12 +50,16 @@ export function bidAmountDraft(filter: BidAmountFilter): BidAmountDraft {
   return { amountType: filter.amountType, amountMin: filter.amountMin === null ? "" : String(filter.amountMin), amountMax: filter.amountMax === null ? "" : String(filter.amountMax) };
 }
 
-export function parseBidAmountDraft(draft: BidAmountDraft): { amountFilter: BidAmountFilter; amountError?: string } {
+export function parseBidAmountDraft(draft: BidAmountDraft, view: BidView = "all"): { amountFilter: BidAmountFilter; amountError?: string } {
   if ([draft.amountMin, draft.amountMax].some(value => value !== "" && !/^\d+$/.test(value))) {
     return { amountFilter: emptyBidAmountFilter(), amountError: "금액은 원 단위 숫자만 입력해 주세요. 음수·소수·쉼표는 사용할 수 없어요." };
   }
-  const filter = { amountType: draft.amountType, amountMin: draft.amountMin === "" ? null : Number(draft.amountMin), amountMax: draft.amountMax === "" ? null : Number(draft.amountMax) };
-  const amountError = bidAmountFilterError(filter);
+  const filter = {
+    amountType: view === "result" ? null : draft.amountType,
+    amountMin: draft.amountMin === "" ? null : Number(draft.amountMin),
+    amountMax: draft.amountMax === "" ? null : Number(draft.amountMax),
+  };
+  const amountError = view === "result" ? bidResultAmountFilterError(filter) : bidAmountFilterError(filter);
   return { amountFilter: amountError ? emptyBidAmountFilter() : normalizeBidAmountFilter(filter), amountError };
 }
 
@@ -45,6 +70,18 @@ export function readBidAmountParams(params: URLSearchParams, view: BidView): { a
   return { ...parsed, amountDraft: draft, amountError: bidAmountUrlKeys.some(key => params.getAll(key).length > 1) ? "금액 조건은 항목마다 하나씩 입력해 주세요." : parsed.amountError };
 }
 
+export function readBidResultAmountParams(params: URLSearchParams): Pick<BidListQuery, "resultAmountFilter" | "amountDraft" | "amountError"> {
+  const [minKey, maxKey] = resultBidAmountUrlKeys;
+  if (!params.has(minKey) && !params.has(maxKey)) return {};
+  const amountDraft: BidAmountDraft = { amountType: null, amountMin: params.get(minKey) ?? "", amountMax: params.get(maxKey) ?? "" };
+  const { amountFilter: { amountMin, amountMax }, amountError } = parseBidAmountDraft(amountDraft, "result");
+  return {
+    resultAmountFilter: { amountMin, amountMax },
+    amountDraft,
+    amountError: resultBidAmountUrlKeys.some(key => params.getAll(key).length > 1) ? "낙찰금액 조건은 항목마다 하나씩 입력해 주세요." : amountError,
+  };
+}
+
 export function writeBidAmountParams(params: URLSearchParams, filter: BidAmountFilter): void {
   const error = bidAmountFilterError(filter);
   if (error) throw new Error(error);
@@ -53,9 +90,20 @@ export function writeBidAmountParams(params: URLSearchParams, filter: BidAmountF
   for (const key of bidAmountUrlKeys) if (normalized[key] !== null) params.set(key, String(normalized[key]));
 }
 
-export function presetBidAmountFilter(preset: string, amountType: BidAmountFilter["amountType"] = null): BidAmountFilter {
-  const range = Object.hasOwn(bidAmountPresets, preset) ? bidAmountPresets[preset] : undefined;
-  return range ? { amountType: amountType ?? "BASE_PRICE", amountMin: range.min, amountMax: range.max } : emptyBidAmountFilter();
+export function writeBidResultAmountParams(params: URLSearchParams, filter?: BidResultAmountFilter): void {
+  const error = filter && bidResultAmountFilterError(filter);
+  if (error) throw new Error(error);
+  const [minKey, maxKey] = resultBidAmountUrlKeys;
+  params.delete(minKey);
+  params.delete(maxKey);
+  if (filter?.amountMin != null) params.set(minKey, String(filter.amountMin));
+  if (filter?.amountMax != null) params.set(maxKey, String(filter.amountMax));
+}
+
+export function presetBidAmountFilter(preset: string, amountType: BidAmountFilter["amountType"] = null, view: BidView = "all"): BidAmountFilter {
+  const presets = view === "result" ? resultBidAmountPresets : bidAmountPresets;
+  const range = Object.hasOwn(presets, preset) ? presets[preset] : undefined;
+  return range ? { amountType: view === "result" ? null : amountType ?? "BASE_PRICE", amountMin: range.min, amountMax: range.max } : emptyBidAmountFilter();
 }
 
 export function currentBidAmountFilter(query: BidListQuery): BidAmountFilter {
@@ -66,6 +114,14 @@ export function currentBidAmountFilter(query: BidListQuery): BidAmountFilter {
   const error = query.amountError ?? bidAmountFilterError(filter);
   if (error) throw new Error(error);
   return normalizeBidAmountFilter(filter);
+}
+
+export function currentBidResultAmountFilter(query: BidListQuery): BidResultAmountFilter | undefined {
+  if (query.view !== "result") return undefined;
+  const filter = query.resultAmountFilter;
+  const error = query.amountError ?? (filter && bidResultAmountFilterError(filter));
+  if (error) throw new Error(error);
+  return filter;
 }
 
 export function formatBidAmount(value: number | null): string {

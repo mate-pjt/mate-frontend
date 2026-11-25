@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/filter-popover";
 import type { BidAmountDraft, BidAmountFilter, BidDateFilter, BidFilterOptions } from "@/data/bids/contracts";
 import { bidDateFilterError, bidDatePresets, bidDateUrlKeys, emptyBidDateFilter, normalizeBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
-import { bidAmountDraft as toAmountDraft, bidAmountPresets, bidAmountUrlKeys, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
+import { bidAmountDraft as toAmountDraft, bidAmountPresets, bidAmountUrlKeys, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter, resultBidAmountPresets } from "@/features/bid-notice-filters/amount-filter";
 
 import { categoryLabels, type BidFilters, type BidView } from "./bid-list-model";
 
@@ -44,13 +44,17 @@ export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, 
   const [draftDateFilter, setDraftDateFilter] = useState(dateFilter);
   const [dateQuickRange, setDateQuickRange] = useState<string>();
   const [draftAmount, setDraftAmount] = useState(amountDraft ?? toAmountDraft(amountFilter));
-  const parsedAmount = parseBidAmountDraft(draftAmount);
-  const amountPreset = Object.keys(bidAmountPresets).find(preset => {
-    const filter = presetBidAmountFilter(preset, draftAmount.amountType);
+  const resultView = view === "result";
+  const amountHeading = resultView ? "낙찰금액" : "금액";
+  const amountPresetLabels = Object.keys(resultView ? resultBidAmountPresets : bidAmountPresets);
+  const parsedAmount = parseBidAmountDraft(draftAmount, view);
+  const amountPreset = amountPresetLabels.find(preset => {
+    const filter = presetBidAmountFilter(preset, draftAmount.amountType, view);
     return !parsedAmount.amountError && bidAmountUrlKeys.every(key => filter[key] === parsedAmount.amountFilter[key]);
   });
   const sameAmounts = bidAmountUrlKeys.every(key => parsedAmount.amountFilter[key] === amountFilter[key]);
-  const hasAmountSelection = Boolean(draftAmount.amountMin || draftAmount.amountMax || amountFilter.amountMin !== null || amountFilter.amountMax !== null || amountQueryError);
+  const hasAppliedAmount = amountFilter.amountMin !== null || amountFilter.amountMax !== null;
+  const hasAmountSelection = Boolean(draftAmount.amountMin || draftAmount.amountMax || hasAppliedAmount || amountQueryError);
   const dateError = bidDateFilterError(draftDateFilter, view);
   const normalizedDate = normalizeBidDateFilter(draftDateFilter);
   const sameDates = bidDateUrlKeys.every(key => normalizedDate[key] === dateFilter[key]);
@@ -114,7 +118,7 @@ export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, 
     setDateQuickRange(undefined);
   };
   const changeAmount = (key: "amountMin" | "amountMax", value: string) => {
-    setDraftAmount(current => ({ ...current, [key]: value, amountType: current.amountType ?? "BASE_PRICE" }));
+    setDraftAmount(current => ({ ...current, [key]: value, amountType: resultView ? null : current.amountType ?? "BASE_PRICE" }));
   };
 
   return (
@@ -190,9 +194,8 @@ export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, 
         </FilterSlot>
       )}
       <FilterSlot
-        active={Boolean(amountFilter.amountMin !== null || amountFilter.amountMax !== null || amountQueryError)}
-        disabled={view === "result"}
-        label={view === "result" ? "낙찰금액 · 준비 중" : amountFilter.amountMin !== null || amountFilter.amountMax !== null ? "금액 설정됨" : "금액"}
+        active={hasAppliedAmount || Boolean(amountQueryError)}
+        label={hasAppliedAmount ? `${amountHeading} 설정됨` : amountHeading}
         name="amount"
         onOpen={open}
         open={openFilter}
@@ -200,6 +203,7 @@ export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, 
         <PriceCategoryPopover
           activeType={draftAmount.amountType === "ESTIMATED_PRICE" ? "estimated" : "base"}
           errorMessage={parsedAmount.amountError}
+          heading={amountHeading}
           maxLabel={parsedAmount.amountError ? `${draftAmount.amountMax || "제한 없음"}` : formatBidAmount(parsedAmount.amountFilter.amountMax)}
           minLabel={parsedAmount.amountError ? `${draftAmount.amountMin || "제한 없음"}` : formatBidAmount(parsedAmount.amountFilter.amountMin)}
           maxValue={draftAmount.amountMax}
@@ -207,38 +211,37 @@ export function BidFilterToolbar({ amountDraft, amountFilter, amountQueryError, 
           onMaxValueChange={value => changeAmount("amountMax", value)}
           onMinValueChange={value => changeAmount("amountMin", value)}
           onTypeSelect={value => setDraftAmount(current => ({ ...current, amountType: value === "estimated" ? "ESTIMATED_PRICE" : "BASE_PRICE" }))}
-          onPresetSelect={value => setDraftAmount(toAmountDraft(presetBidAmountFilter(value, draftAmount.amountType)))}
+          onPresetSelect={value => setDraftAmount(toAmountDraft(presetBidAmountFilter(value, draftAmount.amountType, view)))}
           onReset={() => { onAmountFilterChange(emptyBidAmountFilter()); closeAmount(); }}
           onSave={() => { if (!parsedAmount.amountError) { onAmountFilterChange(parsedAmount.amountFilter); closeAmount(); } }}
+          presetLabels={amountPresetLabels}
           resetDisabled={!hasAmountSelection}
           saveDisabled={Boolean(parsedAmount.amountError) || (sameAmounts && !amountQueryError)}
-          selectedPreset={toPricePreset(amountPreset)}
+          selectedPreset={amountPreset}
+          showTypeSelector={!resultView}
         />
       </FilterSlot>
     </div>
   );
 }
 
-function FilterSlot({ active = false, children, disabled = false, label, name, onOpen, open }: {
+function FilterSlot({ active = false, children, label, name, onOpen, open }: {
   readonly active?: boolean;
   readonly children: React.ReactNode;
-  readonly disabled?: boolean;
   readonly label: string;
   readonly name: FilterKey;
   readonly onOpen: (name?: FilterKey) => void;
   readonly open?: FilterKey;
 }) {
-  const expanded = !disabled && open === name;
+  const expanded = open === name;
 
   return (
     <div className="relative">
       <button
         aria-expanded={expanded}
         data-filter-trigger={name}
-        className={`flex h-9 ${name === "contract" ? "min-w-24" : "min-w-[72px]"} items-center justify-center gap-1 rounded-[8px] border px-[10px] outline-none type-body-2 focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 ${disabled ? "cursor-not-allowed border-transparent bg-grayscale-50 text-grayscale-500" : expanded || active ? "border-transparent bg-primary-100 text-primary-400" : "border-transparent bg-grayscale-50 text-grayscale-700 hover:bg-grayscale-100"}`}
-        disabled={disabled}
+        className={`flex h-9 ${name === "contract" ? "min-w-24" : "min-w-[72px]"} items-center justify-center gap-1 rounded-[8px] border px-[10px] outline-none type-body-2 focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 ${expanded || active ? "border-transparent bg-primary-100 text-primary-400" : "border-transparent bg-grayscale-50 text-grayscale-700 hover:bg-grayscale-100"}`}
         onClick={() => onOpen(expanded ? undefined : name)}
-        title={disabled ? "낙찰금액 필터는 백엔드 API 준비 중입니다." : undefined}
         type="button"
       >
         <span className="whitespace-nowrap">{label}</span>
@@ -251,9 +254,4 @@ function FilterSlot({ active = false, children, disabled = false, label, name, o
       )}
     </div>
   );
-}
-
-function toPricePreset(value?: string) {
-  if (value === "1억 원 이하" || value === "1억 ~ 10억 원 이하" || value === "10억 ~ 50억 원 이하" || value === "50억 ~ 100억 원 이하" || value === "100억 원+") return value;
-  return undefined;
 }

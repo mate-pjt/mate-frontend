@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { useState } from "react";
-import { bidAmountDraft, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
+import { bidAmountDraft, emptyBidAmountFilter, formatBidAmount, parseBidAmountDraft, presetBidAmountFilter, resultBidAmountPresets } from "@/features/bid-notice-filters/amount-filter";
 
 import {
     AgencyCategoryPopover,
@@ -111,21 +111,29 @@ export const PriceCategory: Story = {
     ),
 };
 
-function PriceInputExample() {
+export const ResultPriceCategory: Story = {
+    render: () => <PriceInputExample view="result" />,
+};
+
+function PriceInputExample({ view = "all" }: { view?: "all" | "result" }) {
     const [draft, setDraft] = useState(bidAmountDraft(emptyBidAmountFilter()));
-    const { amountFilter, amountError } = parseBidAmountDraft(draft);
+    const { amountFilter, amountError } = parseBidAmountDraft(draft, view);
+    const resultView = view === "result";
     return <PriceCategoryPopover
         activeType={draft.amountType === "ESTIMATED_PRICE" ? "estimated" : "base"}
         errorMessage={amountError}
+        heading={resultView ? "낙찰금액" : undefined}
         maxLabel={formatBidAmount(amountFilter.amountMax)}
         minLabel={formatBidAmount(amountFilter.amountMin)}
         maxValue={draft.amountMax}
         minValue={draft.amountMin}
-        onMaxValueChange={value => setDraft(current => ({ ...current, amountType: current.amountType ?? "BASE_PRICE", amountMax: value }))}
-        onMinValueChange={value => setDraft(current => ({ ...current, amountType: current.amountType ?? "BASE_PRICE", amountMin: value }))}
+        onMaxValueChange={value => setDraft(current => ({ ...current, amountType: resultView ? null : current.amountType ?? "BASE_PRICE", amountMax: value }))}
+        onMinValueChange={value => setDraft(current => ({ ...current, amountType: resultView ? null : current.amountType ?? "BASE_PRICE", amountMin: value }))}
         onTypeSelect={value => setDraft(current => ({ ...current, amountType: value === "estimated" ? "ESTIMATED_PRICE" : "BASE_PRICE" }))}
-        onPresetSelect={value => setDraft(bidAmountDraft(presetBidAmountFilter(value, draft.amountType)))}
+        onPresetSelect={value => setDraft(bidAmountDraft(presetBidAmountFilter(value, draft.amountType, view)))}
         onReset={() => setDraft(bidAmountDraft(emptyBidAmountFilter()))}
+        presetLabels={resultView ? Object.keys(resultBidAmountPresets) : undefined}
+        showTypeSelector={!resultView}
     />;
 }
 

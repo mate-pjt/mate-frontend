@@ -6,7 +6,7 @@ import { createHttpBidListRepository } from "@/data/bids/http-repository";
 import { createMockBidEntries, createMockBidRepository, mockBidOptions } from "@/data/bids/mock-repository";
 import { memoryStorage } from "@/data/mock/store";
 import { createMockPersonalFiltersRepository } from "@/data/personal-filters/mock-repository";
-import { bidAmountDraft, bidAmountFilterError, bidAmountPresets, bidAmountTypes, bidAmountUrlKeys, currentBidAmountFilter, emptyBidAmountFilter, formatBidAmount, normalizeBidAmountFilter, parseBidAmountDraft, presetBidAmountFilter, writeBidAmountParams } from "@/features/bid-notice-filters/amount-filter";
+import { bidAmountDraft, bidAmountFilterError, bidAmountPresets, bidAmountTypes, bidAmountUrlKeys, currentBidAmountFilter, emptyBidAmountFilter, formatBidAmount, normalizeBidAmountFilter, parseBidAmountDraft, presetBidAmountFilter, resultBidAmountUrlKeys, writeBidAmountParams, writeBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
 import { emptyPersonalFilter, readPersonalFilterParams, writePersonalFilterParams } from "@/features/bid-notice-filters/model";
 import { access, mockRuntime, ok } from "./helpers";
 
@@ -128,5 +128,94 @@ describe("mock 포함 경계·분류 금액과 count/page", () => {
     expect((await repo.getBidList({ ...query, amountFilter: { ...range, amountType: "BASE_PRICE" } })).totalCount).toBe(12);
     expect((await repo.getBidList({ ...query, amountFilter: emptyBidAmountFilter() })).totalCount).toBe(13);
     expect((await repo.getBidList({ ...query, personalFilter: { ...emptyPersonalFilter(), ...range, amountType: "BASE_PRICE" } })).totalCount).toBe(12);
+  });
+});
+
+describe("RESULT 낙찰금액 필터", () => {
+  const resultQuery = { ...query, view: "result" } satisfies BidListQuery;
+  const [minKey, maxKey] = resultBidAmountUrlKeys;
+  const amountFilter = { amountMin: 0, amountMax: Number.MAX_SAFE_INTEGER };
+
+  it("RESULT는 정수 원 범위와 URL을 왕복하고 개인 조건은 읽지 않는다", () => {
+    const params = new URLSearchParams("view=result&personal=1&amountType=ESTIMATED_PRICE&amountMin=50&page=2");
+    writeBidResultAmountParams(params, amountFilter);
+    const state = readBidListState(params);
+    expect(state).toMatchObject({ resultAmountFilter: amountFilter, amountDraft: { amountType: null, amountMin: "0", amountMax: "9007199254740991" }, page: 2 });
+    expect(state).not.toHaveProperty("amountFilter");
+    expect(state.personalFilter).toBeUndefined();
+    expect(params.get(minKey)).toBe("0");
+    expect(params.get(maxKey)).toBe("9007199254740991");
+    params.set("view", "closing");
+    expect(readBidListState(params)).not.toHaveProperty("resultAmountFilter");
+    writeBidResultAmountParams(params);
+    expect([...params.keys()]).toEqual(["view", "personal", "amountType", "amountMin", "page"]);
+  });
+
+  it.each([
+    [`${minKey}=-1`, "-1"],
+    [`${minKey}=1.5`, "1.5"],
+    [`${minKey}=1e8`, "1e8"],
+    [`${minKey}=9007199254740992`, "9007199254740992"],
+    [`${minKey}=2&${maxKey}=1`, "2"],
+    [`${minKey}=0&${minKey}=1`, "0"],
+    [`${minKey}=0&${maxKey}=1&${maxKey}=2`, "0"],
+  ])("잘못된 RESULT URL %s는 해석한 원문을 남기고 조회를 거절한다", async (search, draft) => {
+    const state = readBidListState(new URLSearchParams(`view=result&${search}`));
+    expect(state.amountDraft?.amountMin).toBe(draft);
+    expect(state.amountError).toBeTruthy();
+    const fetcher = vi.fn<typeof fetch>();
+    await expect(createHttpBidListRepository("https://synthetic.test", fetcher).getBidList(state)).rejects.toThrow(state.amountError);
+    await expect(createMockBidRepository().getBidList(state)).rejects.toThrow(state.amountError);
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it("HTTP 대역은 RESULT의 두 키만 전송하고 동일·열린 범위와 정렬·페이지를 유지한다", async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => ok(page));
+    const repo = createHttpBidListRepository("https://synthetic.test", fetcher);
+    await repo.getBidList({ ...resultQuery, query: "합성", resultAmountFilter: { amountMin: 0, amountMax: 0 }, amountFilter: range, page: 2 });
+    await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: null, amountMax: 100_000_000 } });
+    await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: 5_000_000_000, amountMax: null } });
+    await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: null, amountMax: null } });
+    for (const view of ["all", "closing"] as const) await repo.getBidList({ ...query, view, resultAmountFilter: amountFilter, amountFilter: range });
+    const [first, upper, lower, cleared, all, closing] = fetcher.mock.calls.map(([url]) => new URL(String(url)).searchParams);
+    expect(Object.fromEntries(first)).toEqual({ view: "RESULT", page: "1", size: "10", sort: "openAt,desc", keyword: "합성", [minKey]: "0", [maxKey]: "0" });
+    expect([upper.get(minKey), upper.get(maxKey)]).toEqual([null, "100000000"]);
+    expect([lower.get(minKey), lower.get(maxKey)]).toEqual(["5000000000", null]);
+    for (const params of [cleared, all, closing]) expect(resultBidAmountUrlKeys.some(key => params.has(key))).toBe(false);
+    for (const params of [all, closing]) expect(params.get("amountType")).toBe("ESTIMATED_PRICE");
+  });
+
+  const now = Date.parse("2030-06-01T00:00:00Z");
+  const baseEntry = createMockBidEntries(now)[3];
+  const prices = [null, 0, 99_999_999.5, 100_000_000, 100_000_000.5, 500_000_000, 1_000_000_000, 5_000_000_000, 5_000_000_000.5, Number.MAX_SAFE_INTEGER];
+  const fixtures = prices.map((successfulBidAmount, i) => ({
+    ...baseEntry,
+    item: { ...baseEntry.item, id: String(24001 + Math.floor(i / 2)), classificationNo: String(i % 2 + 1), successfulBidAmount, baseAmount: 0, estimatedPrice: 0 },
+    bid: { ...baseEntry.bid, schedule: { ...baseEntry.bid.schedule, openAt: new Date(now - (i + 1) * 60_000).toISOString() } },
+  }));
+
+  it.each([
+    ["1억 원 이하", [1, 2, 3]],
+    ["1억 원 ~ 5억 원", [3, 4, 5]],
+    ["5억 원 ~ 10억 원", [5, 6]],
+    ["10억 원 ~ 50억 원", [6, 7]],
+    ["50억 원 이상", [7, 8, 9]],
+  ] as const)("mock의 %s는 공통 경계·소수·분류 행을 페이지 전 비교한다", async (preset, indexes) => {
+    const repo = createMockBidRepository(() => now, "default", [...fixtures].reverse());
+    const resultAmountFilter = presetBidAmountFilter(preset, "BASE_PRICE", "result");
+    expect(resultAmountFilter.amountType).toBeNull();
+    const pages = await Promise.all([1, 2].map(page => repo.getBidList({ ...resultQuery, resultAmountFilter, page, size: 2 })));
+    expect(pages.flatMap(page => page.items)).toEqual(indexes.map(i => fixtures[i].item));
+    expect(pages.map(page => page.totalCount)).toEqual([indexes.length, indexes.length]);
+  });
+
+  it("mock에서 0원은 결측과 분리되고 해제하면 결측을 포함한 전체 결과가 돌아온다", async () => {
+    const repo = createMockBidRepository(() => now, "default", fixtures);
+    const zero = await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: 0, amountMax: 0 } });
+    const empty = await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: 1, amountMax: 1 } });
+    const cleared = await repo.getBidList({ ...resultQuery, resultAmountFilter: { amountMin: null, amountMax: null } });
+    expect(zero.items).toEqual([fixtures[1].item]);
+    expect(empty).toMatchObject({ items: [], totalCount: 0 });
+    expect(cleared.items).toEqual(fixtures.map(entry => entry.item));
   });
 });
