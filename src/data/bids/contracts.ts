@@ -7,6 +7,7 @@ export type BidView = "all" | "closing" | "result" | "recommended";
 
 export type BidDateFilter = Pick<PersonalFilterValues, "dateType" | "dateFrom" | "dateTo">;
 export type BidAmountFilter = Pick<PersonalFilterValues, "amountType" | "amountMin" | "amountMax">;
+export type BidResultAmountFilter = Pick<BidAmountFilter, "amountMin" | "amountMax">;
 export type BidAmountDraft = Pick<BidAmountFilter, "amountType"> & { amountMin: string; amountMax: string };
 
 export type BidFilters = {
@@ -28,6 +29,7 @@ export type BidListQuery = BidFilters & {
   readonly dateFilter?: BidDateFilter;
   readonly dateError?: string;
   readonly amountFilter?: BidAmountFilter;
+  readonly resultAmountFilter?: BidResultAmountFilter;
   readonly amountDraft?: BidAmountDraft;
   readonly amountError?: string;
 };

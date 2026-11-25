@@ -1,8 +1,8 @@
 import type { BidDetail, BidDetailPageData, BidParticipant, DetailSection, RelatedBid } from "@/types/bid-detail";
 import type { BidListItem } from "@/types/bid-list";
-import type { BidAmountFilter, BidDateFilter, BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository } from "./contracts";
+import type { BidAmountFilter, BidDateFilter, BidDetailRepository, BidFilterOptions, BidListQuery, BidListRepository, BidResultAmountFilter } from "./contracts";
 import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
-import { currentBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
+import { currentBidAmountFilter, currentBidResultAmountFilter } from "@/features/bid-notice-filters/amount-filter";
 import { ApiError } from "../shared/errors";
 import { canonicalClassification, selectMockRelatedBids, type MockBidEntry } from "./mock-related";
 
@@ -56,6 +56,11 @@ export function createMockBidEntries(now: number): readonly MockBidEntry[] {
     };
   });
 }
+function matchesAmount(amount: number | null, range: BidResultAmountFilter): boolean {
+  return (range.amountMin === null || (amount !== null && amount >= range.amountMin)) &&
+    (range.amountMax === null || (amount !== null && amount <= range.amountMax));
+}
+
 function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: BidDateFilter, amounts: BidAmountFilter): boolean {
   const { item, bid } = entry;
   const close = Date.parse(bid.schedule.bidCloseAt!);
@@ -68,7 +73,7 @@ function matches(entry: MockBidEntry, query: BidListQuery, now: number, dates: B
   const day = timestamp ? new Date(Date.parse(timestamp) + 9 * 3600_000).toISOString().slice(0, 10) : null;
   if ((dates.dateFrom && (!day || day < dates.dateFrom)) || (dates.dateTo && (!day || day > dates.dateTo))) return false;
   const amount = amounts.amountType === "ESTIMATED_PRICE" ? item.estimatedPrice : item.baseAmount;
-  if ((amounts.amountMin !== null && (amount === null || amount < amounts.amountMin)) || (amounts.amountMax !== null && (amount === null || amount > amounts.amountMax))) return false;
+  if (!matchesAmount(amount, amounts)) return false;
   const filter = query.personalFilter;
   if (filter && query.view === "all") {
     const type = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" }[item.kind];
@@ -101,7 +106,11 @@ export function createMockBidRepository(now: () => number = Date.now, scenario =
       const time = now();
       const dates = currentBidDateFilter(query, time);
       const amounts = currentBidAmountFilter(query);
-      const filtered = scenario === "empty" ? [] : all.filter(entry => matches(entry, query, time, dates, amounts));
+      const resultAmounts = currentBidResultAmountFilter(query);
+      const filtered = scenario === "empty" ? [] : all.filter(entry =>
+        matches(entry, query, time, dates, amounts) &&
+        (!resultAmounts || matchesAmount(entry.item.successfulBidAmount ?? null, resultAmounts)),
+      );
       filtered.sort((a, b) => query.view === "result" ? Date.parse(b.bid.schedule.openAt!) - Date.parse(a.bid.schedule.openAt!) : Date.parse(a.bid.schedule.bidCloseAt!) - Date.parse(b.bid.schedule.bidCloseAt!));
       return { items: filtered.slice((query.page - 1) * query.size, query.page * query.size).map(entry => entry.item), totalCount: filtered.length, page: query.page, size: query.size };
     },
