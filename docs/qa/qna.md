@@ -1,5 +1,7 @@
 # 자주 묻는 질문 브라우저 검증
 
+> 2026-11-25의 현행 FAQ 검증은 [QA-15 실행 기록](#qa-15-qna)을 따른다. 아래 QNA-01~07은 2026-09-28의 검증 이력이다.
+
 ## 기준
 
 - Figma: [11_자주묻는질문 기본 `2314:31201`](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-31201), [펼침 `2314:90163`](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/%EB%A9%94%EC%9D%B4%ED%8A%B8-v0.0?node-id=2314-90163)
@@ -142,3 +144,26 @@ POL-26에서 외부 폼이 비로그인 상태로 열리고 공개 문항 세 �
 | S08-05 | 통과 · 링크/브라우저 요청·소스 검사 | 7회 진입의 첫 요청은 고정 HTTPS URL에 대한 GET이었다. query·본문·`Referer`·`Authorization`이 없었다. 공개 폼 탭의 `window.opener`는 `null`이었다. 앱 탭의 동작 유발 fetch/XHR·쓰기 요청은 0건이다. Google의 후속 리다이렉트는 Google 자체 탐색이다. |
 
 공개 폼에는 값을 입력하거나 제출하지 않았다. 실제 Mate 업무 API·실제 OAuth·폼 운영과 응답 처리는 미실행이다. S08-04의 장애·재시도는 대역 결과다. MSET-02·QNA-07과 위 POL-26 계획의 당시 기록은 해당 시점의 증거로 보존한다. [DEV-50 검증 기록](../development/figma-v01/tasks/DEV-50.md#dev-50-verification) · [설정 진입 QA](my-settings-home.md#dev-50-settings-qa)
+
+<a id="qa-15-qna"></a>
+
+## 2026-11-25 KST · QA-15 공개 FAQ 회귀
+
+`QA15-20261125-LOCAL` · 12:52 KST · 제품 `bf75382c6f2c8222cd8adf426f3ebd6ac804bcea` · Node 22.20.0, pnpm 11.3.0, Next 16.2.9 · 루프백 전체 mock Preview와 Next dev · 격리 Chrome 158.0.8127.89 · 비로그인 새 컨텍스트. [실행 수치](artifacts/qa-15/browser-results.json) · [QA-15 작업 기록](../development/figma-v01/tasks/QA-15.md)
+
+| 사례·환경 | 수행과 결과 | 증거 |
+| --- | --- | --- |
+| Q01-1920 · 1920×1080 | HTTP 200, main DOM·접근성 트리 각 1개, `h1` 하나와 접근 가능한 질문 이름 5개. 첫 상태는 모두 닫힘이다. Tab과 Enter·Space로 열고 닫아도 다른 답변은 유지됐다. 다섯 답변을 동시에 열었고 새로고침 뒤 접혔다. `#qna-top`에서 제목이 다시 보인다. | [기본](artifacts/qa-15/faq-closed-1920.jpg) · [펼침](artifacts/qa-15/faq-open-1920.jpg) |
+| Q01-390 · 390×844 | 동일 조작과 답변 확인을 통과했다. 질문과 배너는 358px, 문서 너비는 390px이다. 상단 이동 링크는 문서 하단에 있고 질문 행을 가리지 않는다. | [펼침](artifacts/qa-15/faq-open-390.jpg) |
+| Q01-320 · 320×700, 동작 줄이기 | 동일 조작과 답변 확인을 통과했다. 질문과 배너는 288px, 문서 너비는 320px이다. 두 모바일 폭에서 상단 이동 후 스크롤은 99px이며 제목 전체가 보인다. | [의견 링크 키보드 초점](artifacts/qa-15/faq-feedback-320.jpg) |
+| S08 · 위 세 폭의 QNA-07 후속 | 2px 초점선과 ‘의견 보내기 (새 탭에서 열림)’ 이름을 확인했다. Enter로 고정 링크의 **브라우저 응답 대역**을 새 탭에서 열고 닫아도 답변 5개가 열린 상태를 유지했다. 각 첫 요청은 GET이며 query·본문·referrer·인증·쿠키가 없고 `window.opener`는 `null`이었다. | [POL-26 D1~D3](../development/figma-v01/tasks/POL-26.md#pol-26-contract) · [대역 관측값](artifacts/qa-15/browser-results.json) · [이전 실제 공개 열람](#dev-50-local-qa) |
+
+세 화면에서 다섯 답변의 내용을 확인했다. 맞춤 공고 이메일은 수신 설정을 켠 경우 매일 08:30에 발송하며, 인증한 대체 주소를 선택할 수 있다. 회사 조건은 개인 필터의 첫 기본값이며 저장한 개인 필터를 자동으로 바꾸지 않는다. 등록 공고의 정정·재공고·입찰 마감·개찰은 서비스 내부 알림이고 카카오톡·SMS는 미제공이다. 2026-11-25 조회한 중앙 문서 `c9e50ff591ae18023164e1a94581c611bf1e4f29`와 대조했다. [알림 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md) · [공고 찾기 정책](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/matching-and-related-notices.md)
+
+Figma 기본의 제목, 1180px 질문 행 5개와 아래쪽 배너, 펼침의 답변 패널과 화살표를 대조했다. 데스크톱 질문·배너 시작점은 Figma x=364px, 브라우저 x=370px이다. 배너는 양쪽 모두 1180×96px이다. 프레임의 로그인된 헤더 및 소식 메뉴와 검증한 비로그인 헤더가 다르다. 실시간 이메일·카카오톡 예고 등 원본 답변의 차이는 현행 정책을 따른 결과다. 모바일 배치와 x좌표 차이를 승인된 별도 화면 예외로 기록하지 않는다. [기본 2314:31201](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2314-31201) · [펼침 2314:90163](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2314-90163) · [배너 3259:54426](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3259-54426) · [소식 메뉴의 선행 조건](../development/figma-v01/tasks/DEV-51.md#dev-51-pol-27-handoff)
+
+### Hydration 관찰
+
+390×844의 두 새 Chrome 컨텍스트에서 확장 기능 없이 Next dev를 확인했다. 안정화 후 첫 질문을 클릭했을 때 hydration 경고는 0건이다. 스크립트 17개를 보류하고 브라우저의 native `details`를 먼저 펼친 뒤 스크립트를 해제했을 때 `open` 속성 불일치 경고가 1건 나왔다. 최초 열림 상태는 유지됐고 Space로 접고 Enter로 다시 열 수 있었다. QA-17에서 본 경고가 같은 원인이었는지는 확인되지 않았다. [QA-17 기록](../development/figma-v01/tasks/QA-15.md#2026-11-11--qa-17-전수-점검-보완) · [전후 관측값](artifacts/qa-15/browser-results.json)
+
+일반 사용 세 사례는 통과했고 의도적 지연의 경고는 관찰로 남긴다. 앱의 업무 API·쓰기·대역 외 출처 브라우저 요청은 각각 0건이다. 경고를 재현할 때 Next dev가 스택 프레임을 확인하는 루프백 `POST /__nextjs_original-stack-frames`가 1건 있었다. 실제 업무 API와 폼 제출·응답 처리, OS 스크린리더 검증은 미실행이다. QNA-01~07 및 S08의 날짜별 판정은 위 이력에 보존한다.
