@@ -177,6 +177,8 @@ OpenAPI 주의: 개인 request는 enum을 단순 string으로, 여러 응답은 
 
 RESULT 응답에 `successfulBidAmount`가 있어도 필터 query/enum 지원을 뜻하지 않는다. 현재 목록/개인 amountType에는 두 종류만 있고 낙찰금액 query는 allowlist에 없다. DEV-12는 준비 중을 유지한다. 재개하려면 서버 소유자가 필드/enum·정수/소수와 단위·현재 canonical 분류/최신 회차 identity·null/결과 상태·포함 경계·정렬/count/page·오류·URL/개인 저장 여부를 명세하고 개발자 정책 승인을 확보해야 한다. 기존 두 금액에 별칭을 붙이거나 임의 AWARD_PRICE/endpoint를 만들지 않는다.
 
+위 문단은 2026-11-09의 결정이다. 2026-11-25 사용자는 확인된 RESULT 전용 조회 계약에서 첫 구간 ‘1억 원 이하’와 빠른 선택 양끝 포함, 로컬 선행 및 실제 QA 차단 보존을 확정했다. 적용 범위와 근거는 [DEV-12 Brief](DEV-12.md#dev-12-brief)에 기록한다.
+
 <a id="pol-07-handoff"></a>
 
 ## 후속 개발·실제 QA 인계
