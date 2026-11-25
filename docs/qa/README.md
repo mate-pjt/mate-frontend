@@ -9,6 +9,7 @@ Figma 화면과 실제 API가 함께 동작하는지 확인할 때 이 디렉터
 - [`repositories.md`](./repositories.md): 7개 공급원 전환의 자동 테스트·mock 브라우저·HTTP 대역 결과와 실제 API 검증의 구분
 - [`repository-review.md`](./repository-review.md): 전환 작업의 context-audit·verifier·ai-review 기록
 - [`auth.md`](./auth.md): 13_가입 화면의 로그인·회원가입·회사 온보딩·초대 수락
+- [`auth.md` QA-08 재개 점검](./auth.md#qa-08-20261125-auth): 초대 수신의 현행 계약·Node 검증·실제 재개 조건. 실제 AUTH-16 0통과·1차단과 초대 화면 AUTH-17 미실행을 유지한다.
 - [`bid-list.md`](./bid-list.md): 공개 입찰공고 목록의 전체·마감임박·개찰결과, 필터·검색·페이지와 준비 중 상태
 - [`personal-bid-filter.md`](./personal-bid-filter.md): 계정별 맞춤 필터의 조회·적용·저장·초기화·버전 충돌
 - [`bid-detail.md`](./bid-detail.md): 공개 입찰공고 상세의 분류·개찰결과·첨부·연관공고·오류 상태
