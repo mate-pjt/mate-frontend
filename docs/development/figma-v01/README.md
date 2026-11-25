@@ -6,8 +6,9 @@
 | --- | --- |
 | 갱신일 | 2026-11-26 KST |
 | 현재 작업 | — |
-| 다음 작업 | [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md#pol-01-resume) · P0, 정책 재개 요구사항 확인 |
-| 다음 첫 행동 | 최신 main·DOC-001·H04/O03 기준선과 POL-01 재개표를 대조한다. 승인 문서·버전·적용일·공개 URL, 기존 동의 전환 방침, 푸터 공개 정보·문의 목적지와 승인 역할 확보 여부를 확인한다. [QA-13 인계](tasks/QA-13.md#qa-13-20261126-handoff) |
+| 다음 작업 | [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md#pol-01-20261126-handoff) · P0, 정책 재개 요구사항 확인 |
+| 다음 첫 행동 | 두 정식 문서의 승인 기록·버전·적용일·읽기 전용 공개 주소와 푸터 공개 항목·문의 목적지를 확인한다. 새 가입 동의 코드와 승인 버전의 대응을 대조한다. [POL-01 인계](tasks/POL-01.md#pol-01-20261126-handoff) |
+| POL-01 재개 점검 | 정식 문서 후보 두 개의 출처를 확인했고 사용자는 기존 테스트 계정의 동의 이관·재동의를 범위에서 제외했다. 승인 버전·적용일·읽기 전용 공개 URL과 푸터 공개 정보가 필요하다. [결정과 남은 확인](tasks/POL-01.md#pol-01-20261126-decisions) · [인증 QA](../../qa/auth.md#pol-01-20261126-auth) · [검증·리뷰](reviews/POL-01.md#pol-01-20261126-review) |
 | QA-13 재개 점검 | 수신처·인증의 현행 계약과 Node 합성 15건을 확인했다. 실제 실행 0건·신규 통과 0건·6건 차단과 기존 3통과·6대기를 보존한다. [NREC QA](../../qa/notification-email-recipient.md#qa-13-20261126-nrec) · [검증·리뷰](reviews/QA-13.md#qa-13-20261126-review) · [Git 전달 기준](tasks/QA-13.md#qa-13-20261126-delivery) |
 | QA-12 재개 점검 | 맞춤 이메일 ON/OFF의 현행 계약과 Node 합성 검사를 확인했다. NSET-07은 실제 0통과·1차단을 유지한다. [설정 QA](../../qa/notification-settings.md#qa-12-20261126-nset) · [검증·리뷰](reviews/QA-12.md#qa-12-20261126-review) · [Git 전달 기준](tasks/QA-12.md#qa-12-20261126-delivery) |
 | QA-11 재개 점검 | 목록·미확인 수·읽음의 현행 계약과 Node 합성 검사를 확인했다. 기존 실제 0통과·재검증 8차단을 유지하며 ALARM-04/05는 별도다. [알림 QA](../../qa/alarms.md#qa-11-20261125-alarms) · [검증·리뷰](reviews/QA-11.md#qa-11-20261125-review) · [Git 전달 기준](tasks/QA-11.md#qa-11-20261125-delivery) |
@@ -190,7 +191,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [QA-11 · 받은 알림·읽음·21건 이상 실제 QA](tasks/QA-11.md) · **선정 예외 보존·11/25 재점검·실제 0통과/재검증 8차단·ALARM-04/05 별도** | 검증 | P0 | 차단 | N01 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-12 · 이메일 ON/OFF의 실제 서버 오류 QA](tasks/QA-12.md) · **11/26 재점검·NSET-07 실제 0통과/1차단·선정 예외 보존** | 검증 | P0 | 차단 | S04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-13 · 대체 이메일 인증·전환의 남은 실제 QA](tasks/QA-13.md) · **11/26 재점검·실제 0통과/6차단·선정 예외 보존** | 검증 | P0 | 차단 | S05 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
-| [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md) · **진행 예외 승인·승인 자료/동의 전환/공개 정보 차단** | 정책 결정 | P0 | 차단 | H04, O03 | [DOC-001](tasks/DOC-001.md) |
+| [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md#pol-01-20261126-decisions) · **문서 승인·읽기 전용 공개 URL·푸터 정보 차단** | 정책 결정 | P0 | 차단 | H04, O03 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md) | 개발 | P0 | 대기 | O03 | [POL-01](tasks/POL-01.md) |
 | [DEV-02 · 홈 푸터 정보·약관·문의 링크 구현](tasks/DEV-02.md) | 개발 | P0 | 대기 | H04 | [POL-01](tasks/POL-01.md) / [DEV-01](tasks/DEV-01.md) |
 | [QA-16 · P0 공개 준비 결과 취합](tasks/QA-16.md) | 검증 | P0 | 대기 | H02, H04, L01, L03, L11, L12, D01, D04, D07, D08, D09, M01, M02, O01, O03, O04, O05, O06, O07, O10, S04, S05, N01 | [DOC-002](tasks/DOC-002.md) / [QA-01](tasks/QA-01.md) / [QA-02](tasks/QA-02.md) / [QA-03](tasks/QA-03.md) / [QA-04](tasks/QA-04.md) / [QA-05](tasks/QA-05.md) / [QA-06](tasks/QA-06.md) / [QA-07](tasks/QA-07.md) / [QA-08](tasks/QA-08.md) / [QA-09](tasks/QA-09.md) / [QA-10](tasks/QA-10.md) / [QA-11](tasks/QA-11.md) / [QA-12](tasks/QA-12.md) / [QA-13](tasks/QA-13.md) / [DEV-01](tasks/DEV-01.md) / [DEV-02](tasks/DEV-02.md) / [QA-17](tasks/QA-17.md) / [DEV-63](tasks/DEV-63.md) / [DEV-65](tasks/DEV-65.md) |
@@ -763,3 +764,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - [QA-13](tasks/QA-13.md#qa-13-20261126-evidence)의 수신처·시작·재전송·확인 계약을 현행 개발 소스/Swagger와 대조했다. 제한 열람·테스트 자원 및 변경/복구 승인·안전한 실패·실행 대응이 미확보여서 실제 0통과·6차단과 기존 3통과·6대기를 보존한다. [사례별 조건](../../qa/notification-email-recipient.md#qa-13-20261126-nrec)
 - 선행을 충족한 대기·준비 작업은 없다. P0 표의 다음인 [POL-01](tasks/POL-01.md#pol-01-resume)은 DOC-001이 완료됐고 [2026-11-05 사용자 선정 예외](tasks/QA-13.md#qa-13-next-pol-01-exception)의 대상이다. 정책 자료·기존 동의 전환·푸터 정보의 차단은 유지하며 재개 요구사항 확인만 인계한다. [선정 근거와 첫 행동](tasks/QA-13.md#qa-13-20261126-handoff)
+
+## 2026-11-26 KST · POL-01 문서 출처와 기존 테스트 동의 결정
+
+- 사용자가 정식 문서 후보 두 곳을 제공하고 기존 테스트 동의의 이관·재동의를 범위에서 제외했다. 승인 버전·적용일·읽기 전용 공개 주소와 푸터 정보가 필요해 POL-01 정책 Gate는 차단을 유지한다. [결정](tasks/POL-01.md#pol-01-20261126-decisions)
+- 선행을 충족한 대기·준비 작업이 없어 다음 작업은 P0의 POL-01 재개다. 정식 공개 자료 확인과 가입 계약 대응을 인계한다. 아직 대기 중인 DEV-01·DEV-02·QA-16은 기존 선행을 따른다. [선정과 첫 행동](tasks/POL-01.md#pol-01-20261126-handoff)
