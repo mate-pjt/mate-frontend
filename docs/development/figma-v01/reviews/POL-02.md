@@ -151,3 +151,70 @@ Page/UI/URL 모델·개인 필터 client와 server-only bids 경계가 일치한
 
 - 후속 독립 verifier 1차 **PASS**, 신규 Blocker/Major/Minor 없음. 요청/원문·WBS 순서/선행·실제 diff·26검사·prefix/receipt 지문을 독립 대조했고, POL-04 준비/활성0·POL-02 차단과 실제 QA/기존 Major 보존을 확인했다.
 - 결과를 수신한 뒤 WBS 현재 없음·task/review 종료 메타데이터만 반영했다. 이 최종3문서도26검사·자체 ai-review·read-only verifier로 다시 확인한다. 이후 문서 내용 변경 없이 한 목적의 docs 커밋과 새 PR/CI·정상 merge/로컬 main FF로 전달하며, 최종 결과는 로컬 `verifier-final.txt`·PR·최종 보고에서 확인한다. Git 전달은 POL-02 계약 완료나 POL-04 착수/정책 승인·실제 QA PASS가 아니다.
+
+<a id="pol-02-read-review-20261126"></a>
+
+## 2026-11-26 KST · 조회 계약 검토
+
+검토 기준은 [사용자 D1~D3](../tasks/POL-02.md#pol-02-approved-decisions), [이번 Brief](../tasks/POL-02.md#pol-02-read-brief-20261126), 시작 `f0b5283`과 5개 Markdown의 diff다. [출처별 근거](../tasks/POL-02.md#pol-02-read-contract-20261126)에서 소스 SHA·CI와 배포 기록·게시 OpenAPI·실행 식별자·실제 응답의 확인 여부를 확인할 수 있다.
+
+### Context Audit Report
+
+#### 결론
+
+**PASS · 개인 필터와 맞춤/공개 목록의 문서 정합성.** 이전 WBS 문구의 11월 5일 명세 차단과 실제 QA를 다시 해석할 소지가 있어, 11월 26일 게시 명세 확인과 함께 현행 재개 근거를 연결했다. 과거 [reset Major](#발견된-불일치)는 DEV-63의 로컬 교정 이후와 구분한다.
+
+#### 확인한 코드베이스 사실
+
+`recommended`는 빈 결과 props로 인증과 준비 안내까지만 렌더링한다. 공개 ALL은 server-only Repository, 개인 필터 GET은 브라우저 공개 client가 소유한다. 현재 ALL의 수동 적용은 최신 GET을 사용하고 계정 쓰기 UI는 제거돼 있다. 기본 mock 초기값은 `EMPTY_DEFAULT`이며 `COMPANY_DEFAULT`의 로컬 사례에는 해당 fixture가 필요하다. [현행 Page](../../../../src/app/bids/page.tsx) · [현재 목록](../../../../src/components/bids/bid-list-client.tsx) · [mock](../../../../src/data/personal-filters/mock-repository.ts)
+
+#### 문서별 정합성 점검
+
+| 문서 | 대조 결과 |
+| --- | --- |
+| base.md | packageManager pnpm 11.3.0, Next 16.2.9·React 19.2.4·Vitest 4.1.11, lockfile 9.0, .nvmrc 22.20.0과 CI Node pin, scripts 8개·독립 type-check/format 부재를 확인했다. 작업 셸의 Node는 26.5.0이다. |
+| architecture.md | 목록·홈 CTA·인증 복귀와 Repository 공개 입구가 설명과 일치한다. DEV-03이 대체할 맞춤 화면은 계속 준비 안내 상태다. |
+| data-access.md | 7개 공급원 그룹·immutable 빌드 snapshot·hybrid 제약·production mock guard·계정별 탭 저장소와 HTTP 오류/401 경계를 대조했다. 현행 ALL의 수동 적용과 무쓰기 UI 및 DEV-63 로컬 reset을 확인했다. 확인은 소스 범위이며 무관한 업로드·타 기능을 실행하지 않았다. |
+| plan.md | 현재/다음/상태를 WBS로 위임한다. 이전 날짜의 계약·상태 관찰은 이력이다. L02/H03의 연결과 79개 기준선을 유지한다. |
+| harness.md | 세 Skill·verifier·placeholder config가 있다. 문서 검증 → 두 리뷰 → Git 전달 규칙을 적용한다. |
+| ai-failures.md | GitHub의 SHA·정해진 CI/배포 상태·지정 소스 본문과 OpenAPI의 선택 스키마만 사용했다. 출력 경계에 관한 새 사건은 없다. |
+
+#### 발견된 불일치
+
+- Minor · 현행 WBS의 앞선 차단 설명이 게시 명세 미확인과 실행/계정 증거의 미확인을 함께 가리켰다. 이번에 WBS·인계·QA에 날짜별 근거를 연결했다. 과거 기록과 실제 사례 판정은 보존했다.
+- 구현 인계에서 확인할 점이 있다. `hasPersonalConditions`는 범위 없이 날짜·금액 기준만 있어도 참이다. 서버는 이 경우 범위식이 없다. 현재 공개 ALL의 수동 적용은 별도 동선이다. 맞춤 자동 조회에서 D2의 유효 조건 판정과 손상 응답을 각각 검증하도록 [DEV-03 인계](../tasks/DEV-03.md#dev-03-pol-02-read-handoff-20261126)에 반영했다.
+
+#### 개발자 확인 필요 사항
+
+별도의 정책 결정이 필요한 공백은 이 조회 전용 범위에서 확인되지 않았다. DEV-03의 연결 설계와 실행 식별자·계정·실패/복구 조건은 각 후속 Gate에서 확인한다.
+
+#### 추천 수정 방향
+
+현행 조회 계약은 POL-02/WBS·DEV-03 인계와 기존 목록 QA에서 찾을 수 있게 했다. 공통 데이터 접근 규칙과 로컬 reset 교정은 기존 소스를 근거로 사용한다.
+
+### Documentation Update Check
+
+POL-02/DEV-03·WBS·목록 QA·이 리뷰를 갱신한다. 현재 상태는 WBS에서 관리한다. 실행 코드·패키지·빌드·폴더·Repository/DTO/API·mock·하네스 규칙이 이번 작업으로 바뀌지 않아 base·architecture·data-access·harness의 갱신 사유가 없다. plan의 WBS 위임, ai-failures의 기존 기록, 79개 매핑과 원본 기준선, HOME/PBF의 기존 판정을 적용한다.
+
+### 검증 기록
+
+| 검증 | 결과와 한계 |
+| --- | --- |
+| `gh api`와 비인증 `curl` | 중앙·백엔드 고정 커밋, test 배포 성공 기록, 게시 명세 200을 확인했다. 업무 API 요청은 0건이다. |
+| `python3 validate_pol02.py review` | 임시 검증기 35/35 통과. 두 GET의 스키마와 Kotlin 조건·정렬, 원본 79개·WBS 114개/의존성 156개, 5개 기준선·연결 파일의 내용, 기존 QA와 5개 Markdown의 링크·앵커·형식을 확인했다. 스크립트의 문구 대조식을 1회 바로잡아 전체를 재실행했다. |
+| `git diff --check f0b5283` | 공백·패치 형식 오류 없음. 변경은 범위를 합의한 Markdown 5개다. |
+| 로컬 앱 scripts·mock/HTTP 대역·브라우저·실제 업무 API | 실행 코드와 빌드 설정 변경이 없는 문서 작업이라 미실행이다. 원격 CI는 이 PR head에서 별도로 확인한다. |
+
+### AI Review
+
+1. **리뷰 요약** — PASS. 승인 D1~D3, 데이터 접근과 인증 경계, 게시 명세의 필수값·결측과 분류 행 계약을 5개 문서에서 확인했다.
+2. **발견된 문제** — 미해결 Blocker·Major·Minor가 없다. 날짜/금액 기준만 존재하는 경우와 잘못된 응답을 분리할 DEV-03 검증 기준을 기록했다.
+3. **누락된 검증** — 로컬 앱 scripts·브라우저·HTTP 대역은 문서 전용 작업 범위에서 미실행이다. 실제 실행 식별자·자료·오류/복구가 필요한 RBD 9건·PBF 12건은 공동 QA 대기다.
+4. **문서 갱신 필요 여부** — 작업 기록·후속 인계·WBS·목록 QA·리뷰를 반영했다. 공통 context·기준선·매핑과 기존 QA 판정을 적용한다.
+5. **개발자 확인 필요** — POL-02의 조회 정책을 기록하는 데 추가 제품 결정이 없다. DEV-03의 연결 설계와 실제 자원 확인은 후속 Gate다.
+6. **추천 수정 방향** — 현행 두 GET을 조회 전용으로 연결하는 설계를 다음 Task에서 검토한다. 계정별 조회·저장·reset·회사 조건 가져오기의 실제 실행은 합의된 공동 QA 조건을 따른다.
+
+### 독립 verifier와 종료 확인
+
+- **1차 PASS**. read-only verifier가 승인 원문, 대상 diff, 백엔드·Swagger와 프론트 소유 소스를 독립 대조했다. Blocker·Major·Minor는 없었고, 문서 검사 35/35와 `git diff --check f0b5283`를 확인했다. 검토 당시 diff SHA-256은 `acdaae2265e30ce440e2e4100e7a4d836ca0305b0204b18d19e90d088517b62d`다.
+- WBS의 POL-02 완료와 DEV-03 준비, 첫 행동을 기록했다. 마지막 상태와 이 검토 기록을 포함한 diff에 문서 검사·두 리뷰를 다시 적용한다. Git 전달 결과와 이후 변경 여부는 최종 PR/보고에서 확인한다. [인계 근거](../tasks/POL-02.md#pol-02-read-handoff-20261126)

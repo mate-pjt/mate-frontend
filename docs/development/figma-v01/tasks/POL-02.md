@@ -30,7 +30,7 @@
 
 ## 완료 기준
 
-- [ ] 현행 소스/Swagger·승인 정책의 버전과 필수/nullable 조건을 기록한다
+- [x] 현행 소스/Swagger·승인 정책의 버전과 필수/nullable 조건을 기록한다. [2026-11-26 두 GET 확인](#pol-02-read-contract-20261126)
 - [x] 빈 조건·오류·홈 CTA 목적지와 미지원 동작을 확정한다
 - [x] 원문/소유 소스·버전·결정자·시각·선택/보류 이유를 기록한다. 추천안은 승인으로 간주하지 않는다.
 - [x] 근거 있는 기존 승인 또는 필요한 개발자 결정을 확보하고, 후속 개발의 범위/완료 기준/차단을 갱신한다. 정책 작업도 Review Gate를 수행한다.
@@ -191,3 +191,74 @@
 ### 다음 첫 행동
 
 최신 소스·게시 명세에서 두 GET의 필수·nullable 필드, 빈 `SAVED`, `COMPANY_DEFAULT`, 검색 결과 0건과 오류, 정렬·페이지의 의미를 승인 정책과 대조한다. 결과를 POL-02 검토 기록에 남기고, 조회 전용 범위와 로그인 복귀·계정 변경의 검증 조건을 [DEV-03](DEV-03.md)에 인계한다.
+
+<a id="pol-02-read-brief-20261126"></a>
+
+## 2026-11-26 KST · 조회 정책 검토 착수
+
+- 시작 기준은 15:53 KST의 깨끗한 `main`과 `origin/main` `f0b528361cfbae35e175899bff1ceaf584b3b4cf`다. DOC-001 `9eae9c0`, 기존 POL-02 결정 PR #43, DEV-63 교정 PR #53, 목록 저장 UI 교정 PR #62, 프론트 일정 인계 PR #143의 main 반영을 확인하고 `docs/pol-02-read-contract-20261126`을 만들었다. 인계할 미커밋 변경은 0건이다.
+- 정책 근거는 [2026-11-05 사용자 D1~D3](#pol-02-approved-decisions)과 [2026-11-26 사용자 결정](../README.md#frontend-first-20261126)이다. 별도 일정에서 백엔드 개발자와 실제 통합 QA를 하고, 소스·게시 계약으로 확인할 수 있는 프론트 범위부터 진행한다. 이번 사용자는 POL-02 한 건의 문서 검증·두 리뷰 및 커밋·push·PR·최종 head CI·조건부 main 병합·로컬 fast-forward와 해당 PR의 Chromatic 월간 한도 예외를 승인했다.
+- 성공 기준은 L02/H03에 대해 두 GET의 버전·필수/nullable·빈 조건·0건·오류·정렬/페이지를 승인 정책에 연결하고, DEV-03의 조회 전용 범위와 실제 QA의 남은 조건을 검증 가능한 형태로 넘기는 것이다. 실행 코드, 의존성, 업무 API 요청, 계정의 저장·reset·회사 조건 가져오기, 서비스 운영 및 배포는 범위 밖이다.
+- 확인한 구조는 [프론트 데이터 경계](../../../ai-context/data-access.md), 공개 목록 서버 진입점, 개인 필터 클라이언트 진입점, 홈 CTA와 로그인 복귀, 현재 목록 URL 처리다. 수정 범위는 이 기록, WBS, DEV-03 인계, 목록 QA와 POL-02 리뷰의 Markdown 5개다. 소유 소스·Swagger 대조 → 사례와 미확인 조건 기록 → 문서 검사·두 리뷰 → 다음 요구사항 검토 인계 → Git 전달 순서로 진행한다.
+- 현재 계약에는 승인된 두 GET으로 조회 전용 범위를 기록할 수 있다. L02/H03의 과거 Figma 관찰은 화면 근거로 사용하고, 배포 기록과 실제 실행 식별자는 구별한다. 앱 실행 없이 링크·앵커, 79개 원본과 대응, WBS 의존성·상태, 기준선·과거 QA 보존, Markdown 및 `git diff --check`를 검증한다.
+- 첫 행동은 게시 스키마와 Kotlin 응답·조회 조건을 대조해 필수 키와 null, 빈 조건과 필터링된 0건, 권한과 오류를 문서에 반영하는 것이다.
+
+<a id="pol-02-read-contract-20261126"></a>
+
+## 2026-11-26 KST · 맞춤 공고 조회 정책과 현행 두 GET 계약
+
+| 근거 | 확인한 범위 |
+| --- | --- |
+| 정책 원문 | 사용자가 11월 5일 승인한 D1~D3의 자동 조회·빈 조건·오류와 복귀를 적용한다. 중앙 문서 main은 `c9e50ff591ae18023164e1a94581c611bf1e4f29`다. ADR-0014의 저장값 우선과 무저장 조회를 따르며, 웹 맞춤 목록은 점수·참가 자격 판정·상세 관련 공고·이메일 발송일 범위와 독립적이다. [D1~D3](#pol-02-approved-decisions) · [Accepted ADR-0014](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/decisions/ADR-0014-separate-personal-bid-filter-from-company-profile.md) · [공고 찾기](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/bid/matching-and-related-notices.md) · [맞춤 이메일 §6](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/domain/notification/overview.md) |
+| 소유 소스 | 11월 26일 개발 환경의 배포 대상 브랜치 `dev` `f4860fd9b87329d50169eb0025dca3f2c5fa2125`에서 controller·응답·조회 서비스와 `ALL` 쿼리를 대조했다. [필터 GET](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt#L24-L35) · [공개 목록 요청](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt) |
+| CI와 배포 기록 | 같은 SHA의 CI에서 verify·publish·deploy가 성공했다. `test` 배포 `8072722595`의 성공 시각은 11월 26일 09:08 KST다. [CI](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088) · [test deploy job](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139596909303) |
+| 게시 명세 | `curl`의 비인증 문서 GET은 HTTP 200, `openapi: 3.1.0`, `info.version: v1`이었다. 응답 바이트 SHA-256은 `9711e22b705d79ded53428d1a0ba157bae2894a46999a83899d8324fc4459ea4`다. 이번 문서의 스키마와 보안 표시는 해당 응답에서 확인했다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) |
+| 실행 식별자와 업무 응답 | 프론트 실행 SHA·공급원과 백엔드 실행 SHA의 대응은 미확인이다. 이번 조회 전용 정책 검토의 업무 GET은 0건이다. 실제 응답·인증 오류·동시성·저장 무변경의 통합 증거는 공동 QA에서 확보한다. [RBD 재개 조건](../../../qa/bid-list.md#pol-02-read-qa-20261126) |
+
+### 개인 필터 조회
+
+- `GET /api/v1/bid-notice-filters/current`는 인증된 현재 계정을 사용한다. 조회 query·body는 없고, 서버는 principal로 계정을 결정해 `no-store` 응답을 준다. Swagger의 보안은 `userAccessJwt`이며 성공 `200`은 `isSuccess`와 `data`가 필수다. [컨트롤러와 캐시](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt)
+- `data`의 `source`, `version`, `canImportCompany`, `filter`는 모두 필수 키다. `version`은 int64 또는 명시적 `null`이다. `filter`의 `bidTypes`, `regionCodes`, `industryCodes`, `contractMethods`는 배열, `regionOnly`는 boolean, `jointContract`는 `ALL`·`REQUIRED`·`AVAILABLE`이다. `dateType/dateFrom/dateTo`, `amountType/amountMin/amountMax`는 각각 키가 필요하며 값은 `null`일 수 있다. 프론트의 `version`과 원 단위 금액은 안전 정수로 읽는다. 필수 키 누락과 손상 응답은 오류로 처리한다. [응답 DTO](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/response/PersonalBidNoticeFilterResponse.kt) · [현행 프론트 응답 검사](../../../../src/data/personal-filters/http-repository.ts)
+
+| `source` | 서버 값과 조회 조건 |
+| --- | --- |
+| `SAVED` | 회사 연결 여부와 관계없이 계정의 저장 조건과 저장 `version`이 우선한다. 빈 `SAVED`도 그대로 읽으며 회사 조건으로 바꾸지 않는다. |
+| `COMPANY_DEFAULT` | 저장값이 없는 활성 소속 계정에 현재 회사 지역·활성 업종·희망 추정가격을 투영한다. 회사 금액의 배타 상한에서 1원을 빼 포함 상한으로 옮긴다. `version`은 `null`이며 GET은 저장 행을 만들지 않는다. |
+| `EMPTY_DEFAULT` | 저장값과 회사 기본값의 출처가 없으면 빈 배열 4개, 날짜·금액 값 `null`, `regionOnly=false`, `jointContract=ALL`, `version=null`을 반환한다. |
+
+`canImportCompany`는 회사 조건을 가져올 수 있는지 알려 주는 필드다. 조회는 `source`와 `filter`를 사용하며 가져오기 호출을 요구하지 않는다. [조회 서비스](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/personalfilter/PersonalBidNoticeFilterService.kt#L27-L61) · [회사 조건 투영](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/personalfilter/CompanyBidNoticeFilterProjector.kt)
+
+### 공개 ALL 조회
+
+| 확인 항목 | 계약과 적용 범위 |
+| --- | --- |
+| 진입과 필터 | 유효한 계정 조건이 있을 때 공개 `GET /api/v1/bid-notices?view=ALL`을 자동 조회한다. `recommended`는 프론트의 인증 대상 화면 값이고, 공개 API는 `ALL`을 받아 시작 전·진행 중 공고의 표시 행을 반환한다. 계정 ID·JWT·`source`·`version`·`canImportCompany`를 공개 요청에 전달하지 않는다. [공개 권한 소스](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/BidNoticeAuthorizationConfigurer.kt) |
+| query | 배열 4개는 값마다 반복 key로 보내고 빈 배열에는 query를 추가하지 않는다. 빈 `bidTypes`에 화면 기본 공사를 주입하지 않는다. `dateType`은 `BID_BEGIN`·`PARTICIPATION_DEADLINE`·`BID_CLOSE` 중 하나이며 `dateFrom/dateTo`는 해당 기준의 KST 포함 날짜다. `amountType`의 `BASE_PRICE`는 표시 행 기초금액, `ESTIMATED_PRICE`는 공고 추정가격이며 `amountMin/amountMax`는 포함 금액이다. 날짜·금액 범위의 양 끝은 생략할 수 있고, 한쪽이라도 있으면 대응 기준이 필요하다. `regionOnly=true`에는 지역 코드가 필요하다. 낙찰금액과 과거 공고 단위의 상태·기간·금액 query는 `ALL`에 보내지 않는다. `keyword`는 공고명·공고기관·수요기관·공고번호의 부분 검색이며 최대 100자다. [요청 검증](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt) · [중앙 목록 계약](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/api/bid-notices.md) |
+| 결측과 행 | 성공 `200`의 `isSuccess`·`data`와 `items/page/size/totalElements/totalPages/hasNext`는 필수다. `id`, 공고번호·차수, 공고명, 공고 유형·상태는 식별/표시에 사용한다. 공통 DTO의 `row` 키는 nullable이지만 분류 목록의 소유 소스는 `NOTICE` 또는 `CLASSIFICATION` 행을 만든다. `row.kind`, `knownClassificationCount`는 필수이고 `bidClsfcNo`는 공고 행에서 `null`, 분류 행에서 실제 canonical 번호다. `row.baseAmount`와 목록의 날짜·기관·금액·결과 요약은 결측을 보존하며, 범위 조건의 결측 기준값을 다른 날짜·금액 또는 0으로 채워 포함하지 않는다. [목록 DTO](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeListResponse.kt) · [행 응답 DTO](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeSummaryResponse.kt) · [분류 행 변환](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/PublicBidNoticeListRowProjector.kt) |
+| 정렬·페이지 | `sort=bidCloseAt,asc`를 유지한다. 서버가 마감 시각 결측을 뒤에 두고, 동률은 공고 ID 오름차순과 숫자로 해석한 분류번호 오름차순으로 정한다. `totalElements`는 필터 뒤 표시 행 수다. 같은 조회의 서버 page·count를 사용한다. API page는 0부터, size 기본 20·허용 1~100이며 UI는 1부터, 10·20·30개(기본 10)다. 검색·page·size는 일시적 조회 상태다. [서버 정렬·필터 쿼리](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeListRowQuerySpecFactory.kt#L100-L169) · [프론트 조회 모델](../../../../src/components/bids/bid-list-model.ts) |
+
+### 빈 조건·빈 결과·오류와 화면 근거
+
+- 조건이 전부 비어 있거나 기준 종류만 있고 해당 범위 양쪽이 비어 있으면, 그 기준만으로는 `ALL` 후보를 좁히지 않는다. 기존 `hasPersonalConditions`는 기준 종류만으로도 `true`를 반환할 수 있다. KST 날짜·원 금액의 기존 범위 정규화와 다른 유효 조건까지 확인해 D2를 적용한다. 설정 안내와 공개 전체 공고 이동을 제공하며, 유효 조건이 없을 때는 `ALL`을 자동 조회하지 않는다. `EMPTY_DEFAULT`, 빈 `COMPANY_DEFAULT`, 빈 `SAVED`에 같은 판정 기준을 적용한다. 잘못된 enum/범위와 누락 필드는 별도의 오류다. [기존 조건 판정](../../../../src/features/bid-notice-filters/model.ts#L75-L78) · [서버 범위식](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeListRowQuerySpecFactory.kt#L123-L169)
+- 유효 조건에 대해 성공한 응답의 `totalElements=0`은 매칭 결과 없음이다. 현재 페이지의 행이 비어도 전체 건수가 있으면 이 판정과 구분한다. 목록 오류에는 `400` 잘못된 조건과 `5xx` 등이 포함된다. 필터 GET의 Swagger는 `401/403/500`을 게시하고, `401`은 기존 같은 계정 세션 갱신 1회 및 재로그인 복귀 경계를 따른다. 두 조회의 네트워크·응답 오류는 실패 및 재시도를 표시하고 빈 조건·0건·공개 전체·mock으로 대체하지 않는다. 공개 목록 요청 실패에 계정 세션 갱신을 붙이지 않는다. [보호 HTTP 조회](../../../../src/data/shared/http.ts) · [공개 목록 Repository](../../../../src/data/bids/http-repository.ts)
+
+| 화면과 상태 | 현재 소스와 후속 기준 |
+| --- | --- |
+| H03 홈 CTA와 익명 진입 · [2016:57355](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2016-57355) | 인증된 사용자는 `/bids?view=recommended`로 이동한다. 익명은 동일 출처 `next`로 로그인 후 복귀한다. 기존 CTA와 복귀를 이어서 검증한다. [홈 CTA](../../../../src/components/home/home-auth-cta.tsx) · [복귀 경로 검증](../../../../src/lib/auth-redirect.ts) |
+| L02 로그인 뒤 맞춤 목록 · [3003:47410](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3003-47410) | 현재 Page는 인증 안내와 준비 중 화면을 제공한다. 진입·reload의 최신 snapshot → 유효 조건 ALL과 빈 조건·0건·오류의 구분은 DEV-03 수용 기준이다. 계정 전환·로그아웃·탐색 때 이전 계정 조건·행·늦은 응답을 제거한다. [현재 Page](../../../../src/app/bids/page.tsx) · [맞춤 안내](../../../../src/components/bids/bid-list-client.tsx#L246-L275) |
+| 전체 목록의 수동 적용 · [2048:58606](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2048-58606) | 기존 ‘내 맞춤’ 클릭의 최신 GET, 일반 URL 조건 편집과 목록 초기화를 유지한다. 목록 계정 저장·reset UI는 후속 DEV-09 사용자 교정으로 제거됐다. 과거 인계의 계정 저장 동선을 재도입하지 않으며 가져오기는 POL-22 후속 기준을 따른다. [DEV-09 사용자 교정](DEV-09.md#dev-09-ui-cleanup-brief) · [POL-22](POL-22.md#pol-22-contract) |
+
+화면 근거는 [고정 Figma 목록](../baseline/frame-coverage.json)과 당시 감사의 관찰이다. 설정 안내·빈 결과·오류는 D1~D3에 따른 기능 상태다. 이번에는 현재 시안의 상태별 시각 일치와 별도 화면 예외 승인 여부를 새로 판정할 근거를 수집하지 않았다.
+
+<a id="pol-02-read-handoff-20261126"></a>
+
+### DEV-03 선정 근거와 첫 행동
+
+- 11월 26일 프론트 우선 순서와 P1의 직접 선행에 따라 **DEV-03**을 다음 요구사항 검토 대상으로 선정한다. P0 공개 준비의 실제 QA 선행은 남아 있다. POL-02는 두 GET 기반 조회 정책 범위를 문서화한다. 실행 SHA 대응·승인 합성 계정과 오류/복구 조건은 공동 QA의 선행이며, QA-10의 실제 12개 차단과 RBD의 9개 차단을 보존한다. [DEV-03 조회 전용 인계](DEV-03.md#dev-03-pol-02-read-handoff-20261126) · [WBS 선정 기준](../workflow.md#next-task-selection)
+- 다음 대화에서 최신 main과 두 Repository 진입점·URL·세션 수명을 확인해 별도 Brief를 작성한다. 인증 계정 snapshot을 읽고 공개 `ALL`에 연결하는 방법과 계정/탐색 취소·조회 오류 검증을 먼저 제시한다. 이번 POL-02에서는 개발 파일 지정·구현·브라우저 실행을 진행하지 않는다.
+
+### 확인한 범위와 남은 실제 검증
+
+- 11월 26일 게시 명세와 소스로 위 조회 정책의 계약 근거를 충족했다. 11월 5일의 403과 reset Major는 당시 이력이다. DEV-63에서 빈 `SAVED`/version/replay를 mock과 HTTP 대역에서 교정했으며, 현재의 계정 저장·reset·회사 가져오기 실제 검증은 승인 계정과 재현·종료·복구 기준이 필요하다. [DEV-63 검증](DEV-63.md#dev-63-verification) · [QA-10 최근 기록](../../../qa/personal-bid-filter.md#qa-10-20261125-filter)
+- 문서 검증 35/35와 `git diff --check`, Documentation Update Check, 첫 AI Review와 독립 verifier를 통과했다. 종료 WBS와 인계를 반영한 diff의 검사와 두 리뷰를 다시 확인한 뒤 문서 커밋으로 전달한다. 실제 계정이나 서비스에 변경·복구 대상은 없다. [문서 검증과 리뷰](../reviews/POL-02.md)
+- 이 대화의 Git 승인으로 두 문서 커밋을 작업 브랜치에 올리고 템플릿·`type: docs` PR에서 최종 head CI·리뷰 조건을 확인한다. 이번 PR의 월간 한도 문제에만 Chromatic 예외가 적용되며 병합은 저장소의 일반 merge commit 방식과 로컬 main fast-forward를 따른다. Git 전달의 실제 head와 병합 SHA는 [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-02-read-contract-20261126)과 최종 보고에서 확인한다.
