@@ -158,6 +158,7 @@ Confirmed:
 - 공개 목록 `all`·`closing`·`result`는 서버에서 `GET /api/v1/bid-notices`를 `view=ALL|CLOSING_SOON|RESULT`로 호출하고, 지역·업종 선택지는 공개 metadata API에서 받는다. 목록의 공고번호·공고명은 실제 ID와 선택적 분류번호를 보존해 `/bids/[bidId]`로 이동한다. RESULT 금액 범위의 [서버 계약](../development/figma-v01/tasks/DEV-12.md#dev-12-gate)과 [연결 범위](../development/figma-v01/tasks/DEV-12.md#dev-12-brief)를 참고한다.
 - 공개 입찰 상세는 `GET /api/v1/bid-notices/{id}`를 서버에서 조회하고 첨부·관련 공고·개찰 결과·물품 등록정보를 독립 section API로 조회한다. 본문 404/오류와 section별 오류를 구분하며 mock fallback을 사용하지 않는다. 계정별 공고 알림 설정은 로그인 상태에서 별도 브라우저 API를 사용한다.
 - 가입 화면의 서비스 이용약관과 개인정보 처리방침은 `/auth/legal/terms`와 `/auth/legal/privacy`에서 사용자 승인 Google 문서 주소로 이동한다. 신규 가입은 서버가 반환한 두 필수 동의의 `code`·`version`을 제출한다. 기존 테스트 계정의 이관·재동의는 제외한다. [POL-01 정책](../development/figma-v01/tasks/POL-01.md#pol-01-approved-policy) · [DEV-01 URL 승인 범위](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-link-release)
+- 홈 전용 `HomeFooter`는 가입 화면과 같은 두 공개 약관 경로를 새 탭으로 열고, FAQ는 기존 정적 `/qna`로 이동한다. 승인된 고객문의 이메일·운영시간은 텍스트로 표시한다. 768px 미만에서 홈 상단 이동 링크는 푸터 콘텐츠 뒤에 배치한다. [DEV-02 설계](../development/figma-v01/tasks/DEV-02.md#dev-02-brief) · [홈 QA](../qa/home.md#dev-02-home-footer-qa)
 - [DEV-57 결정/검증](../development/figma-v01/tasks/DEV-57.md#dev-57-brief)에 따라 auth 폭은 로그인420/가입·검색·초대640/시작692px를 구분한다. 시작 인사는 인증 응답의 nullable nickname만 사용하고 null/누락/공백은 일반 인사, loading/error는 별도 상태로 표시한다. 가입 날짜는 별도 DatePicker를 사용한다. 공통 헤더 이름(DEV-56), 소속 용어·약관 정책과 실제 QA 차단은 별개다.
 - 회사 등록의 시공능력평가액·대표면허·3종 인증 직접 수정은 가입 전 API가 없어 준비 중 비활성이다.
 - 모든 실제 브라우저 API 통합 검증은 `docs/qa/README.md`와 기능별 펀치리스트에 기록하고 환경 준비 후 수행한다.

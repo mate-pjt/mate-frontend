@@ -1,0 +1,86 @@
+{
+  "task": "DEV-02",
+  "dateKst": "2026-11-26",
+  "baseCommit": "c4095225ade152b41e3c180c3fce0d244f4afd42",
+  "next": "16.2.9",
+  "dataProfile": "mock",
+  "layout": {
+    "chrome": "158.0.8127.89",
+    "results": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "footerHeight": 284,
+        "contactWraps": false,
+        "tabOrder": 4,
+        "topButton": "fixed",
+        "topAnchor": true,
+        "linksHit": true,
+        "oneMain": true,
+        "logo": [
+          36,
+          28,
+          60
+        ]
+      },
+      {
+        "width": 768,
+        "height": 900,
+        "footerHeight": 284,
+        "contactWraps": false,
+        "tabOrder": 4,
+        "topButton": "fixed",
+        "topAnchor": true,
+        "linksHit": true,
+        "oneMain": true,
+        "logo": [
+          36,
+          28,
+          60
+        ]
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "footerHeight": 376,
+        "contactWraps": true,
+        "tabOrder": 4,
+        "topButton": "static",
+        "topAnchor": true,
+        "linksHit": true,
+        "oneMain": true,
+        "logo": [
+          36,
+          28,
+          60
+        ]
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "footerHeight": 376,
+        "contactWraps": true,
+        "tabOrder": 4,
+        "topButton": "static",
+        "topAnchor": true,
+        "linksHit": true,
+        "oneMain": true,
+        "logo": [
+          36,
+          28,
+          60
+        ]
+      }
+    ],
+    "homeConsoleErrors": 0,
+    "homeExternalOrBusinessRequests": 0
+  },
+  "navigation": {
+    "approvedDocumentTabs": 4,
+    "matchingTargets": 2,
+    "noOpenerAndNoReferrer": 4,
+    "currentTabFaqAndBack": true,
+    "mockSignupShown": true,
+    "actualBusinessOrLocalWriteRequests": 0
+  }
+}
