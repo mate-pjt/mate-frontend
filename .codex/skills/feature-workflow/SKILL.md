@@ -185,7 +185,7 @@ When `$ai-review` is required, include its review result using the `$ai-review` 
 
 Return `PASS` only when the requirement is satisfied, verification has passed, Documentation Update Check is complete, and Review Gate is complete. Explain any skipped verification or review.
 
-After the gates pass, close the selected task's evidence/checklist, update WBS current/next/status, and specify one next task with its first concrete action. Do not automatically begin the next feature before its own requirement gate. If blocked, preserve the blocker/resume condition and the exact scope of any existing developer-approved exception; do not generalize a deferred live check to other tasks.
+After the gates pass, close the selected task's evidence/checklist and update WBS current/next/status. Follow the [WBS selection rules](../../../docs/development/figma-v01/workflow.md#next-task-selection) to hand off one eligible task and its first concrete action or record `다음 작업 없음`. Reselect a blocked or deferred task only with new evidence that its blocking or deferral condition changed. Start a selected task's own requirement gate in the next conversation. Preserve blocker/resume conditions and the exact scope of existing developer-approved exceptions.
 
 Final response must include:
 
