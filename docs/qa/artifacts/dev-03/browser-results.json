@@ -1,0 +1,210 @@
+{
+  "browser": "Chrome 158.0.8127.89",
+  "scope": "isolated Next production builds, mock and loopback HTTP double",
+  "passed": 25,
+  "total": 25,
+  "mockExternal": 0,
+  "httpExternal": 0,
+  "actions": 38,
+  "unexpectedWrites": [],
+  "credentialForwarding": [],
+  "appErrors": [],
+  "cases": [
+    {
+      "id": "M01",
+      "profile": "mock",
+      "scenario": "홈 CTA → 가상 로그인 → 빈 조건 → 전체 공고",
+      "result": "PASS"
+    },
+    {
+      "id": "M02",
+      "profile": "mock",
+      "scenario": "저장 조건 자동 적용, 현재 계정 reload, 실제 Next 상세",
+      "result": "PASS"
+    },
+    {
+      "id": "R01",
+      "profile": "api-wire",
+      "scenario": "홈 CTA, 기존 로그인 진입과 현재 계정 저장 조건, 분류 링크",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 1
+    },
+    {
+      "id": "R02",
+      "profile": "api-wire",
+      "scenario": "익명 직접 진입에서 검색·페이지·크기 복귀, 계정 URL 조건 폐기",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 1
+    },
+    {
+      "id": "R03",
+      "profile": "api-wire",
+      "scenario": "회사 기본 조건의 출처와 reload 때 갱신된 snapshot",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 2
+    },
+    {
+      "id": "R04a",
+      "profile": "api-wire",
+      "scenario": "EMPTY_DEFAULT에서는 공개 목록 자동 요청 0건",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 0
+    },
+    {
+      "id": "R04b",
+      "profile": "api-wire",
+      "scenario": "저장 빈 조건에서는 공개 목록 자동 요청 0건",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 0
+    },
+    {
+      "id": "R04c",
+      "profile": "api-wire",
+      "scenario": "회사 기본 빈 조건에서는 공개 목록 자동 요청 0건",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 0
+    },
+    {
+      "id": "R04d",
+      "profile": "api-wire",
+      "scenario": "범위 종류만 설정에서는 공개 목록 자동 요청 0건",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 0
+    },
+    {
+      "id": "R05",
+      "profile": "api-wire",
+      "scenario": "서버 건수·마감 정렬, 페이지 1↔0, 크기 20·30, 검색·뒤로·reload",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 8
+    },
+    {
+      "id": "R05b",
+      "profile": "api-wire",
+      "scenario": "공백을 %20으로 인코딩한 공유 검색 URL 직접 진입",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 1
+    },
+    {
+      "id": "R06",
+      "profile": "api-wire",
+      "scenario": "범위 결측·포함값, 검색 총 0건과 범위를 벗어난 페이지 구분",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 4
+    },
+    {
+      "id": "R07a",
+      "profile": "api-wire",
+      "scenario": "필터 HTTP 503과 손상 필터가 빈 조건이 되지 않으며 명시 재시도",
+      "result": "PASS",
+      "filters": 3,
+      "matchingLists": 1
+    },
+    {
+      "id": "R07b",
+      "profile": "api-wire",
+      "scenario": "목록 503·손상 페이지·공개 401 및 목록만 재시도",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 4
+    },
+    {
+      "id": "R08a",
+      "profile": "api-wire",
+      "scenario": "개인 필터 401은 같은 계정에서만 세션 갱신과 GET 한 번 재시도",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 1
+    },
+    {
+      "id": "R08b",
+      "profile": "api-wire",
+      "scenario": "두 번째 401 이후 재로그인과 검색 URL 복귀",
+      "result": "PASS",
+      "filters": 3,
+      "matchingLists": 1
+    },
+    {
+      "id": "R08c",
+      "profile": "api-wire",
+      "scenario": "갱신 401에서 행 없이 기존 로그인으로 복귀",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 0
+    },
+    {
+      "id": "R08d",
+      "profile": "api-wire",
+      "scenario": "A 필터가 지연될 때 로그아웃·B 로그인 후 A 결과 격리",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 1
+    },
+    {
+      "id": "R08e",
+      "profile": "api-wire",
+      "scenario": "A 목록이 지연될 때 로그아웃·B 로그인 후 A 행/조건 격리",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 2
+    },
+    {
+      "id": "R08f",
+      "profile": "api-wire",
+      "scenario": "검색 경쟁에서 늦은 이전 목록이 현재 검색 상태를 덮지 않음",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 2
+    },
+    {
+      "id": "R08g",
+      "profile": "api-wire",
+      "scenario": "공개 조회 제한 시간 이후 목록만 재시도",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 2
+    },
+    {
+      "id": "R09a",
+      "profile": "api-wire",
+      "scenario": "390/320px의 선택기·검색·페이지·가로 스크롤·키보드",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 2
+    },
+    {
+      "id": "R09b",
+      "profile": "api-wire",
+      "scenario": "일반 ALL 최신 내 맞춤 GET·URL 적용·현재 목록 초기화",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 1
+    },
+    {
+      "id": "R09c",
+      "profile": "api-wire",
+      "scenario": "공개 최근 검색어는 기존대로 기록하고 추천 검색은 URL에만 반영",
+      "result": "PASS",
+      "filters": 2,
+      "matchingLists": 2
+    },
+    {
+      "id": "R09d",
+      "profile": "api-wire",
+      "scenario": "320px에서 긴 페이지 선택의 키보드 이동과 본문 폭 유지",
+      "result": "PASS",
+      "filters": 1,
+      "matchingLists": 2
+    }
+  ]
+}

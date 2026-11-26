@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-25
+Last updated: 2026-11-26
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -18,6 +18,7 @@ features/auth/session.tsx → 인증 Repository + 메모리 세션 controller
 - HTTP 응답과 내부 모델이 다를 때만 mapper를 만든다. 의미가 다른 가입 신청 결과와 나의 회사 신청 결과는 `MembershipRequest` / `MyMembershipRequest`로 구분한다.
 - `src/features`에는 세션 관리 및 개인 필터 URL 모델처럼 화면 행동을 조합하는 로직을 둔다. 기존 feature별 `api.ts` 호환 파일은 제거했다.
 - 공개 입찰 조회는 서버에서 실행한다. 인증·계정별 변경·회사 polling·direct PUT은 브라우저에서 실행한다. 서버에 사용자별 가변 mock 상태를 두지 않는다.
+- 맞춤 공고는 `personal-filters/client.ts`의 현재 계정 GET과 `/bids`의 조회용 Server Function을 통해 `bids/server.ts`의 공개 `ALL` GET을 연결한다. 프론트 `/bids`의 Next POST 본문은 검증한 필터 값과 검색·페이지·크기만 운반한다. 공개 GET은 `no-store`와 `credentials: omit`을 사용한다. URL·서버 props·공유 캐시에 계정의 조건·식별자를 보존하지 않는다. 계정 GET의 401은 기존 세션 처리, 공개 GET의 실패는 목록 재시도를 사용한다. [DEV-03 설계](../development/figma-v01/tasks/DEV-03.md#dev-03-brief)
 
 ## 2. 실제 폴더
 
@@ -206,7 +207,7 @@ src/data/
 
 ## 8. 유지하는 제품/API 정책
 
-- Repository 전환 당시 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정은 준비 중이었다. 금액 직접 범위는 아래 DEV-11 기록, 받은 알림의 후속 연결은 DEV-43 기록을 따른다.
+- Repository 전환 당시 맞춤공고 목록, 받은 알림 편집·삭제, import-company, 회사 시공능력·인증 직접 수정은 준비 중이었다. 금액 직접 범위는 아래 DEV-11 기록, 받은 알림은 DEV-43, 계정 필터를 사용하는 맞춤 목록은 DEV-03의 연결과 검증을 따른다. [DEV-03 QA](../qa/bid-list.md#dev-03-local-qa)
 - 받은 알림 읽음은 성공 응답 뒤에만 반영한다. 구독 해제는 받은 알림 삭제와 다르다. 7일 보존·카카오톡/SMS는 미확정/미구현 정책을 유지한다. actionPath의 2026-11-05 사용자 승인 [POL-04 v1](../development/figma-v01/tasks/POL-04.md#pol-04-decisions)은 당시 공고 상세(선택 bidClsfcNo)·`/my/company`를 허용했고, 현재는 위 DEV-28 D2의 정확한 양수 안전정수 동의 상세 경로도 허용한다. 위험/미지원 경로는 목록 유지·안내, 읽음 성공 뒤 이동/실패 시 목록 유지, 이미 읽음은 PATCH 없이 이동한다. 경계 및 이동 직전 allowlist를 적용하고 최종401/로그아웃·계정 교체/해제 뒤 사용자 행동을 자동 재생하지 않는다. hybrid에서도 목적지 ID 치환·자동 fallback·새 공급원 제약은 없다. 로컬 구현/대역/브라우저와 미실행 실제 통합의 증거는 [DEV-06](../development/figma-v01/tasks/DEV-06.md), [ANAV QA](../qa/alarms.md#dev-06-local-qa)를 구분해 확인한다.
 - 받은 알림 수동 삭제는 같은 `notifications` 공급원의 공개 `deleteNotifications`를 사용한다. HTTP는 [POL-20](../development/figma-v01/tasks/POL-20.md#pol-20-contract)의 선택 배열과 ID 없는 `ALL`을 보내고 401의 쓰기 자동 재시도를 끈다. 확인된 변경 뒤에는 페이지 0부터 유효한 기존 펼침 범위와 개별 미확인 수 GET을 다시 확인한다. 읽음 처리 중 편집과 더 보기 중 삭제를 직렬화하고 계정·세션·화면 수명이 지난 결과를 폐기한다. 조회 실패에서 재시도는 읽기 요청이다. 연결 단절 전용 검증 범위와 실제 통합 차단은 [이번 결정](../development/figma-v01/tasks/DEV-43.md#dev-43-brief) 및 [QA](../qa/alarms.md#dev-43-local-qa)를 따른다.
 - 공개 목록의 UI page는 1부터, API page는 0부터다. 조회 metadata에서 코드/라벨을 변환하고 KST를 표시한다. 기관 역할·nullable 금액과 결과 값을 그대로 구분한다.
