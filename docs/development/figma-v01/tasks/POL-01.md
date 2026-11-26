@@ -30,6 +30,8 @@
 
 ## 완료 기준
 
+아래는 최초 후보와 사전 점검의 기준이다. 2026-11-26 사용자가 정한 [최종 정책 범위](#pol-01-approved-policy)와 [후속 공개 연결 조건](#pol-01-final-handoff)을 현행 인계에 적용한다.
+
 - [ ] 콘텐츠 책임자와 승인된 원문/버전·적용일을 확보한다
 - [ ] 동의 변경 및 문의/링크 목적지 결정과 미결 사항을 기록한다
 - [ ] 정책 작성이나 법적 판단을 프론트 개발자의 추정으로 승인하지 않는다
@@ -195,3 +197,49 @@ WBS·이 기록·POL-01 리뷰·인증 QA를 갱신했다. 기존 QA 결과와 �
 ### 검증과 리뷰 체크포인트
 
 작업 브랜치에서 대상 4개 Markdown의 링크·anchor, 원본 79개, Task 114개와 의존성 156개, 상태·범위·기존 이력 보존 검사를 통과했다. 검증 후 두 리뷰를 시작했다. 이전 동의 처리 범위를 명확히 하라는 1차 verifier 의견을 반영했고, 최종 인계·검토 기록이 들어간 변경분을 재검증·재검토한 뒤 Git 전달한다. [검증 명령과 Review Gate](../reviews/POL-01.md#pol-01-20261126-review)
+
+<a id="pol-01-final-brief"></a>
+
+## 2026-11-26 KST · 정식 약관과 푸터 정책 확정
+
+### 재개 기준과 범위
+
+- 09:14 KST · Codex. 시작 로컬·원격 `main`은 `e224fee2e6f9d398e0930eac4376b0fc62100fb4`로 일치했고 작업트리는 깨끗했다. DOC-001과 이전 재개 점검 [PR #131](https://github.com/mate-pjt/mate-frontend/pull/131)의 main 반영을 확인했다. 이어지는 승인 결정을 `docs/pol-01-final-policy-20261126`에 기록한다.
+- 사용자가 앞서 지정한 두 문서의 최종 원문, 신규·기존 동의 범위, Figma 푸터의 공개 정보와 목적지를 확정한다. 사용자가 시행일 입력을 별도 문서 작업으로 두기로 했으므로 정책 완료 기준은 이번 공개 내용과 동작의 결정, 후속 공개 선행 조건과 미실행의 인계다.
+- 이 기록, WBS, POL-01 리뷰, 인증 QA, DEV-01·DEV-02 인계를 편집한다. 주요 위험은 편집 권한이 열려 있는 링크의 공개와 공개 본문·가입 동의 버전의 불일치다. 앱 코드, 실제 가입/API, 문서 권한 조정과 운영 게시·배포는 이번 산출물 범위 밖이다.
+- 원본 79개·Task 114개·의존성·링크와 anchor, 기존 정책·QA, 허용 경로와 Markdown 형식을 확인하고 `git diff --check`, 독립 verifier·ai-review를 실행한다. Markdown 변경이라 앱 로컬 스크립트·브라우저·업무 API 검증은 후속 범위다.
+
+<a id="pol-01-approved-policy"></a>
+
+### 2026-11-26 사용자 승인과 적용 기준
+
+| 결정 | 사용자 승인과 근거 | 적용 기준 |
+| --- | --- | --- |
+| 정식 원문 | 사용자가 앞서 제공한 Google 문서 두 개의 최종 승인 여부에 “네”라고 답했다. 원문 제목은 `서비스 이용약관`과 `개인정보 처리방침`이다. | 가입과 홈 푸터가 같은 승인 문서를 가리킨다. 변경이 가능한 공유 상태는 아래 공개 연결 조건에서 다룬다. |
+| 시행일과 동의 버전 | 사용자가 웹에 시행일 표기가 필요 없다는 기준을 확인했고, Google 문서에 시행일을 적는 일은 “나중에 따로 작업할 예정”이라고 답했다. [가입 시안 3140:119739](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3140-119739)에는 두 필수 동의 항목이 있다. | 웹의 가입 화면과 푸터에 버전·시행일 필드를 추가하지 않는다. 시행일 입력은 원문 문서 관리로 남긴다. 신규 가입은 인증 서버가 내려주는 `code`·`version`을 사용하고, 서버의 정식 버전과 표시하는 문서의 대응은 DEV-01 공개 연결 시 확인한다. |
+| 기존 동의 | 사용자는 그동안 임시 약관에 동의한 계정이 전부 테스트 계정이라고 확인했다. [앞선 결정](#pol-01-20261126-decisions) | 기존 테스트 계정의 이관·재동의를 제외한다. 신규 가입의 두 필수 동의와 서버 검증은 적용한다. |
+| 푸터 공개 정보 | 사용자는 홈 푸터가 시안을 따르는 방향을 제시했고, 이메일·운영시간 사용에는 “실제 공개값으로 써도 돼”라고 승인했다. [홈의 푸터 3261:54518](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3261-54518) · [두 푸터 변형 3261:54545](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3261-54545) | 서비스 이용약관·개인정보처리방침·자주 묻는 질문 링크, 고객문의 이메일·운영시간과 저작권 문구를 시안대로 표시한다. FAQ는 [기존 `/qna`](../../../../src/app/qna/page.tsx)를 가리킨다. 고객문의는 [라벨 2870:43340](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2870-43340)과 그 옆 [이메일 3260:54491](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3260-54491)·[운영시간 3260:54500](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3260-54500) 표기 범위다. 별도 문의 버튼·폼 연결과 시안에 없는 사업자등록번호·주소 표시는 요구사항에서 제외한다. |
+
+### 현행 소스·공유 상태
+
+- 09:13 KST Drive 권한 조회에서 두 원문은 `anyone/writer`였다. 원문 주소는 이번 사용자가 제공한 링크를 기준으로 삼는다. 해당 링크를 가진 사람이 편집할 수 있어 원문 URL은 커밋과 PR 본문에서 생략한다. 문서의 시행일 월·일은 미입력으로 확인했다.
+- [프런트 가입폼](../../../../src/app/auth/signup/signup-form.tsx)은 현재 필수 동의의 서버 `code`·`version`을 제출한다. [백엔드 개발 `f4860fd` 소스](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/socialsignup/SocialSignupTransactionService.kt)는 가입 완료 시 현재 필수 목록과 제출 버전을 검사한다. [개발 배포 기록](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139596909303)의 test 이미지 배포가 09:08 KST에 성공했다.
+- [개발 게시 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) 공개 GET 200, 문서 `v1`, SHA-256 `9711e22b705d79ded53428d1a0ba157bae2894a46999a83899d8324fc4459ea4`. `RequiredAgreementResponse`의 `code`·`title`·`version`과 `AgreementAcceptanceRequest`의 `code`·`version`을 확인했다. 실행 서버의 식별자와 현재 정식 동의 레코드·실제 가입 응답은 미확인이다.
+
+<a id="pol-01-final-handoff"></a>
+
+### 다음 작업과 공개 연결 조건
+
+- **다음 Task는 [DEV-01](DEV-01.md#dev-01-pol-01-approved-handoff)**이다. P0이며 WBS에서 이제 POL-01 선행 결정을 확보했다. 두 링크의 공개 비로그인 뷰어 권한과 인증 백엔드가 반환할 두 정식 `code`·`version`의 문서 대응부터 확인한다. 09:13 KST 기준 편집 권한이 열려 있고 적용 버전이 확인되지 않아 공개 연결이 차단 상태다. 문서 공유는 문서 관리 역할, 버전 등록·실행 대응 확인은 인증 백엔드 역할에 남긴다. 시행일 입력은 문서 자체의 별도 작업이다.
+- [DEV-02](DEV-02.md#dev-02-pol-01-approved-handoff)는 DEV-01의 확정 목적지와 [승인된 Figma 범위](#pol-01-approved-policy)를 받는다. 세 링크의 목적지·탭 이동·모바일 줄바꿈, 고객문의 이메일·운영시간 표시를 검증한다. QA-16은 해당 개발과 실제 공개 준비 검증 결과를 기다린다.
+- 이번에 DEV-01을 선정·인계했다. 작업별 구현과 실제 가입·브라우저 검증, 문서 편집·공유 설정 변경, 운영 게시·배포는 각각 후속 범위다.
+
+### 문서 갱신 점검과 Git 전달
+
+이 기록, WBS, 인증 QA, POL-01 리뷰와 DEV-01·DEV-02의 인계 기준을 갱신한다. 기존 기준선·coverage·실제 QA 판정과 다른 Task 상태를 보존한다. 실행 스크립트, 코드·API 구조와 하네스 절차 변경이 없어 `base.md`, `architecture.md`, `data-access.md`, `harness.md`를 유지한다. `plan.md`는 현행 상태를 WBS에 위임하고 `ai-failures.md` 점검 범위에 기록할 민감값 출력이 없었다.
+
+이번 채팅의 POL-01 Git 전달 승인에 따라 정책·후속 인계와 WBS·검토 근거를 목적별 커밋으로 나눈다. [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fpol-01-final-policy-20261126)에서 최종 head 검사·리뷰와 병합 조건을 확인한다. 월간 한도로 확인된 Chromatic 문제에 이번 POL-01 요청의 예외를 적용할 수 있다. 정상 병합 뒤 로컬 main을 fast-forward하고 SHA·작업트리 상태를 확인한다.
+
+### 검증과 리뷰 체크포인트
+
+초기 문서 검사 19/19 및 `git diff --check`를 통과했다. 1차 독립 검토에서 DEV-01 완료 기준에 남은 기존 동의 처리의 표현을 확인하고 승인된 신규 가입 검증으로 구체화했다. 이 수정과 검토 기록을 포함한 최종 diff로 검사·두 리뷰를 다시 확인한 뒤 Git 전달한다. [검증과 Review Gate](../reviews/POL-01.md#pol-01-final-policy-review)
