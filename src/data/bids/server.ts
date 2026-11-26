@@ -24,8 +24,8 @@ export async function getHomeBids() {
   return result.items;
 }
 
-export function getBidList(query: BidListQuery) {
-  return getRepositories().list.getBidList(query);
+export function getBidList(query: BidListQuery, signal?: AbortSignal) {
+  return getRepositories().list.getBidList(query, signal);
 }
 
 const cachedBidDetail = cache((id: string, classificationNo: string | null, itemPage: number, resultId: string | null, participantsPage: number) =>

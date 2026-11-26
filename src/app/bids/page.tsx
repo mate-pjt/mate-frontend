@@ -3,8 +3,11 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { BidListClient } from "@/components/bids/bid-list-client";
-import { readBidListState } from "@/components/bids/bid-list-model";
+import { bidListLocationParams, isBidListPageSize, readBidListState } from "@/components/bids/bid-list-model";
+import { RecommendedBidList } from "@/components/bids/recommended-bid-list";
 import { getBidFilterOptions, getBidList } from "@/data/bids/server";
+import { BID_SEARCH_MAX_LENGTH } from "@/features/bids/recent-searches";
+import { readRecommendedBidFilter } from "@/features/bids/recommended-bid-filter";
 import { createPublicPageMetadata } from "@/lib/metadata";
 
 type BidListPageProps = {
@@ -28,21 +31,17 @@ export default function BidListPage({ searchParams }: BidListPageProps) {
 
 async function BidListContent({ searchParams }: BidListPageProps) {
   const urlSearchParams = toUrlSearchParams(await searchParams);
+  const state = readBidListState(urlSearchParams);
+  if (state.view === "recommended") {
+    const recommendedParams = bidListLocationParams(state).toString();
+    if (urlSearchParams.toString() !== recommendedParams) redirect(`/bids?${recommendedParams}`);
+    return <RecommendedBidList readListAction={readRecommendedBidList} />;
+  }
+
   if (urlSearchParams.has("agency")) {
     urlSearchParams.delete("agency");
     const query = urlSearchParams.toString();
     redirect(`/bids${query ? `?${query}` : ""}`);
-  }
-
-  const state = readBidListState(urlSearchParams);
-  if (state.view === "recommended") {
-    return (
-      <BidListClient
-        filterOptions={{ regions: [], industries: [], contractMethods: [], regionOptions: [], industryOptions: [] }}
-        result={{ items: [], totalCount: 0, page: 1, size: state.size }}
-        state={state}
-      />
-    );
   }
 
   const [result, filterOptions] = await Promise.all([
@@ -57,6 +56,26 @@ async function BidListContent({ searchParams }: BidListPageProps) {
       state={state}
     />
   );
+}
+
+async function readRecommendedBidList(query: unknown, page: unknown, size: unknown, conditions: unknown) {
+  "use server";
+
+  if (
+    typeof query !== "string" || query.length > BID_SEARCH_MAX_LENGTH ||
+    typeof page !== "number" || !Number.isSafeInteger(page) || page < 1 ||
+    !isBidListPageSize(size)
+  ) return null;
+
+  try {
+    const personalFilter = readRecommendedBidFilter(conditions);
+    if (!personalFilter) return null;
+
+    // A queued browser call must release the next read even when the public API stalls.
+    return await getBidList({ view: "all", query: query.trim(), page, size, personalFilter }, AbortSignal.timeout(10_000));
+  } catch {
+    return null;
+  }
 }
 
 function toUrlSearchParams(

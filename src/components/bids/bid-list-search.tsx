@@ -10,9 +10,10 @@ import { BID_SEARCH_MAX_LENGTH, type RecentBidSearch } from "@/features/bids/rec
 type BidListSearchProps = {
   readonly initialValue: string;
   readonly onSearch: (query: string) => void;
+  readonly recentSearchesEnabled?: boolean;
 };
 
-export function BidListSearch({ initialValue, onSearch }: BidListSearchProps) {
+export function BidListSearch({ initialValue, onSearch, recentSearchesEnabled = true }: BidListSearchProps) {
   const { recentBidSearches } = useAuthSession();
   const entries = useSyncExternalStore(recentBidSearches.subscribe, recentBidSearches.getSnapshot, recentBidSearches.getServerSnapshot);
   const [sourceValue, setSourceValue] = useState(initialValue);
@@ -22,7 +23,7 @@ export function BidListSearch({ initialValue, onSearch }: BidListSearchProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const lastFocused = useRef<HTMLElement | null>(null);
-  const open = showRecent && value.length === 0 && entries.length > 0;
+  const open = recentSearchesEnabled && showRecent && value.length === 0 && entries.length > 0;
 
   if (initialValue !== sourceValue) {
     setSourceValue(initialValue);
@@ -49,6 +50,7 @@ export function BidListSearch({ initialValue, onSearch }: BidListSearchProps) {
   }, [entries]);
 
   function openRecent() {
+    if (!recentSearchesEnabled) return;
     recentBidSearches.expire();
     setShowRecent(true);
   }
@@ -78,7 +80,7 @@ export function BidListSearch({ initialValue, onSearch }: BidListSearchProps) {
       onSubmit={(event) => {
         event.preventDefault();
         const query = value.trim();
-        recentBidSearches.record(query);
+        if (recentSearchesEnabled) recentBidSearches.record(query);
         search(query);
       }}
       ref={formRef}

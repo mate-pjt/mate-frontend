@@ -144,8 +144,8 @@ export function BidListTable({
         </table>
       </div>
 
-      <div className="mt-[30px] flex justify-center">
-        <Pagination onPageChange={onPageChange} page={page} totalPages={totalPages} />
+      <div className="mt-[30px] flex overflow-x-auto">
+        <Pagination className="mx-auto shrink-0" onPageChange={onPageChange} page={page} totalPages={totalPages} />
       </div>
     </>
   );

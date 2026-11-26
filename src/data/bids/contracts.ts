@@ -50,7 +50,7 @@ export type BidFilterOptions = {
 };
 
 export interface BidListRepository {
-  getBidList(query: BidListQuery): Promise<BidListResult>;
+  getBidList(query: BidListQuery, signal?: AbortSignal): Promise<BidListResult>;
   getFilterOptions(): Promise<BidFilterOptions>;
 }
 

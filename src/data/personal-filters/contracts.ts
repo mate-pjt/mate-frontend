@@ -23,6 +23,23 @@ export type PersonalFilterSnapshot = {
   filter: PersonalFilterValues;
 };
 
+export function isPersonalFilterValues(value: unknown): value is PersonalFilterValues {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const filter = value as Record<string, unknown>;
+  const strings = (items: unknown): items is string[] => Array.isArray(items) && items.every(item => typeof item === "string");
+  const amount = (item: unknown) => item === null || (typeof item === "number" && Number.isSafeInteger(item) && item >= 0);
+  return strings(filter.bidTypes) && filter.bidTypes.every(item => ["CONSTRUCTION", "SERVICE", "GOODS"].includes(item)) &&
+    strings(filter.regionCodes) && strings(filter.industryCodes) &&
+    strings(filter.contractMethods) && filter.contractMethods.every(item => ["GENERAL", "LIMITED", "NOMINATION", "PRIVATE"].includes(item)) &&
+    (filter.dateType === null || filter.dateType === "BID_BEGIN" || filter.dateType === "PARTICIPATION_DEADLINE" || filter.dateType === "BID_CLOSE") &&
+    (filter.dateFrom === null || typeof filter.dateFrom === "string") &&
+    (filter.dateTo === null || typeof filter.dateTo === "string") &&
+    (filter.amountType === null || filter.amountType === "BASE_PRICE" || filter.amountType === "ESTIMATED_PRICE") &&
+    amount(filter.amountMin) && amount(filter.amountMax) &&
+    typeof filter.regionOnly === "boolean" &&
+    (filter.jointContract === "ALL" || filter.jointContract === "REQUIRED" || filter.jointContract === "AVAILABLE");
+}
+
 import type { AuthAccess } from "../shared/http";
 
 export interface PersonalFiltersRepository {

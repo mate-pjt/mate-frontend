@@ -57,14 +57,18 @@ export function changePersonalFilter(
   }
 }
 
-export function personalFilterDisplay(filter: PersonalFilterValues, options: BidFilterOptions) {
+export function personalFilterDisplay(filter: PersonalFilterValues, options?: BidFilterOptions) {
   const findLabel = (code: string, values: readonly { code: string; label: string }[]) =>
     values.find((value) => value.code === code)?.label ?? code;
+  const regionLabel = filter.regionCodes.length === 0 ? "지역" : `지역 ${filter.regionCodes.length}개`;
+  const industryLabel = filter.industryCodes.length === 0 ? "업종" : `업종 ${filter.industryCodes.length}개`;
+  const regions = options ? filter.regionCodes.map(code => findLabel(code, options.regionOptions)) : filter.regionCodes.length ? [regionLabel] : [];
+  const industries = options ? filter.industryCodes.map(code => findLabel(code, options.industryOptions)) : filter.industryCodes.length ? [industryLabel] : [];
   const formatAmount = (value: number | null) => value === null ? "제한 없음" : `${value.toLocaleString("ko-KR")}원`;
   const chips = [
     ...filter.bidTypes.map((code) => bidTypeLabels[code]),
-    ...filter.regionCodes.map((code) => findLabel(code, options.regionOptions)),
-    ...filter.industryCodes.map((code) => findLabel(code, options.industryOptions)),
+    ...regions,
+    ...industries,
     ...filter.contractMethods.map((code) => contractMethodLabels[code]),
   ];
   if (filter.dateType || filter.dateFrom || filter.dateTo) {
@@ -81,8 +85,8 @@ export function personalFilterDisplay(filter: PersonalFilterValues, options: Bid
 
   const labels = {
     category: filter.bidTypes.length === 0 ? "전체 유형" : filter.bidTypes.length === 1 ? bidTypeLabels[filter.bidTypes[0]] : `유형 ${filter.bidTypes.length}개`,
-    region: filter.regionCodes.length === 0 ? "지역" : filter.regionCodes.length === 1 ? findLabel(filter.regionCodes[0], options.regionOptions) : `지역 ${filter.regionCodes.length}개`,
-    industry: filter.industryCodes.length === 0 ? "업종" : filter.industryCodes.length === 1 ? findLabel(filter.industryCodes[0], options.industryOptions) : `업종 ${filter.industryCodes.length}개`,
+    region: regions.length === 1 ? regions[0] : regionLabel,
+    industry: industries.length === 1 ? industries[0] : industryLabel,
     contract: filter.contractMethods.length === 0 ? "계약방법" : filter.contractMethods.length === 1 ? contractMethodLabels[filter.contractMethods[0]] : `계약방법 ${filter.contractMethods.length}개`,
     period: filter.dateType || filter.dateFrom || filter.dateTo ? "기간 설정됨" : "기간",
     amount: filter.amountType || filter.amountMin !== null || filter.amountMax !== null ? "금액 설정됨" : "금액",

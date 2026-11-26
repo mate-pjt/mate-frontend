@@ -99,7 +99,7 @@ tests/                 # Node 기반 계약·경계·회귀 테스트
 - `src/components/alarms`는 20건 페이지·읽음 성공 후 상태와 미확인 점을 조합한다. `features/notifications/activation-controller.ts`가 같은 항목 중복/최신 클릭·계정/화면 수명을 검사하고, 미읽음 성공 뒤 또는 이미 읽은 항목에서 허용 목적지로 이동한다. HTTP/mock 경계와 이동 직전에 `lib/notification-path.ts`의 POL-04 allowlist를 적용한다. null/위험/미지원은 목록/본문 유지·안내, 읽음 실패는 명시적 재시도다. 회색/흰색 표면은 순번을 따르며 읽음과 독립적이다. 편집의 선택·전체 삭제는 같은 `notifications` Repository의 공개 `deleteNotifications`로 연결한다. 확인된 삭제 뒤 목록과 미확인 수를 다시 조회한다. [DEV-43 로컬 검증과 실제 통합 조건](../qa/alarms.md#dev-43-local-qa)
 - `src/components/my`는 기존 메뉴·회사·수신 설정 UI를 유지한다. 수신처와 맞춤 이메일 ON/OFF는 하나의 공급원이고 각 요청의 성공/실패 처리는 독립적이다. 알림 설정의 상세·야간 행은 공개 client의 비활성 사유, 중립 `Toggle`과 접이식 설명을 사용한다. 미구현 메뉴는 준비 중이다. [DEV-66](../development/figma-v01/tasks/DEV-66.md#dev-66-brief)
 - `/my/company-merge`는 `MySideMenu`의 G01 진입점이다. `features/company/company-merge.ts`가 공개 company client의 현재 소속·leaf와 현재/정확 사건을 조합한다. 화면은 현재 회사 쌍·명시적 신청/제안/응답과 서버의 기한·개시 상태를 표시한다. 상세의 팀원·회사 자료는 G01 모델에서 생략한다. 계정과 회사 진입 문맥이 바뀌거나 화면을 떠나면 이전 표시와 늦은 결과를 폐기한다. [DEV-34 Brief](../development/figma-v01/tasks/DEV-34.md#dev-34-brief)
-- `src/components/bids`는 URL을 검색·필터·페이지 상태로 사용하고 Repository 결과를 props로 받는다. 알림 카드는 계정별 bidAlerts 공급원을 사용한다. 맞춤공고 목록과 기관 단독 조회는 준비 중이다.
+- `src/components/bids`는 공개 보기의 검색·필터·페이지를 URL에서 읽고 서버 Repository 결과를 props로 받는다. 맞춤 보기는 현재 세션 필터를 읽어 `/bids`의 조회용 Server Function으로 서버 공개 목록을 요청한다. 검색·페이지·크기만 맞춤 보기 URL에 반영한다. 알림 카드는 계정별 bidAlerts 공급원을 사용한다. 기관 단독 조회는 준비 중이다. [DEV-03 설계](../development/figma-v01/tasks/DEV-03.md#dev-03-brief)
 - `src/components/qna`는 native details/summary로 구조화된 static 답변을 렌더링한다. API endpoint·관리자 CRUD는 추측하지 않는다.
 - `src/components/icons`는 TSX 아이콘, `src/components/ui`는 폴더별 index 공개 primitive다. Sonner ToastViewport는 하나이며 화면은 showToast만 사용한다.
 - `src/components/ui/calendar`는 controlled `Calendar`/`DatePicker`와 순수 ISO 날짜 연산·Storybook 예제를 제공한다. Figma 2081:64659의 일요일 시작/선택 원·월 이동을 따르며 연/월 빠른 선택·roving focus·방향키/Home/End/PageUp/PageDown·선택 해제·modal Escape/외부 클릭/초점 복귀를 제공한다. 생년월일은 1900-01-01~브라우저 현지 오늘로 제한하며 서버 검증을 대신하지 않는다. 입찰 날짜 필터는 교체하지 않는다.
@@ -153,7 +153,7 @@ Confirmed:
 - API 기본 주소는 테스트 서버이고 `NEXT_PUBLIC_MATE_API_BASE_URL`로 변경할 수 있다. 실제 credentialed 브라우저 호출에는 API가 해당 프론트 Origin과 cookie/CORS를 허용해야 한다.
 - 프런트는 테스트 서버의 공통 응답 성공 플래그를 `isSuccess`로 판정한다. 2026-11-25 개발 OpenAPI의 공통 응답 스키마도 `isSuccess`를 게시한다. 이전 Swagger 표기는 데이터 접근 규칙에 이력으로 남겼다. [데이터 접근 규칙](data-access.md)
 - Authenticated home CTA users go to `/bids?view=recommended`.
-- `/bids?view=recommended`는 인증되지 않은 직접 접근을 현재 URL을 `next`로 보존해 로그인 화면으로 보내고, 로그인 후에는 준비 중 안내를 표시한다. 맞춤공고 mock 목록은 노출하지 않는다.
+- `/bids?view=recommended`의 익명 접근은 허용된 조회 URL을 `next`로 보존한다. 인증 뒤 현재 계정의 저장 조건 또는 회사 기본 조건을 읽고, 유효한 조건에서 공개 `ALL`을 자동 조회한다. 조건 없음·매칭 없음·현재 페이지 조회 범위 초과·실패를 분리한다. 계정/epoch·화면·URL 수명이 지난 응답을 반영하지 않는다. 맞춤 검색어는 URL 상태로 쓰며 공개 보기의 최근 검색어에 기록하지 않는다. [DEV-03 QA](../qa/bid-list.md#dev-03-local-qa)
 - `/bids`의 보기 query는 `all`(생략), `closing`, `result`, `recommended`를 지원한다. 검색·필터·페이지 상태도 URL query로 보존한다.
 - 공개 목록 `all`·`closing`·`result`는 서버에서 `GET /api/v1/bid-notices`를 `view=ALL|CLOSING_SOON|RESULT`로 호출하고, 지역·업종 선택지는 공개 metadata API에서 받는다. 목록의 공고번호·공고명은 실제 ID와 선택적 분류번호를 보존해 `/bids/[bidId]`로 이동한다. RESULT 금액 범위의 [서버 계약](../development/figma-v01/tasks/DEV-12.md#dev-12-gate)과 [연결 범위](../development/figma-v01/tasks/DEV-12.md#dev-12-brief)를 참고한다.
 - 공개 입찰 상세는 `GET /api/v1/bid-notices/{id}`를 서버에서 조회하고 첨부·관련 공고·개찰 결과·물품 등록정보를 독립 section API로 조회한다. 본문 404/오류와 section별 오류를 구분하며 mock fallback을 사용하지 않는다. 계정별 공고 알림 설정은 로그인 상태에서 별도 브라우저 API를 사용한다.

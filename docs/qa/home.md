@@ -329,3 +329,9 @@ H02의 정상 홈 카드와 경계 자료의 준비 여부를 확인했다. 연�
 | HOME-07~09 | 오류·재시도, 키보드·이동, 실제 인증·CTA 미실행 | 11/02 실행과 한계 보존 |
 
 신규 실제 통과 **0건**, 누적 사례 판정 **4통과·0실패·5차단·0대기**다. HOME-02~06의 합성 자료와 사례별 기대값, 개발 인스턴스를 배포 소스에 대응할 실행 식별자를 확보하면 홈과 같은 조건으로 다시 확인한다. [작업 기록](../development/figma-v01/tasks/QA-01.md) · [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
+
+<a id="dev-03-home-cta-qa"></a>
+
+## 2026-11-26 KST · DEV-03 홈 CTA에서 맞춤 목록 진입
+
+H03의 기존 ‘맞춤 공고 확인하기’에서 합성 비로그인→로그인→`/bids?view=recommended` 복귀를 Chrome의 mock과 HTTP 대역에서 확인했다. mock 미설정 계정은 조건 안내와 전체 공고로, 유효한 합성 저장 조건은 맞춤 목록으로 이어졌다. 계정 변경 시 홈에서 새 로그인으로 돌아가는 흐름도 확인했다. 기존 HOME-09 실제 로그인·준비 안내 및 홈 카드 판정은 당시 증거로 보존한다. [Figma H03](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2016-57355) · [M01·R01·R08d/e 증거](artifacts/dev-03/browser-results.json) · [맞춤 목록과 실제 QA 한계](bid-list.md#dev-03-local-qa)

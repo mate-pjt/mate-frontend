@@ -102,7 +102,7 @@ Figma `메이트 v0.1` 대조 이후의 **현재/다음 작업과 상태는 [기
 - TODO: 공개 입찰공고 테스트 데이터가 준비되면 목록·홈·상세의 실제 API 브라우저 통합 펀치리스트를 실행한다.
 - TODO: 2026-09-29 개인 맞춤 필터 재검증을 막은 OAuth 시작 오류는 백엔드 `dev`가 요구하는 `returnOrigin` 누락으로 확인해 프론트에서 수정했다. 같은 로컬 환경의 Google 가입·재로그인 성공을 확인했으나 PBF-02~08의 필터 조작 자체는 재실행하지 않았다. 프론트 실행 식별자·백엔드 배포 ID·캡처·비식별 Network 증거를 갖춰 재검증한다. PBF-02의 최초 `EMPTY_DEFAULT`에는 새 계정/fixture가 필요하다. 공고 매칭·회사 기본값·오류·모바일 사례는 `docs/qa/personal-bid-filter.md`에 따라 별도 검증한다. `import-company`와 직접 범위·복수 조건 편집 UI는 회사 fixture 및 화면 정책을 확인한 뒤 별도 작업으로 진행한다.
 - 2026-11-25 DEV-12는 개찰결과 전용 낙찰금액의 양끝 포함 빠른 선택과 URL·HTTP/mock 조회를 연결한다. 실제 개발 서버 검증의 잔여 조건은 [DEV-12 QA](../qa/bid-list.md#dev-12-local-qa)에 남겼다.
-- TODO: 맞춤공고 목록 API 계약은 별도 소유 작업에서 확인한다.
+- 당시 TODO: 맞춤공고 목록 API 계약은 별도 소유 작업에서 확인한다. 2026-11-26의 [POL-02 조회 계약](../development/figma-v01/tasks/POL-02.md#pol-02-read-contract-20261126)과 [DEV-03 연결](../development/figma-v01/tasks/DEV-03.md#dev-03-close)에서 후속 근거를 확인한다.
 - 당시 TODO: Figma의 최근·추천 검색어 팝업은 실제 검색 기록과 추천어의 데이터 공급원·저장 정책이 정해지면 별도 기능으로 복원한다. [2026-11-23 정책](../development/figma-v01/tasks/POL-23.md#pol-23-contract)을 확인한다.
 - TODO: `docs/qa/README.md` 목록의 기존 화면과 새 Figma 기능에 대한 브라우저 통합 항목을 기능별로 채운다.
 - 2026-11-20 계정 관리의 본인 연락용 이메일 조회는 [POL-17 D1](../development/figma-v01/tasks/POL-17.md#pol-17-contract)에 따라 [DEV-38](../development/figma-v01/tasks/DEV-38.md#dev-38-brief)에 연결했다. 서비스 이용안내·의견 보내기는 각 화면의 정책과 API가 확정되면 별도 요구사항으로 구현한다. 회사 정보의 시공능력·인증·희망 금액 카드, 수정, 신청 취소는 별도 범위다.

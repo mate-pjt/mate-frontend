@@ -1,7 +1,7 @@
 import { ApiError } from "../shared/errors";
 import type { AuthAccess, HttpClient } from "../shared/http";
 
-import type { PersonalFilterSnapshot, PersonalFilterValues, PersonalFiltersRepository } from "./contracts";
+import { isPersonalFilterValues, type PersonalFilterSnapshot, type PersonalFilterValues, type PersonalFiltersRepository } from "./contracts";
 
 export function createHttpPersonalFiltersRepository(http: HttpClient): PersonalFiltersRepository {
   const authorizedRequest = http.authorized;
@@ -15,36 +15,15 @@ export function createHttpPersonalFiltersRepository(http: HttpClient): PersonalF
     return typeof value === "object" && value !== null && !Array.isArray(value);
   }
 
-  function isStringArray(value: unknown): value is string[] {
-    return Array.isArray(value) && value.every((item) => typeof item === "string");
-  }
-
-  function isNullableString(value: unknown): value is string | null {
-    return value === null || typeof value === "string";
-  }
-
-  function isNullableAmount(value: unknown): value is number | null {
-    return value === null || (typeof value === "number" && Number.isSafeInteger(value) && value >= 0);
-  }
-
   function parseSnapshot(value: unknown): PersonalFilterSnapshot {
-    if (!isRecord(value) || !isRecord(value.filter)) return invalidResponse();
-    const filter = value.filter;
     if (
-      !["SAVED", "COMPANY_DEFAULT", "EMPTY_DEFAULT"].includes(String(value.source)) ||
+      !isRecord(value) || (value.source !== "SAVED" && value.source !== "COMPANY_DEFAULT" && value.source !== "EMPTY_DEFAULT") ||
       !(value.version === null || (typeof value.version === "number" && Number.isSafeInteger(value.version) && value.version >= 0)) ||
       typeof value.canImportCompany !== "boolean" ||
-      !isStringArray(filter.bidTypes) || !filter.bidTypes.every((item) => ["CONSTRUCTION", "SERVICE", "GOODS"].includes(item)) ||
-      !isStringArray(filter.regionCodes) || !isStringArray(filter.industryCodes) ||
-      !isStringArray(filter.contractMethods) || !filter.contractMethods.every((item) => ["GENERAL", "LIMITED", "NOMINATION", "PRIVATE"].includes(item)) ||
-      !isNullableString(filter.dateType) || (filter.dateType !== null && !["BID_BEGIN", "PARTICIPATION_DEADLINE", "BID_CLOSE"].includes(filter.dateType)) ||
-      !isNullableString(filter.dateFrom) || !isNullableString(filter.dateTo) ||
-      !isNullableString(filter.amountType) || (filter.amountType !== null && !["BASE_PRICE", "ESTIMATED_PRICE"].includes(filter.amountType)) ||
-      !isNullableAmount(filter.amountMin) || !isNullableAmount(filter.amountMax) ||
-      typeof filter.regionOnly !== "boolean" || !["ALL", "REQUIRED", "AVAILABLE"].includes(String(filter.jointContract))
+      !isPersonalFilterValues(value.filter)
     ) return invalidResponse();
 
-    return value as PersonalFilterSnapshot;
+    return { source: value.source, version: value.version, canImportCompany: value.canImportCompany, filter: value.filter };
   }
 
   async function getPersonalFilter(access: AuthAccess, signal?: AbortSignal) {
