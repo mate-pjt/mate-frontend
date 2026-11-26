@@ -132,3 +132,63 @@
 - Python 문서 검사와 `git diff --check`를 통과했다. Markdown 형식, 변경 링크 27개, WBS 114개 작업·선행 관계 156개·상태 값·다음 첫 행동, 원본 항목 79개와 기존 기록, 두 파일의 변경 범위를 확인했다.
 - 문서 갱신 확인에서 D10의 소유·연결, 공통 정책 및 앱 환경에 추가 반영할 변경을 확인하지 않았다. 로컬 앱 test/lint/build와 Storybook은 실행 입력이 같은 문서 작업이라 미실행이다. 브라우저·mock·HTTP 대역·실제 업무 API 통합도 미실행이다.
 - 독립 읽기 전용 verifier와 ai-review의 결과, 최종 원격 CI는 PR에 기록한다.
+
+<a id="dev-14-20261126-resume-check"></a>
+
+## 2026-11-26 KST · 날짜 표시 재개 점검
+
+### 작업 범위와 검증 계획
+
+- 시작 기준은 14:01 KST의 깨끗한 `main` 및 `origin/main` `8fa56394b02d8c244904d4c17e7b560a04aac830`이다. 선행 POL-09와 날짜 점검 인계 [PR #140](https://github.com/mate-pjt/mate-frontend/pull/140)의 main 반영을 확인했다. 이전 인계 브랜치는 병합됐고 이번 브랜치 `docs/dev-14-date-readiness-check`를 최신 main에서 만들었다.
+- DEV-14는 P2 개발 Task다. 이번 단위는 사용자가 2026-11-26 선정한 [날짜 범위의 재개 요구사항 확인](#dev-14-20261126-date-first-action)이다. POL-09의 공급 방향과 공개 개발 환경의 날짜 계약을 확인하고, 제품 착수 조건 충족 여부를 판단한다. 이번 사용자 요청은 DEV-14 검증·기록·두 리뷰와 커밋·push·PR·조건부 main 병합·로컬 동기화를 승인한다. PR #140은 당시 선정과 문서 인계의 근거다.
+- 업무 응답 표본은 공개 개발 목록·상세의 비로그인 GET을 사용한다. [백엔드 상세 조회](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryService.kt#L53-L60)는 읽기 전용이다. 공고 유형·분류 범위, 현장설명 일시와 제공 상태, 원천 여부와 호환 키, 기본 목록 원천 두 시각을 비식별로 추려 본다. 제품의 모델·표시 정책 설계와 구현은 자체 요구사항 Gate, 본문은 별도 계약 확인, 인증·첨부/외부 원문·데이터 변경·운영은 각각의 승인 범위에 둔다.
+- 확인한 구조는 `bids/server.ts` → 공개 Repository → 상세 DTO/mapper → `BidDetail` → `BidDetailContent`다. 공사 로그인 전/인증 회사 로그인 후 Figma의 세 날짜 라벨과 현행 표시를 대조한다. 배포 이력·OpenAPI·실행 식별자·실제 응답을 구별하고, 날짜 결측과 참석 의무를 같은 의미로 취급하는 위험을 점검한다. Figma 표기와 기본 원천 의미를 연결할 때 남는 제품 결정은 제안으로 표시한다.
+- 편집 대상은 이 작업 기록, [WBS](../README.md), [상세 QA](../../../qa/bid-detail.md)와 DEV-14 검토 기록이다. 성공 기준은 재개 조건별 확인·미확인, 상태별 날짜 관찰, 기존 사례 보존, WBS 다음 후보 근거를 기록하고 문서 링크·ID·선행·상태·기준선·diff 검사와 두 리뷰를 통과하는 것이다. 제품 착수 Gate와 기록 검증의 판정은 각각 남긴다.
+
+### 진행 체크포인트
+
+| 시각 | 확인한 내용 | 다음 행동 |
+| --- | --- | --- |
+| 14:01 KST | 백엔드 `dev`와 `main`에 날짜 변경이 들어 있다. 개발 Swagger HTTP 200과 OpenAPI SHA-256의 `dev` 고정 소스 일치를 확인했다. Figma 두 공사 상태에서 `현장설명일`, `기준일`, `수집일` 라벨을 확인했다. | 공개 목록에서 유형·분류별 표본을 확보해 상세 날짜 필드와 응답 식별자 유무를 대조한다. |
+| 14:03~14:05 KST | `ALL` 42행과 `view`를 생략한 공고 단위 최신 게시순 첫 100행 중 추가 98행의 상세를 확인했다. 140건의 현장설명 일시와 기본 원천 수집 시각이 모두 `null`이었다. | 근거별 잔여 조건과 화면 검토 제안을 기록하고 문서 검증과 리뷰를 수행한다. |
+| 14:08 KST | Markdown 4개와 비식별 응답 집계를 검증했다. WBS 114개·선행 156개·원본 79개와 기존 Task·QA 이력을 확인했다. | 독립 verifier 및 ai-review로 변경 범위와 증거를 확인하고, 최종 검토한 diff를 전달한다. |
+
+### 근거별 확인 결과
+
+| 근거 | 확인 결과 |
+| --- | --- |
+| 소유 소스 | 날짜 변경 `e942bb0`가 백엔드 `dev` `f4860fd9b87329d50169eb0025dca3f2c5fa2125`와 `main` `4b5f31de578c41e698dda9c99e66149b7292f031`에 반영됐다. 중앙 정책 `c9e50ff591ae18023164e1a94581c611bf1e4f29`는 긴 자연어 자격사항을 공개 상세 미제공으로 정의한다. [날짜 변경](https://github.com/mate-pjt/mate-backend/commit/e942bb0d5b022436054e5d3bf85434af339006d6) · [중앙 공개 상세](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/api/bid-notices.md#공개-상세에-없는-자격사항) |
+| 배포 이력 | 09:08 KST 백엔드 `f4860fd`의 최신 테스트 배포 `8072722595` 성공을 재확인했다. 워크플로의 불변 이미지 게시·테스트 배포 단계가 성공했다. [배포 job](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139596909303) |
+| 게시 OpenAPI | 개발 Swagger와 JSON HTTP 200. OpenAPI `3.1.0/v1`, SHA-256 `9711e22b705d79ded53428d1a0ba157bae2894a46999a83899d8324fc4459ea4`가 `dev`의 사용자 명세 파일과 같다. `GET /api/v1/bid-notices/{id}`의 선택 `bidClsfcNo`, nullable `date-time` 세 필드, `isSiteExplanationRequired`와 별도 원천 여부를 확인했다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) · [고정 명세](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/resources/swagger-readonly/app.json) |
+| 실행 버전 | 개발 호스트의 `GET /actuator/info`·`GET /actuator/health/readiness`는 HTTP 404였다. 공개 목록·상세의 확인 대상 버전 헤더는 없었다. 실제 응답에서 날짜 계약의 동작을 관찰했으며, 그 요청을 받은 프로세스의 커밋 SHA·이미지 digest 대응은 미확인이다. |
+| 실제 응답 | 비로그인 상세 140건이 HTTP 200·`isSuccess=true`였다. 공사 70·용역 69·물품 1건, 상세 scope `NOTICE` 70·`CLASSIFICATION` 70이며 선택 분류 값은 0건이었다. `siteExplanationAt=null`·`siteExplanationAvailability=UNKNOWN` 140건, `siteExplanationRequirement={value:null, availability:UNKNOWN}` 140건이었다. 실제 호환 키는 `isSiteExplanationRequired`였고 140건에서 `false`였다. 접두어 없는 키는 0건이었다. `noticeSourceVersionAt`은 `+09:00` 시각 140건, `noticeLastFetchedAt`은 `null` 140건이었다. [표본과 검증 경계](../../../qa/bid-detail.md#dev-14-20261126-date-qa) |
+
+11월 13일 당시의 Swagger 키 불일치 관찰은 이력으로 보존한다. 11월 26일 게시 명세와 실제 표본은 `isSiteExplanationRequired`로 일치했다. 호환 키의 `false`와 원천 여부의 `UNKNOWN`이 함께 반환되므로 현행 프론트의 ‘해당 없음’ 표시에 의미 차이가 있다. `noticeSourceVersionAt`은 기본 목록 원천의 변경일 우선·등록일 대체 값이다. 11건에서 게시 시각과 wire 문자열이 달랐다. `noticeLastFetchedAt`은 같은 기본 목록 원문의 마지막 수집 시각이다. [일정과 원천 의미](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/response/BidNoticeDetailResponse.kt#L68-L74) · [상세 매퍼](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryResultMapper.kt#L249-L264) · [일정 상태 매퍼](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/bid/BidNoticeQueryResultMapper.kt#L308-L326)
+
+### 화면 대조와 남은 결정
+
+| 화면 근거 | 현행 프론트 | 제품 Gate에 남은 항목 |
+| --- | --- | --- |
+| 공사 로그인 전 `2113:19107`과 인증 회사 로그인 후 `2181:69353`의 `현장설명일` | 자격 영역이 `isSiteExplanationRequired`의 호환 boolean을 `필요`/`해당 없음`으로 표시한다. 모델에 설명 일시와 원천 여부 상태가 없다. | 원천 여부와 일정 제공 상태를 독립으로 표시하는 안을 검토한다. `UNKNOWN`은 미확인, `NOT_PROVIDED`는 원천 일시 미제공으로 뜻이 다르며 참석 의무를 나타내지 않는다. [로그인 전](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2113-19107) · [인증 회사 로그인 후](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2181-69353) · [현장설명일](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2154-10878) |
+| 두 상태의 데이터 수집안내 `기준일`·`수집일` | 일반 안내, 참조번호, 원문 링크가 있다. 모델과 DTO/mapper에 새 두 시각이 연결되지 않았다. | 시안의 두 라벨과 함께 ‘기본 공고 원천’ 범위를 안내하고 날짜·시간 정밀도와 결측 표시를 명시하는 안을 검토한다. [수집안내](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2175-69728) · [상세 컴포넌트](../../../../src/components/bids/bid-detail-content.tsx) · [프론트 매퍼](../../../../src/data/bids/detail-api-mapper.ts) |
+
+Figma MCP에서 위 두 프레임의 레이어 라벨을 확인했다. 현행 프론트는 코드 대조이며 제품의 브라우저 검증은 미실행이다. 2026-11-13 사용자 결정은 추가 제공 추진 및 계약 선행이다. 위 표시 방향은 2026-11-26의 제안이다. 날짜만 먼저 구현할지, 용어·정밀도·결측을 어떻게 보여줄지와 현재 Figma 차이의 예외는 사용자 결정이 남아 있다. [POL-09 정책과 화면 범위](POL-09.md#pol-09-contract)
+
+<a id="dev-14-20261126-resume-criteria"></a>
+
+### 제품 Gate 재개 조건과 다음 행동
+
+| 필요한 근거·결정 | 담당 역할과 첫 행동 |
+| --- | --- |
+| 테스트 배포와 현재 공개 요청의 실행 SHA·digest 대응 | 백엔드 배포 담당이 `api-test`의 실제 서비스 프로세스나 이미지 식별자를 성공 배포에 대응한다. |
+| 실제 날짜 제공·미제공과 수집 시각이 있는 비식별 QA 자료 | 백엔드 공개 공고·수집 계약 담당이 `PROVIDED`·`NOT_PROVIDED` 및 `UNKNOWN`, 원천 여부 Y/N/미확인, 기준·수집 시각의 원천과 독립 기대값을 갖춘 공개 테스트 공고를 제공한다. 프론트 QA에서 KST/정밀도, 명시적 분류·차수, 결측을 각각 대조한다. |
+| 화면 용어와 제품 범위 | 사용자가 날짜 범위 선행 여부, 두 원천 라벨의 뜻과 일시·결측 표기를 결정한다. 기존 제공 계약을 사용하되 `UNKNOWN`의 ‘해당 없음’ 표시와 날짜 대체는 피하는 안을 제안한다. |
+| 원문 자격사항·지시사항 본문 | 백엔드 계약 담당의 본문 공개 범위·형식·안전한 처리·실제 응답과 정책 확인이 별도로 남았다. 공개 상세 140건 모두 `originalNotice.available=false`였다. |
+
+지정한 날짜 재개 점검까지 수행했다. 제품 구현, mock/HTTP 대역, 제품 브라우저 검사와 전체 실제 API 통합 판정은 미실행이다. 기존 [SUPP-01~09 기준](../../../qa/bid-detail.md#pol-09-followup)과 [QA-03의 1통과·8차단](../../../qa/bid-detail.md#qa-03-20261125-detail)을 보존한다.
+
+### 문서 검증과 인계
+
+- [검증·두 리뷰](../reviews/DEV-14.md#dev-14-20261126-review)에 확인한 명령과 결과, Documentation Update Check, 검토 범위 및 재검토 근거를 남긴다.
+- WBS 대기 17개는 모두 미충족 선행이 있고 준비 작업은 0개다. 이번 응답은 DEV-14 날짜 범위의 근거다. 다른 차단·보류 사례의 재선정에 필요한 새 자원이나 승인 근거를 확인하지 못했다. WBS의 다음 작업은 `다음 작업 없음`이다. 새 근거가 오면 위 재개 표의 담당별 첫 행동부터 대조한다. [선정 기준](../workflow.md#next-task-selection)
+- 이번 사용자의 Git 전달 승인으로 검증·리뷰를 마친 문서를 목적별 커밋으로 전달한다. 최종 head·원격 검사·리뷰·일반 병합 기록은 [이번 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Adocs%2Fdev-14-date-readiness-check)에서 확인한다. 월간 한도 예외는 이번 head의 해당 원인과 저장소 병합 조건을 확인했을 때만 적용한다.
