@@ -140,3 +140,31 @@ WBS에서 선행이 충족된 대기·준비 Task는 없다. DEV-02는 POL-01과
 두 승인 문서의 URL 우선 연결 범위를 검증했다. 승인 원문과 대상 환경의 현재 서버 버전 대응, 실행 식별자와 합성 신규 가입 QA의 사용자 승인 자료가 남아 있다. 문서 관리 역할이 권한을 변경하면 두 주소에서 비로그인 뷰어 권한을 다시 확인한다. 인증 백엔드 역할의 버전 대응 및 환경·실행 식별자를 확인한 뒤 승인된 범위에서 AUTH-02·03의 실제 성공·오류·이력 보존을 검증한다.
 
 선행을 충족한 대기·준비 작업이 없어 P0 **DEV-01**을 다음 재개 확인 대상으로 유지한다. DEV-02와 QA-16은 기존 선행을 따른다. 첫 행동은 받은 QA 환경·버전 대응·계정 변경 및 정리 조건을 [인증 QA 사례](../../../qa/auth.md#dev-01-20261126-url-qa)와 대조하는 것이다. 다른 Task는 이번에 시작하지 않는다. [현재와 다음](../README.md)
+
+<a id="dev-01-20261126-live"></a>
+
+## 2026-11-26 KST · 실제 신규 가입 QA 재개
+
+- 시작 시 깨끗한 `main`·`origin/main`·원격 `main`은 `273c4434d897fa56c0f6a62967c8947fb134adac`로 일치했다. 승인 약관 URL 연결 [PR #133](https://github.com/mate-pjt/mate-frontend/pull/133)이 병합된 상태에서 `qa/dev-01-live-agreement-check`로 재개했다.
+- 2026-11-26 사용자가 개발 웹의 합성 신규 Google 계정, 가입 1회, 계정·동의 테스트 이력 잔존을 승인했다. 계정 선택은 사용자가 직접 하고 `requiredAgreements` 조회부터 확인하기로 했다. 버전·실행 빌드의 백엔드 소유 기록은 별도로 확인한다.
+- 단계는 공개 웹과 개발 가입 CORS 사전 확인, 합성 계정의 OAuth 귀환, 가입폼 GET의 두 버전 확인, 필수 동의 누락 UI 검증, 승인된 한 번의 가입과 동의 쌍 전송 및 다음 화면 확인, 테스트 세션 정리다. 생년월일·전화 같은 선택 데이터는 비운다. 화면에 표시된 계정 정보, 인증값, OAuth 귀환 쿼리는 증거에 포함하지 않는다. 정식 원문과 버전을 연결한 소유 근거 및 안전한 실제 409 재현은 별도 증거다.
+- 비로그인 `https://dev.mate-bid.com`은 기존 약관 두 경로에서 승인 문서로 정확히 `307`, 미지원 문서에서 `404`, `/auth`에서 `200`을 반환했다. 두 문서 공유는 기존 `anyone/writer`다. [개발 웹](https://dev.mate-bid.com/auth) · [이전 URL 승인](#dev-01-20261126-link-release)
+- GitHub 자동 배포 기록은 프런트 `273c4434`의 배포 성공을 기록한다. 그 기록의 호스트는 비인증 `302`이고, 개발 공개 주소 응답은 해당 호스트 검사와 별개로 확인했다. 백엔드 개발 소스는 `f4860fd9b87329d50169eb0025dca3f2c5fa2125`, 최근 test 배포 기록도 같은 소스다. 개발 OpenAPI의 해시와 가입 계약은 앞선 확인과 같다. 공개 명세에서 실행 식별자와 현재 동의 데이터를 확인할 경로는 없다. [프런트 배포 기록](https://github.com/mate-pjt/mate-frontend/deployments) · [개발 백엔드 배포](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088) · [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
+- 개발 웹 Origin의 가입 조회·제출 OPTIONS가 각각 `200`과 Origin·credentials 허용을 반환했다. 이 관찰은 사전 요청 결과다. 실제 가입 브라우저는 격리 Chrome에서 사용자가 직접 합성 계정을 고르는 단계부터 시작한다.
+- 공개 로그인 페이지의 프런트 번들에서 개발 웹이 `api-test`를 사용하는 것을 확인했다. 첫 Chrome 흐름은 로그인된 `/bids`에 도착했다. 가입 조회·제출은 모두 0건이었고, 사용자는 다른 미가입 합성 계정으로 진행하겠다고 답했다. [인증 QA](../../../qa/auth.md#dev-01-20261126-actual)
+- 개발 API의 `/actuator/info`는 비인증 `404`로 현재 실행 SHA를 확인할 수 없었다. 첫 격리 창을 닫고 별도 Chrome 창에서 다른 QA 계정의 Google 인증 시작 화면을 열었다. 직접 선택 뒤 확인할 자료는 [실제 QA 증거](../../../qa/auth.md#dev-01-20261126-actual)에 남긴다.
+
+### 실제 가입 결과와 세션 정리
+
+- 두 번째 인증은 개발 API 귀환에서 `OAUTH_REQUEST_EXPIRED`를 표시했다. 사용자가 같은 만료 화면을 확인했다. 만료 시도에서는 가입 조회·제출이 0건이었다. 같은 격리 창에서 새 인증을 한 번 시작한 뒤 `/auth/signup`에 도착했다. 새 인증 시작 `302`의 Google 목적지에는 `prompt`·`login_hint`가 없었다. [백엔드 URL 구성](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/http/auth/google/GoogleOAuthHttpAdapter.kt#L31-L44)
+- 실제 가입폼 GET `200`의 두 필수 동의는 `PRIVACY_POLICY v1`, `TERMS_OF_SERVICE v1`이었다. 두 약관 링크와 한 항목만 동의할 때의 버튼 비활성, 가입 POST 0건을 확인했다. 선택 입력을 비우고 합성 이름을 사용했다.
+- 승인한 신규 가입 POST 한 번에 조회와 동일한 두 쌍을 제출했다. 실제 응답은 `201`, 브라우저의 다음 경로는 `/auth/start`였다. 계정과 동의 이력은 승인한 테스트 잔존 범위에 둔다. 백엔드 소스는 성공 트랜잭션에서 두 쌍을 저장하도록 정의한다. 이번 QA에서 DB 행을 독립 조회하거나 승인 원문이 `v1`과 대응한다는 소유 확인은 받지 않았다. [백엔드 가입 트랜잭션](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/socialsignup/SocialSignupTransactionService.kt)
+- 테스트 계정의 메이트 로그아웃 `200`, 이후 새로고침 인증 `401`, 비로그인 화면을 확인했다. 격리 QA 창을 모두 닫았다. 원문 공유·협업 계정·서비스 설정 변경은 실행하지 않았다. [실제 QA](../../../qa/auth.md#dev-01-20261126-actual) · [검증과 리뷰](../reviews/DEV-01.md#dev-01-20261126-live-review)
+
+<a id="dev-01-20261126-live-resume"></a>
+
+### 다음 Task 선정과 잔여 검증
+
+승인 범위의 실제 가입 성공·부분 동의 방지와 공개 링크 관찰을 기록했다. 인증 백엔드 역할이 승인 원문별 `v1` 대응과 현재 실행 식별자를 확인하고 비식별 동의 저장 증거를 제공해야 한다. 실제 버전 불일치 `409`에는 별도로 승인된 안전한 재현 조건이 필요하다. 문서 공유를 변경한 뒤의 비로그인 뷰어 권한은 문서 관리 역할이 확인한다.
+
+선행을 충족한 대기·준비 Task가 없어 다음은 P0 **DEV-01**을 유지한다. DEV-02와 QA-16은 기존 선행을 따른다. 첫 행동은 백엔드의 원문·버전 대응, 실행 식별자와 비식별 저장 근거를 이번 실제 `200`·`201`과 대조하는 것이다. 승인 범위에서 이미 실행한 한 번의 신규 가입 증거를 사용한다. [WBS](../README.md)
