@@ -31,6 +31,8 @@ $feature-workflow
 
 여러 날에 걸친 중단/재개, 상태 정의, 차단/승인 예외, 문서 전용 검증은 [작업 운영 규칙](../development/figma-v01/workflow.md)을 따른다. 개발 작업은 검증·리뷰까지 한 단위이며 PASS 전 다음 기능으로 자동 이동하지 않는다. 기존 실제 QA의 환경 의존 예외를 다른 기능으로 확대하지 않는다. 문서 전용 검증은 실행 코드·패키지·빌드 영향이 없을 때만 적용하고, 앱 검사 미실행 이유를 기록한다.
 
+다음 작업은 [WBS 선정 기준](../development/figma-v01/workflow.md#next-task-selection)을 따른다. 차단·보류 Task는 해당 조건의 변화가 확인됐을 때만 다시 선정한다. 착수·재개 요건을 충족한 후보가 없으면 `다음 작업 없음`을 기록한다.
+
 ## verifier 실행 권한
 
 Review Gate에서 verifier가 필요하다고 판단되면 Codex는 별도 사용자 확인 없이 read-only verifier subagent를 실행할 수 있다.
