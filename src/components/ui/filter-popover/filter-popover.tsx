@@ -1,6 +1,6 @@
 'use client';
 
-import { useId } from "react";
+import { useId, useRef } from "react";
 
 import {
     CalendarIcon,
@@ -11,7 +11,7 @@ import {
 import { CheckboxSquare } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/input";
-import { Select, SelectMenu } from "@/components/ui/select";
+import { Select, SelectMenu, type SelectOption } from "@/components/ui/select";
 
 type FilterActionLabels = {
     reset?: string;
@@ -30,7 +30,7 @@ export type FilterActionsProps = FilterActionHandlers & {
 };
 
 type PublicCategoryValue = "construction" | "service" | "purchase";
-type CooperativeValue = "all" | "required" | "available";
+type CooperativeValue = "ALL" | "REQUIRED" | "AVAILABLE";
 type DateFilterType = "open" | "participation" | "deadline";
 type AmountFilterType = "base" | "estimated";
 
@@ -45,9 +45,9 @@ const publicCategoryOptions: Array<{
 ];
 
 const cooperativeOptions: Array<{ value: CooperativeValue; label: string }> = [
-    { value: "all", label: "전체" },
-    { value: "required", label: "의무" },
-    { value: "available", label: "가능" },
+    { value: "ALL", label: "전체" },
+    { value: "REQUIRED", label: "의무" },
+    { value: "AVAILABLE", label: "가능" },
 ];
 
 const dateTypeOptions: Array<{ value: DateFilterType; label: string }> = [
@@ -176,10 +176,12 @@ function FilterTag({
     children,
     className,
     onRemove,
+    removeLabel = "선택값 삭제",
 }: {
     children: React.ReactNode;
     className?: string;
     onRemove?: () => void;
+    removeLabel?: string;
 }) {
     return (
         <span
@@ -191,7 +193,7 @@ function FilterTag({
             <span className="min-w-0 break-words">{children}</span>
             {onRemove && (
                 <button
-                    aria-label="선택값 삭제"
+                    aria-label={removeLabel}
                     className="inline-flex size-4 shrink-0 cursor-pointer items-center justify-center hover:text-grayscale-dark-hover"
                     onClick={onRemove}
                     type="button"
@@ -439,16 +441,17 @@ export function IndustryCategoryPopover({
 }
 
 export type PlaceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
-    FilterActionHandlers & {
-        onTagRemove?: () => void;
+    FilterActionsProps & {
+        onTagRemove?: (value: string) => void;
         city?: string;
         district?: string;
         localOnly?: boolean;
-        advancedDisabled?: boolean;
+        errorMessage?: string;
+        statusMessage?: string;
         selectedCooperative?: CooperativeValue;
-        tag?: string;
-        cityOptions?: readonly string[];
-        districtOptions?: readonly string[];
+        tags?: readonly Pick<SelectOption, "value" | "label">[];
+        cityOptions?: readonly SelectOption[];
+        districtOptions?: readonly SelectOption[];
         onCityChange?: (city: string) => void;
         onCooperativeChange?: (value: CooperativeValue) => void;
         onDistrictChange?: (district: string) => void;
@@ -456,12 +459,13 @@ export type PlaceCategoryPopoverProps = React.HTMLAttributes<HTMLDivElement> &
     };
 
 export function PlaceCategoryPopover({
-    advancedDisabled = false,
     city,
     cityOptions = [],
     className,
     district,
     districtOptions = [],
+    errorMessage,
+    labels,
     localOnly = false,
     onCityChange,
     onCooperativeChange,
@@ -470,16 +474,34 @@ export function PlaceCategoryPopover({
     onReset,
     onSave,
     onTagRemove,
+    resetDisabled,
+    saveDisabled,
     selectedCooperative,
-    tag,
+    statusMessage,
+    tags = [],
     ...props
 }: PlaceCategoryPopoverProps) {
-    const hasSelection = Boolean(tag);
+    const selectsRef = useRef<HTMLDivElement>(null);
+    const hasSelection = tags.length > 0;
+    const cityLabel = "시도 선택";
+    const districtLabel = "시군구 선택";
+
+    function focusSelect(label: string) {
+        selectsRef.current?.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`)?.focus();
+    }
+
+    function dismissSelect(event: React.KeyboardEvent<HTMLDivElement>) {
+        if (event.key !== "Escape") return;
+        const trigger = event.currentTarget.querySelector<HTMLButtonElement>('button[aria-haspopup="listbox"][aria-expanded="true"]');
+        if (!trigger) return;
+        event.preventDefault();
+        trigger.focus();
+    }
 
     return (
         <FilterPanel className={className} height="h-[400px]" {...props}>
             <FilterBody>
-                <div className="flex w-full flex-1 flex-col gap-6">
+                <div className="flex w-full flex-1 flex-col gap-6 pb-3">
                     <div className="flex w-full flex-col gap-4">
                         <div className="flex w-full items-start justify-between">
                             <SectionTitle>지역</SectionTitle>
@@ -489,34 +511,35 @@ export function PlaceCategoryPopover({
                                     ariaLabel="지역 업체만"
                                     checked={localOnly}
                                     className="size-6"
-                                    disabled={!city || advancedDisabled}
+                                    disabled={!hasSelection}
                                     onCheckedChange={onLocalOnlyChange}
                                 />
                             </label>
                         </div>
-                        <div className="flex w-full flex-col gap-2">
+                        <div className="flex w-full flex-col gap-2" onKeyDown={dismissSelect} ref={selectsRef}>
                             <Select
-                                ariaLabel="시도 선택"
-                                boxClassName="w-full justify-between"
+                                ariaLabel={cityLabel}
+                                boxClassName="w-full justify-between!"
                                 className="w-full"
-                                menuClassName="w-full"
-                                onValueChange={onCityChange}
-                                options={cityOptions.map((option) => ({ label: option, value: option }))}
+                                disabled={cityOptions.length === 0}
+                                menuClassName="max-h-44 w-full overflow-y-auto"
+                                onValueChange={(value) => { onCityChange?.(value); focusSelect(cityLabel); }}
+                                options={cityOptions}
                                 placeholder="시 · 도 · 전체 선택"
                                 size="xs"
-                                value={city}
+                                value={city ?? ""}
                             />
                             <Select
-                                ariaLabel="시군구 선택"
-                                boxClassName="w-full justify-between"
+                                ariaLabel={districtLabel}
+                                boxClassName="w-full justify-between!"
                                 className="w-full"
-                                disabled={!city || advancedDisabled}
-                                menuClassName="w-full"
-                                onValueChange={onDistrictChange}
-                                options={districtOptions.map((option) => ({ label: option, value: option }))}
+                                disabled={!city}
+                                menuClassName="max-h-44 w-full overflow-y-auto"
+                                onValueChange={(value) => { onDistrictChange?.(value); focusSelect(districtLabel); }}
+                                options={districtOptions}
                                 placeholder="시 · 군 · 구 선택"
                                 size="xs"
-                                value={district}
+                                value={district ?? ""}
                             />
                         </div>
                     </div>
@@ -525,7 +548,6 @@ export function PlaceCategoryPopover({
                         <div className="flex w-full gap-2">
                             {cooperativeOptions.map((option) => (
                                 <ChoiceButton
-                                    disabled={advancedDisabled}
                                     key={option.value}
                                     onClick={() => onCooperativeChange?.(option.value)}
                                     selected={option.value === selectedCooperative}
@@ -535,17 +557,29 @@ export function PlaceCategoryPopover({
                             ))}
                         </div>
                     </div>
-                    {tag && (
-                        <FilterTag className="max-w-full" onRemove={onTagRemove}>
-                            {tag}
-                        </FilterTag>
+                    {hasSelection && (
+                        <div className="flex max-h-20 w-full flex-wrap gap-1.5 overflow-y-auto">
+                            {tags.map(({ value, label }) => (
+                                <FilterTag
+                                    className="max-w-full"
+                                    key={value}
+                                    onRemove={onTagRemove ? () => { onTagRemove(value); focusSelect(city ? districtLabel : cityLabel); } : undefined}
+                                    removeLabel={`${label} 삭제`}
+                                >
+                                    {label}
+                                </FilterTag>
+                            ))}
+                        </div>
                     )}
+                    {errorMessage && <p className="text-danger type-body-7" role="alert">{errorMessage}</p>}
+                    {statusMessage && <p className="text-grayscale-600 type-body-7" role="status">{statusMessage}</p>}
                 </div>
                 <FilterActions
+                    labels={labels}
                     onReset={onReset}
                     onSave={onSave}
-                    resetDisabled={!hasSelection}
-                    saveDisabled={!hasSelection}
+                    resetDisabled={resetDisabled ?? !hasSelection}
+                    saveDisabled={saveDisabled ?? !hasSelection}
                 />
             </FilterBody>
         </FilterPanel>

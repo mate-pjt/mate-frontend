@@ -93,8 +93,9 @@ describe("내 맞춤 최신 조회·적용 수명", () => {
 });
 
 const options: BidFilterOptions = {
-  regions: ["서울특별시"], industries: ["토목공사업"], contractMethods: ["일반경쟁"],
-  regionOptions: [{ code: "11", label: "서울특별시" }], industryOptions: [{ code: "0001", label: "토목공사업" }],
+  industries: ["토목공사업"], contractMethods: ["일반경쟁"],
+  regionOptions: [{ code: "11", label: "서울특별시", name: "서울특별시", parentCode: null, depth: 1 }],
+  industryOptions: [{ code: "0001", label: "토목공사업" }],
 };
 const query: BidListQuery = { view: "all", query: "", page: 1, size: 10, category: "construction", region: "서울특별시" };
 const changes: [string, Partial<PersonalFilterValues>][] = [

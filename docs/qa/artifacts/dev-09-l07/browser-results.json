@@ -1,0 +1,93 @@
+{
+  "dateKst": "2026-11-26",
+  "scope": "local Next browsers with synthetic inputs only",
+  "baseCommit": "f4bdba71d29a96e3ed70fd7c285f421632a85246",
+  "runtimeAndTests": {
+    "files": 15,
+    "sha256": "7f860236211863e13a63331450232db0cdc5cb2747c22a584db57e84fe5ed002",
+    "matchedProfiles": [
+      "project",
+      "mock",
+      "api",
+      "hybrid"
+    ]
+  },
+  "versions": {
+    "node": "22.20.0",
+    "pnpm": "11.3.0",
+    "next": "16.2.9",
+    "chromeMajor": 158
+  },
+  "browser": {
+    "mock": [
+      "M01 기본 상태",
+      "M01 Select 라벨과 화살표 양끝 정렬",
+      "M02 지역 팝오버 키보드 진입",
+      "M03 시도 탐색만 변경·초점 복귀",
+      "M04 시군구 키보드 선택",
+      "M05 복수 태그·중복 억제·draft와 공동도급 배타",
+      "M06 공개 URL 적용과 첫 페이지",
+      "M07 저장 후 지역 버튼 초점",
+      "M08 하드리로드에서 선택 복원",
+      "M09 Escape로 내부 메뉴 닫기",
+      "M10 Escape로 draft 취소 및 바깥 초점 복귀",
+      "M11 취소한 태그 복원",
+      "M12 일부 지역 제거 후 종속 조건 유지",
+      "M13 마지막 지역 제거 후 업체만 해제·공동도급 유지",
+      "M14 지역 없이 공동도급 URL",
+      "M15 브라우저 뒤로 가기",
+      "M16 브라우저 앞으로 가기",
+      "M17 곧 마감 보기에서 공개 조건 유지",
+      "M18 개찰 보기에서 공개 조건과 낙찰금액 유지",
+      "M19 지역 팝오버 초기화 범위",
+      "M22 열린 초안을 뒤로 가기에서 폐기하고 현재 URL로 복원",
+      "M23 키보드 전체 초기화에서 이전 초안을 폐기",
+      "M20 320px 팝오버·문서 폭",
+      "M20 390px 팝오버·문서 폭",
+      "M21 mock 브라우저 외부 요청 0건"
+    ],
+    "api": [
+      "A01 서버 페이지·총건수·같은 공고 분류 2행",
+      "A02 메타데이터 관계로 비접두 코드·검색·크기 보존",
+      "A03 CLOSING_SOON 서버 재조회",
+      "A04 RESULT 서버 재조회",
+      "A05 구형 단일 지역 URL 복원",
+      "A06 오류와 빈 결과 구분",
+      "A07 잘못된 지역 초기화로 복구",
+      "A08 다른 개인 조건 편집 이후에도 지역 오류 보존",
+      "A09 최신 계정 GET을 ALL URL에 적용",
+      "A10 ALL 개인 맥락의 지역만 편집",
+      "A11 ALL 개인 URL의 조건을 다른 보기로 넘기지 않음",
+      "A12 정상 0건과 공동도급만 표시",
+      "A13 503 후 같은 지역 조건 재시도",
+      "A14 50개 상한에서 추가 옵션 차단",
+      "A15 태그 해제 뒤 다른 지역 추가"
+    ],
+    "hybrid": [
+      "H01 일부 영역 mock 프로필에서 공개 목록 HTTP",
+      "H02 API metadata 계층과 종속 조건 복원",
+      "H03 같은 공개 조회에서 공동도급 변경"
+    ]
+  },
+  "loopback": {
+    "listGetCount": 18,
+    "publicAuthorizationHeaders": 0,
+    "personalFilterReads": 11,
+    "businessWrites": 0,
+    "malformedRegionListReads": 0,
+    "listRetryHttpStatuses": [
+      503,
+      200
+    ],
+    "serverFetchCountByProfile": {
+      "mock": 0,
+      "api": 67,
+      "hybrid": 13
+    },
+    "externalServerFetches": 0
+  },
+  "actualBackendIntegration": {
+    "executed": 0,
+    "passed": 0
+  }
+}

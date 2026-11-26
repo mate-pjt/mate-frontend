@@ -5,6 +5,7 @@ import { cache } from "react";
 import type { BidListRepository, BidListQuery } from "./contracts";
 import { currentBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 import { bidAmountUrlKeys, currentBidAmountFilter, currentBidResultAmountFilter, writeBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
+import { bidRegionFilterError } from "@/features/bid-notice-filters/region-filter";
 import {
   findContractMethodCode,
   findIndustryCode,
@@ -52,6 +53,10 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
       if (query.agency) {
         throw new Error("기관 단독 필터는 아직 지원하지 않습니다.");
       }
+      const personal = query.view === "all" ? query.personalFilter : undefined;
+      const regionFilter = personal ?? query.regionFilter;
+      const regionError = query.regionError ?? (regionFilter && bidRegionFilterError(regionFilter));
+      if (regionError) throw new Error(regionError);
       const dates = currentBidDateFilter(query);
       const amounts = currentBidAmountFilter(query);
       const resultAmounts = currentBidResultAmountFilter(query);
@@ -63,20 +68,23 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
         sort: query.view === "result" ? "openAt,desc" : "bidCloseAt,asc",
       });
       if (query.query) params.set("keyword", query.query);
-      if (query.personalFilter && query.view === "all") {
-        const filter = query.personalFilter;
-        for (const key of ["bidTypes", "regionCodes", "industryCodes", "contractMethods"] as const) {
-          filter[key].forEach((value) => params.append(key, value));
+      if (regionFilter) {
+        new Set(regionFilter.regionCodes).forEach(code => params.append("regionCodes", code));
+        params.set("regionOnly", String(regionFilter.regionOnly));
+        params.set("jointContract", regionFilter.jointContract);
+      }
+      if (personal) {
+        for (const key of ["bidTypes", "industryCodes", "contractMethods"] as const) {
+          personal[key].forEach((value) => params.append(key, value));
         }
-        params.set("regionOnly", String(filter.regionOnly));
-        params.set("jointContract", filter.jointContract);
       } else {
         if (query.category) params.set("bidTypes", bidTypeCodes[query.category]);
         if (query.contract) params.set("contractMethods", findContractMethodCode(query.contract));
 
-        if (query.region || query.industry) {
+        const legacyRegion = regionFilter ? undefined : query.region;
+        if (legacyRegion || query.industry) {
           const { regions, industries } = await loadFilterMetadata();
-          if (query.region) params.set("regionCodes", findRegionCode(query.region, regions));
+          if (legacyRegion) params.set("regionCodes", findRegionCode(legacyRegion, regions));
           if (query.industry) params.set("industryCodes", findIndustryCode(query.industry, industries));
         }
       }

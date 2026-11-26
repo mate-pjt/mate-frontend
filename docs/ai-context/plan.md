@@ -391,3 +391,7 @@ Final reports should include:
 ## 2026-11-24 KST · DEV-54 상세 페이지 본문 랜드마크
 
 입찰 상세와 공용 오류 화면의 레이아웃 래퍼를 교체해 RootLayout의 본문 랜드마크 하나를 사용한다. [상세 브라우저 QA](../qa/bid-detail.md#dev-54-local-qa)에 정상·404·오류의 접근성 트리와 기존 배치·키보드 결과를 기록했다. 현재 상태와 인계는 [WBS](../development/figma-v01/README.md)를 따른다.
+
+## 2026-11-26 KST · DEV-09 공개 지역·공동도급 연결
+
+사용자가 정한 프론트 우선 순서에서 공개 세 보기의 시·도·시·군·구 복수 선택, 지역 업체만·공동도급과 URL을 연결했다. 기존 ALL의 ‘내 맞춤’ 최신 조회를 적용하며 목록의 저장은 URL에 반영한다. 실제 경계 공고와 계정별 검증은 백엔드 개발자와의 공동 일정에서 이어간다. [승인과 범위](../development/figma-v01/tasks/DEV-09.md#dev-09-l07-brief) · [로컬 QA](../qa/bid-list.md#dev-09-l07-local-qa) · [현재 상태와 다음 작업](../development/figma-v01/README.md)
