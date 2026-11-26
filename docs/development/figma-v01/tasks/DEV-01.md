@@ -34,11 +34,11 @@
 
 ## 완료 기준
 
-- [ ] 승인 문서를 비로그인 상태에서 읽기 전용으로 열고, 신규 가입의 필수 동의 누락·버전 불일치 처리와 서버 버전 전송을 검증한다
-- [ ] 본문/버전이 승인된 원문과 일치하고 임시 문구가 남지 않는지 확인한다
-- [ ] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다.
-- [ ] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다.
-- [ ] Documentation Update Check 및 verifier/ai-review를 통과한다. 구현만 마친 상태는 완료가 아니다.
+- [x] 승인 문서를 비로그인 상태에서 읽기 전용으로 열고, 신규 가입의 필수 동의 누락·버전 불일치 처리와 서버 버전 전송을 검증한다. [권한·실제 성공·격리 검증](#dev-01-20261126-viewer)
+- [x] 본문/버전이 승인된 원문과 일치하고 임시 문구가 남지 않는지 확인한다. [URL 연결 검증](#dev-01-20261126-link-release) · [원문별 사용자 확인](#dev-01-20261126-close)
+- [x] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다. [제품 구현 검증](../reviews/DEV-01.md#승인-url-우선-연결-검증)
+- [x] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다. [실제 가입과 미실행 예외](../../../qa/auth.md#dev-01-20261126-close-qa)
+- [x] Documentation Update Check 및 verifier/ai-review를 통과한다. 구현만 마친 상태는 완료가 아니다. [문서 갱신과 검토](../reviews/DEV-01.md#dev-01-20261126-close-review)
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -197,3 +197,27 @@ WBS에서 선행이 충족된 대기·준비 Task는 없다. DEV-02는 POL-01과
 | 개발 서버의 실패 재현 | 미가입 합성 Google 계정 또는 인증 백엔드 담당자가 승인·준비한 가입 시험 경로가 필요하다. 가입폼의 실제 조회에서 두 약관 중 한 버전만 바꾼 제출 1회로 `409 SOCIAL_SIGNUP_AGREEMENT_MISMATCH`와 오류 화면을 확인한다. 현재 추가 미가입 계정은 없다. [AUTH-02](../../../qa/auth.md#dev-01-20261126-viewer-qa) |
 
 다른 대기 작업의 선행은 그대로 남아 있다. 다음은 P0 **DEV-01**의 잔여 확인이다. 첫 행동은 승인 원문별 대응과 비식별 저장 결과 및 현재 실행 식별자를 위 실제 응답과 대조하는 일이다. DEV-02와 QA-16은 기존 선행을 따른다. [현재 WBS](../README.md)
+
+<a id="dev-01-20261126-close"></a>
+
+## 2026-11-26 KST · 사용자 확인과 완료 범위
+
+- 11:21 KST 기준 깨끗한 로컬·원격 `main` `f79d6ae0ed66e4419e4982c1ccb81c73e483dc06`에서 [PR #135](https://github.com/mate-pjt/mate-frontend/pull/135) 반영을 확인하고 `docs/dev-01-close-and-handoff`로 재개했다. 제품 구현과 공개 뷰어 및 실제 가입·격리 QA의 근거를 이어서 사용한다. 이번 변경은 WBS, DEV-01 작업, 인증 QA와 검토 기록 네 Markdown이다.
+
+| 직전 확인 항목 | 2026-11-26 사용자 답변과 적용 |
+| --- | --- |
+| 승인 원문별 현재 `v1` | 사용자가 “1번은 확인됐어”라고 확인했다. 서비스 이용약관 `TERMS_OF_SERVICE v1`과 개인정보 처리방침 `PRIVACY_POLICY v1` 각각의 원문 대응을 사용자 확인으로 기록한다. |
+| 실제 가입 당시 실행 빌드와 동의 저장 | 사용자가 “2번도 확인됐어”라고 확인했다. 이전 10:03–10:09 KST 합성 가입의 실행 빌드 및 동의 두 건의 종류·버전·시각은 사용자 확인으로 기록한다. 구체 식별자 및 시각 값의 원본 자료는 이 대화에 제공되지 않았다. 이전 실제 응답 `200`·`201`, 배포 기록과 근거를 구분한다. [실제 가입 QA](../../../qa/auth.md#dev-01-20261126-actual) |
+| 공유 개발 서버의 버전 불일치 `409` | 사용자가 3번 생략 또는 성공 처리를 제안하고 타당하면 다음 Task를 인계해 달라고 요청했다. 실제 정상 가입과 격리 HTTP·DB의 누락·불일치 `409` 및 정상 저장 증거를 근거로 이번 한 사례를 완료 범위에서 생략한다. 실제 결과는 `미실행 · 완료 범위 예외`이고 추가 가입 GET·POST는 각 0건이다. 재실행 시 미가입 합성 Google 계정 또는 승인된 시험 경로가 필요하다. [환경별 QA](../../../qa/auth.md#dev-01-20261126-close-qa) |
+
+### 약관 문서의 관리 위치
+
+- 개발 `dev`의 `f4860fd9b87329d50169eb0025dca3f2c5fa2125`와 공개 개발 OpenAPI를 대조했다. 가입 조회의 `requiredAgreements` 내 각 항목은 `code`·`title`·`version`이다. 원문 URL 및 본문 필드는 없다. 프런트 가입폼은 코드별 `/auth/legal/terms`·`/auth/legal/privacy`에 연결하고 각 경로는 프런트에 등록된 공개 문서로 이동한다. 가입 제출은 조회한 `code`·`version`을 사용한다. [개발 응답 소스](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/auth/socialsignup/SocialSignupWebModels.kt#L40-L53) · [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) · [가입폼](../../../../src/app/auth/signup/signup-form.tsx) · [법적 문서 경로](../../../../src/app/auth/legal/[document]/page.tsx)
+- 권고안은 약관의 `code`·`version`과 해당 개정본의 공개 URL을 백엔드의 한 약관 목록에서 관리하는 방식이다. 개정본별 읽기 전용 URL을 고정하면 `v2` 적용 시 가입 화면이 `v2` 문서로 바뀌고 이전 `v1` 동의 때의 문서도 찾을 수 있다. 로그인 전에 쓰는 홈 푸터의 공개 접근 방식도 후속 설계에서 확인한다. 구현과 계약 변경에는 별도 요구사항과 승인이 필요하다.
+- Documentation Update Check에서 WBS와 작업·인증 QA·리뷰를 갱신했다. 패키지·라우팅·데이터 계약·하네스에 변경이 없어 `base.md`·`architecture.md`·`data-access.md`·`harness.md`에 반영할 현행 변경이 없다. `plan.md`는 WBS를 가리킨다. O03과 H04 원본 연결·기준선과 이전 QA 이력을 보존했다. 프런트 앱의 로컬 test/lint/build/Storybook은 이번 문서 변경에서 미실행이다. [검토 기록](../reviews/DEV-01.md#dev-01-20261126-close-review)
+
+<a id="dev-01-20261126-dev-02-handoff"></a>
+
+### DEV-02 선정과 첫 행동
+
+완료 범위를 반영하면 POL-01과 DEV-01을 선행으로 가진 P0 **DEV-02**가 착수 준비 후보가 된다. QA-16에는 DEV-02와 다른 실제 QA 선행이 남아 있다. DEV-02의 첫 행동은 승인한 홈 푸터 시안과 현행 홈 구조를 검토하고, 공개 약관·개인정보 경로와 `/qna`, 고객문의 이메일·운영시간과 저작권 문구의 표시 범위를 요구사항 Gate에서 대조하는 일이다. 이번에는 선정과 인계만 한다. [DEV-02 정책 인계](DEV-02.md#dev-02-pol-01-approved-handoff) · [WBS](../README.md)
