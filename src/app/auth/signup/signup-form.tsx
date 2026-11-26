@@ -134,7 +134,6 @@ export function SignupForm({ flowId, returnTo }: { flowId: string | null; return
           </div>
 
           <div className="bg-grayscale-50 p-6">
-            <p className="mb-4 text-warning type-body-7">개발·테스트용 임시 약관입니다. 정식 본문은 추후 게시됩니다.</p>
             <div className="flex items-center gap-2">
               <CheckboxSquare ariaLabel="필수 약관에 모두 동의" checked={Boolean(allAccepted)} onCheckedChange={(checked) => setAccepted(checked ? [...agreementCodes] : [])} />
               <span className="text-grayscale-800 type-body-1">필수 약관에 모두 동의</span>
