@@ -168,3 +168,32 @@ WBS에서 선행이 충족된 대기·준비 Task는 없다. DEV-02는 POL-01과
 승인 범위의 실제 가입 성공·부분 동의 방지와 공개 링크 관찰을 기록했다. 인증 백엔드 역할이 승인 원문별 `v1` 대응과 현재 실행 식별자를 확인하고 비식별 동의 저장 증거를 제공해야 한다. 실제 버전 불일치 `409`에는 별도로 승인된 안전한 재현 조건이 필요하다. 문서 공유를 변경한 뒤의 비로그인 뷰어 권한은 문서 관리 역할이 확인한다.
 
 선행을 충족한 대기·준비 Task가 없어 다음은 P0 **DEV-01**을 유지한다. DEV-02와 QA-16은 기존 선행을 따른다. 첫 행동은 백엔드의 원문·버전 대응, 실행 식별자와 비식별 저장 근거를 이번 실제 `200`·`201`과 대조하는 것이다. 승인 범위에서 이미 실행한 한 번의 신규 가입 증거를 사용한다. [WBS](../README.md)
+
+<a id="dev-01-20261126-viewer"></a>
+
+## 2026-11-26 KST · 승인 약관 링크의 뷰어 전환
+
+- 사용자는 2026-11-26에 두 승인 Google 문서의 기존 공개 주소를 유지하며 일반 액세스 역할을 편집자에서 뷰어로 바꾸는 선택을 확정했다. 앞선 URL 우선 연결 당시에는 편집 가능한 링크를 허용했다. 이번 승인 대상은 `서비스 이용약관`·`개인정보 처리방침`의 공개 링크 역할이다. [앞선 사용자 결정](#dev-01-20261126-link-release) · [정식 원문 정책](POL-01.md#pol-01-approved-policy)
+- 시작 기준은 깨끗한 `main`과 `origin/main` 및 원격 `main`의 `ab40d51b487096df13e1ef0f16e6d0481001c8ec`다. 링크 연결 PR #133과 실제 1회 가입 기록 PR #134의 병합을 확인했다. 이번에는 `docs/dev-01-agreement-viewer-verification`에서 WBS, DEV-01 작업·검토, 인증 QA를 갱신한다. 공유 변경과 로컬 격리 검증의 환경별 증거를 나눠 기록한다. [링크 구현](https://github.com/mate-pjt/mate-frontend/pull/133) · [실제 가입 기록](https://github.com/mate-pjt/mate-frontend/pull/134)
+- Chrome의 두 승인 문서 공유 화면에서 일반 액세스의 `링크가 있는 모든 사용자` 역할을 `뷰어`로 설정하고 적용을 확인했다. 브라우저의 인증 정보가 없는 HTTP 클라이언트에서 개발 웹의 기존 `/auth/legal/terms`·`/auth/legal/privacy`를 각각 따라가 동일 승인 문서의 주소와 제목, `200`을 확인했다. 두 문서 본문과 개별 사용자 공유 권한의 편집은 0건이다. [AUTH-03](../../../qa/auth.md#dev-01-20261126-viewer-qa)
+- 백엔드 개발 소스는 `f4860fd9b87329d50169eb0025dca3f2c5fa2125`다. 이 SHA를 배포한 test job이 성공했으며 배포 입력 이미지 digest는 `sha256:d3d6d618649e0b2727963ff76365aaecaf0f670fcb04d4b4b23c46060ad2f013`이다. 이 값은 배포 job에 기록됐다. 현재 `api-test`가 응답하는 빌드는 공개 응답으로 식별할 수 없었다. 실제 가입폼의 `200`·`201`과 게시 OpenAPI는 각각 실제 요청과 공개 계약의 증거다. [배포 job](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139596909303) · [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) · [실제 가입 증거](../../../qa/auth.md#dev-01-20261126-actual)
+- 해당 백엔드 소스의 임시 복제본을 Java 21로 실행했다. 로컬 Spring HTTP와 격리 PostgreSQL을 사용해 오래된 버전과 한 항목 누락을 각각 제출했다. 두 요청 모두 `409 SOCIAL_SIGNUP_AGREEMENT_MISMATCH`였고 계정·동의 행 건수는 바뀌지 않았다. 현재 두 버전으로 다시 제출하면 `201`과 정확한 두 동의 행 및 시각이 저장됐다. 기존 테스트 37건과 이 격리 시나리오 1건이 통과했다. Google 교환은 합성 흐름으로 준비했고 접근 토큰 발급에는 테스트 대역을 사용했다. [환경별 QA](../../../qa/auth.md#dev-01-20261126-viewer-qa) · [검증 명령과 재시도](../reviews/DEV-01.md#dev-01-20261126-viewer-review)
+- Documentation Update Check에서 WBS, 작업·인증 QA·검토 기록을 갱신했다. 프런트 패키지·스크립트·구조·API 계약·하네스는 변경 범위 밖이며 O03 연결과 기존 검증 이력을 보존했다. 이번 프런트 변경은 Markdown이므로 앱의 로컬 test/lint/build/Storybook은 미실행이다. [문서 검토](../reviews/DEV-01.md#dev-01-20261126-viewer-review)
+
+<a id="dev-01-20261126-viewer-resume"></a>
+
+### 다음 Task 선정과 남은 실제 검증
+
+이미 확인한 합성 가입의 GET `200`·POST `201`과 인증 백엔드가 제공하는 아래 근거를 대조한다. 2026-11-26 사용자는 원문별 버전, 가입 당시 실행 빌드 및 비식별 저장 결과의 확인 자료가 현재 없다고 답했다. 같은 날 새 미가입 합성 계정으로 공유 개발 서버에 실패 요청 한 번을 보내는 범위를 승인했다. 예외적으로 가입되면 테스트 이력을 잔존시킨다. 공유 개발 서버의 필수 약관은 건드리지 않는다.
+
+첫 Chrome 흐름은 이미 가입된 계정으로 로그인해 `/bids`에 도착했다. 가입 GET과 POST는 0건이었다. 새 프로필로 별도 창을 열어 인증을 준비했으나 사용자가 추가로 사용할 미가입 Google 계정이 없다고 확인했다. 두 테스트 창과 전용 브라우저 프로필을 정리했다. 이번 승인에서 실패 제출은 0건이다. [실행과 정리 범위](../../../qa/auth.md#dev-01-20261126-viewer-qa)
+
+개발 OpenAPI 재조회는 HTTP `200`이었다. 게시된 가입 경로 `/api/v1/auth/social-signups/current`와 `/api/v1/auth/social-signups`를 확인했다. 공개 명세와 개발 인증 소스에서는 이번 QA에 쓸 별도 가입 시험 경로가 확인되지 않았다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
+
+| 필요한 근거 | 확인 내용 |
+| --- | --- |
+| 승인 원문과 버전 | 인증 백엔드 역할에 각각의 승인 원문이 `TERMS_OF_SERVICE v1`과 `PRIVACY_POLICY v1`으로 등록되어 있는지 확인한다. 가입폼은 두 `v1`을 반환했으며 초기 시드에는 문서 주소나 문서 개정 식별자가 없다. [시드](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/resources/db/migration/V78__google_oauth_foundation.sql#L49-L76) |
+| 실행 빌드와 저장 결과 | 11월 26일 10:03–10:09 KST 합성 가입 당시 `api-test` 실행 빌드 식별자 또는 현재 빌드로 유지됐다는 근거, 그 가입에서 저장한 두 `code`·`version`과 동의 시각의 비식별 결과를 확인한다. [성공 시 저장 경로](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/auth/socialsignup/SocialSignupTransactionService.kt) |
+| 개발 서버의 실패 재현 | 미가입 합성 Google 계정 또는 인증 백엔드 담당자가 승인·준비한 가입 시험 경로가 필요하다. 가입폼의 실제 조회에서 두 약관 중 한 버전만 바꾼 제출 1회로 `409 SOCIAL_SIGNUP_AGREEMENT_MISMATCH`와 오류 화면을 확인한다. 현재 추가 미가입 계정은 없다. [AUTH-02](../../../qa/auth.md#dev-01-20261126-viewer-qa) |
+
+다른 대기 작업의 선행은 그대로 남아 있다. 다음은 P0 **DEV-01**의 잔여 확인이다. 첫 행동은 승인 원문별 대응과 비식별 저장 결과 및 현재 실행 식별자를 위 실제 응답과 대조하는 일이다. DEV-02와 QA-16은 기존 선행을 따른다. [현재 WBS](../README.md)

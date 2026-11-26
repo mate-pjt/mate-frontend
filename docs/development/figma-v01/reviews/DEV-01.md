@@ -87,3 +87,40 @@
 ### 독립 verifier와 최종 문서 확인
 
 read-only verifier가 실제 응답 증거와 Markdown 네 곳을 대조해 PASS를 반환했다. 미해결 Blocker·Major·Minor는 없었다. 문서 검사 `validate-notes.py` 19/19와 `git diff --check HEAD`를 통과했다. 이 검토 기록과 WBS 결과 표현을 반영한 변경분도 검증·재검토한 뒤 전달한다. 정식 운영 버전의 대응과 저장 직접 확인, 실제 `409`는 후속 QA 범위다.
+
+<a id="dev-01-20261126-viewer-review"></a>
+
+## 2026-11-26 KST · 공개 문서 권한과 가입 검증 기록 검토
+
+- Chrome 공유 화면에서 두 승인 원문의 공개 뷰어를 적용했다. 인증 정보를 포함하지 않은 HTTP 요청으로 두 개발 약관 경로를 따라가 승인 원문 제목과 `200`을 확인했다. 비로그인 브라우저에서 둘 다 보기 메뉴가 있는 읽기 화면을 확인했다. [AUTH-03](../../../qa/auth.md#dev-01-20261126-viewer-qa)
+- 원격 배포 이력은 SHA와 입력 이미지 digest의 근거다. 현재 실행 빌드와 배포 기록의 대응, 원문별 `v1`의 등록 근거, 공유 개발 DB의 실제 저장 및 개발 환경의 오류 요청은 각각 별도 확인 사항이다. [실제 가입 결과](../../../qa/auth.md#dev-01-20261126-actual) · [남은 조건](../tasks/DEV-01.md#dev-01-20261126-viewer-resume)
+- 공유 개발 서버의 실패 제출 1회 승인을 확인했다. 사용자가 선택한 계정은 기존 가입 계정이었다. 추가 미가입 Google 계정을 확보하지 못해 실패 요청은 0건이며 두 임시 Chrome 프로필을 정리했다. [공유 환경 QA](../../../qa/auth.md#dev-01-20261126-viewer-qa)
+- 프런트에 변경한 파일은 Markdown 네 곳이다. 패키지 스크립트와 앱 구조·데이터 계약·하네스는 이전 검증을 사용한다. 이번 프런트 앱의 로컬 test/lint/build/Storybook은 실행 범위에서 제외한다. 기준선과 기존 검증·의존성을 보존한다.
+
+### 격리 백엔드 검증
+
+`f4860fd9b87329d50169eb0025dca3f2c5fa2125`의 임시 복제본에서 Java 21과 백엔드의 `gradle-safe`를 사용했다. 기존 네 테스트 클래스와 임시 HTTP 검증 클래스 하나를 선택했다. 임시 클래스는 복제본의 테스트 범위에만 추가했다. 합성 Google 인증 결과와 접근 토큰 발급 대역으로 시작하고, 실제 Spring HTTP와 격리 PostgreSQL에서 `409` 두 번과 계정·동의 미저장, 올바른 두 버전의 `201`과 동의 두 행·시각을 확인했다.
+
+```bash
+./.agents/bin/gradle-safe test --no-daemon -Pkotlin.daemon.jvmargs=-Xmx4g \
+  --tests '*SocialSignupTransactionServiceTest' \
+  --tests '*SocialSignupControllerTest' \
+  --tests '*AgreementAcceptancePersistenceAdapterTest' \
+  --tests '*SocialSignupAttemptIntegrationTest' \
+  --tests '*Dev01AgreementHttpCheckTest'
+```
+
+첫 실행은 2GB Kotlin 힙에서 컴파일이 중단됐다. 백엔드 CI와 동일한 4GB로 조정했다. 다음 실행에서 임시 테스트 코드가 JSON 배열을 읽는 부분의 타입 오류가 나서 배열 요소를 따라 읽도록 수정했다. 재검증은 `BUILD SUCCESSFUL`, 38건 통과, 실패·오류·건너뜀 0건이다. 제품 코드 자동 수정은 0회이고 격리 검증 환경과 시험 코드의 조정은 2회다. [백엔드 CI](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139588307274)
+
+### AI Review
+
+1. **리뷰 요약** · 두 승인 원문을 비로그인 뷰어로 확인했다. 실제 개발 환경의 성공 가입과 격리 HTTP·DB의 거부·정상 저장 증거를 날짜와 환경별로 연결했다.
+2. **발견된 문제** · 문서 전달 범위에서 해결할 Blocker·Major·Minor는 발견하지 않았다. 격리 검증 중 힙과 테스트 코드의 타입 오류를 해결하고 재검증했다.
+3. **누락된 검증** · 승인 원문과 공유 개발 서버의 두 `v1` 대응, 현재 실행 빌드, 선행 합성 가입의 두 저장 행 및 공유 개발 서버의 `409`를 확인해야 한다.
+4. **문서 갱신 필요 여부** · WBS가 현재 상태를 관리하고 DEV-01 작업·인증 QA·이 검토 기록이 검증 당시 증거를 보존한다. 공통 문서의 패키지·스크립트·데이터 계약·하네스와 O03 기준선 및 연결표에 변경 근거가 없다.
+5. **개발자 확인 필요** · 인증 백엔드 역할의 비식별 근거는 현재 없다. 공유 개발 서버 실패 요청 1회는 승인됐으며, 미가입 합성 계정이나 승인된 시험 경로가 준비돼야 실행할 수 있다.
+6. **추천 수정 방향** · 합성 가입 1회의 실제 응답과 후속 소유 근거를 대조한다. [다음 확인](../tasks/DEV-01.md#dev-01-20261126-viewer-resume)
+
+### 독립 verifier와 문서 확인
+
+read-only verifier는 두 공개 뷰어와 격리 백엔드 결과를 기록한 Markdown 네 곳에 PASS를 반환했다. Blocker·Major는 없었다. Minor로 제안한 가입 당시 빌드 또는 같은 빌드였다는 근거를 작업 기록에 반영했다. 후속 사용자 답변과 추가 브라우저 점검 결과를 반영한 뒤 Markdown 검증을 다시 실행했다. 링크·anchor, 기준선 79개, Task 114개와 의존성 156개, 기존 이력·승인 범위 및 비식별 증거를 확인한 `verify-viewer-record.py --final` 30/30과 `git diff --check HEAD`가 통과했다. 이후 변경분은 독립 검토를 다시 받아 해당 결과를 PR의 검증에 기록한다.

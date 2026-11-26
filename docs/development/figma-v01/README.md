@@ -6,10 +6,11 @@
 | --- | --- |
 | 갱신일 | 2026-11-26 KST |
 | 현재 작업 | — |
-| 다음 작업 | [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md#dev-01-20261126-live-resume) · P0, 정식 원문·실제 동의 저장 근거 확인 |
-| 다음 첫 행동 | 승인 원문별 `v1` 대응, 개발 서버 실행 식별자와 비식별 동의 저장 근거를 실제 `200`·`201` 결과와 대조한다. [DEV-01 잔여 검증](tasks/DEV-01.md#dev-01-20261126-live-resume) |
-| DEV-01 실제 가입 재개 | 실제 두 `v1`의 조회·제출과 합성 신규 가입 1회 `201`을 확인했다. 원문·서버 버전 대응, 실행 빌드와 저장 근거 및 실제 `409`는 남아 있다. [인증 QA](../../qa/auth.md#dev-01-20261126-actual) · [검증·리뷰](reviews/DEV-01.md#dev-01-20261126-live-review) |
-| DEV-01 URL 우선 연결 | 사용자가 `anyone/writer`인 현행 문서 주소를 우선 사용하도록 승인했다. 원문과 서버 적용 버전의 대응 및 실제 신규 가입 QA는 별도 확인이 필요하다. [사용자 결정](tasks/DEV-01.md#dev-01-20261126-link-release) · [인증 QA](../../qa/auth.md#dev-01-20261126-url-qa) · [검증·리뷰](reviews/DEV-01.md) |
+| 다음 작업 | [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md#dev-01-20261126-viewer-resume) · P0, 약관 버전과 개발 환경의 가입 증거 확인 |
+| 다음 첫 행동 | 승인 원문별 `v1` 대응, 가입 당시 실행 빌드와 비식별 동의 저장 근거를 이미 확인한 `200`·`201`과 대조한다. 공유 개발 서버의 `409` 재검증에는 미가입 합성 계정 또는 승인된 시험 경로가 필요하다. [DEV-01 잔여 검증](tasks/DEV-01.md#dev-01-20261126-viewer-resume) |
+| DEV-01 공개 뷰어 전환 | 사용자 승인으로 두 문서의 기존 공개 링크를 뷰어로 바꿨다. 개발 웹에서 두 승인 원문의 비로그인 `200`을 확인했다. [승인과 확인 범위](tasks/DEV-01.md#dev-01-20261126-viewer) · [인증 QA](../../qa/auth.md#dev-01-20261126-viewer-qa) · [검토](reviews/DEV-01.md#dev-01-20261126-viewer-review) |
+| DEV-01 실제 가입과 격리 검증 | 실제 가입에서 두 `v1`의 조회·제출과 합성 신규 가입 1회 `201`을 확인했다. 격리 백엔드에서는 누락·버전 불일치 `409`와 동의 두 건 저장이 통과했다. 원문별 버전·실행·저장 확인 자료와 추가 미가입 합성 계정이 없어 공유 환경의 잔여 검증은 차단이다. [실제 가입](../../qa/auth.md#dev-01-20261126-actual) · [재검증](../../qa/auth.md#dev-01-20261126-viewer-qa) |
+| DEV-01 URL 우선 연결 이력 | 사용자가 당시 `anyone/writer`였던 두 문서 주소를 우선 사용하도록 승인했다. [사용자 결정](tasks/DEV-01.md#dev-01-20261126-link-release) · [인증 QA](../../qa/auth.md#dev-01-20261126-url-qa) · [검증·리뷰](reviews/DEV-01.md) |
 | POL-01 정책 확정 | 두 승인 원문과 가입 동의 범위, 문서의 시행일 별도 관리, 푸터 시안과 고객문의 공개값을 확정했다. 정책 확정 당시 DEV-01 공개 연결에는 문서 권한과 정식 버전 대응 확인이 남았다. [정책](tasks/POL-01.md#pol-01-approved-policy) · [인증 QA](../../qa/auth.md#pol-01-approved-auth-qa) · [검증·리뷰](reviews/POL-01.md#pol-01-final-policy-review) |
 | POL-01 재개 점검 이력 | PR #131에서 기존 테스트 계정의 이관·재동의 제외와 당시 승인 자료 확인 범위를 기록했다. [당시 답변과 남은 확인](tasks/POL-01.md#pol-01-20261126-decisions) · [당시 검증·리뷰](reviews/POL-01.md#pol-01-20261126-review) |
 | QA-13 재개 점검 | 수신처·인증의 현행 계약과 Node 합성 15건을 확인했다. 실제 실행 0건·신규 통과 0건·6건 차단과 기존 3통과·6대기를 보존한다. [NREC QA](../../qa/notification-email-recipient.md#qa-13-20261126-nrec) · [검증·리뷰](reviews/QA-13.md#qa-13-20261126-review) · [Git 전달 기준](tasks/QA-13.md#qa-13-20261126-delivery) |
@@ -195,7 +196,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [QA-12 · 이메일 ON/OFF의 실제 서버 오류 QA](tasks/QA-12.md) · **11/26 재점검·NSET-07 실제 0통과/1차단·선정 예외 보존** | 검증 | P0 | 차단 | S04 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [QA-13 · 대체 이메일 인증·전환의 남은 실제 QA](tasks/QA-13.md) · **11/26 재점검·실제 0통과/6차단·선정 예외 보존** | 검증 | P0 | 차단 | S05 | [PREP-01](tasks/PREP-01.md) / [QA-04](tasks/QA-04.md) |
 | [POL-01 · 정식 약관·푸터 공개 정보 확정](tasks/POL-01.md#pol-01-approved-policy) · **정책과 문서 검증 범위** | 정책 결정 | P0 | 완료 | H04, O03 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md#dev-01-20261126-live-resume) · **실제 합성 가입 1회 통과, 정식 버전 대응·저장·실제 오류 근거 필요** | 개발 | P0 | 차단 | O03 | [POL-01](tasks/POL-01.md) |
+| [DEV-01 · 정식 약관 본문·동의 버전 연결](tasks/DEV-01.md#dev-01-20261126-viewer-resume) · **공개 뷰어와 실제 합성 가입 1회 확인, 정식 버전 대응·저장·실제 오류 근거 필요** | 개발 | P0 | 차단 | O03 | [POL-01](tasks/POL-01.md) |
 | [DEV-02 · 홈 푸터 약관·FAQ 링크와 고객문의 표시](tasks/DEV-02.md#dev-02-pol-01-approved-handoff) | 개발 | P0 | 대기 | H04 | [POL-01](tasks/POL-01.md) / [DEV-01](tasks/DEV-01.md) |
 | [QA-16 · P0 공개 준비 결과 취합](tasks/QA-16.md) | 검증 | P0 | 대기 | H02, H04, L01, L03, L11, L12, D01, D04, D07, D08, D09, M01, M02, O01, O03, O04, O05, O06, O07, O10, S04, S05, N01 | [DOC-002](tasks/DOC-002.md) / [QA-01](tasks/QA-01.md) / [QA-02](tasks/QA-02.md) / [QA-03](tasks/QA-03.md) / [QA-04](tasks/QA-04.md) / [QA-05](tasks/QA-05.md) / [QA-06](tasks/QA-06.md) / [QA-07](tasks/QA-07.md) / [QA-08](tasks/QA-08.md) / [QA-09](tasks/QA-09.md) / [QA-10](tasks/QA-10.md) / [QA-11](tasks/QA-11.md) / [QA-12](tasks/QA-12.md) / [QA-13](tasks/QA-13.md) / [DEV-01](tasks/DEV-01.md) / [DEV-02](tasks/DEV-02.md) / [QA-17](tasks/QA-17.md) / [DEV-63](tasks/DEV-63.md) / [DEV-65](tasks/DEV-65.md) |
 
@@ -792,3 +793,10 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 
 - 개발 웹 두 공개 약관 이동과 실제 가입 GET `200`을 확인했다. 합성 계정으로 조회한 두 `v1`을 한 번 제출해 `201` 및 시작 화면을 확인했다. 원문별 버전 대응과 저장·실제 오류 증거가 남아 있다. [작업 기록](tasks/DEV-01.md#dev-01-20261126-live) · [인증 QA](../../qa/auth.md#dev-01-20261126-actual)
 - 다음은 DEV-01의 남은 동의 증거 확인이다. DEV-02와 QA-16은 기존 선행을 따른다. [다음 첫 행동](tasks/DEV-01.md#dev-01-20261126-live-resume)
+
+## 2026-11-26 KST · DEV-01 공개 문서 권한 확인
+
+- 사용자가 두 승인 원문의 공개 공유를 편집자에서 뷰어로 바꾸도록 승인했다. 같은 링크에서 로그인 없이 두 문서를 읽을 수 있다. [권한 변경과 검증](tasks/DEV-01.md#dev-01-20261126-viewer) · [인증 QA](../../qa/auth.md#dev-01-20261126-viewer-qa)
+- 격리 개발 소스에서 약관 누락·버전 불일치 HTTP `409`와 정상 요청의 `201` 및 동의 두 행 저장을 검증했다. 관련 테스트 38건이 통과했다. [격리 환경과 명령](reviews/DEV-01.md#dev-01-20261126-viewer-review)
+- 사용자가 공유 개발 서버에서 실패 제출 1회와 예상 밖 합성 이력 잔존을 승인했다. 선택한 계정은 가입된 상태였고 다른 미가입 합성 계정이 없어 두 임시 창을 닫았다. 추가 가입 조회·제출은 0건이다. [공유 개발 환경의 재개 조건](tasks/DEV-01.md#dev-01-20261126-viewer-resume)
+- P0 DEV-01은 두 원문의 버전 대응과 실제 개발 환경의 동의 증거를 확인하는 일부터 재개한다. DEV-02와 QA-16은 기존 선행을 따른다. [첫 행동](tasks/DEV-01.md#dev-01-20261126-viewer-resume)
