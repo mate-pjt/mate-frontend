@@ -675,3 +675,17 @@ DEV-01에서는 비로그인 뷰어 링크, 승인 문서와 서버 반환 버�
 | AUTH-02 · 실제 버전 불일치 | 게시 계약의 `409 SOCIAL_SIGNUP_AGREEMENT_MISMATCH`와 기존 HTTP 대역 결과를 보존한다. | 이번 실제 `409`는 미실행이며 공유 약관에 영향 없는 승인 재현이 필요하다. |
 
 두 번째 OAuth의 `OAUTH_REQUEST_EXPIRED` 뒤 새 인증 한 번으로 가입폼에 도착했다. 사용자 승인 합성 가입은 1회로 마쳤다. 테스트 이력은 잔존하고, 로그아웃 `200`·이후 refresh `401`·비로그인 화면과 격리 창 종료를 확인했다. 앞선 임시 약관 실제 QA와 합성 HTTP 대역 결과를 보존한다. [DEV-01 실제 기록](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-live) · [다음 행동](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-live-resume)
+
+<a id="dev-01-20261126-viewer-qa"></a>
+
+## DEV-01 · 공개 문서 뷰어와 가입 동의 재검증 · 2026-11-26 KST
+
+| 사례와 환경 | 결과 | 근거 |
+| --- | --- | --- |
+| AUTH-03 · 공개 문서와 개발 웹 | 통과 | 두 승인 문서의 일반 액세스가 `링크가 있는 모든 사용자`의 `뷰어`임을 공유 화면에서 확인했다. 인증 정보가 없는 HTTP 클라이언트에서 개발 약관 경로를 각각 따라가 같은 승인 주소·제목과 `200`을 확인했다. [공유 역할 승인](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-viewer) |
+| AUTH-02 · 앞선 실제 신규 가입 | 실제 성공 경로 통과 이력 | 가입폼 조회 `200`의 두 `v1`을 승인한 합성 가입 1회에 제출해 `201`을 확인했다. 승인 원문과 버전의 대응, `api-test` 실행 빌드 및 그 가입의 동의 저장 결과는 확인이 필요하다. [이전 실제 QA](#dev-01-20261126-actual) |
+| AUTH-02 · 격리 백엔드의 누락과 다른 버전 | 격리 HTTP·DB 통과 | 게시 계약과 같이 각각 `409 SOCIAL_SIGNUP_AGREEMENT_MISMATCH`를 반환했다. 실패마다 격리 DB의 계정과 동의 건수가 바뀌지 않았다. [실행 환경](../development/figma-v01/reviews/DEV-01.md#dev-01-20261126-viewer-review) |
+| AUTH-02 · 격리 백엔드의 정확한 버전 | 격리 HTTP·DB 통과 | 같은 테스트 흐름의 조회는 `200`과 두 `v1`, 정상 제출은 `201`이었다. PostgreSQL에 `PRIVACY_POLICY v1`과 `TERMS_OF_SERVICE v1` 두 행과 각각의 동의 시각을 확인했다. [실행 환경](../development/figma-v01/reviews/DEV-01.md#dev-01-20261126-viewer-review) |
+| AUTH-02 · 공유 개발 서버 버전 불일치 | 미실행 · 미가입 합성 계정 없음 | 사용자가 실패 요청 1회와 예상 밖 합성 이력 잔존을 승인했다. 첫 계정은 가입된 상태로 `/bids`에 도착했고 추가 미가입 계정은 없었다. 이번 가입 조회·제출은 각 0건이며 두 시험 창과 프로필을 정리했다. [재개 조건](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-viewer-resume) |
+
+격리 HTTP는 합성 Google 인증 결과를 넣은 로컬 백엔드와 독립 PostgreSQL을 사용했다. 접근 토큰 발급은 테스트 대역으로 제공했다. 테스트 종료 시 Spring 테스트 환경이 발급한 데이터베이스를 정리한다. 앞선 개발 환경의 합성 가입 이력은 당시 승인과 증거를 따른다. [실제 QA](#dev-01-20261126-actual)
