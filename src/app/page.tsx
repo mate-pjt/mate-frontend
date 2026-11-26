@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { HomeAuthCta } from "@/components/home/home-auth-cta";
-import { RightArrowIcon, UpArrowIcon } from "@/components/icons";
+import { HomeFooter } from "@/components/home/home-footer";
+import { RightArrowIcon } from "@/components/icons";
 import { BidCard, type BidCardCategoryTone } from "@/components/ui/card";
 import { getHomeBids } from "@/data/bids/server";
 import { bidDetailHref } from "@/lib/bid-detail-url";
@@ -222,15 +223,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <footer className="h-[500px] bg-grayscale-900" />
-
-      <a
-        aria-label="페이지 상단으로 이동"
-        className="fixed bottom-12 right-6 z-20 inline-flex size-16 items-center justify-center rounded-full bg-grayscale-800 text-basic-white hover:bg-grayscale-700 sm:right-12"
-        href="#home-top"
-      >
-        <UpArrowIcon className="size-6" />
-      </a>
+      <HomeFooter />
     </div>
   );
 }
