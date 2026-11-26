@@ -189,3 +189,11 @@
 - 소유 검증 탭2개와 서버3919/3920/3921을 종료하고 해당 포트 listener 없음 확인. 합성 mock session은 탭 종료로 정리했고 실제 계정/데이터 변경·메일/문서/업무 서비스/배포는0건이다. 자동 source 수정0/3이며 최초 Turbopack 실패·대역 fixture 보완은 검증 기록에 보존했다.
 - 다음은 **DEV-10 하나를 선정/인계만 유지**한다. 현재 WBS의 P0 차단13·대기3과 P1 차단7·대기3은 실제 QA/약관/정책/선행 미충족을 유지한다. DEV-10은 P2 표 순서상 다음 후보·POL-07 완료·DEV-09 코드 선행 불필요가 근거다. 다음 첫 행동은 최신 main/Git·DEV-10/POL-07과 이번 저장 UI 제거 기준·날짜 계약/URL·경계/실행 대응·실제 QA 자원과 허용 범위를 확인해 자체 Brief를 제시하는 것이다. 이번 대화에서 상세 조사·설계·구현·검증/Git 전달을 시작하지 않는다.
 - Git 전달: runtime 제거, 현행 UI/데이터 접근 규칙, Task/QA/리뷰 근거를 목적별 작은 Conventional Commits(영어 type/한국어 설명)로 분리한다. 이번 명시 승인으로 push/PR·라벨·실제 최종 head CI/리뷰·main drift를 확인하고 정상 merge commit/main fast-forward를 수행한다. Chromatic 월간 한도만 이번 예외이며 실제 판정/PR/head/main SHA·clean은 실행 후 외부 receipt·PR/최종 보고로 확인한다. 사전 계획을 실제 병합 증거로 세지 않는다.
+
+<a id="dev-09-frontend-first-20261126"></a>
+
+## 2026-11-26 KST · L07 로컬 착수 근거
+
+- 사용자가 실제 통합 QA를 백엔드 개발자와 별도 일정에 두기로 했다. DEV-09의 직접 선행은 완료된 POL-07이다. 지역 계층 선택·지역 업체만·공동도급의 공개 조회와 URL 연결은 현재 계약으로 로컬에서 작업할 수 있다. [L07 정책](POL-07.md#pol-07-contract) · [WBS 진행 순서](../README.md#frontend-first-20261126)
+- 2026-11-26 개발 OpenAPI에서 `GET /api/v1/regions`의 `parentCode`·`depth`와 공개 목록 GET의 `regionCodes`·`regionOnly`·`jointContract`를 확인했다. 공개 지역 GET은 상위 16개와 하위 280개를 반환했다. 하위 지역 하나에 `regionOnly=true`, `jointContract=AVAILABLE`을 함께 보낸 `ALL` 요청은 `isSuccess=true`와 결과 0건을 반환했다. 포함·제외, 정렬·건수의 실제 기대값과 실행 버전 대응, 계정별 검증은 공동 일정에 남긴다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
+- 착수 첫 행동은 현행 지역 옵션 mapper가 상위만 반환하는 경계와 기존 필터 URL/툴바를 확인하고 L07 로컬 범위의 Brief·검증 계획을 만드는 것이다. 저장 보조 UI 교정과 현행 계정 변경 경계를 기준으로 삼는다. [지역 옵션 mapper](../../../../src/data/bids/api-mapper.ts) · [필터 툴바](../../../../src/components/bids/bid-filter-toolbar.tsx) · [기존 UI 교정](#dev-09-ui-cleanup-close)

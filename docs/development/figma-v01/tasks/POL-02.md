@@ -176,3 +176,18 @@
 - [backend 재조사](../audits/2026-11-13-backend-readiness.md)에서 현재 개발 OpenAPI GET200과 개인 필터 GET/PUT/reset/import-company 계약을 확인했다. 위11/05의403은 당시 관찰이며 현재 접근 불가 사유로 반복하지 않는다. 명세 접근과 실제 reset wire/권한/실행 대응·경계 fixture/계정 준비는 별개다.
 - DEV-63의 mock/HTTP 대역 로컬 교정과 DEV-55 후속 검증은 기존 이력으로 보존한다. 과거 reset Major 이력을 지우거나 실제 reset 해결/QA-10 실제12차단 해소로 확대하지 않는다. 전체 정책/저장·초기화/회사 import 의미와 실제 QA 잔여는 기존 재개 조건대로 유지한다.
 - 이번에는 이미 확인한 근거를 문서화했을 뿐 POL-02 자체 정책/실제 API 검증을 재개하지 않았다. 현재 상태는 WBS만 소유한다.
+
+<a id="pol-02-frontend-first-20261126"></a>
+
+## 2026-11-26 KST · 맞춤 공고 조회 정책 확인 인계
+
+- 사용자 결정에 따라 실제 통합 QA는 백엔드 개발자와 별도 일정에서 진행한다. 현재 프론트 후보를 재검토해 POL-02의 조회 정책 확인을 다음으로 선정했다. [WBS 진행 순서](../README.md#frontend-first-20261126)
+- 현재 계정의 개인 필터에 유효한 조건이 있을 때 공개 `ALL`을 자동 조회한다. 조건이 없으면 설정 안내와 전체 공고 이동을 제공한다. [기존 사용자 결정](#pol-02-approved-decisions)
+- 2026-11-26 백엔드 `dev` `f4860fd`와 게시 OpenAPI `3.1.0/v1`에서 `GET /api/v1/bid-notice-filters/current` 및 `GET /api/v1/bid-notices`의 `view=ALL`·정렬·페이지 계약을 확인했다. 기존 조회 계약으로 DEV-03의 로컬 범위를 정리할 수 있다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs) · [개인 필터 조회 소스](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/personalfilter/PersonalBidNoticeFilterController.kt#L24-L35)
+- 실제 실행 버전 대응과 계정별 통합, 저장·reset·회사 조건 가져오기의 실제 검증은 [QA-10 기록](QA-10.md#qa-10-resume)과 기존 재개 조건을 따른다. 이번 확인 범위는 공개 명세와 소스다. 정책 완료 판정과 DEV-03 구현은 각 작업의 검토·착수 단계에서 진행한다. 현재 상태는 [WBS](../README.md)가 관리한다.
+
+<a id="pol-02-next-action-20261126"></a>
+
+### 다음 첫 행동
+
+최신 소스·게시 명세에서 두 GET의 필수·nullable 필드, 빈 `SAVED`, `COMPANY_DEFAULT`, 검색 결과 0건과 오류, 정렬·페이지의 의미를 승인 정책과 대조한다. 결과를 POL-02 검토 기록에 남기고, 조회 전용 범위와 로그인 복귀·계정 변경의 검증 조건을 [DEV-03](DEV-03.md)에 인계한다.
