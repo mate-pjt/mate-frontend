@@ -212,7 +212,7 @@ src/data/
 - 공개 목록의 UI page는 1부터, API page는 0부터다. 조회 metadata에서 코드/라벨을 변환하고 KST를 표시한다. 기관 역할·nullable 금액과 결과 값을 그대로 구분한다.
 - 공개 상세 본문 404와 section 실패는 별도다. 실제 첨부는 backend 스트리밍 URL이고 mock 첨부는 `/mock/bid-attachment.txt`다. 명세 없는 정정 이력·지시사항을 만들지 않는다.
 - 수신 주소와 맞춤 이메일 ON/OFF endpoint는 독립적이다. 맞춤 공고 이메일은 매일 08:30 KST에 발송하며 이 채널에는 야간 옵션이 없다. 공고별 알림은 서비스 내부에서 전달한다. 개발 백엔드의 별도 상세·야간 설정 API와 현재 웹의 연결 범위, 대체 수신처 인증 시간은 [POL-19](../development/figma-v01/tasks/POL-19.md#pol-19-contract)를 따른다.
-- 가입 약관은 현재 개발용 임시 본문/버전이다. 정식 약관 도입·기존 동의 처리 정책은 별도 결정 사항이다.
+- 가입 조회의 `requiredAgreements`에서 두 필수 `code`·`version`을 받아 `agreementAcceptances`로 제출한다. 승인 문서 URL은 프런트의 법적 문서 경로가 관리한다. 원문과 환경별 현재 서버 버전의 대응은 실제 QA에서 확인한다. 기존 테스트 계정은 이관·재동의 대상에서 제외한다. [POL-01 정책](../development/figma-v01/tasks/POL-01.md#pol-01-approved-policy) · [DEV-01 URL 승인과 정식 검증](../development/figma-v01/tasks/DEV-01.md#dev-01-20261126-link-release)
 
 날짜 직접 입력은 [DEV-10](../development/figma-v01/tasks/DEV-10.md#dev-10-brief)에서 실제 HTTP 조회에 연결한다. ALL은 날짜3종·RESULT는 dateType 없는 개찰일 범위이고 CLOSING_SOON은 날짜 UI/query가 없다. 일반 URL도 같은 날짜 키를 쓰며 personal URL과 동일한 달력/조합 검증을 적용한다. 잘못된 날짜를 조용히 제거해 넓은 목록을 조회하지 않는다. 양쪽 빈값은 종류까지 해제하고 preset은 계산된 절대 날짜를 전송한다. 목록의 날짜 편집/초기화·내 맞춤 GET은 계정 무쓰기이며 기존 Repository 저장 계약을 화면에 재노출하지 않는다. mock/HTTP 대역 결과와 실제 경계 공고/실행 식별자가 필요한 실서버 QA는 별개다.
 
