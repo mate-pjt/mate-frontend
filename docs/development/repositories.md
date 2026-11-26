@@ -154,7 +154,7 @@ pnpm build-storybook
 
 Repository는 생성 시 주입 Clock으로 fixture를 한 번 만들고 조회 시 같은 Clock의 현재 시각으로 마감 여부를 판단한다. 마감 시각은 활성 목록에서 제외하고 CLOSING_SOON의3일 상한은 포함한다. 실제 Next 공개 Repository는 요청마다 생성되므로 합성 일정은 요청의 실제 시각 기준이다. 테스트는 고정 Clock과 시간 이동으로 동일 fixture의 경계를 검증한다.
 
-새 mock 검증은 [DEV-65](figma-v01/tasks/DEV-65.md)와 [홈](../qa/home.md#dev-65-mock-qa)·[목록](../qa/bid-list.md#dev-65-mock-qa)에 연결하며 기존 실제 API 통과/차단을 대체하지 않는다. 고급 지역/공동도급과 관련 공고 predicate는 각각 DEV-09·DEV-61의 별도 범위다.
+공개 기본 mock의 검색·시각 증거는 [DEV-65](figma-v01/tasks/DEV-65.md)와 [홈](../qa/home.md#dev-65-mock-qa)·[목록](../qa/bid-list.md#dev-65-mock-qa)에서 확인한다. 고급 지역·공동도급은 같은 `bids` 공급원에서 서울·부산 상위/하위 코드와 확인된 제한 없음·미확인·실패, 의무·가능을 사용한다. 지역 OR과 조건 그룹 AND를 페이지 분리 전에 적용한다. 관련 공고 predicate의 근거는 [DEV-61](figma-v01/tasks/DEV-61.md)을 따른다. [DEV-09 로컬 QA](../qa/bid-list.md#dev-09-l07-local-qa)
 
 ## 9. 소속 신청 취소의 로컬 상태
 

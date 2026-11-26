@@ -223,6 +223,8 @@ src/data/
 
 RESULT의 낙찰금액 조회는 URL과 `GET /api/v1/bid-notices`에서 `successfulBidAmountMin`·`successfulBidAmountMax`를 사용한다. 정수 원 입력과 양끝 포함을 적용하며 범위가 있으면 결과 값이 null인 행을 제외한다. 적용과 해제는 첫 페이지로 돌아가며, 다른 보기로 전환할 때 두 키를 지운다. HTTP는 `openAt,desc`와 서버 페이지·집계를 사용하고 mock은 행의 최종 낙찰금액을 페이지 자르기 전에 비교한다. 이 범위는 개인 필터 저장 모델에 속하지 않는다. [DEV-12 결정](../development/figma-v01/tasks/DEV-12.md#dev-12-brief) · [검증 범위](../qa/bid-list.md#dev-12-local-qa)
 
+공개 ALL·CLOSING_SOON·RESULT의 지역 조회는 `/api/v1/regions`의 활성 코드·이름·상위 관계를 사용해 `regionCodes`·`regionOnly`·`jointContract`를 기존 `GET /api/v1/bid-notices`로 보낸다. 구형 단일 `region` URL은 신규 지역 키가 없을 때 상위 코드로 찾는다. 잘못된 코드·옵션·지역 없이 적용한 ‘지역 업체만’은 목록 호출 전에 오류를 표시한다. 공개 보기는 URL에서 수정한 지역 조건을 유지하며 ALL 개인 URL의 값은 다른 보기로 넘기지 않는다. 팝오버 저장은 조회 조건을 적용한다. ‘내 맞춤’ 최신 GET과 기존 계정 저장 포트는 각각 기존 범위를 따른다. 조회의 지역 계층·승인 이력과 집계는 서버가 판정하며 mock은 로컬 계층과 알려진 제한·NO_ROWS·미확인·실패, 의무·가능을 구분한다. [DEV-09 계약과 범위](../development/figma-v01/tasks/DEV-09.md#dev-09-l07-brief)
+
 1. 현재 필요한 내부 입력/출력·Repository 계약 정의.
 2. mock으로 정상/빈/오류/변경/복원 화면 개발.
 3. 확인된 백엔드 계약으로 DTO·HTTP 구현과 필요한 mapper 추가.
