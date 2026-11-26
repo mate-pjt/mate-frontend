@@ -55,22 +55,29 @@ export const IndustryCategory: Story = {
     ),
 };
 
+const placeCities = [{ value: "11", label: "서울특별시" }, { value: "26", label: "부산광역시" }];
+const placeDistricts = [{ value: "11", label: "전체" }, { value: "11110", label: "종로구" }];
+
 export const PlaceCategory: Story = {
     render: () => (
         <div className="flex flex-wrap gap-5">
-            <PlaceCategoryPopover />
-            <PlaceCategoryPopover city="서울특별시" cityOptions={["서울특별시", "경기도"]} />
+            <PlaceCategoryPopover cityOptions={placeCities} />
+            <PlaceCategoryPopover city="11" cityOptions={placeCities} districtOptions={placeDistricts} />
             <PlaceCategoryPopover
-                city="서울특별시"
-                district="전체"
-                tag="서울특별시 전체"
+                city="11"
+                cityOptions={placeCities}
+                district="11"
+                districtOptions={placeDistricts}
+                tags={[{ value: "11", label: "서울특별시 전체" }]}
             />
             <PlaceCategoryPopover
-                city="서울특별시"
-                district="전체"
+                city="11"
+                cityOptions={placeCities}
+                district="11110"
+                districtOptions={placeDistricts}
                 localOnly
-                selectedCooperative="all"
-                tag="서울특별시 전체 · 전체 · 관내"
+                selectedCooperative="AVAILABLE"
+                tags={[{ value: "11110", label: "서울특별시 종로구" }, { value: "26", label: "부산광역시 전체" }]}
             />
         </div>
     ),

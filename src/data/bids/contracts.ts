@@ -6,6 +6,7 @@ import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
 export type BidView = "all" | "closing" | "result" | "recommended";
 
 export type BidDateFilter = Pick<PersonalFilterValues, "dateType" | "dateFrom" | "dateTo">;
+export type BidRegionFilter = Pick<PersonalFilterValues, "regionCodes" | "regionOnly" | "jointContract">;
 export type BidAmountFilter = Pick<PersonalFilterValues, "amountType" | "amountMin" | "amountMax">;
 export type BidResultAmountFilter = Pick<BidAmountFilter, "amountMin" | "amountMax">;
 export type BidAmountDraft = Pick<BidAmountFilter, "amountType"> & { amountMin: string; amountMax: string };
@@ -26,6 +27,8 @@ export type BidListQuery = BidFilters & {
   readonly page: number;
   readonly size: number;
   readonly personalFilter?: PersonalFilterValues;
+  readonly regionFilter?: BidRegionFilter;
+  readonly regionError?: string;
   readonly dateFilter?: BidDateFilter;
   readonly dateError?: string;
   readonly amountFilter?: BidAmountFilter;
@@ -41,11 +44,18 @@ export type BidListResult = {
   readonly size: number;
 };
 
+export type BidRegionOption = {
+  readonly code: string;
+  readonly label: string;
+  readonly name: string;
+  readonly parentCode: string | null;
+  readonly depth: number;
+};
+
 export type BidFilterOptions = {
-  readonly regions: readonly string[];
   readonly industries: readonly string[];
   readonly contractMethods: readonly string[];
-  readonly regionOptions: readonly { readonly code: string; readonly label: string }[];
+  readonly regionOptions: readonly BidRegionOption[];
   readonly industryOptions: readonly { readonly code: string; readonly label: string }[];
 };
 

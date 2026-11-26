@@ -1,7 +1,8 @@
 import type { BidKind } from "@/types/bid";
 import type { BidListItem } from "@/types/bid-list";
+import { isBidRegionCode } from "@/features/bid-notice-filters/region-filter";
 
-import type { BidFilterOptions, BidListResult } from "./contracts";
+import type { BidFilterOptions, BidListResult, BidRegionOption } from "./contracts";
 import type {
   BidNoticeListDto,
   BidNoticeSummaryDto,
@@ -69,12 +70,30 @@ export function mapBidFilterOptions(
   }
 
   return {
-    regions: topLevelRegions(regions.items).map((region) => region.fullName),
     industries: labeledIndustries(industries.items).map((option) => option.label),
     contractMethods: Object.values(contractMethodLabels),
-    regionOptions: regions.items.map((region) => ({ code: region.code, label: region.fullName })),
+    regionOptions: mapRegionOptions(regions.items),
     industryOptions: labeledIndustries(industries.items),
   };
+}
+
+function mapRegionOptions(items: readonly RegionMetadataDto[]): readonly BidRegionOption[] {
+  const options = items.map((item) => {
+    if (!item || !isBidRegionCode(item.code) || typeof item.fullName !== "string" || !item.fullName.trim() ||
+      typeof item.name !== "string" || !item.name.trim() || !Number.isSafeInteger(item.depth) || item.depth < 0 ||
+      (item.parentCode !== null && !isBidRegionCode(item.parentCode))) {
+      throw new Error("입찰공고 지역 정보 형식이 올바르지 않습니다.");
+    }
+    return { code: item.code, label: item.fullName, name: item.name, parentCode: item.parentCode, depth: item.depth };
+  });
+  const byCode = new Map(options.map(option => [option.code, option]));
+  if (byCode.size !== options.length || options.some(({ parentCode, depth }) => {
+    if (parentCode === null) return false;
+    const parent = byCode.get(parentCode);
+    return !parent || parent.parentCode !== null || depth !== parent.depth + 1;
+  })) throw new Error("입찰공고 지역의 상위 관계를 확인할 수 없습니다.");
+
+  return options;
 }
 
 export function findRegionCode(label: string, regions: RegionMetadataListDto): string {

@@ -5,14 +5,16 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import type { BidAmountFilter, BidDateFilter, BidFilterOptions, BidListQuery, BidListResult } from "@/data/bids/contracts";
+import type { BidAmountFilter, BidDateFilter, BidFilterOptions, BidListQuery, BidListResult, BidRegionFilter } from "@/data/bids/contracts";
 import { currentBidDateFilter, writeBidDateParams } from "@/features/bid-notice-filters/date-filter";
 import { bidAmountUrlKeys, currentBidAmountFilter, emptyBidAmountFilter, writeBidAmountParams, writeBidResultAmountParams } from "@/features/bid-notice-filters/amount-filter";
+import { bidRegionUrlKeys, currentBidRegionFilter, writeBidRegionParams } from "@/features/bid-notice-filters/region-filter";
 import { errorMessage } from "@/data/shared/errors";
 import { useAuthSession } from "@/features/auth/session";
 import { createPersonalFilterApplyController } from "@/features/bid-notice-filters/apply-controller";
 import { getPersonalFilter } from "@/data/personal-filters/client";
 import {
+  personalFilterUrlKeys,
   samePersonalFilter,
   writePersonalFilterParams,
   type PersonalFilterSnapshot,
@@ -109,7 +111,11 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
       return;
     }
     const next = new URLSearchParams(searchParams.toString());
-    writePersonalFilterParams(next);
+    const wasPersonal = next.get("personal") === "1";
+    next.delete("personal");
+    personalFilterUrlKeys.forEach(key => {
+      if (wasPersonal || !bidRegionUrlKeys.some(regionKey => regionKey === key)) next.delete(key);
+    });
     if (view !== state.view) writeBidResultAmountParams(next);
     if (view === "all") next.delete("view");
     else next.set("view", view);
@@ -119,8 +125,8 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     navigate(next);
   }
 
-  function changeFilter(key: keyof BidFilters, value?: string) {
-    if (state.personalFilter && key !== "agency") {
+  function changeFilter(key: "category" | "industry" | "contract", value?: string) {
+    if (state.personalFilter) {
       const next = new URLSearchParams(searchParams.toString());
       writeCurrentPersonalFilter(next, changePersonalFilter(state.personalFilter, key, value, filterOptions));
       next.delete("page");
@@ -130,14 +136,16 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     updateParams({ [key]: key === "category" && value === "construction" ? undefined : value, page: undefined });
   }
 
-  function writeCurrentPersonalFilter(next: URLSearchParams, filter: PersonalFilterValues) {
+  function writeCurrentPersonalFilter(next: URLSearchParams, filter: PersonalFilterValues, preserveAmountError = true) {
     writePersonalFilterParams(next, filter);
-    if (state.amountError) {
-      bidAmountUrlKeys.forEach(key => {
-        next.delete(key);
-        searchParams.getAll(key).forEach(value => next.append(key, value));
-      });
-    }
+    const invalidKeys = [
+      ...(preserveAmountError && state.amountError ? bidAmountUrlKeys : []),
+      ...(state.regionError ? bidRegionUrlKeys : []),
+    ];
+    invalidKeys.forEach(key => {
+      next.delete(key);
+      searchParams.getAll(key).forEach(value => next.append(key, value));
+    });
   }
 
   function resetSearchAndFilters() {
@@ -145,6 +153,14 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     writePersonalFilterParams(next);
     writeBidResultAmountParams(next);
     ["query", "category", "region", "industry", "contract", "agency", "period", "amount", "page"].forEach((key) => next.delete(key));
+    navigate(next);
+  }
+
+  function changeRegionFilter(regions: BidRegionFilter) {
+    const next = new URLSearchParams(searchParams.toString());
+    writeBidRegionParams(next, regions);
+    next.delete("region");
+    next.delete("page");
     navigate(next);
   }
 
@@ -160,7 +176,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   function changeAmountFilter(amounts: BidAmountFilter) {
     const next = new URLSearchParams(searchParams.toString());
     if (state.view === "result") writeBidResultAmountParams(next, amounts);
-    else if (state.personalFilter) writePersonalFilterParams(next, { ...state.personalFilter, ...amounts });
+    else if (state.personalFilter) writeCurrentPersonalFilter(next, { ...state.personalFilter, ...amounts }, false);
     else writeBidAmountParams(next, amounts);
     next.delete("amount");
     next.delete("page");
@@ -211,7 +227,8 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
 
   const personal = state.personalFilter;
   const personalDisplay = personal ? personalFilterDisplay(personal, filterOptions) : null;
-  const currentFilter = state.view === "all" && !state.dateError && !state.amountError ? currentPersonalFilter(state, filterOptions) : null;
+  const currentFilter = state.view === "all" && !state.dateError && !state.amountError && !state.regionError ? currentPersonalFilter(state, filterOptions) : null;
+  const regionFilter = currentBidRegionFilter(state, filterOptions.regionOptions);
   const dateFilter = state.dateFilter ?? currentBidDateFilter(state);
   const amountFilter = state.view === "result"
     ? { ...emptyBidAmountFilter(), ...state.resultAmountFilter }
@@ -221,9 +238,6 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     category: personal?.bidTypes.length === 1
       ? ({ CONSTRUCTION: "construction", SERVICE: "service", GOODS: "purchase" } as const)[personal.bidTypes[0]]
       : state.category,
-    region: personal?.regionCodes.length === 1
-      ? filterOptions.regionOptions.find((option) => option.code === personal.regionCodes[0])?.label
-      : state.region,
     industry: personal?.industryCodes.length === 1
       ? filterOptions.industryOptions.find((option) => option.code === personal.industryCodes[0])?.label
       : state.industry,
@@ -255,6 +269,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
             filterLabels={personalDisplay?.labels}
             filterOptions={filterOptions}
             filters={filters}
+            locationSearch={search}
             renderLeadingAction={state.view === "all" && (!personalApplied || applying) ? (closeFilters) => (
               <>
                 <Button
@@ -276,7 +291,10 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
             onFilterChange={changeFilter}
             onDateFilterChange={changeDateFilter}
             onAmountFilterChange={changeAmountFilter}
+            onRegionFilterChange={changeRegionFilter}
             personalMode={Boolean(personal)}
+            regionFilter={regionFilter}
+            regionQueryError={state.regionError}
             view={state.view}
           />
           {state.view === "all" && authState.status === "error" && (
@@ -315,8 +333,9 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
         </div>
 
         <div className="mt-6">
-          {state.dateError || state.amountError ? (
+          {state.dateError || state.amountError || state.regionError ? (
             <div className="rounded-lg border border-grayscale-200 p-6">
+              {state.regionError && <p className="text-danger type-body-5" role="alert">{state.regionError}</p>}
               {state.dateError && <p className="text-danger type-body-5" role="alert">{state.dateError}</p>}
               {state.amountError && <p className="text-danger type-body-5" role="alert">{state.amountError}</p>}
               <p className="mt-2 text-grayscale-600 type-body-7">위 필터에서 잘못된 조건을 수정하거나 초기화해 주세요.</p>

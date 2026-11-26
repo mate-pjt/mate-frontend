@@ -3,6 +3,7 @@ import type { PersonalFilterValues } from "@/features/bid-notice-filters/model";
 import { emptyPersonalFilter } from "@/features/bid-notice-filters/model";
 import { currentBidDateFilter, presetBidDateFilter } from "@/features/bid-notice-filters/date-filter";
 import { currentBidAmountFilter, presetBidAmountFilter } from "@/features/bid-notice-filters/amount-filter";
+import { currentBidRegionFilter } from "@/features/bid-notice-filters/region-filter";
 
 const bidTypeCodes = { construction: "CONSTRUCTION", service: "SERVICE", purchase: "GOODS" } as const;
 const bidTypeLabels = { CONSTRUCTION: "공사", SERVICE: "용역", GOODS: "물품" } as const;
@@ -11,12 +12,8 @@ const contractMethodLabels = { GENERAL: "일반경쟁", LIMITED: "제한경쟁",
 
 export function currentPersonalFilter(state: BidListQuery, options: BidFilterOptions): PersonalFilterValues {
   if (state.personalFilter) return state.personalFilter;
-  const filter = emptyPersonalFilter();
+  const filter = { ...emptyPersonalFilter(), ...currentBidRegionFilter(state, options.regionOptions) };
   if (state.category) filter.bidTypes = [bidTypeCodes[state.category]];
-  if (state.region) {
-    const code = options.regionOptions.find((option) => option.label === state.region)?.code;
-    if (code) filter.regionCodes = [code];
-  }
   if (state.industry) {
     const code = options.industryOptions.find((option) => option.label === state.industry)?.code;
     if (code) filter.industryCodes = [code];
@@ -31,17 +28,13 @@ export function currentPersonalFilter(state: BidListQuery, options: BidFilterOpt
 
 export function changePersonalFilter(
   filter: PersonalFilterValues,
-  key: "category" | "region" | "industry" | "contract" | "period" | "amount",
+  key: "category" | "industry" | "contract" | "period" | "amount",
   value: string | undefined,
   options: BidFilterOptions,
 ): PersonalFilterValues {
   switch (key) {
     case "category":
       return { ...filter, bidTypes: value && value in bidTypeCodes ? [bidTypeCodes[value as keyof typeof bidTypeCodes]] : [] };
-    case "region": {
-      const code = options.regionOptions.find((option) => option.label === value)?.code;
-      return { ...filter, regionCodes: code ? [code] : [], regionOnly: code ? filter.regionOnly : false };
-    }
     case "industry": {
       const code = options.industryOptions.find((option) => option.label === value)?.code;
       return { ...filter, industryCodes: code ? [code] : [] };
