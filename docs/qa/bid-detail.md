@@ -329,3 +329,26 @@
 | DETAIL-09 | 정상 용역에서 `Space`/`Enter`로 숫자→억·만→숫자를 왕복했다. 사업금액과 URL을 보존했다. 테스트 탭의 `writeText` 대역에서 현재 URL 인자와 성공 알림을 확인했다. 4개 응답의 `originalNotice.available`은 `false`였고, `header.noticeUrl`이 표시된 원문 링크 두 곳의 HTTPS 호스트·새 탭 속성을 대조했다. | 실제 OS 클립보드·복수 분류 URL, 좁은 화면의 물품·참여업체 표 및 승인된 외부 원문 접근이 남았다. |
 
 14:36 KST에 소유 탭과 Next·중계 포트를 닫고 503 제어 파일을 제거했다. 재개에는 공개 공고·첨부 테스트 자료 담당이 제공하는 승인된 합성 표본과 독립 기대값, 스트림 사용·정리 범위, 배포 담당의 실행 SHA/digest 대응이 필요하다. 개인 담당자 배정은 미확인이다. 계정·업무 데이터 변경과 외부 원문 이동은 0건이다. 정리 및 검토 근거는 [QA-03 리뷰](../development/figma-v01/reviews/QA-03.md#qa-03-20261125-review)에 연결한다.
+
+<a id="dev-14-20261126-date-qa"></a>
+
+## 2026-11-26 KST · DEV-14 공개 상세 날짜 응답 점검
+
+날짜 표시 범위의 재개 근거를 확인했다. `api-test.mate-bid.com`에서 14:03:18~14:03:34 및 14:04:17~14:04:52 KST에 `curl`·`jq --stream`으로 비로그인 공개 GET을 실행했다. 공고 식별자는 목록과 상세 요청 대응에만 사용했고, 응답에서 날짜·상태·범위 등 필요한 값만 선별했다. [재개 점검의 선정 근거](../development/figma-v01/tasks/DEV-14.md#dev-14-20261126-date-readiness) · [POL-09 후속 기준](#pol-09-followup)
+
+| 조회 범위 | 실제 응답 |
+| --- | --- |
+| `view=ALL&page=0&size=100&sort=bidCloseAt,asc` | 공개 보기 42행, 상세 42건 HTTP 200·`isSuccess=true`. 용역 38·공사 4건이었다. |
+| `view` 생략, `page=0&size=100&sort=noticePublishedAt,desc` | 공고 단위 목록의 보고 전체 2,531행 중 첫 100행을 읽었다. `ALL`과 겹친 2건 제외 후 추가 상세 98건이 HTTP 200·`isSuccess=true`였다. 공사 66·용역 31·물품 1건이었다. |
+| 상세 140건의 범위 | 공사 70·용역 69·물품 1건, 정상 120·정정 11·재입찰 3·취소 6건이었다. 상세 `scope`는 `NOTICE` 70·`CLASSIFICATION` 70이며 `selectedBidClsfcNo`가 채워진 상세는 0건이었다. |
+
+| POL-09 후속 사례 | 확인한 증거 | 남은 검증 |
+| --- | --- | --- |
+| SUPP-01·02 원문 | `originalNotice.available=false` 140건. | 본문 계약·표시와 링크는 해당 사례의 실제 검증 대기다. |
+| SUPP-03 현장설명 | `siteExplanationAt=null`과 `siteExplanationAvailability=UNKNOWN` 140건. `siteExplanationRequirement`의 `value=null`·`availability=UNKNOWN` 140건이다. `isSiteExplanationRequired=false` 140건, `siteExplanationRequired` 키 0건으로 게시 명세와 일치했다. | 원천 Y/N과 일정 `PROVIDED`·`NOT_PROVIDED`, 명시적 분류별 표본을 기다린다. 호환 `false`만으로 참석이나 일정 유무를 판정할 수 없다. |
+| SUPP-04 기준일 | `dataInfo.noticeSourceVersionAt`의 `+09:00` date-time 140건. 11건은 게시 시각과 wire 문자열이 달랐다. | 기준 시각의 변경일 우선·등록일 대체에 대한 독립 원천 기대값과 `null` 표본이 필요하다. |
+| SUPP-05 수집일 | `dataInfo.noticeLastFetchedAt=null` 140건. | 기본 목록 원문의 수집 시각이 제공된 검증 표본이 필요하다. |
+| SUPP-06~08 시각·오류·회귀 | 새 필드의 실제 offset 또는 결측을 위 범위에서 관찰했다. | KST 경계·정밀도·부분 실패·기존 UI와 공동수급 일정·원문 링크 회귀는 대기다. |
+| SUPP-09 Figma·브라우저 | Figma MCP로 두 공사 상태의 날짜 레이어 라벨을 작업 기록에 연결했다. | 새 제품 표시의 브라우저 대조와 모바일·키보드·오류 상태 확인은 대기다. |
+
+버전 확인용 공개 `actuator/info`·`actuator/health/readiness`는 404였고 목록·상세에서 확인 대상 버전 헤더는 없었다. 성공한 [테스트 배포 기록](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088/job/139596909303) 및 [게시 명세](https://api-test.mate-bid.com/v3/api-docs)와 요청 처리 프로세스의 SHA·digest 대응은 별도 근거다. 제품 브라우저·mock/HTTP 대역·인증·첨부·원문 이동·업무 변경은 미실행이다. SUPP 신규 통과 0건이며 [QA-03 누적 1통과·8차단](#qa-03-20261125-detail)을 보존한다.
