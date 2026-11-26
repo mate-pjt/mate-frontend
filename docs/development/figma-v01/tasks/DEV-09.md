@@ -197,3 +197,57 @@
 - 사용자가 실제 통합 QA를 백엔드 개발자와 별도 일정에 두기로 했다. DEV-09의 직접 선행은 완료된 POL-07이다. 지역 계층 선택·지역 업체만·공동도급의 공개 조회와 URL 연결은 현재 계약으로 로컬에서 작업할 수 있다. [L07 정책](POL-07.md#pol-07-contract) · [WBS 진행 순서](../README.md#frontend-first-20261126)
 - 2026-11-26 개발 OpenAPI에서 `GET /api/v1/regions`의 `parentCode`·`depth`와 공개 목록 GET의 `regionCodes`·`regionOnly`·`jointContract`를 확인했다. 공개 지역 GET은 상위 16개와 하위 280개를 반환했다. 하위 지역 하나에 `regionOnly=true`, `jointContract=AVAILABLE`을 함께 보낸 `ALL` 요청은 `isSuccess=true`와 결과 0건을 반환했다. 포함·제외, 정렬·건수의 실제 기대값과 실행 버전 대응, 계정별 검증은 공동 일정에 남긴다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)
 - 착수 첫 행동은 현행 지역 옵션 mapper가 상위만 반환하는 경계와 기존 필터 URL/툴바를 확인하고 L07 로컬 범위의 Brief·검증 계획을 만드는 것이다. 저장 보조 UI 교정과 현행 계정 변경 경계를 기준으로 삼는다. [지역 옵션 mapper](../../../../src/data/bids/api-mapper.ts) · [필터 툴바](../../../../src/components/bids/bid-filter-toolbar.tsx) · [기존 UI 교정](#dev-09-ui-cleanup-close)
+
+<a id="dev-09-l07-brief"></a>
+
+## 2026-11-26 KST · L07 구현 Brief와 시작 체크포인트
+
+- 작업 유형은 개발이며 원본은 L07이다. 시작은 `main`과 `origin/main`이 같은 `f4bdba71d29a96e3ed70fd7c285f421632a85246`이고 작업트리는 clean이었다. POL-07 PR #49, DEV-09 조사 PR #61과 UI 교정 PR #62, DEV-03 PR #145가 반영됐다. 이전 DEV-09 브랜치는 조사와 UI 교정을 각 PR에서 마쳤으므로 최신 main에서 `feat/dev-09-advanced-region-filters`를 만들었다.
+- 제품 근거는 11월 9일 사용자의 [POL-07 D1과 지역 정책](POL-07.md#pol-07-contract), 11월 12일 사용자의 [목록 저장 UI 교정](#dev-09-ui-cleanup-brief), 11월 26일 사용자의 [프론트 우선과 실제 통합 QA 공동 일정](../README.md#frontend-first-20261126)이다. 이번 요청에서 사용자 승인으로 단일 개발·두 리뷰와 목적별 커밋·push·PR/CI·정상 병합·로컬 main 동기화 및 이 PR의 Chromatic 월간 한도 예외를 적용한다.
+- 공개 ALL·CLOSING_SOON·RESULT에서 시·도와 시·군·구 복수 선택, 지역 업체만·공동도급, 적용·초기화·태그 삭제/취소·URL 복원을 연결한다. 선택지는 `parentCode`·`depth`를 따르고 코드는 라벨과 구분한다. URL은 중복 제거한 최대 50개와 공개 GET의 불리언/enum을 사용한다. 지역 0개에서 `regionOnly=true`와 잘못된 코드·옵션은 목록 요청 전에 막는다. 마지막 지역 해제 시 종속 옵션을 해제한다. 조건 적용은 첫 페이지에 반영하고, 목록이 돌려준 행·정렬·페이지·건수를 사용한다. 날짜·금액·추천 보기의 기능 변경, 개인 저장·초기화·회사 가져오기, 실제 업무 변경·운영·배포는 이번 범위에서 제외한다.
+- 비차단 구현 선택은 Figma의 시·도 탐색 다음에 ‘전체’ 또는 시·군·구를 선택하고 코드마다 태그를 붙이는 방식이다. 같은 코드 선택은 중복되지 않으며 상위와 하위를 모두 고르면 각 코드는 OR 의미를 갖는다. 공개 조건은 공개 보기 이동에 유지하고 ALL 개인 URL은 기존 문맥을 유지한다. 선택 가능한 지역은 공개 metadata로 제공하며 현재 목록의 지역 제한·참가 자격 판정은 서버가 맡는다.
+- [Figma 2080:64254](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2080-64254) 기본 `2080:64253`, 시·도 `2080:64255`, 지역 전체 `2080:64485`, 전체·관내 `2080:64356`의 레이어와 캡처를 확인했다. 폭 380/높이 400·24px 패딩, 두 Select와 지역 업체만 체크박스, 공동도급 세 선택지, 태그와 초기화/저장을 재사용한다. 복수 태그, 지역 없는 공동도급, 마지막 지역 해제 및 오류 안내는 POL-07 동작에 필요한 상태다. 화면 전체에 대한 별도 예외 승인은 기록돼 있지 않다. [2080:64609](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=2080-64609)는 현재 Figma 도구에서 찾지 못해 위 날짜별 관찰로만 참고한다.
+- 백엔드 소유 dev `f4860fd9b87329d50169eb0025dca3f2c5fa2125`에서 [공개 요청 검증](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/bid/request/BidNoticeListRequest.kt), [참가가능지역 조건](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/restriction/BidNoticeRegionEligibilityConditionBuilder.kt)과 [분류 행의 공동도급](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/out/persistence/bid/publiclist/PublicBidNoticeListRowQuerySpecFactory.kt)을 대조했다. [개발 배포 #8072722595](https://api.github.com/repos/mate-pjt/mate-backend/deployments/8072722595)는 같은 SHA의 11월 26일 09:08 KST 성공 기록이다. [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)는 OpenAPI 3.1.0/v1이고 공개 지역 GET은 상위 16·하위 280개와 모든 하위의 유효한 상위 참조를 반환했다. 실행 중 SHA와 실제 경계 공고/계정 결과는 공동 일정의 확인 항목이다.
+- 수정 순서는 `bids` 계약·옵션 mapper와 `bid-notice-filters` URL 검증 → HTTP·mock 조건 → `/bids`, 목록·툴바·기존 지역 팝오버와 Storybook → L07 회귀 검증 → 이 기록·WBS·목록/개인 QA·관련 사용 문서와 리뷰다. 위험은 URL 오류에서 넓은 조회가 일어나거나 mock이 미확인·실패를 제한 없음으로 취급하는 것이다. 실제 목록 경계의 AND·OR/계층·공동도급 분리는 합성 자료로 확인한다.
+- 환경파일 없는 검증 복제본과 Node 22.20.0에서 `pnpm test`, `pnpm lint`, API/mock/hybrid `pnpm build`, `pnpm build-storybook`, `git diff --check`를 실행한다. 실제 Next와 브라우저에서 합성 mock/API HTTP 대역의 기본·복수·해제·잘못된 URL 복구·보기별 query/count/page·모바일/키보드·계정 쓰기 0건을 확인한다. 개발 서버의 ADV/ADVP 및 관련 QA 판정 이력은 유지한다. 다음 행동은 지역 metadata 모델과 URL 읽기·쓰기 경계를 연결하는 것이다.
+
+### L07 구현 체크포인트
+
+- 같은 브랜치와 기준 SHA에서 지역 hierarchy·URL validation·서버 공개 GET과 mock predicate, controlled 팝오버·툴바 연결을 편집했다. 기존 그룹 일곱 개와 공개 진입점, mock 공고 수와 기본 목록/홈 정렬, 개인 Repository 읽기·쓰기 동작은 유지한다. 지역 오류 시 `regionError`를 표시하고 목록 요청을 건너뛴다. 저장 버튼은 조회 URL을 적용한다.
+- 지역 mock 자료에 상·하위와 NO_ROWS/pending/failed, 의무/가능의 예시를 두었다. 공개 보기 전환은 공개 지역 조건을 가져가고 ALL 맞춤 URL은 다른 보기에 가져가지 않는다. 가입, 개인 필터 mutation과 실제 업무 서버 QA는 실행하지 않았다.
+- 다음 행동은 Node 회귀, lint·구성별 빌드, Next mock/API 대역·hybrid의 브라우저 검증이다. 코드 자동 수정 0/3. 생성한 검증 자료는 환경파일과 분리한 작업 디렉터리에 보존한다.
+
+<a id="dev-09-l07-verification"></a>
+
+### L07 검증과 문서 갱신 체크포인트
+
+| 구분 | 실행과 결과 |
+| --- | --- |
+| Node 자동 검증 | Node 22.20.0·pnpm 11.3.0의 `pnpm test` 45파일·1,318건 통과. 새 지역 검사는 24건이다. `pnpm lint` 통과. |
+| 빌드 | API·mock·hybrid의 `pnpm build` 3개와 `pnpm build-storybook` 통과. mock Preview 빌드의 운영 실행을 기존 guard가 거부했다. Storybook은 Vite chunk 크기 경고를 남겼다. |
+| 격리 Chrome 158 | Next mock 23개·API loopback 대역 15개·hybrid 3개 확인 통과. 대역 공개 GET 인증 헤더 0건, 개인 GET 14건과 업무 쓰기 0건이다. 50개·URL 오류·정상 0건·503 재시도, 2개 분류의 상세 링크·페이지·총건수와 키보드/320·390px를 확인했다. |
+| 개발 서버 | 소유 dev·개발 배포·게시 OpenAPI와 공개 지역 metadata를 확인했다. ADV-01~04/12 지역·ADVP의 실제 통합 실행 및 신규 통과는 0건이다. |
+| 근거 | [공개 목록 QA](../../../qa/bid-list.md#dev-09-l07-local-qa) · [개인 QA](../../../qa/personal-bid-filter.md#dev-09-l07-personal-qa) · [Chrome 결과와 소스 지문](../../../qa/artifacts/dev-09-l07/browser-results.json) |
+
+- 브라우저 첫 시각 확인에서 지역 Select의 공용 `justify-center`가 적용돼 화살표가 중앙으로 몰렸다. 이 팝오버의 두 Select에 기존 프로젝트의 `justify-between!` 패턴을 적용하고 그룹 간격을 시안과 맞췄다. 최종 자동 검사·세 빌드·브라우저를 다시 실행했다. 코드 수정 1/3이다. 복제본 의존성 재설치와 HTTP 대역의 보조 endpoint/Next 스트리밍 중 숨겨진 요소를 기다린 조치는 검증 환경에서 처리했다. Aside 연결 오류 뒤 격리 Chrome으로 실행했다.
+- Documentation Update Check에서 architecture와 data-access의 새 지역 경계, Repository 개발 가이드의 fixture, plan·WBS·이 기록과 두 QA 문서를 갱신했다. `base.md`와 `harness.md`에는 패키지·실행/역할 변경이 없다. 신규 반복 실수 규칙이 없어 `ai-failures.md` 갱신은 필요하지 않다. 원본 79개·WBS 114개·의존성 156개와 기존 흐름을 대조했다. L07 매핑은 현행 `coverage.md`를 사용한다.
+- 다음 행동은 문서 링크/앵커·상태·원본 보존과 `git diff --check`를 확인하고, [ai-review와 verifier](../reviews/DEV-09-l07.md#dev-09-l07-review)로 승인 범위와 최종 diff를 검토하는 것이다.
+
+- 독립 verifier 1차는 열린 지역 팝오버에서 브라우저 뒤로 갔을 때 이전 공동도급 초안이 남는 Major 1건으로 FAIL이다. 실제 Chrome에서 재현했다. `BidFilterToolbar`에 브라우저 이력 이동 시 열린 지역 팝오버를 닫는 처리를 추가했다. 코드 수정 누적 2/3이다.
+- 이력 이벤트 수정 뒤 `pnpm test` 1,318건·lint·세 Next 빌드·Storybook과 운영 mock guard를 다시 확인했다. 이 시점의 Chrome 42개 확인은 mock 24개·HTTP 대역 15개·hybrid 3개다. M22는 열린 초안의 뒤로/앞으로 이동과 재개방에서 현재 주소를 읽는 회귀다. 이 시점의 대역에서 목록 GET 16건의 인증 헤더 0건, 개인 GET 9건과 업무 쓰기 0건을 확인했다.
+
+- 독립 verifier 2차에서 목록 바깥의 ‘현재 조건 초기화’에 Tab·Enter로 이동하면 `router.push`가 이전 지역 초안을 닫지 않는 Major 1건을 재현했다. `BidListClient`에서 현재 목록 query를 넘기고 `BidFilterToolbar`는 지역 팝오버를 연 주소와 현재 주소가 다를 때 닫도록 바꿨다. 코드 수정 누적 3/3이다. M22와 키보드 전체 조건 초기화 M23, 자동 검사·문서·두 리뷰를 새 diff에서 확인한다.
+- 마지막 수정 뒤 `pnpm test` 1,318건·lint·세 Next 빌드·Storybook·운영 mock guard를 다시 확인했다. Chrome 43개 확인은 mock 25개·HTTP 대역 15개·hybrid 3개며 M22와 M23을 모두 통과했다. 대역 목록 GET 18건의 인증 헤더 0건, 개인 GET 11건과 업무 쓰기 0건을 확인했다. [최종 브라우저와 소스 지문](../../../qa/artifacts/dev-09-l07/browser-results.json)
+
+<a id="dev-09-l07-close"></a>
+
+### L07 로컬 완료와 Git 전달 범위
+
+- [x] 공개 세 보기의 지역 계층·복수 선택·지역 업체만·공동도급·적용과 URL 복원을 확인했다.
+- [x] 구형 URL, 50개와 잘못된 조합, mock과 HTTP 대역의 조회·서버 페이지·계정 무쓰기, 키보드 및 모바일을 확인했다.
+- [x] 최종 소스 자동 검사·Documentation Update Check·independent verifier와 ai-review를 통과했다. 최초 두 독립 리뷰의 Major와 수정 뒤 회귀를 보존한다. [최종 소스 검토](../reviews/DEV-09-l07.md#dev-09-l07-final-source-review)
+- [ ] 개발 서버의 ADV-01~04/12 지역·ADVP 통합은 공동 일정에서 실행한다. 실행 대응, 합성 공고와 두 계정, 기대값 및 승인된 오류·복구 조건이 필요하다. 기존 사례의 결과와 이전 승인 이력을 따르며 이번 실제 통합 실행·신규 통과는 각 0건이다.
+
+격리 Chrome 세 세션과 3937~3942의 소유 검증 프로세스를 정리했다. 문서의 종료·인계 변경은 링크/원본·상태·diff 검사와 두 리뷰의 최종 확인을 거친다. 현재 요청의 Git 전달은 `feat/dev-09-advanced-region-filters`의 최종 head·리뷰·검사를 확인해 정상 merge commit으로 진행한다. Chromatic 월간 한도에 관한 이번 승인만 적용한다. 전달 결과는 [이 브랜치의 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-09-advanced-region-filters)과 최종 Git 확인에서 추적한다.
+
+다음 작업 없음. WBS 대기 16개는 선행 미충족이고 준비는 0개다. 프론트 우선 후보의 버전 출처·표시 기준·신호와 자원·날짜 표본 또는 본문 계약에 재개할 새 근거를 확보하면 WBS의 우선순위와 해당 Task의 직접 선행을 다시 대조한다. 이번에는 다른 Task의 요구사항 Gate나 구현을 시작하지 않았다. [후보 순서](../README.md#frontend-first-20261126) · [인계 규칙](../workflow.md#next-task-selection)
