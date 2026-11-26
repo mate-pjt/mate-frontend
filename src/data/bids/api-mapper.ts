@@ -46,7 +46,8 @@ export function mapBidListResult(data: BidNoticeListDto): BidListResult {
     !Number.isSafeInteger(data.page) || data.page < 0 ||
     !Number.isSafeInteger(data.size) || data.size < 1 ||
     !Number.isSafeInteger(data.totalElements) || data.totalElements < 0 ||
-    !Number.isSafeInteger(data.totalPages) || data.totalPages < 0
+    !Number.isSafeInteger(data.totalPages) || data.totalPages < 0 ||
+    typeof data.hasNext !== "boolean" || data.items.length > Math.min(data.totalElements, data.size)
   ) {
     throw new Error("입찰공고 목록 응답 형식이 올바르지 않습니다.");
   }
@@ -99,21 +100,28 @@ export function findContractMethodCode(label: string): ContractMethodDto {
 }
 
 function mapBidListItem(item: BidNoticeSummaryDto): BidListItem {
-  if (!Number.isSafeInteger(item.id) || item.id < 1 || !item.bidNtceNo || !item.noticeName) {
+  if (!item || !Number.isSafeInteger(item.id) || item.id < 1 ||
+    typeof item.bidNtceNo !== "string" || !item.bidNtceNo || typeof item.noticeName !== "string" || !item.noticeName) {
     throw new Error("입찰공고 항목 응답 형식이 올바르지 않습니다.");
   }
 
   const kind = bidKinds[item.bidType];
   if (!kind) throw new Error("입찰공고 종류 응답 형식이 올바르지 않습니다.");
 
+  const row = item.row;
+  if (row != null && (
+    !Number.isSafeInteger(row.knownClassificationCount) || row.knownClassificationCount < 0 ||
+    (row.kind === "CLASSIFICATION"
+      ? typeof row.bidClsfcNo !== "string" || !/^(0|[1-9][0-9]{0,49})$/.test(row.bidClsfcNo)
+      : row.kind !== "NOTICE" || row.bidClsfcNo != null)
+  )) throw new Error("입찰공고 목록의 분류 행을 확인하지 못했습니다.");
+
   const result = item.resultSummary;
-  const baseAmount = item.row?.kind === "CLASSIFICATION"
-    ? item.row.baseAmount
-    : item.row?.baseAmount ?? item.basePrice;
+  const baseAmount = row?.kind === "CLASSIFICATION" ? row.baseAmount : row?.baseAmount ?? item.basePrice;
 
   return {
     id: String(item.id),
-    classificationNo: item.row?.bidClsfcNo ?? null,
+    classificationNo: row?.bidClsfcNo ?? null,
     noticeNumber: item.bidNtceOrd ? `${item.bidNtceNo}-${item.bidNtceOrd}` : item.bidNtceNo,
     title: item.noticeName,
     kind,

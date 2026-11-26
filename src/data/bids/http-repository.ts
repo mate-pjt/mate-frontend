@@ -45,7 +45,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
   });
 
   const repository: BidListRepository = {
-    async getBidList(query) {
+    async getBidList(query, signal) {
       if (query.view === "recommended") {
         throw new Error("맞춤 입찰공고 목록 API는 준비 중입니다.");
       }
@@ -89,7 +89,7 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
       }
       if (resultAmounts) writeBidResultAmountParams(params, resultAmounts);
 
-      const result = await getData<BidNoticeListDto>(`/api/v1/bid-notices?${params}`);
+      const result = await getData<BidNoticeListDto>(`/api/v1/bid-notices?${params}`, signal);
       return mapBidListResult(result);
     },
 
@@ -99,12 +99,14 @@ export function createHttpBidListRepository(apiBaseUrl: string, fetcher: typeof 
     },
   };
 
-  async function getData<T>(path: string): Promise<T> {
+  async function getData<T>(path: string, signal?: AbortSignal): Promise<T> {
     let response: Response;
     try {
       response = await fetcher(`${apiBaseUrl}${path}`, {
         headers: { Accept: "application/json" },
         cache: "no-store",
+        credentials: "omit",
+        signal,
       });
     } catch {
       throw new Error("입찰공고 서버에 연결하지 못했습니다.");

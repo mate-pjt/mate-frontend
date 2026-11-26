@@ -22,16 +22,10 @@ import {
 import { BidFilterToolbar } from "./bid-filter-toolbar";
 import { BidListEmpty } from "./bid-list-empty";
 import { BidListSearch } from "./bid-list-search";
-import { type BidFilters, type BidView } from "./bid-list-model";
+import { bidListLocationParams, bidPageSizeOptions, type BidFilters, type BidView } from "./bid-list-model";
 import { BidListTable } from "./bid-list-table";
 import { BidViewSelector } from "./bid-view-selector";
 import { changePersonalFilter, currentPersonalFilter, personalFilterDisplay } from "./personal-filter-adapter";
-
-const pageSizeOptions = [
-  { label: "10개씩 표시", value: "10" },
-  { label: "20개씩 표시", value: "20" },
-  { label: "30개씩 표시", value: "30" },
-] as const;
 
 type BidListClientProps = {
   readonly filterOptions: BidFilterOptions;
@@ -76,12 +70,6 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   }, [accountId]);
 
   useEffect(() => {
-    if (state.view !== "recommended" || authState.status !== "anonymous") return;
-    const nextPath = `${pathname}?${searchParams.toString()}`;
-    router.replace(`/auth?mode=login&next=${encodeURIComponent(nextPath)}`);
-  }, [authState.status, pathname, router, searchParams, state.view]);
-
-  useEffect(() => {
     if (accountId === null || state.view !== "all") return;
     const controller = new AbortController();
     const intent = ++personalReadIntent.current;
@@ -116,6 +104,10 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
   }
 
   function changeView(view: BidView) {
+    if (view === "recommended") {
+      navigate(bidListLocationParams({ view, query: state.query, page: 1, size: state.size }));
+      return;
+    }
     const next = new URLSearchParams(searchParams.toString());
     writePersonalFilterParams(next);
     if (view !== state.view) writeBidResultAmountParams(next);
@@ -243,36 +235,6 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
     amount: personal ? undefined : state.amount,
   };
 
-  if (state.view === "recommended" && authState.status !== "authenticated") {
-    return (
-      <div className="mx-auto my-12 max-w-xl rounded-xl border border-border bg-white p-6 text-center">
-        <p className="text-grayscale-800 type-heading-8">
-          {authState.status === "loading" ? "로그인 상태를 확인하고 있어요." :
-            authState.status === "error" ? "로그인 상태를 확인하지 못했어요." : "로그인 페이지로 이동하고 있어요."}
-        </p>
-        {authState.status === "error" ? (
-          <button className="mt-4 text-primary underline" onClick={() => void refresh().catch(() => undefined)} type="button">
-            다시 시도하기
-          </button>
-        ) : null}
-      </div>
-    );
-  }
-
-  if (state.view === "recommended") {
-    return (
-      <div className="w-full bg-white px-4 pb-[30px] pt-[30px] sm:px-8 xl:px-[30px]">
-        <div className="p-2">
-          <BidViewSelector onValueChange={changeView} value={state.view} />
-        </div>
-        <div className="flex min-h-[430px] flex-col items-center justify-center px-6 text-center">
-          <h1 className="text-grayscale-800 type-heading-7">맞춤 입찰공고를 준비하고 있어요</h1>
-          <p className="mt-2 text-grayscale-600 type-body-5">공개 입찰공고는 위 목록에서 확인해 주세요.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full bg-white px-4 pb-[30px] pt-[30px] sm:px-8 xl:px-[30px]">
       <section className="w-full">
@@ -346,7 +308,7 @@ export function BidListClient({ filterOptions, result, state }: BidListClientPro
             disabled={result.totalCount <= 10}
             menuClassName="w-[132px]"
             onValueChange={(value) => updateParams({ size: value === "10" ? undefined : value, page: undefined })}
-            options={pageSizeOptions}
+            options={bidPageSizeOptions}
             size="xs"
             value={String(state.size)}
           />

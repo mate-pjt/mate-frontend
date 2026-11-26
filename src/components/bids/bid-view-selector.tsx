@@ -7,11 +7,12 @@ import { DownArrowIcon } from "@/components/icons";
 import { bidViewOptions, type BidView } from "./bid-list-model";
 
 type BidViewSelectorProps = {
+  readonly heading?: boolean;
   readonly value: BidView;
   readonly onValueChange: (view: BidView) => void;
 };
 
-export function BidViewSelector({ onValueChange, value }: BidViewSelectorProps) {
+export function BidViewSelector({ heading = false, onValueChange, value }: BidViewSelectorProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const selected = bidViewOptions.find((option) => option.value === value) ?? bidViewOptions[0];
@@ -32,19 +33,23 @@ export function BidViewSelector({ onValueChange, value }: BidViewSelectorProps) 
     };
   }, [open]);
 
+  const trigger = (
+    <button
+      aria-expanded={open}
+      className="flex items-center gap-2 text-left text-grayscale-800 type-heading-1"
+      onClick={() => setOpen(current => !current)}
+      type="button"
+    >
+      {selected.label}
+      <DownArrowIcon aria-hidden className="size-8 shrink-0" focusable="false" />
+    </button>
+  );
+
   return (
     <div className="relative inline-flex" ref={rootRef}>
-      <button
-        aria-expanded={open}
-        className="flex items-center gap-2 text-left text-grayscale-800 type-heading-1"
-        onClick={() => setOpen((current) => !current)}
-        type="button"
-      >
-        {selected.label}
-        <DownArrowIcon aria-hidden className="size-8 shrink-0" focusable="false" />
-      </button>
+      {heading ? <h1>{trigger}</h1> : trigger}
       {open && (
-        <div className="absolute left-0 top-[calc(100%+12px)] z-30 min-w-[320px] overflow-hidden rounded-[12px] border border-grayscale-200 bg-white py-2 shadow-[var(--shadow-floating)]">
+        <div className="absolute left-0 top-[calc(100%+12px)] z-30 w-[320px] max-w-[calc(100vw-3rem)] overflow-hidden rounded-[12px] border border-grayscale-200 bg-white py-2 shadow-[var(--shadow-floating)]">
           {bidViewOptions.map((option) => (
             <button
               aria-current={option.value === value ? "true" : undefined}
