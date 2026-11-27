@@ -93,6 +93,8 @@
 <a id="pol-05-handoff"></a>
 ## DEV-07 인계 / 필수 차단과 재개 조건
 
+아래는 11/09 인계와 공동 QA 자원 조건이다. 로컬 구현의 11/27 범위는 [DEV-07의 후속 기록](DEV-07.md#dev-07-20261127-local-resume)을 따른다.
+
 1. **계약/배포 담당 역할**: 비밀값 없는 WS/STOMP·REST schema/version·내용 지문, 배포 run/artifact→backend 실행 SHA 대응, frontend 실행 SHA/공급원 snapshot, 허용 frontend Origin·wss upgrade/proxy/CSP·구독 성립/오류·token 갱신/만료·heartbeat 지원 근거를 준비한다. 소스 branch SHA나 옛403 결과를 현재 배포 확인으로 대체하지 않는다.
 2. **QA 자원/승인 담당 역할**: disposable 합성2계정·계정별 알림25건 이상/읽음·미읽음·복수 페이지의 시작 기대값을 준비한다. 로그인/GET/CONNECT/SUBSCRIBE·허용 합성 읽음/생성·다중 탭 사용, 알림/읽음/인증 이력 잔존, 종료/복구 담당·방법을 명시한다. 안전한 끊김/인증 거절·오류/지연·복구 fixture를 제공하며 운영 서비스를 임의로 끊지 않는다. 개인 담당자 미지정.
 3. **frontend 실행자**: 최신 main/이 v1/DEV-07 마지막 체크포인트·실제 소유 배포를 대조해 수정 파일·수명 소유자·scheduler/transport 경계와 package 실제 명령·Node22.20.0을 제시한다. 새 STOMP 의존성이 필요하면 별도 명시 승인을 받는다. [NSIG-01~12](../../../qa/alarms.md#pol-05-signal-qa)와 기존 ANAV/ALARM 회귀 범위·mock/HTTP 및 transport 대역/실제 통합 증거를 구분한다.
