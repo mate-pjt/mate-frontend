@@ -1,6 +1,6 @@
 # Mate Architecture Notes
 
-Last updated: 2026-11-25
+Last updated: 2026-11-27
 
 This document summarizes the project shape observed from files. It is not a full architecture spec.
 
@@ -22,7 +22,7 @@ src/
     auth/              # contracts, HTTP/mock Repository, client, session-controller
     bids/              # 목록·상세 contracts, HTTP/DTO/mapper, mock, server
     company/           # 조회·가입·문서 contracts, HTTP/mock, client
-    notifications/     # 받은 알림·건수·읽음·삭제
+    notifications/     # 받은 알림·건수·읽음·삭제·native WS/STOMP 전송
     bid-alerts/        # 공고별 구독
     personal-filters/  # 계정 필터
     notification-settings/ # 수신처·인증·ON/OFF
@@ -31,7 +31,7 @@ src/
     auth/session.tsx   # 세션 Provider와 사용자 행동 조합
     bids/recent-searches.ts # 공개 입찰 최근 검색어의 탭 메모리와 만료
     bid-notice-filters/model.ts # URL 왕복과 필터 UI 조합
-    notifications/activation-controller.ts # 읽음/이동·중복/계정 수명 조합
+    notifications/     # 읽음·이동, 탭의 변경 신호와 REST 재조회 수명
   lib/                 # 복귀 경로·상세 URL·사이트·metadata
   types/               # 프론트 표시 모델
   instrumentation.ts   # 운영 mock 실행 차단
@@ -169,6 +169,8 @@ Confirmed:
 ## Data Access Contract
 
 도메인별 Repository·명시적 공급원 선택·HTTP DTO 경계·혼합 제약·mock 상태·업로드 규칙은 `docs/ai-context/data-access.md`를 따른다. UI는 공개 client/server 진입점과 프론트 contracts만 사용한다. 기존 feature api.ts, Reader, 미사용 src/mocks fixture는 전환 후 제거했다.
+
+루트의 `NotificationSyncProvider`는 인증 세션 수명과 문서 가시성·네트워크 상태를 구독한다. `connection-controller.ts`는 탭의 WebSocket 연결을, `refresh-controller.ts`는 공유 미확인 수와 열린 받은 소식의 조회 예약을 관리한다. `/alarms`는 화면을 떠날 때 목록 소비를 정리하고, 명시적 읽음·삭제·더 보기와 자동 재조회가 겹칠 때 이전 REST 결과의 적용을 막는다. [DEV-07 설계](../development/figma-v01/tasks/DEV-07.md#dev-07-brief)
 
 `/my/company`는 연결된 회사의 기본정보 아래에 시공능력평가액과 인증 3종을 표시한다. `features/company/company-profile.ts`가 회사·소속·조회 권한과 두 독립 읽기의 수명을 확인한다. 화면은 기존 아이콘과 카드 토큰을 사용하고 해당 섹션의 실패와 명시 재시도를 표시한다. [DEV-08 설계](../development/figma-v01/tasks/DEV-08.md#dev-08-brief) · [로컬 QA](../qa/my-company.md#dev-08-local-qa)
 

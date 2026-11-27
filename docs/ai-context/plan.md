@@ -401,3 +401,7 @@ Final reports should include:
 사용자 결정으로 [나의 회사 조회](../development/figma-v01/tasks/DEV-08.md#dev-08-20261127-local-resume)는 시공능력평가액과 기업 인증 3종, [공고 상세](../development/figma-v01/tasks/DEV-14.md#dev-14-20261127-local-resume)는 현장설명일·기준일·수집일로 범위를 좁혔다. 공고 원문은 기존 링크로 제공한다. [알림 자동 갱신](../development/figma-v01/tasks/DEV-07.md#dev-07-20261127-local-resume)은 기존 신호·REST 계약으로 로컬 구현이 가능하다. 실제 서버 연결과 권한·데이터 확인은 백엔드 개발자와의 공동 QA에서 진행한다. 백엔드 작업 확인 경로와 현재 상태·다음 작업 선정 근거는 [WBS](../development/figma-v01/README.md#frontend-resume-20261127)에 둔다.
 
 DEV-08 범위의 나의 회사 조회를 연결했다. 회사 정보 조회 권한과 소속을 확인한 뒤 업종·공종별 정확한 평가액, 실제 평가연도와 인증 3종을 읽는다. [로컬 QA](../qa/my-company.md#dev-08-local-qa)에 합성 검증 결과와 실제 통합의 재개 조건을 남겼다. [WBS](../development/figma-v01/README.md)
+
+## 2026-11-27 KST · DEV-07 받은 알림 자동 갱신
+
+현재 계정의 STOMP 변경 신호를 받아 기존 미확인 수와 펼친 받은 소식의 REST를 다시 조회한다. 가상 시간·전송과 Next/Chrome에서 연결 수명, 요청 합치기, 스크롤과 기존 읽음·삭제 동작을 확인했다. 개발 서버 실행 버전, 구독 등록 시점과 인증 오류 분류, 실제 NSIG 사례는 공동 QA에 남긴다. [구현 Brief](../development/figma-v01/tasks/DEV-07.md#dev-07-brief) · [로컬 QA와 실제 차단](../qa/alarms.md#dev-07-local-qa) · [WBS](../development/figma-v01/README.md)
