@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { StrokeLeftArrowIcon } from "@/components/icons";
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import {
 
 import { MySideMenu } from "./my-side-menu";
 import { MembershipCancellationDialog } from "./membership-cancellation-dialog";
+import { CompanyProfileSections } from "./company-profile-sections";
 
 type CompanyView = "overview" | "start";
 type LoadState =
@@ -33,7 +34,14 @@ type LoadState =
   | { status: "error"; message: string };
 
 export function MyCompanyClient({ view }: { view: CompanyView }) {
-  const { state, getAccessToken, refresh, getAccountKey } = useAuthSession();
+  const { state, subscribe, getSnapshot, getAccessToken, refresh, getAccountKey, getSessionEpoch } = useAuthSession();
+  const readScope = useCallback(() => {
+    const account = getAccountKey();
+    const snapshot = getSnapshot();
+    if (account === null || snapshot.status !== "authenticated") return null;
+    return `${account}:${getSessionEpoch()}:${snapshot.authentication.companyContext?.companyId ?? ""}`;
+  }, [getAccountKey, getSessionEpoch, getSnapshot]);
+  const scope = useSyncExternalStore(subscribe, readScope, () => null);
 
   if (state.status === "authenticated") {
     return (
@@ -42,6 +50,8 @@ export function MyCompanyClient({ view }: { view: CompanyView }) {
         getAccountKey={getAccountKey}
         key={`${state.authentication.account.id}:${view}`}
         refresh={refresh}
+        readScope={readScope}
+        scope={scope}
         view={view}
       />
     );
@@ -72,8 +82,13 @@ export function MyCompanyClient({ view }: { view: CompanyView }) {
   );
 }
 
-function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }: AuthAccess & { view: CompanyView }) {
+function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view, readScope, scope }: AuthAccess & {
+  view: CompanyView;
+  readScope: () => string | null;
+  scope: string | null;
+}) {
   const router = useRouter();
+  const [previousScope, setPreviousScope] = useState(scope);
   const [result, setResult] = useState<LoadState>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
   const [selection, setSelection] = useState<MembershipRequest | null>(null);
@@ -83,14 +98,22 @@ function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }
   const content = useRef<HTMLElement>(null);
   const focusResult = useRef(false);
 
+  if (previousScope !== scope) {
+    setPreviousScope(scope);
+    setResult({ status: "loading" });
+    setSelection(null);
+    setPending(false);
+    setNotice(null);
+  }
+
   useEffect(() => {
     if (focusResult.current) { content.current?.focus(); focusResult.current = false; }
   }, [result]);
 
   useEffect(() => {
+    if (scope === null) return;
     const controller = new AbortController();
     const access = { getAccessToken, refresh, getAccountKey };
-    const account = getAccountKey();
     const actions = createMembershipCancellationController({
       getAccountKey,
       cancel: (requestId, version) => cancelMembershipRequest(access, requestId, version),
@@ -117,9 +140,9 @@ function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }
     async function load() {
       try {
         const overview = await getMyCompanyOverview(access, controller.signal);
-        if (!controller.signal.aborted && account === getAccountKey()) setResult(overview);
+        if (!controller.signal.aborted && scope === readScope()) setResult(overview);
       } catch (error) {
-        if (controller.signal.aborted || account !== getAccountKey()) return;
+        if (controller.signal.aborted || scope !== readScope()) return;
         if (error instanceof ApiError && error.status === 401) setResult({ status: "unauthorized" });
         else if (error instanceof ApiError && error.status === 403) setResult({ status: "denied" });
         else setResult({ status: "error", message: errorMessage(error) });
@@ -128,16 +151,20 @@ function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }
 
     void load();
     return () => { controller.abort(); actions.dispose(); cancellation.current = null; };
-  }, [attempt, getAccessToken, refresh, getAccountKey, router, view]);
+  }, [attempt, getAccessToken, refresh, getAccountKey, router, view, readScope, scope]);
 
-  function retry() {
+  const retry = useCallback(() => {
     cancellation.current?.dispose();
     setPending(false);
     setSelection(null);
     setNotice(null);
     setResult({ status: "loading" });
     setAttempt((current) => current + 1);
-  }
+  }, []);
+
+  const handleAccessLost = useCallback((status: "unauthorized" | "denied") => {
+    setResult({ status });
+  }, []);
 
   if (view === "start" && (result.status === "empty" || result.status === "terminated")) {
     return <StartChoices previousRequest={result.status === "terminated" ? result.request : null} />;
@@ -158,7 +185,22 @@ function AuthenticatedMyCompany({ getAccessToken, refresh, getAccountKey, view }
         {result.status === "approved-stale" && (
           <StatusMessage message="소속 신청은 승인됐지만 회사 연결이 아직 반영되지 않았어요. 잠시 후 다시 확인해 주세요." onRetry={retry} />
         )}
-        {result.status === "connected" && <ConnectedCompany profile={result.profile} />}
+        {result.status === "connected" && (
+          <>
+            <ConnectedCompany profile={result.profile} />
+            {scope !== null && view === "overview" && <CompanyProfileSections
+              key={result.profile.companyId}
+              companyId={result.profile.companyId}
+              getAccessToken={getAccessToken}
+              getAccountKey={getAccountKey}
+              onAccessLost={handleAccessLost}
+              onReturn={retry}
+              readScope={readScope}
+              refresh={refresh}
+              scope={scope}
+            />}
+          </>
+        )}
       </section>
       <MembershipCancellationDialog
         onClose={() => setSelection(null)}

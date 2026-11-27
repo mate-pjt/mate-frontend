@@ -12,6 +12,7 @@ import { createTeamManagement } from "./team-management-api";
 import { createTeamInvitations } from "./team-invitation-api";
 import { createTeamMembershipRequests } from "./team-membership-request-api";
 import { createCompanyMergeApi } from "./company-merge-api";
+import { createCompanyProfileApi } from "./company-profile-api";
 
 export function createHttpCompanyRepository(http: HttpClient): CompanyRepository {
   const authorizedRequest = http.authorized;
@@ -285,5 +286,5 @@ export function createHttpCompanyRepository(http: HttpClient): CompanyRepository
     return { status: request.status === "PENDING" ? "pending" : "terminated", request };
   }
 
-  return { ...createTeamQueries(http), ...createTeamManagement(http), ...createTeamInvitations(http), ...createTeamMembershipRequests(http), ...createCompanyMergeApi(http), getCompanyTeamContext: getDocumentBoxContext, getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, deleteCompanyDocument, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
+  return { ...createTeamQueries(http), ...createTeamManagement(http), ...createTeamInvitations(http), ...createTeamMembershipRequests(http), ...createCompanyMergeApi(http), ...createCompanyProfileApi(http), getCompanyTeamContext: getDocumentBoxContext, getDocumentBoxContext, listCompanyDocuments, getCompanyDocumentVersions, getCompanyDocumentHistory, readCompanyDocumentOriginal, deleteCompanyDocument, searchCompanies, getMembershipContext, requestMembership, cancelMembershipRequest, previewInvitation, resumeInvitation, acceptInvitation, declineInvitation, createBusinessConnection, getBusinessConnection, clearBusinessConnection, createUnverifiedCompany, createDocumentUpload, createDocumentVersion, retryDocumentProcessing, uploadDocumentFile, completeDocumentUpload, getDocumentProcessing, getDocumentReuploadStatus, getRegistrationProposal, getIndustries, createVerifiedCompany, getMyCompanyOverview };
 }
