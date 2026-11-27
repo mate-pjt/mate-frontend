@@ -38,11 +38,11 @@
 
 ## 완료 기준
 
-- [ ] 나의 회사에서 업종별 평가액·실제 평가연도와 기업 인증 3종의 확인된 값/미확인/부분 실패를 구분한다.
-- [ ] 미연결/권한·오류·연결 해제·모바일과 기존 기본 정보 회귀를 검증한다
-- [ ] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다.
-- [ ] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다.
-- [ ] Documentation Update Check 및 verifier/ai-review를 통과한다. 구현만 마친 상태는 완료가 아니다.
+- [x] 나의 회사에서 업종별 평가액·실제 평가연도와 기업 인증 3종의 확인된 값/미확인/부분 실패를 구분한다.
+- [x] 미연결/권한·오류·연결 해제·모바일과 기존 기본 정보 회귀를 로컬에서 검증한다.
+- [x] 현재 package scripts로 test/lint/build·diff-check와 Storybook 검증을 통과한다.
+- [x] 요구사항 Gate의 로컬 브라우저·권한·오류 사례를 검증하고 승인받은 [공동 QA의 미실행과 차단](#dev-08-verification)을 기록한다.
+- [x] Documentation Update Check와 verifier/ai-review를 완료하고 [검토 범위와 재검토](../reviews/DEV-08.md#dev-08-review)를 기록한다.
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -123,3 +123,62 @@
 ### 다음 작업 첫 행동
 
 [POL-06 조회 정책](POL-06.md#pol-06-contract), [현행 나의 회사 화면](../../../../src/components/my/my-company-client.tsx), [데이터 접근 규칙](../../../ai-context/data-access.md)에서 회사·권한 경계와 두 조회의 표시 상태를 대조한다. 두 영역의 성공 기준, 수정 범위와 영향을 받는 기존 화면, 합성 검증 방법을 요구사항과 설계에 기록한 뒤 편집한다. 이번 11/27 기록은 다음 작업 선정과 인계까지다.
+
+<a id="dev-08-brief"></a>
+
+## 2026-11-27 KST · 요구사항과 구현 계획
+
+| 근거 | 적용 범위 |
+| --- | --- |
+| 11월 9일 사용자 승인 [POL-06 v1](POL-06.md#pol-06-contract) | 활성 소속의 정보조회 권한, 업종·공종별 원 단위 금액과 실제 평가연도, 서버 대표 평가 상태, 인증 3종과 출처·결측·부분 오류의 의미를 적용한다. |
+| 11월 26일 사용자 [프론트 우선·공동 QA 결정](../README.md#frontend-first-20261126) 및 [11월 27일 표시 범위](#dev-08-20261127-local-resume) | `/my/company`의 시공능력평가액과 기업 인증 3종을 먼저 연결한다. 연도별 공사실적·희망 입찰공고 금액, 가입, 정보 수정·외부 재수집, 연도 갱신 안내는 범위 밖이다. 운영·실제 계정과 권한별 데이터 검증은 공동 일정에서 승인과 자원을 확보한다. |
+| 11월 27일 이번 사용자 요청 | DEV-08의 개발·검증·두 리뷰와 작은 커밋·push·PR·CI·정상 병합·로컬 main 동기화, 다음 하나의 인계를 승인했다. 이번 PR에서 확인되는 Chromatic 월간 한도 실패에 예외를 적용한다. |
+
+- 시작 기준은 로컬/원격 `main`의 `c71790bd94a3b7042b8e0f6b01cfda1baee699e2`, 시작 브랜치는 `feat/dev-08-company-profile`이다. 시작 작업트리는 깨끗했고 이전 DEV-08 구현 브랜치는 확인되지 않았다. 선행 [POL-06 PR #48](https://github.com/mate-pjt/mate-frontend/pull/48)과 [DEV-60 PR #59](https://github.com/mate-pjt/mate-frontend/pull/59)의 merge commit이 이 기준에 포함된다.
+- 성공 화면 `3134:64574`와 연도 변경 `3134:66829`의 동일한 카드 영역을 다시 확인했다. 두 프레임의 `3134:64646`·`3216:58232`에는 희망금액 카드가 있다. 앞선 시안 관찰을 이 근거로 정정한다. 11월 27일 확정 범위는 시공능력과 인증 3종이다. 성공·연도 변경 프레임의 조회 카드를 참고하고, 원 단위·복수 평가·미확인·부분 오류·모바일은 POL-06의 동작과 기존 화면 토큰에 맞춰 표현한다. 이번 승인에는 전체 프레임과 다른 화면 구성에 대한 별도 디자인 승인이 없다. 가입 프레임 `3140:123224`의 단일값과 가입 입력 모델은 현재 회사 조회에 사용하지 않는다.
+- 백엔드 `dev` 소스 `f4860fd9b87329d50169eb0025dca3f2c5fa2125`에서 [시공능력·인증 DTO](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/web/companyprofile/response/CompanyProfileQueryResponses.kt)와 [권한 소유 코드](https://github.com/mate-pjt/mate-backend/blob/f4860fd9b87329d50169eb0025dca3f2c5fa2125/mate-api/src/main/java/kr/co/mate/mate_api/application/service/companymembership/CompanyAuthorizationService.kt)를 대조했다. GitHub 테스트 환경 배포 기록 `8072722595`과 [게시 OpenAPI 3.1.0/v1](https://api-test.mate-bid.com/v3/api-docs)은 각각 배포 메타데이터와 문서 근거다. 현재 실행 프로세스 식별과 실제 권한별 응답은 공동 QA에서 확인한다.
+- 수정 범위는 `src/data/company`의 공개 회사 조회 계약과 HTTP·mock, `src/data/shared/http.ts`의 해당 GET 전용 본문 해석 옵션, `src/data/config.ts`의 명시 mock 사례, `src/features/company/company-profile.ts`의 조회 조합, `src/components/my/my-company-client.tsx`·`company-profile-sections.tsx`와 세션 스냅샷 타입이다. 계약·경쟁 테스트와 WBS·Task·QA·리뷰 및 데이터 접근 문서를 함께 갱신한다.
+- 구현 순서는 ① 정수 원을 응답 원문에서 읽고 업종별 행과 인증 3종을 검증 ② 기존 `memberships/me`의 실제 leaf와 소속을 확인하고 각 섹션을 독립 조회 ③ 기본정보 다음에 기존 24px 아이콘과 카드 토큰을 사용해 표시 ④ 부분 오류, 재시도, 권한·계정·회사 전환과 기존 동선을 점검하는 순서다. 권한 목록 응답이 이미 유효 leaf를 결정하므로 이 화면의 조회에 권한 카탈로그를 추가로 읽지 않는다.
+- 표시 가정은 정확한 원화와 서버 필드명을 사용하고, 자료 기준일과 관리자 확정일을 각각 안내하는 것이다. 평가연도는 자료 행에서 받고 대표 평가는 서버 ID와 상태를 사용한다. 한 섹션 실패나 늦은 응답이 다른 섹션의 상태 또는 새 회사의 자료를 덮어쓰지 않게 확인한다. 착수에 필요한 제품·계약 결정은 확인했다.
+- `pnpm test`, `pnpm lint`, `pnpm build`(api·mock·hybrid), `pnpm build-storybook`, `git diff --check`, Markdown 링크·79개 원본·WBS 의존성을 검사한다. 로컬 Next/Chrome에서 회사 기본정보, 미연결, 활성 권한, 0원·대형 정수·연도 미상, 인증 3상태, 부분 실패·재시도, 소속/로그아웃 및 390px·320px와 키보드를 확인한다. 실제 서버 실행·권한별 합성 자원은 [공동 QA](#dev-08-pol-06-handoff)에 남긴다.
+
+### 체크포인트
+
+| 날짜 | 결과 | 다음 행동 |
+| --- | --- | --- |
+| 2026-11-27 KST · 착수 | 시작 HEAD와 두 선행, 사용자 범위, Figma·권한·정밀도 계약, 검증 계획 확인. 작업 브랜치 생성. | 두 읽기 계약과 응답 매핑부터 구현한다. |
+| 2026-11-27 KST · 구현 | 기존 회사 Repository에 두 GET을 연결했다. 게시 숫자 원문 및 서버 대표 ID, 인증 3종 근거를 매핑하고 현재 소속·계정 수명과 섹션별 재시도를 화면에 적용했다. 최초 자동 검사 1,360건, lint, 세 빌드 및 Storybook 실행을 확인했다. | 세션을 가릴 때 메뉴의 로그아웃 실패 안내가 유지되도록 보완한 뒤 최종 검증을 다시 실행한다. |
+| 2026-11-27 KST · 검증 | 보호 자료와 메뉴의 수명을 분리했다. 보완 후 자동 검사와 mock 운영 guard, 25개 Chrome 확인이 통과했다. 기존 기록에 실제 서버 차단과 실행 결과를 연결했다. | 문서의 링크·범위와 두 리뷰를 확인한다. |
+| 2026-11-27 KST · 검토 후 보완 | 최초 verifier에서 Blocker·Major 없음. HTTP 대역 캡처에 인증 아이콘 두 개가 늦어지는 것을 재현했다. 카드의 24px 정적 아이콘을 표시 시점에 직접 읽도록 수정했다. | 제품·증거 사본을 다시 빌드하고 Chrome과 두 리뷰를 재실행한다. |
+
+<a id="dev-08-verification"></a>
+
+## 2026-11-27 KST · 검증과 문서 갱신
+
+| 검사 | 결과 |
+| --- | --- |
+| `pnpm test` | 47파일·1,360건 통과. 이번 계약과 조회 수명에 42건을 추가했다. |
+| `pnpm lint` | 통과. |
+| `pnpm build` | 환경파일 없는 Node 22.20.0·pnpm 11.3.0 사본에서 api·mock·hybrid 3개 통과. |
+| `pnpm build-storybook` | 통과. Vite의 500kB 이상 chunk 경고를 관찰했다. |
+| 운영 guard | mock Preview 빌드를 운영 모드에서 시작하는 시도를 기존 guard가 거부했다. |
+| 실제 Next·Chrome | mock 9, loopback HTTP 14, 공급원/요청 경계 2개 확인을 통과했다. 1440·390·320px, 포커스와 키보드, 소속 변경과 로그아웃, 부분 오류를 확인했다. [QA와 스크린샷](../../../qa/my-company.md#dev-08-local-qa) |
+| 실제 업무 API 통합 | 실행 0건·CDASH 0통과·12차단을 보존한다. 배포 메타데이터를 확인했으며 공동 QA의 실행 식별·권한별 합성 계정/회사와 실제 응답·오류 해제 조건은 미확보다. |
+
+- 검증 사본 3개에 있는 제품·테스트 15파일과 이 작업트리의 SHA-256 지문이 일치한다. `13d7880f1dbfd88bf12a7a4618ab660cbb8511ba5762ce34f8776232a8b4ec6c`. 최초 복제된 의존성을 pnpm이 재설치하려다가 중단해 사본에서 `pnpm install --frozen-lockfile --prefer-offline`을 실행했다. 메뉴의 로그아웃 상태 유지와 작은 이미지의 로딩 보완 뒤 자동 검사와 브라우저 검증을 재실행했다. 마지막 Chrome 캡처에서 각 너비의 아이콘 5개 로딩과 24×24 표시를 확인했다.
+- [데이터 접근](../../../ai-context/data-access.md)과 [아키텍처](../../../ai-context/architecture.md)에 조회와 경계를, [개발 안내](../../repositories.md#dev-08-company-profile-mock)에 합성 자료, [계획](../../../ai-context/plan.md)에 날짜별 근거를 연결했다. 기존 폴더·scripts·하네스 규칙을 적용하므로 base·harness 갱신 항목은 없다. [도구 출력 통제](../../../ai-context/ai-failures.md)는 해당 이력에 남겼다. 원본 79개와 기존 연결표, QA 판정·승인 기록을 보존한다.
+- 검토 대상은 위 지문의 코드·테스트, [브라우저 증거](../../../qa/artifacts/dev-08/browser-results.json)와 DEV-08 문서다. [Context Audit 및 두 리뷰](../reviews/DEV-08.md#dev-08-review)에서 판정과 검토 범위를 이어간다.
+
+<a id="dev-08-delivery"></a>
+
+## Git 전달 기준
+
+11월 27일 현재 요청에서 DEV-08에 한해 개발·검증·리뷰와 Git 전달을 승인했다. 최종 PR head와 당시 base, 기능 CI·리뷰·정상 병합 조건을 확인한다. 이번 PR의 Chromatic 월간 사용 한도만 승인 예외다. 정상 merge commit으로 작은 커밋 이력을 보존하고 로컬 main을 fast-forward로 맞춘다. [브랜치의 PR과 실제 Git 상태](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-08-company-profile)
+
+<a id="dev-08-handoff"></a>
+
+## 2026-11-27 KST · DEV-07 인계
+
+P0의 실제 QA와 QA-16의 취합은 공동 일정 및 선행 조건을 기다린다. 프론트 우선 3번 DEV-49는 공식 버전 출처·갱신 책임·실패 기준 결정 전이다. 다음 순서의 P1 DEV-07은 POL-05가 완료됐고 11월 27일 사용자가 기존 신호로 진행할 로컬 범위를 지정했다. P2 DEV-14보다 앞선 재개 확인 대상으로 한 건 선정한다. [프론트 순서](../README.md#frontend-first-20261126) · [DEV-07 재개 범위](DEV-07.md#dev-07-20261127-local-resume)
+
+다음 대화의 첫 행동은 현재 알림 버튼·목록과 세션 수명을 POL-05의 STOMP 변경 신호 및 REST 재조회 계약에 대조하는 것이다. 합성 전송과 시간으로 신호 합치기·재연결, 미확인 수·펼친 목록과 스크롤 보존, 계정/로그아웃 정리의 수용 기준을 정리한다. DEV-07의 자체 Gate, 구현 및 검증은 다음 대화에서 시작하며 실제 연결의 공동 QA 조건을 보존한다. [POL-05 계약](POL-05.md#pol-05-contract)

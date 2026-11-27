@@ -170,6 +170,8 @@ Confirmed:
 
 도메인별 Repository·명시적 공급원 선택·HTTP DTO 경계·혼합 제약·mock 상태·업로드 규칙은 `docs/ai-context/data-access.md`를 따른다. UI는 공개 client/server 진입점과 프론트 contracts만 사용한다. 기존 feature api.ts, Reader, 미사용 src/mocks fixture는 전환 후 제거했다.
 
+`/my/company`는 연결된 회사의 기본정보 아래에 시공능력평가액과 인증 3종을 표시한다. `features/company/company-profile.ts`가 회사·소속·조회 권한과 두 독립 읽기의 수명을 확인한다. 화면은 기존 아이콘과 카드 토큰을 사용하고 해당 섹션의 실패와 명시 재시도를 표시한다. [DEV-08 설계](../development/figma-v01/tasks/DEV-08.md#dev-08-brief) · [로컬 QA](../qa/my-company.md#dev-08-local-qa)
+
 새 기능은 내부 계약 → mock으로 화면·오류 개발 → 확인된 DTO/HTTP → 계약 테스트 및 실제 통합 → 기능 그룹 api 전환 순서로 개발한다. 개발 실행 안내는 `docs/development/repositories.md`를 확인한다.
 
 ## TODO

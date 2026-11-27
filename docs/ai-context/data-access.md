@@ -1,6 +1,6 @@
 # Mate Data Access And API Integration Guide
 
-Last updated: 2026-11-26
+Last updated: 2026-11-27
 
 API・mock・DTO・조회/변경 흐름을 설계하기 전에 이 문서를 읽는다. `src/data`는 프론트 데이터 접근 계층이며 Route Handler/BFF를 의미하지 않는다.
 
@@ -52,7 +52,7 @@ src/data/
 | `personalFilters` | 개인 필터 조회/저장/초기화 | `personal-filters/client.ts` |
 | `notificationSettings` | 수신 주소, 이메일 인증/재전송/확인, 맞춤 이메일 ON/OFF | `notification-settings/client.ts` |
 
-회사 계약은 Directory/Onboarding/Document/Team/Merge 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
+회사 계약은 Directory/Onboarding/Document/Team/Merge/Profile 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
 
 전역 상세·야간 알림 행은 `notification-settings/client.ts`의 `notificationSettingsCapabilities`에서 화면 지원 상태와 비활성 사유를 읽는다. 이 값은 모든 프로필에서 같고 계정 설정과 별개다. 상세·야간의 Repository 메서드, HTTP DTO 및 mock 저장은 별도 활성화 Gate의 범위다. [DEV-66 연결 경계](../development/figma-v01/tasks/DEV-66.md#dev-66-brief) · [POL-19 후속 조건](../development/figma-v01/tasks/POL-19.md#pol-19-contract)
 
@@ -133,6 +133,9 @@ src/data/
 기본정보의 내부 모델은 `primaryIndustries` 배열이다. HTTP mapper는 목록 필드가 있으면 빈 배열까지 그대로 사용하고, 필드가 없을 때만 `primaryIndustry`의 유효한 단일값/null을 목록/빈 목록으로 호환한다. null/비배열/결측·잘못된 행·동일 코드의 이름 충돌을 빈 성공으로 바꾸지 않는다. 정확 중복은 제거하고 서버 순서/원문을 보존한다. legacy 대표값을 목록에 추가하거나 대표/부업종을 만들지 않는다. mock 기본정보는 복수 목록을 제공하고 `basicProfileVersion: 1`이 구형 단일값만 변환한다. 가입용 단일 선택 계약과 전역 MockStore schema/계정 namespace·문서/멱등 replay는 유지한다. 실제 QA-05/DEV-08 차단은 [DEV-60 로컬 검증](../development/figma-v01/tasks/DEV-60.md#dev-60-verification)으로 해소되지 않는다.
 
 화면은 `getMyCompanyOverview()`를 사용한다. API 구현은 기존 refresh → companyContext에 해당하는 기본 profile 또는 내 소속 신청을 조회한다. `404/CR001`만 신청 없음이고 403은 권한 오류다. APPROVED지만 아직 연결되지 않은 상태를 보존한다. mock은 회사 상태를 조회하고 실제 인증 응답을 덮어쓰지 않는다.
+
+- [DEV-08](../development/figma-v01/tasks/DEV-08.md#dev-08-brief)의 `/my/company`는 연결된 프로필 뒤에 같은 company 공급원의 `getCompanyConstructionCapabilities`와 `getCompanyPublicCertifications`를 표시한다. 현재 소속의 `memberships/me`와 유효한 `COMPANY_INFORMATION_VIEW`를 먼저 확인한다. 두 GET의 결과는 각각 같은 소속과 권한을 재확인한 뒤 표시한다. 페이지로 돌아오거나 탭이 다시 보이면 최신 연결을 확인한다. 해당 섹션의 재시도는 읽기만 하고 다른 섹션의 성공 결과를 유지한다. 세션·회사·소속이 바뀌면 이전 보호 자료를 폐기한다.
+- 시공능력 요청은 현재 자료를 읽는다. HTTP의 `amountKrw` JSON 숫자 원문을 읽어 20자리 정수 원까지 문자열로 보존한다. 공종별 금액, 평가연도, 자료 기준일, 출처, 서버 대표 상태·ID를 유지한다. 인증은 여성기업·장애인기업·사회적기업의 해당·미해당·확인 불가와 저장된 자료 부재를 구분한다. 등록 인증 상태와 가입 단일값은 독립 계약이다. [로컬 검증과 공동 QA](../qa/my-company.md#dev-08-local-qa)
 
 - `cancelMembershipRequest(access, requestId, expectedVersion)`는 Onboarding 포트/공개 client의 명시 취소다. 실제 조회의 양수 안전 정수 version을 기본값 없이 보존하고 body/추측한 멱등성 키 없는 DELETE query로 보낸다. mapper가 같은 신청의 CANCELED·증가 version/완료 시각을 검증한 뒤 `{ request, sessionWarning? }`를 반환한다. wrapper는 기존 `isSuccess` 경계를 유지하며 게시 `success`와 실제 wire/실행 대응 미확인은 [DEV-15](../development/figma-v01/tasks/DEV-15.md#dev-15-brief)의 별도 실서버 차단이다.
 - 취소 controller는 같은 제출 중복/완료 replay와 계정·화면 종료 뒤 늦은 상태/Toast를 막는다.409/404는 최신 조회만 복원하며 새 신청에 자동 재취소하지 않는다. 응답 유실/잘못된 성공/권한·서버 오류는 미확정/명시 상태 확인이다. 성공 뒤 세션/최신 조회 실패는 성공과 경고를 구분한다. 취소 후 재확인의 refresh는 `preserveOnError`를 사용해 일시 오류로 확인된 완료를 잃지 않는다. 최종401/세션 해제는 보호 자료를 숨기고 로그인/복귀로 연결한다.

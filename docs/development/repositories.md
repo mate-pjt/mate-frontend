@@ -93,7 +93,7 @@ pnpm dev
 | --- | --- |
 | auth | default, slow, signup, expired, invalid-flow |
 | bids | default, slow, empty, error, partial-error, attachments-error, related-error, results-error, purchases-error, participants-error |
-| company | default, slow, connected, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-requests, team-requests-empty, team-reviewer, team-invitation-mail-failed, merge, merge-proposal, merge-in-place |
+| company | default, slow, connected, profile-empty, profile-capability-error, profile-certification-error, pending, rejected, canceled, approved-stale, denied, invite-mismatch, invite-expired, processing-failed, conflict, evidence-empty, error, documents, documents-empty, documents-denied, documents-version-error, team-agent, team-viewer, team-extra, team-read-only, team-empty, team-denied, team-pending, team-last-admin, team-no-representative, team-requests, team-requests-empty, team-reviewer, team-invitation-mail-failed, merge, merge-proposal, merge-in-place |
 | notifications | default, slow, empty, error |
 | bidAlerts | default, slow, error |
 | personalFilters | default, slow, conflict, error |
@@ -115,6 +115,13 @@ pnpm dev
 - company `connected` 시나리오의 `/my/company`는 토목공사업·정보통신공사업을 같은 수준의 주력업종으로 표시한다. 새로고침 후 목록을 유지하며 가입 UI의 단일 업종 선택과 구분한다.
 - 내부 기본정보는 `primaryIndustries`만 사용한다. HTTP의 신형 배열(빈 배열 포함)이 우선이며 legacy 단일값은 배열 필드 누락 때만 호환한다. 배열 null/잘못된 행·코드별 이름 충돌은 조회 오류다.
 - 회사 영역 `basicProfileVersion: 1`이 알려진 구형 기본정보 단일값을 목록으로 변환한다. 문서/신청·가입 근거·멱등 replay와 계정/다른 영역·실제 문서 UUID 키는 보존한다. 잘못된 새 목록은 해당 계정 company 공간만 초기화한다. 새 전역 schema/시나리오/공급원은 없다.
+
+<a id="dev-08-company-profile-mock"></a>
+
+### 나의 회사 시공능력·기업 인증 조회 · DEV-08
+
+- `connected`는 복수 업종·공종, 0원과 JS 안전 정수 범위를 넘는 평가액, 알려진 연도·미확인 연도와 인증 3상태를 보여준다.
+- `profile-empty`는 평가 자료 없음과 저장 근거 없는 인증 확인 불가를 보여준다. `profile-capability-error`·`profile-certification-error`는 각 조회만 실패한다. 연결과 권한은 기존 회사 및 합성 소속 상태를 사용한다. [브라우저와 계약 검증](../qa/my-company.md#dev-08-local-qa)
 - [DEV-60 검증](figma-v01/tasks/DEV-60.md#dev-60-verification)은 로컬 mock/HTTP 대역이다. QA-05 기본정보/DEV-08 대시보드의 실제 통합 차단을 유지한다.
 
 ### 관련 공고 합성 데이터 확인 · DEV-61
