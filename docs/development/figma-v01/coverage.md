@@ -162,3 +162,7 @@ F03의 [DEV-25 사용자 D1](tasks/DEV-25.md#dev-25-brief)은 전체 series 삭�
 ## 2026-11-20 · S03/C02 계정 탈퇴의 계약 경계
 
 [POL-18 시안 및 서버 근거](tasks/POL-18.md#pol-18-investigation)에서 S02의 탈퇴 진입 차이·S03 제출 전 확인/취소와 완료·C02의 공용 변형을 확인했다. 서버 계약 및 인증·화면 결정 확보 후 [DEV-39 자격·인증·확인](tasks/DEV-39.md#dev-39-pol-18-handoff), [DEV-40 실행·세션·철회](tasks/DEV-40.md#dev-40-pol-18-handoff)와 [WDRAW-01~09](../../qa/my-settings-home.md#pol-18-withdrawal-qa)를 이어간다. C02의 다른 팝업은 기존 작업 연결을 따른다.
+
+## 2026-11-27 KST · 프론트 재개 범위
+
+M03·M04·O08의 [나의 회사 조회](tasks/DEV-08.md#dev-08-20261127-local-resume)는 시공능력평가액과 기업 인증 3종을 표시한다. 연도별 공사실적과 희망금액은 원본 항목에 남기고 이번 나의 회사 화면 범위에서 제외한다. N04는 [알림 변경 신호와 재연결](tasks/DEV-07.md#dev-07-20261127-local-resume), D10은 [공고 상세 날짜 3종과 기존 원문 링크](tasks/DEV-14.md#dev-14-20261127-local-resume) 범위로 재개할 수 있다. D10의 긴 원문 본문은 이번 화면 범위에서 제외한다. 원본 항목과 의존성, 실제 QA 이력은 기존 연결을 따른다. [현재·다음 작업](README.md)
