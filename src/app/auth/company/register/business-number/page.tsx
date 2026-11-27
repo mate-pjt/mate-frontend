@@ -9,5 +9,14 @@ export const metadata: Metadata = { title: "사업자등록번호로 회사 등�
 
 export default async function BusinessNumberRegistrationPage({ searchParams }: { searchParams: Promise<CompanyFlowSearchParams> }) {
   const flow = readCompanyFlow(await searchParams);
-  return <AuthScreen><AccountScope><BusinessNumberRegistration flow={flow} key={String(flow.fromSettings)} /></AccountScope></AuthScreen>;
+  const registration = <AccountScope><BusinessNumberRegistration flow={flow} key={String(flow.fromSettings)} /></AccountScope>;
+
+  if (flow.fromSettings) {
+    return (
+      <div className="mx-auto w-full max-w-[642px] px-4 py-10 sm:px-6 sm:pt-16 lg:pt-[clamp(4rem,calc(100dvh-48rem),142px)]">
+        {registration}
+      </div>
+    );
+  }
+  return <AuthScreen>{registration}</AuthScreen>;
 }

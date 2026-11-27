@@ -1,6 +1,8 @@
 export type CompanyFlow = Readonly<{ fromSettings: boolean; query: string; page: number }>;
 export type CompanyFlowSearchParams = Record<string, string | string[] | undefined>;
 
+export const businessNumberRegistrationPath = "/auth/company/register/business-number";
+
 export function readCompanyFlow(params: CompanyFlowSearchParams = {}): CompanyFlow {
   const query = typeof params.query === "string" && params.query.length <= 100 && !/[\u0000-\u001f\u007f]/.test(params.query)
     ? params.query.trim() : "";
@@ -15,7 +17,7 @@ export function readCompanyFlow(params: CompanyFlowSearchParams = {}): CompanyFl
 export function companyFlowHref(step: "register" | "business-number" | "document" | "search" | "request", flow: CompanyFlow, companyId?: number): string {
   const paths = {
     register: "/auth/company/register",
-    "business-number": "/auth/company/register/business-number",
+    "business-number": businessNumberRegistrationPath,
     document: "/auth/company/register/document",
     search: "/auth/company/search",
     request: "/auth/company/search",
