@@ -14,6 +14,7 @@ import type { DocumentDeletion } from "./contracts";
 import { createMockTeamManagement } from "./team-management-mock";
 import { createMockTeamInvitations } from "./team-invitation-mock";
 import { createMockCompanyMerge, mockMergeCompanyId } from "./company-merge-mock";
+import { createMockCompanyProfile } from "./company-profile-mock";
 
 // Company metadata belongs to this source group, independently of bid metadata.
 const industries = [{ code: "0001", name: "토목공사업" }, { code: "0036", name: "정보통신공사업" }];
@@ -198,7 +199,7 @@ function fingerprint(value: unknown) { let hash = 2166136261; for (const char of
 export function createMockCompanyRepository(runtime: MockRuntime): CompanyRepository {
   function initial(account: string): CompanyState {
     let overview: CompanyOverview = { status: "empty" }; const scenario = runtime.scenario("company");
-    if (scenario === "connected" || scenario.startsWith("documents") || scenario.startsWith("team-")) overview = { status: "connected", profile: basicProfile() };
+    if (scenario === "connected" || scenario.startsWith("profile-") || scenario.startsWith("documents") || scenario.startsWith("team-")) overview = { status: "connected", profile: basicProfile() };
     const mergeCompany = mockMergeCompanyId(scenario, account);
     if (mergeCompany !== null) overview = { status: "connected", profile: basicProfile(mergeCompany, mergeCompany === 7002 ? "UNVERIFIED" : "VERIFIED") };
     if (["pending", "rejected", "canceled", "approved-stale"].includes(scenario)) {
@@ -306,7 +307,7 @@ export function createMockCompanyRepository(runtime: MockRuntime): CompanyReposi
   }
   const { referencePositionName, ...team } = createMockTeamManagement(runtime, account => { const view = read(account).overview; return view.status === "connected" ? view.profile.companyId : null; }, account => { const state = read(account); state.overview = { status: "empty" }; write(account, state); });
   return {
-    ...team, ...createMockTeamInvitations(runtime, { ...team, referencePositionName }), ...createMockCompanyMerge(runtime, team),
+    ...team, ...createMockTeamInvitations(runtime, { ...team, referencePositionName }), ...createMockCompanyMerge(runtime, team), ...createMockCompanyProfile(runtime, team),
     async getDocumentBoxContext(access, signal) {
       const account = await mockAccount(runtime, access, "company", signal);
       const view = read(account).overview;

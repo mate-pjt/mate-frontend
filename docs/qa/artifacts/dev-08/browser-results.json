@@ -1,0 +1,280 @@
+{
+  "browser": "158.0.8127.89",
+  "cases": [
+    {
+      "id": "M01",
+      "label": "비로그인과 가상 로그인·회사 조회 복귀",
+      "pass": true
+    },
+    {
+      "id": "M02",
+      "label": "복수 주력업종과 세 공종·원 단위·대표 상태",
+      "pass": true
+    },
+    {
+      "id": "M03",
+      "label": "인증 세 상태와 출처",
+      "pass": true
+    },
+    {
+      "id": "M04",
+      "label": "1440px 카드 폭과 아이콘",
+      "pass": true,
+      "viewport": 1440,
+      "overflow": 0,
+      "pageOverflow": 0,
+      "icons": [
+        {
+          "name": "/icon/24dp/crane.svg",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/license.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/women.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/obstacle.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/society.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        }
+      ]
+    },
+    {
+      "id": "M05",
+      "label": "390px 카드 폭과 아이콘",
+      "pass": true,
+      "viewport": 390,
+      "overflow": 0,
+      "pageOverflow": 0,
+      "icons": [
+        {
+          "name": "/icon/24dp/crane.svg",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/license.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/women.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/obstacle.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/society.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        }
+      ]
+    },
+    {
+      "id": "M06",
+      "label": "320px 카드 폭과 아이콘",
+      "pass": true,
+      "viewport": 320,
+      "overflow": 0,
+      "pageOverflow": 0,
+      "icons": [
+        {
+          "name": "/icon/24dp/crane.svg",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/license.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/women.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/obstacle.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        },
+        {
+          "name": "/images/auth/society.png",
+          "width": 24,
+          "height": 24,
+          "decoded": true
+        }
+      ]
+    },
+    {
+      "id": "M07",
+      "label": "mock 새로고침과 /start 범위",
+      "pass": true
+    },
+    {
+      "id": "M08",
+      "label": "mock 로그아웃과 조회 자료 숨김",
+      "pass": true
+    },
+    {
+      "id": "M09",
+      "label": "mock 브라우저에서 HTTP 대역 호출 없이 실행",
+      "pass": true
+    },
+    {
+      "id": "H01",
+      "label": "유효 leaf와 회사 원화·공공인증 3종",
+      "pass": true
+    },
+    {
+      "id": "H02",
+      "label": "빈 평가와 저장 근거 없는 인증 세 종류",
+      "pass": true
+    },
+    {
+      "id": "H03",
+      "label": "503 부분 성공과 키보드 재시도 한 쪽만 요청",
+      "pass": true
+    },
+    {
+      "id": "H04",
+      "label": "403 인증 제한과 정상 평가액",
+      "pass": true
+    },
+    {
+      "id": "H05",
+      "label": "권한 부재면 조회 발행 0",
+      "pass": true
+    },
+    {
+      "id": "H06",
+      "label": "조회 지연 중 소속 해제와 이전 자료 제거",
+      "pass": true
+    },
+    {
+      "id": "H07",
+      "label": "재시도 전 같은 회사의 소속 ID 변경 감지",
+      "pass": true
+    },
+    {
+      "id": "H08",
+      "label": "최종 401과 기존 인증 복구 1회",
+      "pass": true
+    },
+    {
+      "id": "H09",
+      "label": "기본 정보의 403 회귀",
+      "pass": true
+    },
+    {
+      "id": "H10",
+      "label": "섹션 404와 함께 유지되는 인증 결과",
+      "pass": true
+    },
+    {
+      "id": "H11",
+      "label": "미연결과 신청 중 기존 동선",
+      "pass": true
+    },
+    {
+      "id": "H12",
+      "label": "탭 복귀에서 회사 전환과 자료 재확인",
+      "pass": true
+    },
+    {
+      "id": "H13",
+      "label": "로그아웃 대기 중 보호 자료 가림과 늦은 응답 폐기",
+      "pass": true
+    },
+    {
+      "id": "H14",
+      "label": "연결된 /start에서 새 조회 미실행",
+      "pass": true
+    },
+    {
+      "id": "X01",
+      "label": "hybrid의 API 세션과 mock 회사 분리",
+      "pass": true
+    },
+    {
+      "id": "X02",
+      "label": "프로필 쓰기와 외부 요청 없음",
+      "pass": true
+    }
+  ],
+  "totals": {
+    "cases": 25,
+    "passed": 25,
+    "businessWrites": 0,
+    "externalRequests": 0,
+    "loopbackProfileGets": 23
+  },
+  "sourceEvidence": {
+    "algorithm": "SHA-256 over sorted paths followed by NUL and the binary SHA-256 of each file",
+    "sha256": "13d7880f1dbfd88bf12a7a4618ab660cbb8511ba5762ce34f8776232a8b4ec6c",
+    "files": [
+      "src/components/my/company-profile-sections.tsx",
+      "src/components/my/my-company-client.tsx",
+      "src/data/company/client.ts",
+      "src/data/company/company-profile-api.ts",
+      "src/data/company/company-profile-contracts.ts",
+      "src/data/company/company-profile-mock.ts",
+      "src/data/company/contracts.ts",
+      "src/data/company/http-repository.ts",
+      "src/data/company/mock-repository.ts",
+      "src/data/config.ts",
+      "src/data/shared/http.ts",
+      "src/features/auth/session.tsx",
+      "src/features/company/company-profile.ts",
+      "tests/company-profile-lifecycle.test.ts",
+      "tests/company-profile.test.ts"
+    ]
+  },
+  "screenshots": {
+    "source": "loopback HTTP",
+    "captures": [
+      {
+        "width": 1440,
+        "decoded24pxIcons": 5
+      },
+      {
+        "width": 390,
+        "decoded24pxIcons": 5
+      },
+      {
+        "width": 320,
+        "decoded24pxIcons": 5
+      }
+    ]
+  }
+}

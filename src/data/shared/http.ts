@@ -16,6 +16,7 @@ export type ApiOptions = {
   allowEmptyData?: boolean;
   allowNoContent?: boolean;
   retryUnauthorized?: boolean;
+  parseJson?: (source: string) => unknown;
 };
 export type HttpClient = ReturnType<typeof createHttpClient>;
 
@@ -39,7 +40,8 @@ export function createHttpClient(baseUrl: string, fetcher: typeof fetch = (...ar
       throw new ApiError(0, "NETWORK_ERROR", "서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.");
     }
     if (response.status === 204 && options.allowNoContent && (options.method ?? "GET") === "GET") return null as T;
-    const payload = await response.json().catch(() => null) as { isSuccess?: boolean; data?: T; code?: string; message?: string } | null;
+    const json = response.ok && options.parseJson ? response.text().then(options.parseJson) : response.json();
+    const payload = await json.catch(() => null) as { isSuccess?: boolean; data?: T; code?: string; message?: string } | null;
     if (!response.ok || payload?.isSuccess !== true) throw new ApiError(response.status, payload?.code ?? null, payload?.message || "요청을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.");
     if (payload.data == null && !options.allowEmptyData) throw new ApiError(response.status, "EMPTY_RESPONSE", "서버 응답을 확인하지 못했습니다. 다시 시도해 주세요.");
     return payload.data as T;

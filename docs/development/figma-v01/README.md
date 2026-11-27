@@ -6,12 +6,13 @@
 | --- | --- |
 | 갱신일 | 2026-11-27 KST |
 | 현재 작업 | — |
-| 다음 작업 | [DEV-08 · 나의 회사 시공능력평가액·기업 인증 3종 조회의 로컬 재개](tasks/DEV-08.md#dev-08-20261127-local-resume) |
-| 다음 첫 행동 | [회사 조회 정책과 현행 나의 회사 화면을 대조하고 두 조회의 요구사항을 확정](tasks/DEV-08.md#dev-08-20261127-first-action)한다. |
+| 다음 작업 | [DEV-07 · 알림 변경 신호와 재연결 로컬 재개 확인](tasks/DEV-07.md#dev-07-20261127-local-resume) |
+| 다음 첫 행동 | [현행 알림 버튼·목록과 세션 수명을 POL-05 신호·재조회 계약과 대조](tasks/DEV-08.md#dev-08-handoff)한다. |
 | 프론트 작업 순서 | [프론트 우선 작업과 실제 통합 QA 일정](#frontend-first-20261126) |
 | 백엔드 확인 기준 | [Plane `mate-pjt`](https://app.plane.so/mate-pjt/projects/35b602a8-3664-40f5-8c83-91ce49fe7c7b/issues/) · [테스트 Swagger](https://api-test.mate-bid.com/swagger-ui/index.html) |
 | DEV-58 홈 안내 결정 | 공개 전 개발 단계의 홈과 검색·공유 설명은 기존 문구를 사용한다. 기능 연결을 마친 뒤 공개 배포 전에 안내와 실제 동선을 다시 대조한다. [사용자 결정과 재개 조건](tasks/DEV-58.md#dev-58-20261126-figma-copy-decision) |
-| 프론트에서 재개할 수 있는 범위 | [나의 회사 시공능력평가액·기업 인증](tasks/DEV-08.md#dev-08-20261127-local-resume) · [알림 자동 갱신](tasks/DEV-07.md#dev-07-20261127-local-resume) · [공고 상세 날짜](tasks/DEV-14.md#dev-14-20261127-local-resume). 실행 서버 확인과 실제 통합 검증은 [공동 QA 일정](#frontend-first-20261126)에서 이어간다. |
+| 프론트에서 재개할 수 있는 범위 | [알림 자동 갱신](tasks/DEV-07.md#dev-07-20261127-local-resume) · [공고 상세 날짜](tasks/DEV-14.md#dev-14-20261127-local-resume). 실행 서버 확인과 실제 통합 검증은 [공동 QA 일정](#frontend-first-20261126)에서 이어간다. |
+| DEV-08 검증 근거 | 나의 회사에서 업종·공종별 평가액과 기업 인증 3종을 읽는다. 자동 검사와 Chrome 25개, 두 리뷰를 확인했다. 실제 CDASH는 공동 일정에 남긴다. [회사 QA](../../qa/my-company.md#dev-08-local-qa) · [검토](reviews/DEV-08.md#dev-08-review) · [Git 전달 기준](tasks/DEV-08.md#dev-08-delivery) |
 | QA-01 11/26 재개 점검 | 실제 첫 9행을 Chrome 두 폭과 대조했다. HOME-02~06의 준비 조건과 실행 대응이 남아 기존 4통과·5차단을 보존한다. [홈 QA](../../qa/home.md#qa-01-20261126-home) · [검증·리뷰](reviews/QA-01.md#qa-01-20261126-review) · [Git 전달 기준](tasks/QA-01.md#qa-01-20261126-delivery) |
 | DEV-02 검증 근거 | 홈의 승인 푸터와 약관 새 탭·FAQ 이동을 구현했다. 네 브라우저 폭과 두 공개 원문 열람을 검증했다. [완료 범위](tasks/DEV-02.md#dev-02-close) · [홈 QA](../../qa/home.md#dev-02-home-footer-qa) · [두 리뷰](reviews/DEV-02.md#dev-02-review) |
 | DEV-03 검증 근거 | 홈 CTA와 로그인 복귀를 현재 계정 맞춤 목록에 연결했다. 자동 검사·Next/Chrome 25건과 두 리뷰를 통과했다. 실제 RBD 0통과·9차단은 공동 일정에 남긴다. [완료 범위](tasks/DEV-03.md#dev-03-close) · [목록 QA](../../qa/bid-list.md#dev-03-local-qa) · [두 리뷰](reviews/DEV-03.md#dev-03-review) |
@@ -246,7 +247,7 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 | [POL-05 · 알림 변경 신호·REST 재조회 계약 확정](tasks/POL-05.md) | 정책 결정 | P1 | 완료 | N04 | [DOC-001](tasks/DOC-001.md) |
 | [DEV-07 · 새 알림 신호 수신·재연결 갱신](tasks/DEV-07.md#dev-07-20261127-local-resume) · **기존 계약으로 로컬 구현 가능·순서 대기·실제 연결은 공동 QA** | 개발 | P1 | 차단 | N04 | [POL-05](tasks/POL-05.md) |
 | [POL-06 · 가입 후 회사 실적·인증·희망금액 조회 계약](tasks/POL-06.md) | 정책 결정 | P1 | 완료 | M04 | [DOC-001](tasks/DOC-001.md) |
-| [DEV-08 · 나의 회사 시공능력평가액·기업 인증 3종 조회](tasks/DEV-08.md#dev-08-20261127-local-resume) · **다음 로컬 재개 작업으로 선정·자체 요구사항 Gate 대기·실제 조회는 공동 QA** | 개발 | P1 | 차단 | M03, M04, O08 | [POL-06](tasks/POL-06.md) / [DEV-60](tasks/DEV-60.md) |
+| [DEV-08 · 나의 회사 시공능력평가액·기업 인증 3종 조회](tasks/DEV-08.md#dev-08-brief) · **승인된 로컬 범위 검증 완료·실제 조회는 공동 QA** | 개발 | P1 | 완료 | M03, M04, O08 | [POL-06](tasks/POL-06.md) / [DEV-60](tasks/DEV-60.md) |
 
 ## 3. 필터·상세·회사 동선 보완
 
@@ -891,3 +892,8 @@ DOC-002는 원본 C01(P3)의 UI 확장과 구분해 기존 문서 오독 방지 
 - 시작 기준은 로컬과 원격 `main`의 `28652e6be580`이다. 웹 배포 버전 팝업은 공식 버전 출처·책임·조회 실패 기준 결정이 남았다. 기존 프론트 순서의 다음 후보이며 직접 선행 POL-06·DEV-60이 완료된 DEV-08을 한 건 선정한다. [다음 첫 행동](tasks/DEV-08.md#dev-08-20261127-first-action) · [DEV-49 조건](tasks/DEV-49.md#dev-49-pol-25-gate)
 - 이번 범위는 문서 갱신과 선정·인계다. 실행 표의 `차단`은 각 작업의 자체 [요구사항 Gate](workflow.md#next-task-selection)까지 유지한다. 각 작업의 로컬 범위는 공동 QA 자원 확보와 별도로 진행할 수 있다.
 - QA-01~03·QA-05~13과 결과 취합 QA-16은 이번 프론트 작업 선정에서 제외한다. 각 QA 상태와 QA-16의 취합 선행 및 다른 개발 작업의 의존성은 기존 표를 따른다. 실제 실행·판정은 백엔드 개발자와의 공동 QA 일정에 남긴다.
+
+## 2026-11-27 KST · DEV-08 로컬 검증과 DEV-07 인계
+
+- 나의 회사의 업종·공종별 시공능력평가액과 인증 3종에 대해 실제 권한의 로컬 계약, 부분 실패, 재시도와 변경된 소속의 자료 제거를 확인했다. CDASH의 실제 0통과·12차단과 기존 MCO·가입 QA 이력은 공동 일정에 남긴다. [로컬 검증과 두 리뷰](reviews/DEV-08.md#dev-08-review)
+- 다음은 P1의 [DEV-07](tasks/DEV-07.md#dev-07-20261127-local-resume)이다. P0 실제 QA와 DEV-49의 버전 출처 결정이 남아 있다. POL-05가 완료됐고 11월 27일에 기존 STOMP·REST 계약을 사용한 로컬 재개 범위가 기록됐다. 자체 요구사항 Gate까지 기존 차단을 유지한다. [선정 이유와 첫 행동](tasks/DEV-08.md#dev-08-handoff)

@@ -9,6 +9,7 @@ import { createRecentBidSearches } from "@/features/bids/recent-searches";
 
 type AuthSessionContextValue = {
   state: SessionState;
+  getSnapshot: () => SessionState;
   subscribe: (listener: () => void) => () => void;
   setAuthentication: (authentication: Authentication) => void;
   refresh: (options?: { preserveOnError?: boolean }) => Promise<Authentication | null>;
