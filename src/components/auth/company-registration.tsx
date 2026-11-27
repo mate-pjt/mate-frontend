@@ -16,34 +16,40 @@ export const amountChoices: Array<{ value: BidAmountRange; label: string }> = [
   { value: "ANY", label: "상관없어요!" },
 ];
 
-function ProfileField({ label, value }: { label: string; value: string | null | undefined }) {
-  return <div><dt className="text-grayscale-600 type-body-7">{label}</dt><dd className="mt-1 text-grayscale-800 type-body-7">{value || "정보 없음"}</dd></div>;
-}
-
-function formatBusinessNumber(value: string): string {
+export function formatBusinessNumber(value: string): string {
   const digits = value.replace(/\D/g, "");
   return digits.length === 10 ? `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5)}` : value;
 }
 
-function formatOpeningDate(value: string | null): string | null {
+function formatOpeningDate(value: string | null, settings: boolean): string | null {
   const match = value?.match(/^(\d{4})-(\d{2})/);
-  return match ? `${match[1]}년 ${Number(match[2])}월 설립` : value;
+  if (!match) return value;
+  return settings ? `${match[1]}.${match[2]}` : `${match[1]}년 ${Number(match[2])}월 설립`;
 }
 
-export function CompanyIdentityPanel({ profile }: { profile: SignupCompanyProfile }) {
+export function CompanyIdentityPanel({ profile, settings = false }: { profile: SignupCompanyProfile; settings?: boolean }) {
+  const fields = [
+    { label: "대표자명", value: profile.representativeName },
+    { label: "사업자등록번호", value: formatBusinessNumber(profile.businessNumber) },
+    { label: "주력업종", value: profile.primaryIndustry?.name },
+    { label: "주소", value: [profile.baseAddress, profile.detailAddress].filter(Boolean).join(" ") },
+    { label: "전화번호", value: profile.telephoneNumber },
+    { label: settings ? "개업일" : "설립일", value: formatOpeningDate(profile.openingDate, settings) },
+  ];
+  const iconSize = settings ? 24 : 16;
   return (
-    <div className="rounded-xl bg-grayscale-50 p-5">
-      <div className="mb-5 inline-flex items-center gap-2 rounded-md bg-grayscale-800 px-2 py-1 text-white">
-        <Image className="brightness-0 invert" src="/icon/24dp/company.svg" alt="" width={16} height={16} />
-        <strong className="type-body-7">{profile.companyName ?? "회사명 정보 없음"}</strong>
+    <div className={settings ? "rounded-2xl bg-grayscale-50 p-6" : "rounded-xl bg-grayscale-50 p-5"}>
+      <div className={`inline-flex items-center gap-2 bg-grayscale-800 text-white ${settings ? "mb-4 rounded-lg px-3 py-2" : "mb-5 rounded-md px-2 py-1"}`}>
+        <Image className={settings ? "shrink-0" : "shrink-0 brightness-0 invert"} src="/icon/24dp/company.svg" alt="" width={iconSize} height={iconSize} />
+        <strong className={settings ? "wrap-anywhere type-body-1" : "type-body-7"}>{profile.companyName ?? "회사명 정보 없음"}</strong>
       </div>
-      <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-        <ProfileField label="대표자명" value={profile.representativeName} />
-        <ProfileField label="사업자등록번호" value={formatBusinessNumber(profile.businessNumber)} />
-        <ProfileField label="주력업종" value={profile.primaryIndustry?.name} />
-        <ProfileField label="주소" value={[profile.baseAddress, profile.detailAddress].filter(Boolean).join(" ")} />
-        <ProfileField label="전화번호" value={profile.telephoneNumber} />
-        <ProfileField label="설립일" value={formatOpeningDate(profile.openingDate)} />
+      <dl className={settings ? "grid grid-cols-2 gap-x-5 gap-y-4 sm:gap-x-12" : "grid gap-x-8 gap-y-4 sm:grid-cols-2"}>
+        {fields.map(({ label, value }) => (
+          <div key={label}>
+            <dt className="text-grayscale-600 type-body-7">{label}</dt>
+            <dd className={`mt-1 text-grayscale-800 ${settings ? "wrap-anywhere type-body-2" : "type-body-7"}`}>{value || "정보 없음"}</dd>
+          </div>
+        ))}
       </dl>
     </div>
   );

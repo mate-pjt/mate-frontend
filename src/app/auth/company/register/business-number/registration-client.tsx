@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AuthGate } from "@/components/auth/auth-gate";
 import { AuthBack, AuthCard, AuthError } from "@/components/auth/auth-screen";
-import { CompanyEvidencePanel, CompanyIdentityPanel, RegistrationFinished, RegistrationPreferences } from "@/components/auth/company-registration";
+import { CompanyEvidencePanel, CompanyIdentityPanel, RegistrationFinished, RegistrationPreferences, formatBusinessNumber } from "@/components/auth/company-registration";
+import { StrokeLeftArrowIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/input";
 import { ApiError, errorMessage } from "@/data/shared/errors";
@@ -13,10 +14,12 @@ import { useAuthSession } from "@/features/auth/session";
 import type { BidAmountRange, BusinessConnection } from "@/data/company/contracts";
 import { companyFlowHref, type CompanyFlow } from "@/lib/company-flow";
 import { useCompanyFlowScope } from "@/features/company/use-flow-scope";
+import { SettingsBusinessNumberLookup, type SettingsLookupResult } from "./settings-lookup";
 
 type Step = "input" | "enriching" | "identity" | "evidence" | "preferences" | "not-found" | "verified" | "done";
 
 export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
+  const { fromSettings } = flow;
   const session = useAuthSession();
   const scope = useCompanyFlowScope();
   const [reauthenticate, setReauthenticate] = useState(false);
@@ -29,16 +32,19 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
   const [amountRange, setAmountRange] = useState<BidAmountRange | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [numberError, setNumberError] = useState<string | null>(null);
   const [registrationUncertain, setRegistrationUncertain] = useState(false);
   const [doneWarning, setDoneWarning] = useState<string | null>(null);
   const [restoring, setRestoring] = useState(true);
   const [restoreFailed, setRestoreFailed] = useState(false);
   const connectKey = useRef<string | null>(null);
   const registerKey = useRef<{ payload: string; key: string } | null>(null);
+  const digits = businessNumber.replace(/\D/g, "");
+  const replacing = Boolean(connection && connection.businessNumber.replace(/\D/g, "") !== digits);
 
   const handleConnection = useCallback((value: BusinessConnection) => {
     setConnection(value);
-    setBusinessNumber(value.businessNumber);
+    setBusinessNumber(fromSettings ? formatBusinessNumber(value.businessNumber) : value.businessNumber);
     if (value.enrichmentRun.status === "COMPLETED") {
       setStep(value.companyProfile.companyName && value.companyProfile.baseAddress ? "identity" : "not-found");
     } else if (value.enrichmentRun.status === "CANCELLED") {
@@ -46,7 +52,7 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
     } else {
       setStep("enriching");
     }
-  }, []);
+  }, [fromSettings]);
 
   useEffect(() => {
     if (session.state.status !== "authenticated") return;
@@ -95,14 +101,33 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
     return () => { active = false; window.clearTimeout(timer); };
   }, [access, handleConnection, scope, session.state.status, step]);
 
+  function changeBusinessNumber(value: string) {
+    setBusinessNumber(value);
+    connectKey.current = null;
+    if (fromSettings) {
+      setNumberError(null);
+      setError(null);
+      if (step === "identity" || step === "verified") setStep("input");
+    }
+  }
+
   async function connect(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const digits = businessNumber.replace(/\D/g, "");
-    if (digits.length !== 10 || busy || restoring) {
-      setError("사업자등록번호 10자리를 확인해 주세요.");
+    if (busy || restoring || step === "enriching") return;
+    if (digits.length !== 10) {
+      if (fromSettings) {
+        setNumberError("올바른 사업자등록번호 10자리를 입력해주세요!");
+        setError(null);
+      } else {
+        setError("사업자등록번호 10자리를 확인해 주세요.");
+      }
       return;
     }
-    if (connection?.businessNumber.replace(/\D/g, "") === digits) {
+    if (fromSettings) {
+      setNumberError(null);
+      setBusinessNumber(formatBusinessNumber(digits));
+    }
+    if (connection && !replacing) {
       handleConnection(connection);
       return;
     }
@@ -123,6 +148,9 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
       if (!request.current()) return;
       setReauthenticate(reason instanceof ApiError && reason.status === 401);
       if (reason instanceof ApiError && reason.code === "COMPANY_ALREADY_VERIFIED") setStep("verified");
+      else if (fromSettings && reason instanceof ApiError && reason.status === 400 && (reason.code === "C001" || reason.code === "BUSINESS_NUMBER_INVALID")) {
+        setNumberError(reason.message);
+      }
       else setError(errorMessage(reason));
     } finally {
       if (request.current(true)) setBusy(false);
@@ -211,32 +239,68 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
 
   const profile = connection?.companyProfile;
   const backStep = step === "identity" ? "input" : step === "evidence" ? "identity" : "evidence";
+  const backHref = companyFlowHref("register", flow);
+  const searchHref = companyFlowHref("search", { ...flow, query: digits, page: 0 });
+  const headingClassName = `text-grayscale-800 ${fromSettings ? "type-heading-5" : "type-heading-7"}`;
+  let settingsLookup: SettingsLookupResult | null = null;
+  if (fromSettings) {
+    if (step === "input" && !restoring) {
+      settingsLookup = { status: "input" };
+    } else if (step === "enriching" && connection) {
+      settingsLookup = { status: "enriching", progress: connection.enrichmentRun, onStatusCheck: () => void retryLookup() };
+    } else if (step === "identity" && profile) {
+      settingsLookup = { status: "identity", profile, onNext: () => setStep("evidence") };
+    } else if (step === "verified") {
+      settingsLookup = { status: "verified", searchHref };
+    }
+  }
+  const back = step === "input" || step === "enriching" || step === "not-found" || step === "verified" ? (
+    <AuthBack href={backHref} onNavigate={() => scope.dispose()} />
+  ) : step !== "done" && (
+    fromSettings ? (
+      <button className="mb-6 inline-flex cursor-pointer items-center gap-2 rounded text-grayscale-600 type-body-3 hover:text-grayscale-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" disabled={busy} onClick={() => setStep(backStep)} type="button">
+        <StrokeLeftArrowIcon aria-hidden className="size-4 shrink-0" />
+        뒤로가기
+      </button>
+    ) : (
+      <button className="mb-6 text-grayscale-600 type-body-3" disabled={busy} onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
+    )
+  );
 
   const content = (
-      <AuthCard>
-        {step === "input" || step === "enriching" || step === "not-found" || step === "verified" ? <AuthBack href={companyFlowHref("register", flow)} onNavigate={() => scope.dispose()} /> : null}
-        {step === "identity" || step === "evidence" || step === "preferences" ? (
-          <button className="mb-6 text-grayscale-600 type-body-3" disabled={busy} onClick={() => setStep(backStep)} type="button">← 뒤로가기</button>
+      <>
+        {fromSettings && back ? <div className="flex pb-2">{back}</div> : back}
+        {settingsLookup ? (
+          <SettingsBusinessNumberLookup
+            busy={busy}
+            error={numberError}
+            onBlur={() => setBusinessNumber(formatBusinessNumber)}
+            onSubmit={(event) => void connect(event)}
+            onValueChange={changeBusinessNumber}
+            replacing={replacing}
+            result={settingsLookup}
+            value={businessNumber}
+          />
         ) : null}
         {step === "input" && restoring ? (
-          <div className="space-y-4" role="status">
-            <p className="text-grayscale-700 type-body-3">이전에 조회하던 회사가 있는지 확인하고 있어요.</p>
+          <div className="space-y-4">
+            <p className="text-grayscale-700 type-body-3" role="status">{fromSettings && restoreFailed ? "이전 조회를 확인하지 못했어요." : "이전에 조회하던 회사가 있는지 확인하고 있어요."}</p>
             {restoreFailed ? <Button disabled={busy} onClick={() => void retryRestore()}>다시 확인하기</Button> : null}
           </div>
         ) : null}
-        {step === "input" && !restoring ? (
+        {!fromSettings && step === "input" && !restoring ? (
           <>
             <h1 className="mb-6 text-grayscale-800 type-heading-7">우리 회사를<br />사업자등록번호로 조회 해볼까요?</h1>
             <form className="flex gap-2" onSubmit={(event) => void connect(event)}>
-              <TextInput className="min-w-0 flex-1" inputMode="numeric" maxLength={12} onValueChange={(value) => { setBusinessNumber(value); connectKey.current = null; }} placeholder="사업자등록번호 10자리를 입력해주세요." value={businessNumber} />
-              <Button className="h-12 shrink-0" disabled={busy || businessNumber.replace(/\D/g, "").length !== 10} type="submit">{busy ? "조회 중..." : connection && connection.businessNumber.replace(/\D/g, "") !== businessNumber.replace(/\D/g, "") ? "이전 조회 종료 후 조회" : "조회하기"}</Button>
+              <TextInput className="min-w-0 flex-1" inputMode="numeric" maxLength={12} onValueChange={changeBusinessNumber} placeholder="사업자등록번호 10자리를 입력해주세요." value={businessNumber} />
+              <Button className="h-12 shrink-0" disabled={busy || digits.length !== 10} type="submit">{busy ? "조회 중..." : replacing ? "이전 조회 종료 후 조회" : "조회하기"}</Button>
             </form>
             <p className="mt-3 rounded-xl bg-grayscale-50 p-4 text-grayscale-600 type-body-7">예시 사업자등록번호: 123-45-67890</p>
           </>
         ) : null}
-        {step === "enriching" ? (
+        {!fromSettings && step === "enriching" ? (
           <div className="space-y-5">
-            <h1 className="text-grayscale-800 type-heading-7">회사 정보를 불러오고 있어요!</h1>
+            <h1 className={headingClassName}>회사 정보를 불러오고 있어요!</h1>
             <p className="text-grayscale-600 type-body-7">공개된 회사 정보와 실적을 확인 중입니다. 잠시만 기다려 주세요.</p>
             <p className="rounded-xl bg-grayscale-50 p-5 text-primary type-body-3" role="status">{connection?.enrichmentRun.completedSteps ?? 0} / {connection?.enrichmentRun.totalSteps ?? 3} 단계 완료</p>
             <Button disabled={busy} onClick={() => void retryLookup()} variant="secondary">지금 상태 확인</Button>
@@ -244,20 +308,20 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
         ) : null}
         {step === "not-found" ? (
           <div className="space-y-5">
-            <h1 className="text-grayscale-800 type-heading-7">회사를 찾을 수 없어요!</h1>
+            <h1 className={headingClassName}>회사를 찾을 수 없어요!</h1>
             <p className="text-grayscale-600 type-body-7">번호가 틀렸거나 신규 사업자라면 검색되지 않을 수 있어요.</p>
             <Button className="w-full" onClick={() => setStep("input")} variant="secondary">다른 번호 조회하기</Button>
             <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={companyFlowHref("document", flow)}>사업자등록증명서로 등록하기</Link>
           </div>
         ) : null}
-        {step === "verified" ? (
+        {!fromSettings && step === "verified" ? (
           <div className="space-y-5">
             <h1 className="text-grayscale-800 type-heading-7">이미 인증된 회사 정보가 있어요!</h1>
             <p className="text-grayscale-600 type-body-7">기존 회사에 통합 요청을 보내면 합류할 수 있어요.</p>
-            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={companyFlowHref("search", { ...flow, query: businessNumber.replace(/\D/g, ""), page: 0 })}>기존 회사 찾기</Link>
+            <Link className="block rounded-lg bg-primary px-5 py-4 text-center text-white" href={searchHref}>기존 회사 찾기</Link>
           </div>
         ) : null}
-        {step === "identity" && profile ? (
+        {!fromSettings && step === "identity" && profile ? (
           <div className="space-y-5">
             <h1 className="text-grayscale-800 type-heading-7">조회한 회사 정보예요.<br />{profile.companyName} 회사가 맞으신가요?</h1>
             <CompanyIdentityPanel profile={profile} />
@@ -266,20 +330,21 @@ export function BusinessNumberRegistration({ flow }: { flow: CompanyFlow }) {
         ) : null}
         {step === "evidence" && profile ? (
           <div className="space-y-5">
-            <h1 className="text-grayscale-800 type-heading-7">불러온 회사 정보와 실적이<br />모두 맞나요?</h1>
+            <h1 className={headingClassName}>불러온 회사 정보와 실적이<br />모두 맞나요?</h1>
             <CompanyEvidencePanel onNext={() => setStep("preferences")} profile={profile} />
           </div>
         ) : null}
         {step === "preferences" ? (
           <div className="space-y-6">
-            <h1 className="text-grayscale-800 type-heading-7">몇 가지만 확인할까요?<br />이제 마지막이에요!</h1>
+            <h1 className={headingClassName}>몇 가지만 확인할까요?<br />이제 마지막이에요!</h1>
             <RegistrationPreferences amountRange={amountRange} onAmountRangeChange={setAmountRange} onPositionNameChange={setPositionName} onRepresentativeChange={setRepresentative} positionName={positionName} representative={representative} />
             <Button className="h-14 w-full" disabled={busy || representative === null || !amountRange || (representative === false && !positionName.trim())} onClick={() => void register()}>{busy ? "등록하고 있어요..." : "메이트 시작하기"}</Button>
           </div>
         ) : null}
-        {step === "done" ? <RegistrationFinished fromSettings={flow.fromSettings} verified={false} warning={doneWarning} /> : null}
-        <div className="mt-4"><AuthError message={error} />{registrationUncertain ? <Link className="mt-3 block text-primary underline" href="/my/company">현재 회사 상태 확인하기</Link> : null}</div>
-      </AuthCard>
+        {step === "done" ? <RegistrationFinished fromSettings={fromSettings} verified={false} warning={doneWarning} /> : null}
+        {!fromSettings || error || registrationUncertain ? <div className="mt-4"><AuthError message={error} />{registrationUncertain ? <Link className="mt-3 block text-primary underline" href="/my/company">현재 회사 상태 확인하기</Link> : null}</div> : null}
+      </>
   );
-  return step === "done" ? content : <AuthGate nextPath={companyFlowHref("business-number", flow)} reauthenticate={reauthenticate}>{content}</AuthGate>;
+  const panel = fromSettings ? content : <AuthCard>{content}</AuthCard>;
+  return step === "done" ? panel : <AuthGate nextPath={companyFlowHref("business-number", flow)} reauthenticate={reauthenticate}>{panel}</AuthGate>;
 }

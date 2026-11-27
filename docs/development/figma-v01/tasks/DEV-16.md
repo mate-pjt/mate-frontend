@@ -166,3 +166,24 @@
 - PR receipt/예방 추가의 독립 freshness도 **PASS / Blocker·Major·Minor0**, 문서39파일/10MD·545상대 링크·79/114/156/활성0/PNG6와 runtime/test 지문 불변을 직접 확인했다. 추가4문서 지문은 `a19ca064b4f266e3e63822f8997fbfe0541a387cf8c6f505942f3702c2f441b5`다.
 - 초기 head의 Chromatic job `131758615974` 로그에서 **Billed snapshot limit reached**를 확인했다. 사용자에게 이미 승인된 이번 월간 한도 예외의 원인과 일치하며 UI Tests/UI Review pending을 성공으로 바꾸지 않는다. 나머지 초기 head의 checks와 api/mock/hybrid build는 성공했다. 변경된 최종 head는 별도로 다시 확인한다.
 - 위 두 줄은 받은 독립 결과와 조회한 CI 사실만 기록한다. 정책/코드/검증 범위·예외를 바꾸지 않아 primary가 여섯 절/문서 검사를 확인하고 독립 검토 반복은 생략한다. 실제 최종 head CI/리뷰·병합/동기화는 아직 다음 행동이다.
+
+<a id="dev-16-settings-business-number-ui"></a>
+
+## 2026-11-27 KST · 기존 계정의 사업자등록번호 조회 화면 보완
+
+- 나의 회사에서 진입한 번호 조회를 [기본](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52075), [입력](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52093), [입력 오류](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52111), [조회 성공](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3162-52131), [인증 회사](https://www.figma.com/design/Eayi1SWD8Xq8tGBmlp5SV2/?node-id=3173-51667)와 대조했다. 설정 경로에 일반 서비스 헤더, 흰 배경, 594px 조회 영역, 인라인 검증과 회사 정보 패널을 적용했다.
+- 캡처에 나온 정보 수집 단계의 전용 시안은 확인되지 않아 설정용 레이아웃에서 진행 건수와 수동 확인을 제공한다. 인증 회사 오류 응답이 제공하는 정보는 오류 코드와 메시지이므로 화면에는 인증 안내와 기존 회사 찾기를 표시한다. 메뉴는 서비스의 실제 목적지를 사용하는 공통 SiteHeader를 재사용한다.
+- 시작 체크포인트는 `c71790b`의 별도 `fix/settings-business-number-ui` 작업트리다. DEV-08 작업의 회사 조회·테스트·문서와 WBS 진행 기록을 보존했다. 조회·등록 Repository와 URL에 적용되는 기존 로그인·뒤로가기·완료 계약을 사용한다.
+- Mock 확인은 Next 빌드를 Chrome에서 열어 1920px 조회 영역과 결과 CTA 위치, 390px·320px 가로 넘침, 입력 오류와 지우기 후 포커스, 수집 화면과 새로고침 복원, 재입력 시 이전 결과 제거 및 마이페이지 복귀를 검증했다. 가입 경로와 중복 `from`은 별도 가상 계정 세션에서 기존 헤더·배경·뒤로가기와 단축 번호 제어를 확인했다. `pnpm test` 1,318건, `pnpm lint`, mock `pnpm build` 및 `pnpm build-storybook` 통과.
+- 로컬 HTTP 대역은 API 빌드로 503 복원 실패와 재시도, 404 이후 입력, 409 인증 회사의 찾기 경로, 400 `C001`의 인라인 검증, 최종 401의 설정 로그인 복귀를 확인했다. 최초 독립 검토에서 발견된 10자리 번호 검증 오류는 서버 메시지를 입력란 아래에 표시하도록 수정했고, 대역에서 메시지와 `aria-invalid`, `aria-describedby` 연결을 재검증했다. 브라우저 오류 로그 6건은 각 대역 HTTP 응답과 일치했다. [실서버 QA 재개 조건](QA-06.md#qa-06-20261125-gate)을 보존한다.
+- 수집 상태 UI는 [2026-09-29 회사 온보딩 연결](https://github.com/mate-pjt/mate-frontend/commit/d5e24f9dc3089387c35ad5b43adb26dc0d502dc0)에 포함됐고, [2026-11-13 설정 진입 연결](https://github.com/mate-pjt/mate-frontend/commit/39abf4961f8578818cde0ae07dc852d55a34701d)에서 공유 등록 경로를 타면서 기존 계정에도 노출됐다.
+
+### 입력 화면에서 수집 상태를 표시하는 후속 결정
+
+- 사용자는 기존 계정의 번호 조회가 시작돼도 Figma 입력 화면을 유지하고 버튼에 ‘조회 중’, 입력란 아래에 수집 상태를 표시하도록 요청했다. 현재 번호와 입력 예시를 보이게 두고 조회가 끝날 때까지 입력과 재제출을 잠근다. 최초 요청과 서버가 전달한 진행 건수를 표시하고 ‘지금 상태 확인’을 제공한다.
+- 번호 등록 클라이언트와 설정용 조회 폼에서 화면 전환을 조정한다. 조회·복구 등 기존 API와 1초 간격 자동 확인, 기존 가입 화면의 수집 단계 및 완료·오류 분기를 사용한다.
+- 시작 기준은 원격 main `3ee9335`와 이전 UI 작업이 남아 있던 `fix/settings-business-number-ui` 작업트리다. 이번에는 해당 UI 수정분을 같이 검증한 뒤 목적별로 커밋하고 PR을 통해 main에 병합한다.
+- Node 22.20.0에서 `pnpm test` 47개 파일·1,360건, `pnpm lint`, API·mock `pnpm build`, `pnpm build-storybook`를 통과했다. Chrome에서 설정 로그인 복귀, 조회 시작과 단계 갱신, 동일 입력 요소 유지, 새로고침 후 진행 복원, 회사 확인과 320px 등록 완료 및 신규 가입 대기 화면을 확인했다.
+- 로컬 HTTP 대역에서 201 이전 안내와 중복 제출 방지, 201의 0/3 표시, 자동·수동·자동 순서의 GET 3회로 완료까지 전환되는 것을 확인했다. 390px·320px 화면과 복원 실패, 409·400 `C001`·401 분기도 확인했다. 캡처는 합성 번호와 계정을 사용한다. [데스크톱](../../../qa/artifacts/dev-16-business-number/settings-lookup-progress-desktop.png) · [모바일](../../../qa/artifacts/dev-16-business-number/settings-lookup-progress-mobile.png)
+- 수동 확인 응답이 지연될 때 자동 조회가 먼저 완료되는 경우를 재현했다. 회사 확인 화면이 표시되는 즉시 ‘조회 중’ 버튼 문구와 진행 상태가 사라지는 것을 확인했다.
+- 실제 서버의 회사 등록 흐름 확인은 [QA-06 재개 조건](QA-06.md#qa-06-20261125-gate)을 따른다. 화면 상태를 조정하는 범위여서 공통 API·패키지·하네스 문서와 WBS의 다음 작업 선정은 기존 기록을 따른다.
