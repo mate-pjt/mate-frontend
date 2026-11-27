@@ -4,6 +4,7 @@ import { MockStatus } from "@/components/dev/mock-status";
 import { SiteHeader } from "@/components/site-header";
 import { ToastViewport } from "@/components/ui/toast";
 import { AuthSessionProvider } from "@/features/auth/session";
+import { NotificationSyncProvider } from "@/features/notifications/notification-sync";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -51,10 +52,12 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh flex-col bg-background text-foreground antialiased">
         <AuthSessionProvider>
-          <SiteHeader />
-          <main className="flex min-h-0 flex-1 flex-col">{children}</main>
-          <ToastViewport />
-          <MockStatus />
+          <NotificationSyncProvider>
+            <SiteHeader />
+            <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+            <ToastViewport />
+            <MockStatus />
+          </NotificationSyncProvider>
         </AuthSessionProvider>
       </body>
     </html>

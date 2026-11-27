@@ -11,15 +11,15 @@ import { errorMessage } from "@/data/shared/errors";
 import type { AuthAccess } from "@/data/shared/http";
 import { useAuthSession } from "@/features/auth/session";
 import { createNotificationActivationController } from "@/features/notifications/activation-controller";
+import { useNotificationSnapshot, useNotificationSync } from "@/features/notifications/notification-sync";
+import { uniqueNotifications, type InboxSubscription } from "@/features/notifications/refresh-controller";
 import type { AlarmNotification } from "@/types/alarm";
 import {
   deleteNotifications,
   getNotifications,
-  getUnreadNotificationCount,
   markNotificationRead,
   MAX_NOTIFICATION_SELECTION,
   NOTIFICATIONS_CHANGED_EVENT,
-  type NotificationCountUpdate,
   type NotificationDeletion,
   type NotificationPage,
 } from "@/data/notifications/client";
@@ -31,20 +31,22 @@ const allDeletionDescription = "아직 불러오지 않은 소식도 함께 삭�
 
 export function AlarmPageClient() {
   const { state, getAccessToken, refresh, getAccountKey, getSessionEpoch } = useAuthSession();
+  const { scope, requiresLogin, countFailed } = useNotificationSnapshot();
 
-  if (state.status === "authenticated") {
+  if (state.status === "authenticated" && scope?.accountKey === String(state.authentication.account.id) && !requiresLogin) {
     return (
       <AuthenticatedAlarmPage
+        countFailed={countFailed}
         getAccessToken={getAccessToken}
         getAccountKey={getAccountKey}
         getSessionEpoch={getSessionEpoch}
-        key={`${state.authentication.account.id}:${getSessionEpoch()}`}
+        key={`${scope.accountKey}:${scope.epoch}`}
         refresh={refresh}
       />
     );
   }
 
-  if (state.status === "anonymous") {
+  if (state.status === "anonymous" || requiresLogin) {
     return (
       <section aria-labelledby="alarm-login-title" className="grid flex-1 place-items-center px-4 py-20 text-center">
         <div className="flex max-w-[420px] flex-col items-center gap-5">
@@ -72,37 +74,28 @@ export function AlarmPageClient() {
 
 type InboxScope = {
   access: AuthAccess;
-  accountKey: string;
-  sessionEpoch: number;
   signal: AbortSignal;
   current: () => boolean;
+  inbox: InboxSubscription;
+  lastPage: number;
   reading: boolean;
   busy: boolean;
   dismissToast?: () => void;
 };
 
 function appendPage(current: NotificationPage, next: NotificationPage): NotificationPage {
-  const ids = new Set(current.items.map((item) => item.id));
-  return { ...next, items: [...current.items, ...next.items.filter((item) => !ids.has(item.id))] };
+  return { ...next, items: uniqueNotifications([...current.items, ...next.items]) };
 }
 
-async function loadExpandedList(scope: InboxScope, lastPage: number): Promise<NotificationPage> {
-  let result = await getNotifications(scope.access, 0, scope.signal);
-  for (let index = 1; index <= lastPage && index < result.totalPages; index += 1) {
-    const next = await getNotifications(scope.access, index, scope.signal);
-    result = appendPage(result, next);
-  }
-  return result;
+function setBusy(scope: InboxScope, busy: boolean) {
+  scope.busy = busy;
+  scope.inbox.setBusy(busy || scope.reading);
 }
 
-function publishCount(scope: InboxScope, count: number | null) {
-  window.dispatchEvent(new CustomEvent<NotificationCountUpdate>(NOTIFICATIONS_CHANGED_EVENT, {
-    detail: { accountKey: scope.accountKey, sessionEpoch: scope.sessionEpoch, count },
-  }));
-}
-
-function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSessionEpoch }: AuthAccess & { getSessionEpoch: () => number }) {
+function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSessionEpoch, countFailed }:
+  AuthAccess & { getSessionEpoch: () => number; countFailed: boolean }) {
   const router = useRouter();
+  const { controller: notifications, connectionRejected, retry } = useNotificationSync();
   const [page, setPage] = useState<NotificationPage | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [moreError, setMoreError] = useState<string | null>(null);
@@ -117,12 +110,14 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
   const activation = useRef<ReturnType<typeof createNotificationActivationController> | null>(null);
   const lifetime = useRef<InboxScope | null>(null);
   const readVersion = useRef(0);
-  const refreshThrough = useRef<number | null>(null);
+  const refreshingDeletion = useRef(false);
   const confirmAllRef = useRef<HTMLDialogElement>(null);
   const editRef = useRef<HTMLButtonElement>(null);
   const selectAllRef = useRef<HTMLButtonElement>(null);
   const retryRef = useRef<HTMLButtonElement>(null);
   const emptyRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const scrollAnchor = useRef<{ id?: string; top?: number; scrollY: number } | null>(null);
   const restoreFocus = useRef(false);
 
   useLayoutEffect(() => {
@@ -130,11 +125,42 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
     if (accountKey === null) return;
     const sessionEpoch = getSessionEpoch();
     const abort = new AbortController();
-    const current = () => !abort.signal.aborted && getAccountKey() === accountKey && getSessionEpoch() === sessionEpoch;
+    const current = () => !abort.signal.aborted && getAccountKey() === accountKey && getSessionEpoch() === sessionEpoch && !notifications.getSnapshot().requiresLogin;
     const access = { getAccessToken, refresh, getAccountKey, assertRequestScope: () => {
       if (!current()) throw new DOMException("Alarm session ended", "AbortError");
     } };
-    const scope: InboxScope = { accountKey, sessionEpoch, signal: abort.signal, access, current, reading: false, busy: false };
+    const inbox = notifications.attachInbox({
+      lastPage: () => scope.lastPage,
+      apply(list, count) {
+        if (!current()) return;
+        if (refreshingDeletion.current && (list.status === "rejected" || count.status === "rejected")) {
+          setLoadError("삭제 결과는 받았지만 최신 소식이나 미확인 건수를 불러오지 못했어요.");
+          return;
+        }
+        if (list.status === "rejected") {
+          setLoadError(errorMessage(list.reason));
+          return;
+        }
+        if (!refreshingDeletion.current && listRef.current && window.scrollY > 0) {
+          const firstVisible = Array.from(listRef.current.children).find((row) => row.getBoundingClientRect().bottom > 0);
+          scrollAnchor.current = {
+            id: firstVisible?.getAttribute("data-alarm-id") ?? undefined,
+            top: firstVisible?.getBoundingClientRect().top,
+            scrollY: window.scrollY,
+          };
+        }
+        refreshingDeletion.current = false;
+        scope.lastPage = list.value.page;
+        setPage(list.value);
+        setLoadError(null);
+        setSelectedIds((ids) => {
+          if (ids.size === 0) return ids;
+          const selected = new Set(list.value.items.filter(({ id }) => ids.has(id)).map(({ id }) => id));
+          return selected.size === ids.size ? ids : selected;
+        });
+      },
+    });
+    const scope: InboxScope = { signal: abort.signal, access, current, inbox, lastPage: 0, reading: false, busy: false };
     lifetime.current = scope;
     const controller = createNotificationActivationController({
       getAccountKey: () => current() ? accountKey : null,
@@ -148,25 +174,35 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
         });
         window.dispatchEvent(new Event(NOTIFICATIONS_CHANGED_EVENT));
       },
-      onPending: (ids) => { scope.reading = ids.length > 0; setReadingIds(ids); },
+      onPending: (ids) => {
+        scope.reading = ids.length > 0;
+        scope.inbox.setBusy(scope.busy || scope.reading);
+        setReadingIds(ids);
+      },
       onNotice: setNotice,
       onError: (error, alarm) => setReadError({ message: errorMessage(error), alarm }),
       clearError: () => setReadError(null),
       navigate: (path) => router.push(path),
     });
     activation.current = controller;
-    void getNotifications(access, 0, scope.signal).then(
-      (result) => { if (current()) setPage(result); },
-      (error: unknown) => { if (current()) setLoadError(errorMessage(error)); },
-    );
     return () => {
       abort.abort();
+      inbox.dispose();
       controller.dispose();
       scope.dismissToast?.();
       activation.current = null;
       lifetime.current = null;
     };
-  }, [getAccessToken, refresh, getAccountKey, getSessionEpoch, router]);
+  }, [getAccessToken, refresh, getAccountKey, getSessionEpoch, notifications, router]);
+
+  useLayoutEffect(() => {
+    const anchor = scrollAnchor.current;
+    if (!anchor) return;
+    scrollAnchor.current = null;
+    const row = listRef.current && Array.from(listRef.current.children).find((item) => item.getAttribute("data-alarm-id") === anchor.id);
+    const top = row && anchor.top !== undefined ? window.scrollY + row.getBoundingClientRect().top - anchor.top : anchor.scrollY;
+    window.scrollTo({ top, behavior: "instant" });
+  }, [page]);
 
   useEffect(() => {
     if (!restoreFocus.current) return;
@@ -177,52 +213,28 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
     target.focus();
   }, [editing, page, loadError]);
 
-  async function refreshAfterDeletion(scope: InboxScope, lastPage: number) {
-    publishCount(scope, null);
-    const [list, count] = await Promise.allSettled([
-      loadExpandedList(scope, lastPage),
-      getUnreadNotificationCount(scope.access, scope.signal),
-    ]);
-    if (!scope.current()) return;
-    if (count.status === "fulfilled") publishCount(scope, count.value);
-    if (list.status === "rejected" || count.status === "rejected") {
-      setLoadError("삭제 결과는 받았지만 최신 소식이나 미확인 건수를 불러오지 못했어요.");
-      return;
-    }
-    refreshThrough.current = null;
-    setPage({ ...list.value, unreadCount: count.value });
-  }
-
-  async function retryLoad() {
+  function retryLoad() {
     const scope = lifetime.current;
     if (!scope?.current() || scope.busy) return;
-    scope.busy = true;
     restoreFocus.current = true;
-    setLoadError(null);
-    try {
-      if (refreshThrough.current !== null) {
-        await refreshAfterDeletion(scope, refreshThrough.current);
-      } else {
-        const result = await getNotifications(scope.access, 0, scope.signal);
-        if (scope.current()) setPage(result);
-      }
-    } catch (error) {
-      if (scope.current()) setLoadError(errorMessage(error));
-    } finally {
-      scope.busy = false;
-    }
+    retry();
   }
 
   async function loadMore() {
     const scope = lifetime.current;
     if (!page || page.page + 1 >= page.totalPages || !scope?.current() || scope.busy) return;
-    scope.busy = true;
+    setBusy(scope, true);
     const version = readVersion.current;
     setLoadingMore(true);
     setMoreError(null);
     try {
       const next = await getNotifications(scope.access, page.page + 1, scope.signal);
       if (!scope.current()) return;
+      if (next.page >= next.totalPages) {
+        notifications.request();
+        return;
+      }
+      scope.lastPage = next.page;
       setPage((current) => {
         if (!current || current.page + 1 !== next.page) return current;
         return {
@@ -233,7 +245,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
     } catch (error) {
       if (scope.current()) setMoreError(errorMessage(error));
     } finally {
-      scope.busy = false;
+      setBusy(scope, false);
       if (scope.current()) setLoadingMore(false);
     }
   }
@@ -265,7 +277,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
   async function submitDeletion(deletion: NotificationDeletion) {
     const scope = lifetime.current;
     if (!page || !editing || !scope?.current() || scope.busy || scope.reading) return;
-    scope.busy = true;
+    setBusy(scope, true);
     setDeleting(true);
     setDeletionError(null);
     try {
@@ -282,32 +294,41 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
       setEditing(false);
       setSelectedIds(new Set());
       setMoreError(null);
+      setLoadError(null);
       setPage(null);
       restoreFocus.current = true;
-      refreshThrough.current = page.page;
-      await refreshAfterDeletion(scope, page.page);
+      refreshingDeletion.current = true;
+      scope.inbox.discardCount();
+      notifications.request();
     } catch (error) {
       if (scope.current()) setDeletionError(errorMessage(error));
     } finally {
-      scope.busy = false;
+      setBusy(scope, false);
       if (scope.current()) setDeleting(false);
     }
   }
+
+  const refreshError = loadError ?? (countFailed ? "미확인 알림 수를 갱신하지 못했어요." : null);
+  const refreshFeedback = (refreshError || connectionRejected) && (
+    <div className="flex flex-wrap items-center justify-center gap-3 px-4 py-2">
+      {refreshError && <p className="type-body-7 text-danger" role="alert">{refreshError}</p>}
+      {connectionRejected && <p className="type-body-7 text-grayscale-600" role="status">알림 자동 갱신에 연결하지 못했어요.</p>}
+      <Button disabled={deleting || loadingMore} onClick={retryLoad} ref={retryRef} variant="outline">다시 시도하기</Button>
+    </div>
+  );
 
   if (!page) {
     return (
       <section aria-live="polite" className="grid flex-1 place-items-center px-4 py-20 text-center">
         <div className="flex flex-col items-center gap-4">
-          <p className="type-body-3 text-grayscale-600" role={loadError ? "alert" : "status"}>
-            {loadError ?? "받은 소식을 확인하고 있어요."}
-          </p>
-          {loadError && <Button onClick={() => void retryLoad()} ref={retryRef} variant="outline">다시 시도하기</Button>}
+          {!loadError && <p className="type-body-3 text-grayscale-600" role="status">받은 소식을 확인하고 있어요.</p>}
+          {refreshFeedback}
         </div>
       </section>
     );
   }
 
-  if (page.items.length === 0) return <AlarmEmpty focusRef={emptyRef} />;
+  if (page.items.length === 0) return <>{refreshFeedback}<AlarmEmpty focusRef={emptyRef} /></>;
 
   const loadedIds = page.items.map((item) => item.id);
   const allLoadedSelected = loadedIds.every((id) => selectedIds.has(id));
@@ -331,6 +352,7 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
       </header>
 
       <div className="flex flex-col gap-6">
+        {refreshFeedback}
         <div className="flex min-h-[38px] flex-wrap items-center justify-end gap-2">
           {editing ? (
             <>
@@ -362,9 +384,9 @@ function AuthenticatedAlarmPage({ getAccessToken, refresh, getAccountKey, getSes
             <Button onClick={() => void activation.current?.activate(readError.alarm)} variant="outline">다시 시도하기</Button>
           </div>
         )}
-        <ul aria-label="받은 소식" className="flex flex-col">
+        <ul aria-label="받은 소식" className="flex flex-col" ref={listRef}>
           {page.items.map((alarm, index) => (
-            <li key={alarm.id}>
+            <li data-alarm-id={alarm.id} key={alarm.id}>
               <AlarmListItem
                 alarm={alarm}
                 index={index}

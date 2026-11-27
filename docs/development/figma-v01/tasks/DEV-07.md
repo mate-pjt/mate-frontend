@@ -26,11 +26,11 @@
 
 ## 완료 기준
 
-- [ ] 중복/연속 신호·오프라인 복귀·재연결 때 갱신 누락/중복을 확인한다
-- [ ] 계정 변경·logout·unmount의 늦은 이벤트와 정리를 검증한다
-- [ ] 현재 package scripts로 필요한 test/lint/build·diff-check와 영향 시 Storybook 검증을 통과한다.
-- [ ] 요구사항 Gate에서 정한 실제 API/브라우저·권한·오류 사례와 필요한 QA case를 검증한다. 외부 조건으로 못 하면 차단/미실행과 이미 승인된 예외를 기록하며 전체 기능 통합 PASS로 표시하지 않는다.
-- [ ] Documentation Update Check 및 verifier/ai-review를 통과한다. 구현만 마친 상태는 완료가 아니다.
+- [x] 승인된 로컬 범위에서 중복/연속 신호·오프라인 복귀·재연결 때 갱신 누락/중복을 확인했다.
+- [x] 계정 변경·logout·unmount의 늦은 이벤트와 정리를 검증했다.
+- [x] 현재 package scripts의 test/lint/build, diff-check와 Storybook 검증을 통과했다.
+- [x] 실제 Next/Chrome의 로컬 권한·오류를 검증했다. 개발 서버 실제 WS·REST 0건 실행·NSIG 12건 차단과 11/27 승인 범위를 기록했다.
+- [x] Documentation Update Check 및 verifier/ai-review를 통과했다. [완료 증거](#dev-07-close)
 
 ## 착수 전 Implementation Brief / 설계 Gate
 
@@ -55,7 +55,7 @@
 | --- | --- | --- | --- |
 | 2026-10-27 / 문서화 | feature/my-company-overview / f84af24b5f9d + 기존 미커밋 변경 | 보고서에서 작업 정의만 생성. 구현/실제 QA 미실행 | 선행 작업의 결과와 현재 요구사항을 확인한 뒤 착수한다. |
 
-## 검증·리뷰·인계 기록
+## 2026-10-27 · 초기 검증·리뷰·인계 기록
 
 | 구분 | 실행 명령/사례·환경 | 결과 | 증거/미실행 이유 |
 | --- | --- | --- | --- |
@@ -87,3 +87,54 @@
 - 범위는 `/ws/v1/notifications` STOMP 연결과 `/user/queue/notification-changes`의 `NOTIFICATION_CHANGED` 수신, 기존 목록·미확인 건수 REST 재조회다. 합성 전송과 제어 가능한 시간으로 신호 합치기, 재연결, 로그아웃·계정 전환 시 정리와 펼친 목록·스크롤 보존을 확인할 수 있다. POL-05의 갱신 제한과 정기 polling을 사용하지 않는 정책을 적용한다.
 - 테스트 배포의 실행 버전·허용 Origin, 합성 계정 2개와 신호 발생 자료, 브라우저의 실제 `CONNECT`/`SUBSCRIBE`·단절·재연결 확인은 공동 QA에서 진행한다. [NSIG 사례](../../../qa/alarms.md#pol-05-signal-qa)와 기존 받은 알림 QA 이력을 유지한다.
 - 이 작업을 선정하면 현행 알림 버튼·목록과 세션 수명을 읽고, 합성 전송 범위 및 검증 기준을 자체 요구사항 Gate에서 정리한다. 구현, 로컬 검증 및 실제 연결은 이번 문서 갱신에서 미실행이다.
+
+<a id="dev-07-brief"></a>
+
+## 2026-11-27 KST · 로컬 구현 Brief와 설계
+
+- 작업 유형과 승인 근거는 N04 개발, [11/09 사용자 승인 POL-05 v1](POL-05.md#pol-05-contract), [11/26 프론트 우선·공동 QA 결정](../README.md#frontend-first-20261126) 및 [11/27 사용자 로컬 재개 범위](#dev-07-20261127-local-resume)다. 이번 요청은 검증·리뷰 후 작업 커밋, push, PR, 조건부 정상 병합과 로컬 `main` fast-forward를 승인했다. 이 PR에서 발생한 Chromatic 월간 한도 실패에만 이번 예외를 적용한다.
+- 공개 notifications client, HTTP 목록·건수 Repository, RootLayout·Bell·알림 페이지·세션 컨트롤러와 읽음/삭제의 기존 성공 처리를 대조했다. 목록의 20건 범위와 행 순서·스크롤, 이전 정상 데이터와 명시 재시도를 보존한다. 읽음·삭제·더 보기와 겹칠 때 이전 조회를 무효화하고 후속 조회를 한 묶음으로 실행한다.
+- `data/notifications`에 빌드 공급원으로 제한한 native WS/STOMP 전송을, `features/notifications`에 계정 수명의 연결·예약·공유 조회 상태를 둔다. `app/layout.tsx`, Bell, 알림 목록을 연결한다. 기존 REST·인증 진입점과 UI 토큰을 사용한다. 신호는 500ms 고정 창, 묶음 시작 간 최소 1초와 동시 1묶음, 재연결은 POL-05의 1~30초 기준과 지터를 검증한다. 정기 polling과 추가 라이브러리는 범위에 없다.
+- 소스 계약은 중앙 `mate-docs`의 [실시간 설계](https://github.com/mate-pjt/mate-docs/blob/c9e50ff591ae18023164e1a94581c611bf1e4f29/docs/architecture/account-notification-realtime.md), 백엔드 #86의 병합 `0b286ca1` 및 `main` `4b5f31de`의 [현재 WS 설정](https://github.com/mate-pjt/mate-backend/blob/4b5f31de578c41e698dda9c99e66149b7292f031/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/websocket/notification/AccountNotificationWebSocketConfiguration.kt)과 [STOMP 인증](https://github.com/mate-pjt/mate-backend/blob/4b5f31de578c41e698dda9c99e66149b7292f031/mate-api/src/main/java/kr/co/mate/mate_api/adapter/input/websocket/notification/AccountNotificationStompInboundInterceptor.kt)이다. 현재 main [백엔드 CI](https://github.com/mate-pjt/mate-backend/actions/runs/43392743658)와 별도로 [개발 OpenAPI](https://api-test.mate-bid.com/v3/api-docs)는 3.1.0 · SHA-256 `9711e22b705d79ded53428d1a0ba157bae2894a46999a83899d8324fc4459ea4`로 REST를 게시했다. 실행 SHA·실제 알림 응답·WS/Origin은 확인 대상에 남긴다.
+- `dev` `f4860fd9`의 [CI](https://github.com/mate-pjt/mate-backend/actions/runs/45723770088)는 검증·발행·개발 배포 작업이 성공했고 운영 배포는 생략됐다. 현재 실행 SHA와의 대응은 확인되지 않았다.
+- Spring Simple Broker의 구독 등록 완료 영수증과 식별 가능한 STOMP 인증 오류 코드는 현재 소스에서 제공하지 않는다. `CONNECTED` 이후 고정 구독을 전송하고 보완 REST를 예약한다. 구독이 실제로 전달한 유효 신호에서 재연결 간격을 초기화하고 500ms 규칙으로 조회한다. 보완 조회와 서버 등록 사이에 남을 수 있는 간격, STOMP 오류의 인증 분류는 공동 QA의 차단 조건으로 기록한다. HTTP 401은 기존 공용 갱신·재요청을 사용한다. [Spring Simple Broker 계약](https://docs.spring.io/spring-framework/reference/7.0/web/websocket/stomp/handle-broker-relay.html)
+- 가정은 bounded jitter와 CONNECT timeout을 구현에서 고르는 것이다. 실행 계정·권한·신호/잔존/복구는 공동 QA 담당 역할에 남긴다. 추가 UI 재설계, 별도 제품 정책, 실제 업무 REST/WS·외부 메시지·서비스 배포는 이번 로컬 범위에서 제외한다.
+- 검증은 Node 22.20.0의 `pnpm test`, `pnpm lint`, `pnpm build`, `pnpm build-storybook`, `git diff --check`, 합성 Clock/transport, Next/Chrome의 API 대역·mock·hybrid, 문서 링크·N04·기준선 보존과 두 리뷰다. 공개 원천은 읽기 전용으로 확인했다.
+
+### 이번 체크포인트
+
+| 날짜와 실행자 | 시작 상태 | 수행과 근거 | 다음 행동 |
+| --- | --- | --- | --- |
+| 2026-11-27 KST · Codex | `feat/dev-07-notification-sync` · `c3fb572`; 작업트리 clean. `main`과 원격 일치 | POL-05 `0fd4314`, DEV-08 `3ee9335`의 선행 병합 확인. 요구사항과 검증 범위를 제시함 | 공개 전송 진입점과 계정별 연결·조회 컨트롤러를 구현한 뒤 현재 UI를 연결한다. |
+| 2026-11-27 KST · Codex | 같은 브랜치·HEAD의 DEV-07 소스·테스트·작업 기록 변경 | Node 22.20.0 격리 복사본에서 `pnpm test` 49파일·1,378건, `pnpm lint` 1차 통과. 합성 REST/WS 및 Next dev 준비 | Chrome에서 펼친 목록과 재연결·인증·공급원 격리를 확인한 뒤 최종 자동 검사와 두 리뷰를 실행한다. |
+| 2026-11-27 KST · Codex | 같은 브랜치·HEAD의 DEV-07 변경 | API 대역 Chrome 31개, mock·hybrid Chrome 각각 5개, 3개 공급원과 Storybook 빌드 통과. [사례별 근거](../../../qa/alarms.md#dev-07-local-qa) | 문서 연결과 실제 QA 차단 보존을 점검하고 두 리뷰를 수행한다. |
+| 2026-11-27 KST · Codex | 같은 브랜치·HEAD의 DEV-07 변경 | 독립 검토 Major 2건을 반영해 포커스 단독 복귀·잘못된 자격 증명을 수정했다. Node 1,382건과 Chrome 포커스 추가 사례가 통과했다. [검토](../reviews/DEV-07.md#dev-07-review) | 수정 및 문서 diff의 두 리뷰를 다시 확인한다. |
+
+### 이번 구현과 검증
+
+- 세션·계정별 한 연결과 목록·미확인 수 재조회 묶음을 구현했다. 재연결 기준 지연에 0.75~1.25배 지터를 적용하며 30초를 상한으로 둔다. 연결 시작부터 `CONNECTED` 대기는 최대 10초다. socket이 전송한 구독은 유효 신호로 확인하며, 전송 직후 보완 조회는 실제 서버 등록 시점을 보장하지 않는다. [로컬 QA와 실제 재개 조건](../../../qa/alarms.md#dev-07-local-qa)
+- 원본 목록은 20건 단위로 유효 범위만 다시 읽고 순서·고유 ID·화면의 스크롤 기준 행을 보존한다. 부분 실패는 성공한 목록과 미확인 수를 보존한다. 목록의 읽음·삭제·더 보기와 겹친 자동 조회를 취소하고 현재 자료로 수렴시킨다.
+- Node `22.20.0`의 최종 `pnpm test` 49파일·1,382건과 `pnpm lint`, `pnpm build` 3개 공급원, `pnpm build-storybook`이 통과했다. 격리 복사본은 저장소에 커밋된 파일과 이번 변경만 사용했다. 브라우저 도구에서 합성 제어의 객체 인코딩과 HMR 소켓을 함께 세는 오류를 교정한 뒤 전체를 다시 실행했다. 앱 검사 실패 수정은 0회이며 독립 검토의 두 발견 사항은 한 차례 수정하고 재검증했다.
+- Documentation Update Check에서 알림 전송·공유 조회의 소유 위치는 `architecture.md`와 `data-access.md`, 연결과 검증 근거는 `plan.md`, QA·WBS·이 기록과 리뷰에 반영한다. `base.md`, `harness.md`, `ai-failures.md`는 패키지·스크립트·하네스 변경이나 재발 방지 규칙을 추가할 근거가 없었다. N04와 기존 QA 판정 및 기준선은 보존한다.
+
+<a id="dev-07-close"></a>
+
+## 2026-11-27 KST · 승인된 구현 범위 검증 종료
+
+로컬 구현과 문서 검토가 통과했다. Node 1,382건, API·mock·hybrid 빌드와 Storybook, Chrome의 API 대역 32개·mock 5개·hybrid 5개 및 링크·N04·WBS·기준선·QA 이력 검사를 확인했다. 첫 독립 검토에서 발견한 포커스와 만료 처리 두 건은 수정했고 재검토에 통과했다. 검토 이후 종료 문서 변경은 문서 검사와 두 리뷰에서 다시 확인한다. [알림 QA](../../../qa/alarms.md#dev-07-local-qa) · [검토 기록](../reviews/DEV-07.md#dev-07-review)
+
+실제 통합은 실행과 통과 모두 0건이며 NSIG 12건이 차단이다. 공동 QA의 첫 확인은 개발 서버 실행 빌드와 Origin 대응, 구독 등록 타이밍과 STOMP 인증 거절의 식별 근거다. 승인된 합성 2계정·알림과 읽음/오류 복구 범위를 확보한 뒤 사례를 실행한다. [재개 조건](../../../qa/alarms.md#dev-07-local-qa)
+
+<a id="dev-07-delivery"></a>
+
+### Git 전달
+
+이번 요청에서 사용자가 목적별 Conventional Commit, 작업 브랜치 push·PR, 최종 head 검사와 정상 병합·로컬 main fast-forward를 승인했다. 최종 head의 원격 검사·리뷰·병합 결과는 [작업 브랜치 PR](https://github.com/mate-pjt/mate-frontend/pulls?q=is%3Apr+head%3Afeat%2Fdev-07-notification-sync)에서 확인한다. 이번 PR에 실제 발생한 Chromatic 월간 한도 이외의 검사는 정상 기준을 적용한다. 실제 업무 API·서비스 배포와는 별도 범위다.
+
+<a id="dev-07-handoff"></a>
+
+### 다음 작업 인계
+
+다음은 [DEV-14](DEV-14.md#dev-14-20261127-local-resume)다. P0 실제 QA와 QA-16 취합은 자원·선행을, DEV-49는 버전 출처와 책임 결정이 남아 있다. DEV-14의 직접 선행 [POL-09](POL-09.md)는 완료됐고 현장설명일·기준일·수집일을 기존 상세 GET으로 표시할 로컬 범위가 11월 27일 승인됐다. 실행 버전과 날짜 실표본은 공동 QA에 남긴다. [프론트 작업 순서](../README.md#frontend-first-20261126)
+
+첫 행동은 기존 공개 상세의 타입·mapper·컴포넌트와 로그인 전/인증 회사 로그인 후 두 Figma 프레임을 대조하는 것이다. 세 날짜의 제공·미제공·미확인 표시, KST 변환과 원문 링크 보존을 자체 요구사항 Gate와 검증 계획에 정리한다. 이번 대화는 선정과 인계까지 수행한다.

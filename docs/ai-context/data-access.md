@@ -31,7 +31,7 @@ src/data/
   bids/{contracts,http-repository,detail-http-repository,mock-repository,server}.ts
        {api-types,api-mapper,detail-api-types,detail-api-mapper}.ts
   company/{contracts,api-types,api-mapper,http-repository,mock-repository,client}.ts
-  notifications/{contracts,http-repository,mock-repository,client}.ts
+  notifications/{contracts,http-repository,mock-repository,stomp,client}.ts
   bid-alerts/{contracts,http-repository,mock-repository,client}.ts
   personal-filters/{contracts,http-repository,mock-repository,client}.ts
   notification-settings/{contracts,http-repository,mock-repository,client}.ts
@@ -47,12 +47,14 @@ src/data/
 | `auth` | 로그인 시작, 가입, 완료, 복원, 로그아웃 | `auth/client.ts` |
 | `bids` | 홈, 목록/metadata, 상세/첨부/관련/개찰/물품/참여업체 | `bids/server.ts` |
 | `company` | 회사·업종 검색, 소속 신청/초대, 사업자번호, 증명서, 등록, 나의 회사, 회사 간 통합 사건 | `company/client.ts` |
-| `notifications` | 받은 알림 목록, 미확인 건수, 읽음, 선택·전체 수동 삭제 | `notifications/client.ts` |
+| `notifications` | 받은 알림 목록, 미확인 건수, 읽음, 선택·전체 수동 삭제, 변경 신호 | `notifications/client.ts` |
 | `bidAlerts` | 공고별 알림 조회/설정/해제 | `bid-alerts/client.ts` |
 | `personalFilters` | 개인 필터 조회/저장/초기화 | `personal-filters/client.ts` |
 | `notificationSettings` | 수신 주소, 이메일 인증/재전송/확인, 맞춤 이메일 ON/OFF | `notification-settings/client.ts` |
 
 회사 계약은 Directory/Onboarding/Document/Team/Merge/Profile 포트로 나누고 한 factory가 같은 공급원의 포트를 조합한다. 이메일 주소와 ON/OFF도 같은 공급원을 선택하지만 기존 endpoint별 성공/오류 처리는 독립적이다. Q&A는 현재 endpoint가 없는 `static` 콘텐츠이며 api 프로필에서도 static이다.
+
+`getNotificationSignalConnector()`는 `notifications=api`에서 빌드에 고정된 API 주소의 native WS/STOMP 전송을 제공한다. 메모리 access token으로 고정 구독을 연결하고, 유효 신호가 오면 기능 계층이 기존 공개 목록·건수 조회를 예약한다. `notifications=mock`은 실제 WS를 열거나 알림 목적으로 API 토큰을 조회하지 않는다. 기존 REST 오류 처리와 공급원 제약을 적용한다. Spring Simple Broker의 구독 완료 확인과 STOMP 인증 오류 식별의 제한은 [DEV-07](../development/figma-v01/tasks/DEV-07.md#dev-07-brief)에 기록한다.
 
 전역 상세·야간 알림 행은 `notification-settings/client.ts`의 `notificationSettingsCapabilities`에서 화면 지원 상태와 비활성 사유를 읽는다. 이 값은 모든 프로필에서 같고 계정 설정과 별개다. 상세·야간의 Repository 메서드, HTTP DTO 및 mock 저장은 별도 활성화 Gate의 범위다. [DEV-66 연결 경계](../development/figma-v01/tasks/DEV-66.md#dev-66-brief) · [POL-19 후속 조건](../development/figma-v01/tasks/POL-19.md#pol-19-contract)
 
